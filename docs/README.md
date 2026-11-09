@@ -15,6 +15,8 @@ Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sı
 7. [ADR şablonu](adr/000-template.md): Sonraki kararlar için şablon.
 
 - [Ortak rota/enerji sözleşmeleri](DOMAIN_CONTRACTS.md): Tüketim, voltaj/termal etkiler ve doğrulama kuralları.
+- [Sağlayıcı sınırları](PROVIDER_BOUNDARIES.md): Dış veri portları, kendi planlayıcımız ve veri toplama koordinasyonu.
+- [Pilot doğrulama analizi](PILOT_VALIDATION.md): Ioniq 5/6, tüketim referansları, p95/p99 ve istasyon erişimi önerisi.
 - [CR-003 veri mimarisi önerisi](DATA_ARCHITECTURE.md): Hesap, tek araç kotası, misafir geçmişi, transaction ve performans.
 - [Paylaşılan rate limiting](RATE_LIMITING.md): PostgreSQL adapter'ı, günlük üç aşım, proxy ve işletim sınırları.
 - [Hesap/garaj/geçmiş kararı](adr/002-account-garage-history.md): Kabul edilen ürün kuralları ve açık kalan teknik seçimler.

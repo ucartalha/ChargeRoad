@@ -17,9 +17,10 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 ## Temel hazırlık
 
 ### CR-001 — Pilot kapsamı ve kabul eşikleri
-- Durum: TODO
+- Durum: IN_PROGRESS
 - Bağımlılık: DEC-012.
 - İş: İlk koridor, araç varyantları, veri kapsamı ve başarı eşiklerini belirle.
+- 2026-11-10: Pilotlar 2023 Ioniq 6 RWD 53 kWh / 18 inç ve 2025 Ioniq 5 63 kWh / 19 inç olarak seçildi; Ioniq 5 paketinin RWD bilgisi üretici kaynağıyla destekleniyor. Tarihsel model yılı/pazar ve katalog eşleştirmesi ile koridorlar açık. Kullanıcı ortalamaları başlangıç referansı; bağımsız saha doğrulaması ayrıca gerekiyor. p95 ve p99 birlikte ölçülecek. [Değerlendirme](PILOT_VALIDATION.md).
 - Kabul: Pilot listesi, tüketim hata metriği, planlama süre hedefleri ve rezerv ihlali kriterleri yazılı; ölçüm yöntemi tanımlı.
 
 ### CR-002 — Ortak domain sözleşmeleri
@@ -38,15 +39,17 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - Kabul: Migration temiz DB'ye uygulanıyor; coğrafi indeks ve örnek koridor sorgusu doğrulanıyor; kaynak kimlikleri ve kaynak/güncelleme/alınma zamanları korunuyor. Kullanıcı sahipliği DEC-003'e göre uygulanıyor.
 
 ### CR-004 — Sağlayıcı sınırlarının ayrılması
-- Durum: TODO
+- Durum: DONE
 - Bağımlılık: CR-002.
 - İş: Yol sağlayıcısını EV planlama servisinden ayır; hava, araç ve istasyon sözleşmelerini tanımla.
+- 2026-11-10: Normalize veri/provenance portları, kendi engine adım sözleşmesi, snapshot doğrulayan coordinator ve Nest DI modülü uygulandı. 16 senaryo sahte sağlayıcılarla doğrulanıyor. Gerçek adapter ve optimizasyon motoru ayrı görevler; üretime sahte fallback veya plan endpoint'i eklenmedi. [Ayrıntılar](PROVIDER_BOUNDARIES.md).
 - Kabul: Yol sağlayıcısı şarj durağı seçmiyor; plan motoru sahte sağlayıcılarla çalışabiliyor; hata ve eksik veri sonuçları açık; LLM SDK/API gerekmiyor.
 
 ### CR-005 — Referans senaryolar ve doğrulama düzeneği
-- Durum: TODO
+- Durum: IN_PROGRESS
 - Bağımlılık: CR-001, CR-002.
 - İş: Küçük elle doğrulanabilir yol/enerji örnekleri ve pilot seyahat veri seti hazırla.
+- 2026-11-10 analiz: Pilot model aileleri ve p99 ölçümü kabul edildi; [referans veri ve istasyon erişimi önerisi](PILOT_VALIDATION.md) hazırlandı. Gerçek veri, referans çözücü ve ölçüm düzeneği henüz uygulanmadı; görev DONE değildir.
 - Kabul: Aynı veri anlık görüntüsüyle tekrar üretilebilir testler var; enerji korunumu, rezerv, ulaşılamaz rota ve şarj düzeltme senaryoları kapsanıyor. Özel konum verisinin kullanımı DEC-011'e uygun.
 
 ## Veriler ve planlama motoru
@@ -57,6 +60,7 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - İş: Seçilen açık veri kaynağından modelleri/varyantları normalize ederek aktar.
 - Tamamlanan alt teslim: DB katalog şeması, doğrulanan OpenEV Data adaptörü, manuel import, idempotent güncelleme, işlem kaydı ve DB okuma API'si. Teknik kanıt [katalog belgesinde](VEHICLE_CATALOGUE.md).
 - Kalan kabul: Pilot araç listesinin alan bazında doğrulanması; tüketim ve şarj eğrisi için yeterli kaynak. Mevcut sürüm bu değerleri içermiyor.
+- 2026-11-10 pilot veri açığı: OpenEV v1.24.0 kataloğunda seçilen 2025 Ioniq 5 63 kWh yok; izinli ek kaynakla ayrı provenance korunarak tamamlanmalı. Ioniq 6 53 kWh aday kaydının kullanılabilir kapasite/jant/aktarma eşleşmesi doğrulanmalı. [Kaynak kontrolü](PILOT_VALIDATION.md#varyant-kaynakları-ve-katalog-açıkları).
 - Kabul: Tekrarlanan import mükerrer üretmiyor; kaynak/sürüm kaydı var; eksik değerler uydurulmuyor; aynı modelin batarya varyantları ayrılıyor; pilot araçlar kontrol ediliyor.
 
 ### CR-007 — İstasyon kataloğu ve yol koridoru sorgusu

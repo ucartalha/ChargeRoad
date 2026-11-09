@@ -23,6 +23,8 @@ Karar süreci: İhtiyaç ve ölçütleri netleştir → küçük teknik denemeyi
 
 ## Sabit sınırlar
 
+2026-11-10 pilot güncellemesi: DEC-012 için 2023 Ioniq 6 RWD 53 kWh / 18 inç, 2025 Ioniq 5 63 kWh / 19 inç ve p95+p99 ölçümü kabul edildi. Varyantların kaynak/katalog eşleştirmesi, koridor ve eşikler açık. DEC-007 için yerel katalog + rota koridoru + seçilmiş adayların canlı durumu [öneri olarak değerlendiriliyor](PILOT_VALIDATION.md); kaynak veya scheduler seçimi yapılmadı.
+
 2026-11-10: [ADR-003](adr/003-shared-security-state.md) ile paylaşılan güvenlik store sınırı kabul edildi. PostgreSQL rate adapter'ı ve günlük üç ayrı aşım koruması uygulandı. JWKS yerel cache, managed-auth, oturum/hak servisleri ve Redis entegrasyonu henüz uygulanmadı; rate katmanının tamamlanması auth sistemini tamamlamaz.
 
 - DEC-006 ve DEC-008 hangi seçenekle sonuçlanırsa sonuçlansın EV karar motoru LLM gerektirmeyecek.
