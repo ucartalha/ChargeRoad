@@ -1,0 +1,32 @@
+{
+  "name": "@chargeroad/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/build.mjs --test",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.2"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts"
+}

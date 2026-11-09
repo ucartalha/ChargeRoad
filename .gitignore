@@ -1,0 +1,12 @@
+node_modules/
+.pnpm-store/
+.turbo/
+dist/
+coverage/
+.expo/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+apps/mobile/ios/
+apps/mobile/android/

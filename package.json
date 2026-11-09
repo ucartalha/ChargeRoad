@@ -1,0 +1,22 @@
+{
+  "name": "chargeroad",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @chargeroad/api db:migrate",
+    "vehicles:import": "pnpm --filter @chargeroad/api vehicles:import"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "~5.9.2"
+  }
+}
