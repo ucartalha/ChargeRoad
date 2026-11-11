@@ -95,7 +95,9 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - Kabul: Teknik pilotta gerçek yol geometrisi ve katalog koordinatına sapma üretildi; yükseklik/hız eksikleri açık; dış servisin hazır EV durakları motor yerine kullanılmıyor. Geniş doğrulama ve üretime hazırlık kapıları kullanıcı kararıyla V1 backlog'una taşındı.
 
 ### CR-010 — Hava durumu adaptörü
-- Durum: TODO
+- Durum: DONE
+- 2026-11-11 teslim: [Hava provider teknik raporu](WEATHER_PROVIDERS.md). MET Norway adapter/registry, migration 010, PostgreSQL cache/304/lease/fencing, ortak kota/backoff, periyodik temizlik, geçiş saati ve durak gecikmesi örnekleme uygulandı. Gerçek Türkiye pilotu: 207 kesim, 2 hava örnek noktası, tekrar/HTTP kontrolünde ek dış çağrı 0. Kaynak güncelleme zamanı model üretim/alınma/doğrulama zamanlarından ayrı; eksik alanlar null. 234 API/DB testi ve 33 shared sözleşme testi geçti; yerel p95/p99 raporu var.
+- [ADR-008](adr/008-weather-provider-and-planning-policy.md): MET Norway, temel hava/güncel cache yoksa güvenilir enerji planında veri yetersiz sonucu ve V1 için 72 saat hareket penceresi uygulanıyor. Hazırlık planı [tarihsel kayıtta](TASK_010_PREPARATION.md); gerçek SOC/enerji/optimizasyon ve navigasyon kendi görevlerinde, Task 9 V1 açıkları korunuyor.
 - Bağımlılık: DEC-007; CR-004, CR-009.
 - İş: Rota üzerindeki konum ve tahmini geçiş zamanına göre hava verisi getir.
 - Kabul: Bütün rota için yalnızca hareket saati kullanılmıyor; rüzgâr yönü mevcut; tahmin üretim zamanı kaydediliyor; eksik veri ve tahmin ufku aşımı açık sonuç veriyor.

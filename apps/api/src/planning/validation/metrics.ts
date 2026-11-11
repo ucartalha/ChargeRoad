@@ -22,7 +22,7 @@ export function latencySummary(samples: readonly { status: string; durationMs: n
 
 const observed = z.object({
   arrivalSocPercent: z.number().finite().min(0).max(100),
-  consumedKwh: z.number().finite().nonnegative(), chargingSeconds: z.number().finite().nonnegative(),
+  consumedKwh: z.number().finite(), chargingSeconds: z.number().finite().nonnegative(),
 }).strict();
 export const tripValidationRecordSchema = z.object({
   id: z.string().min(1), vehicleKey: z.enum(['ioniq6-2023-53-rwd-18', 'ioniq5-2025-63-rwd-19']),

@@ -31,6 +31,19 @@ function setup() {
 }
 
 describe('Planning provider boundaries', () => {
+  it('keeps the 72-hour departure policy on the server even when a client allows weather assumptions',async()=>{
+    const f=setup();Object.assign(f.weather,{departureWindowSeconds:259200});
+    f.request.departureAt=new Date(Date.now()+259201000).toISOString();
+    f.request.policy.unknownWeather='allow_with_documented_assumption';
+    expect(await f.coordinator.plan(f.request,f.options)).toMatchObject({status:'insufficient_data',reasons:[{code:'WEATHER_DEPARTURE_OUTSIDE_PLANNING_WINDOW'}]});
+    expect(f.vehicles.profile).not.toHaveBeenCalled();expect(f.weather.forecast).not.toHaveBeenCalled();
+  });
+  it.each(['provider_unavailable','outside_horizon','stale'] as const)('does not compute a reliable energy plan from %s weather',async status=>{
+    const f=setup();f.request.policy.unknownWeather='allow_with_documented_assumption';
+    f.weather.forecast.mockImplementation(async queries=>({data:queries.map(q=>({...forecast(q),status})),source:source('weather')}));
+    expect(await f.coordinator.plan(f.request,f.options)).toMatchObject({status:'insufficient_data'});
+    expect(f.engine.step).toHaveBeenCalledTimes(1);
+  });
   it('does not call an incomplete station search definitive infeasibility',async()=>{
     const f=setup(),set=stationSet();set.metadata.coverage.completeForQuery=false;
     f.stations.findAlongRoutes.mockResolvedValue({data:set,source:source('stations')});

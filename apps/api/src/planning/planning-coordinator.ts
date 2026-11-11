@@ -4,7 +4,7 @@ import { z } from 'zod';
 import {
   stationCandidateSetSchema, planningEvaluationSchema, planningInputSchema, roadRoutingRequestSchema,
   roadRoutingResultSchema, routePlanRequestSchema, sourceReferenceSchema,
-  vehicleEnergyProfileSchema, weatherForecastSchema,
+  vehicleEnergyProfileSchema, weatherForecastSchema,weatherForecastIsUsable,
 } from '@chargeroad/shared';
 import type {
   PlanningInput, PlanningResult, RoadRoutingRequest, RoutePlanRequest, WeatherForecast, WeatherQuery,
@@ -97,6 +97,11 @@ export class PlanningCoordinator {
     };
 
     try {
+      if(this.weather.departureWindowSeconds!==undefined){
+        const delta=Date.parse(request.departureAt)-Date.now();
+        if(delta<0||delta>this.weather.departureWindowSeconds*1000)
+          return failure('insufficient_data','WEATHER_DEPARTURE_OUTSIDE_PLANNING_WINDOW');
+      }
       if (this.vehicles.resolveId) {
         let canonicalId:string;
         try { canonicalId=await abortable(()=>this.vehicles.resolveId(request.vehicleVariantId,signal),signal); }
@@ -121,6 +126,7 @@ export class PlanningCoordinator {
           throw new ProviderBoundaryError('STATION','INVALID_DATA');
       }
       const forecasts = new Map<string, WeatherForecast>();
+      const forecastQueries=new Map<string,WeatherQuery>();
       const segments = new Set(roads.routes.flatMap((road) => road.segments.map((segment) => segment.id)));
       const sameQuery = (query: WeatherQuery, forecast: WeatherForecast) => query.segmentId === forecast.segmentId &&
         Date.parse(query.validAt) === Date.parse(forecast.validAt) &&
@@ -157,7 +163,7 @@ export class PlanningCoordinator {
         if (iteration + 1 >= request.policy.maxIterations) return failure('computation_limit','PLANNING_ITERATION_LIMIT');
         const needed = step.queries.filter((query) => {
           const existing = forecasts.get(query.id);
-          return !existing || !sameQuery(query,existing);
+          return !existing || !sameQuery(query,existing)||JSON.stringify(forecastQueries.get(query.id)?.sampleLocation)!==JSON.stringify(query.sampleLocation);
         });
         if (!needed.length) continue;
         if (forecasts.size + needed.filter((query) => !forecasts.has(query.id)).length > options.maxWeatherQueries)
@@ -170,7 +176,11 @@ export class PlanningCoordinator {
               const query = expected.get(forecast.queryId);
               return !query || !sameQuery(query,forecast);
             })) throw new ProviderBoundaryError('WEATHER','INVALID_DATA');
-        for (const forecast of result) forecasts.set(forecast.queryId,forecast);
+        for (const forecast of result){
+          if(forecast.status&&!weatherForecastIsUsable(forecast,Date.now(),Math.min(request.policy.forecastMaxAgeSeconds,43200)))
+            return failure('insufficient_data','WEATHER_'+(forecast.status==='available'||forecast.status==='partial'?'CORE_FIELDS_OR_FRESHNESS_MISSING':forecast.status.toUpperCase()));
+          forecasts.set(forecast.queryId,forecast);forecastQueries.set(forecast.queryId,expected.get(forecast.queryId)!);
+        }
       }
       return failure('computation_limit','PLANNING_ITERATION_LIMIT');
     } catch (error) {

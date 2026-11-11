@@ -28,7 +28,10 @@
     "vehicles:report": "ts-node scripts/report-knowledge.ts",
     "test:integration": "jest --runInBand --cache=false integration.spec",
     "roads:benchmark": "ts-node scripts/benchmark-roads.ts",
-    "roads:cleanup": "ts-node scripts/cleanup-roads.ts"
+    "roads:cleanup": "ts-node scripts/cleanup-roads.ts",
+    "weather:validate": "ts-node scripts/validate-weather.ts",
+    "weather:cleanup": "ts-node scripts/cleanup-weather.ts",
+    "weather:benchmark": "ts-node scripts/benchmark-weather.ts"
   },
   "dependencies": {
     "@chargeroad/shared": "workspace:*",

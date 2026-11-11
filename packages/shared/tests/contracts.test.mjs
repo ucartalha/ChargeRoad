@@ -107,6 +107,21 @@ test('stale forecasts are not silently used under a reject policy', () => {
   rejects(e);
 });
 
+test('unknown model issue time requires a genuine dataset update time, never a download timestamp', () => {
+  const e = makeExample(), weather=e.input.weather[0];
+  weather.sourceUpdatedAt=weather.forecastIssuedAt;weather.forecastIssuedAt=null;
+  assert.equal(evaluate(e).success,true);
+  weather.sourceUpdatedAt=null;rejects(e);
+});
+
+test('fresh downloads and permissive client assumptions cannot make unavailable core weather reliable', () => {
+  const e=makeExample(),weather=e.input.weather[0];
+  weather.sourceUpdatedAt='2026-11-09T07:00:00+03:00';weather.fetchedAt=e.result.plan.createdAt;rejects(e);
+  weather.sourceUpdatedAt=weather.forecastIssuedAt;weather.status='provider_unavailable';
+  e.input.request.policy.unknownWeather='allow_with_documented_assumption';rejects(e);
+  weather.status='partial';weather.windSpeedKph=null;rejects(e);
+});
+
 test('current curves require voltage at every SOC point; electrical power is not net stored power', () => {
   const curve = makeExample().input.vehicle.dcChargingCurves[0];
   curve.curve = { representation: 'current_by_soc', points: [

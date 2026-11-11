@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-11-11T13:53:15.550Z",
+  "scope": "Local MET fixture + PostgreSQL only; no external HTTP or production SLA",
+  "queriesPerNormalization": 207,
+  "normalization": {
+    "samples": 1000,
+    "p50Ms": 1.1098000000001775,
+    "p95Ms": 1.5394000000001142,
+    "p99Ms": 1.8834999999999127,
+    "maxMs": 2.968500000000404
+  },
+  "postgresCacheConcurrency": 4,
+  "postgresCache": {
+    "samples": 1000,
+    "p50Ms": 1.405399999999645,
+    "p95Ms": 2.1367999999997664,
+    "p99Ms": 2.7390999999997803,
+    "maxMs": 16.87310000000025
+  },
+  "fakeTransportCalls": 1,
+  "externalHttpCalls": 0
+}

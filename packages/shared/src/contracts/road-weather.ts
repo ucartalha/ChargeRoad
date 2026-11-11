@@ -33,6 +33,8 @@ export const roadSegmentSchema = z.object({
   speedLimitSource:sourceReferenceSchema.nullable().optional(),
   speedLimitRaw:z.string().nullable().optional(),
   expectedSpeedBasis:z.literal('travel_time_average').optional(),
+  elevationQuality:z.enum(['verified','modelled','unknown']).optional(),
+  speedProfile:z.array(z.object({elapsedSeconds:nonnegativeSchema,speedKph:nonnegativeSchema}).strict()).min(2).max(1000).optional(),
   elevationProfile: z.array(z.object({
     distanceFromStartMeters: nonnegativeSchema,
     elevationMeters: finiteSchema,
@@ -48,6 +50,14 @@ export const roadSegmentSchema = z.object({
   if (Math.abs(expectedSpeed - segment.expectedSpeedKph) > 0.1)
     ctx.addIssue({ code: 'custom', path: ['expectedSpeedKph'], message: 'Speed must agree with road distance and driving duration' });
   const elevations = segment.elevationProfile;
+  const speeds=segment.speedProfile;
+  if(speeds){
+    const seconds=speeds.at(-1)!.elapsedSeconds;
+    const distance=speeds.slice(1).reduce((sum,p,i)=>sum+(p.speedKph+speeds[i].speedKph)/7.2*(p.elapsedSeconds-speeds[i].elapsedSeconds),0);
+    if(speeds[0].elapsedSeconds!==0||Math.abs(seconds-segment.drivingDurationSeconds)>0.001||
+      !strictlyIncreasing(speeds.map(p=>p.elapsedSeconds))||Math.abs(distance-segment.distanceMeters)>0.1)
+      ctx.addIssue({code:'custom',path:['speedProfile'],message:'Speed trace must cover time and integrate to segment distance'});
+  }
   if (elevations) {
     if (elevations[0].distanceFromStartMeters !== 0 ||
         Math.abs(elevations[elevations.length - 1].distanceFromStartMeters - segment.distanceMeters) > 0.001 ||
@@ -128,6 +138,7 @@ export const weatherQuerySchema = z.object({
   segmentId: idSchema,
   location: coordinateSchema,
   validAt: timestampSchema,
+  sampleLocation: coordinateSchema.optional(),
 }).strict();
 
 export const weatherForecastSchema = z.object({
@@ -135,7 +146,10 @@ export const weatherForecastSchema = z.object({
   segmentId: idSchema,
   location: coordinateSchema,
   validAt: timestampSchema,
-  forecastIssuedAt: timestampSchema,
+  // True model issue time, not the API download or dataset update time.
+  forecastIssuedAt: timestampSchema.nullable(),
+  sourceUpdatedAt: timestampSchema.nullable().optional(),
+  status: z.enum(['available','partial','stale','outside_horizon','provider_unavailable','budget_exhausted']).optional(),
   fetchedAt: timestampSchema,
   temperatureCelsius: finiteSchema.nullable(),
   windSpeedKph: nonnegativeSchema.nullable(),
@@ -144,6 +158,16 @@ export const weatherForecastSchema = z.object({
   precipitationMmPerHour: nonnegativeSchema.nullable(),
   snowDepthCm: nonnegativeSchema.nullable(),
   airPressureHpa: positiveSchema.nullable(),
+  metadata: z.object({
+    sampledLocation: coordinateSchema, sampledElevationMeters:finiteSchema.nullable(), sampleDistanceMeters:nonnegativeSchema,
+    coverageStart:timestampSchema, coverageEnd:timestampSchema, lastValidatedAt:timestampSchema,
+    intervalStart:timestampSchema, intervalEnd:timestampSchema, timeStepSeconds:nonnegativeSchema,
+    method:z.enum(['exact','linear_temperature_vector_wind']),
+    pressureKind:z.enum(['sea_level','surface','unknown']),
+    precipitationPeriod:z.object({start:timestampSchema,end:timestampSchema,totalMm:nonnegativeSchema.nullable(),
+      probabilityPercent:percentSchema.nullable()}).strict().nullable(),
+    warnings:z.array(z.string()), license:z.string(), attribution:z.string(),
+  }).strict().optional(),
   source: sourceReferenceSchema,
 }).strict();
 
@@ -154,3 +178,9 @@ export type RoadRoutingRequest = z.infer<typeof roadRoutingRequestSchema>;
 export type RoadRoutingResult = z.infer<typeof roadRoutingResultSchema>;
 export type WeatherQuery = z.infer<typeof weatherQuerySchema>;
 export type WeatherForecast = z.infer<typeof weatherForecastSchema>;
+
+export function weatherForecastIsUsable(forecast:WeatherForecast,now:number,maxAgeSeconds:number):boolean{
+  const time=forecast.sourceUpdatedAt??forecast.forecastIssuedAt;
+  return (!forecast.status||['available','partial'].includes(forecast.status))&&forecast.temperatureCelsius!==null&&forecast.windSpeedKph!==null&&
+    (forecast.windSpeedKph===0||forecast.windFromDegrees!==null)&&time!==null&&now>=Date.parse(time)&&now-Date.parse(time)<=maxAgeSeconds*1000;
+}

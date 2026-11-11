@@ -57,6 +57,8 @@ Bu sıra ihtiyaç halinde değişebilir. Bir görev yalnızca gerçekten bağım
 
 ## Karar kaydı
 
+2026-11-11, DEC-007/DEC-008 hava kapsamı: [ADR-008](adr/008-weather-provider-and-planning-policy.md) ile MET Norway başlangıç sağlayıcısı, temel hava/güncel cache yoksa güvenilir SOC/enerji planı için veri yetersiz sonucu ve V1 için 72 saat hareket penceresi kabul edildi ve uygulandı. [Task 10 teknik teslimi](WEATHER_PROVIDERS.md) provider, ortak PostgreSQL cache, gerçek kaynak zamanı, örnekleme ve kesin başlangıç sınırlarını içerir; CR-010 DONE. [Hazırlık](TASK_010_PREPARATION.md) tarihsel taslaktır.
+
 Alınan her karar için [ADR şablonu](adr/000-template.md) kopyalanır. Dosya adı örneği: 001-kimlik-ve-oturum.md. İlgili DEC kaydına ADR bağlantısı eklenir.
 
 İlk uygulama kaydı: [ADR-001 — DB'den sunulan araç kataloğu](adr/001-vehicle-catalogue.md). Bu kayıt auth, rota sağlayıcısı veya Redis seçimini kapatmaz.

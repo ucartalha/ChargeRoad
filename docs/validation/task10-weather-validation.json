@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-11-11T14:06:48.765Z",
+  "status": "weather_ready",
+  "routeSegments": 207,
+  "queryCount": 207,
+  "samples": 2,
+  "acquisitionMs": 352.53769999999986,
+  "sourceCalls": 0,
+  "sharedProviderState": [
+    {
+      "provider_id": "met-norway",
+      "used": 2,
+      "day": "2026-11-11"
+    }
+  ],
+  "http": {
+    "status": 200,
+    "elapsedMs": 87.72100000000046,
+    "extraSourceCalls": 0
+  },
+  "firstForecast": {
+    "queryId": "valhalla-osm:303a3ce2c778d84c116c:weather:303a3ce2c778d84c116c:0",
+    "segmentId": "303a3ce2c778d84c116c:0",
+    "location": {
+      "latitude": 39.9208645,
+      "longitude": 32.854006999999996
+    },
+    "validAt": "2026-11-11T14:11:49.233Z",
+    "forecastIssuedAt": null,
+    "sourceUpdatedAt": "2026-11-11T13:17:23Z",
+    "status": "available",
+    "fetchedAt": "2026-11-11T13:45:52.552Z",
+    "temperatureCelsius": 9.68628075,
+    "windSpeedKph": 5.879877507290122,
+    "windFromDegrees": 260.3873201180116,
+    "precipitationProbabilityPercent": null,
+    "precipitationMmPerHour": 0,
+    "snowDepthCm": null,
+    "airPressureHpa": 1019.7394018333333,
+    "metadata": {
+      "sampledLocation": {
+        "latitude": 39.9208,
+        "longitude": 32.8541
+      },
+      "sampledElevationMeters": 879,
+      "sampleDistanceMeters": 10.692915890509722,
+      "coverageStart": "2026-11-11T13:00:00Z",
+      "coverageEnd": "2026-11-21T00:00:00Z",
+      "lastValidatedAt": "2026-11-11T13:45:52.552Z",
+      "intervalStart": "2026-11-11T14:00:00Z",
+      "intervalEnd": "2026-11-11T15:00:00Z",
+      "timeStepSeconds": 3600,
+      "method": "linear_temperature_vector_wind",
+      "pressureKind": "sea_level",
+      "precipitationPeriod": {
+        "start": "2026-11-11T14:00:00Z",
+        "end": "2026-11-11T15:00:00.000Z",
+        "totalMm": 0,
+        "probabilityPercent": null
+      },
+      "warnings": [
+        "wind_is_modelled_at_10m",
+        "battery_temperature_is_not_ambient_temperature",
+        "snow_depth_unavailable",
+        "weather_temporally_interpolated",
+        "precipitation_probability_unavailable"
+      ],
+      "license": "CC-BY-4.0",
+      "attribution": "Weather data: MET Norway (modified by temporal interpolation)"
+    },
+    "source": {
+      "sourceId": "met-norway",
+      "recordId": null,
+      "version": "2026-11-11T13:17:23Z",
+      "url": "https://api.met.no/doc/locationforecast/datamodel",
+      "retrievedAt": "2026-11-11T13:45:52.552Z",
+      "publishedAt": "2026-11-11T13:17:23Z",
+      "license": "CC-BY-4.0"
+    }
+  },
+  "lastForecast": {
+    "queryId": "valhalla-osm:303a3ce2c778d84c116c:weather:303a3ce2c778d84c116c:206",
+    "segmentId": "303a3ce2c778d84c116c:206",
+    "location": {
+      "latitude": 39.933248500000005,
+      "longitude": 32.859742
+    },
+    "validAt": "2026-11-11T14:20:18.386Z",
+    "forecastIssuedAt": null,
+    "sourceUpdatedAt": "2026-11-11T13:17:12Z",
+    "status": "available",
+    "fetchedAt": "2026-11-11T13:45:52.917Z",
+    "temperatureCelsius": 9.489274833333333,
+    "windSpeedKph": 5.543242742045525,
+    "windFromDegrees": 253.25121539509735,
+    "precipitationProbabilityPercent": null,
+    "precipitationMmPerHour": 0,
+    "snowDepthCm": null,
+    "airPressureHpa": 1019.7676881111112,
+    "metadata": {
+      "sampledLocation": {
+        "latitude": 39.9333,
+        "longitude": 32.8596
+      },
+      "sampledElevationMeters": 873,
+      "sampleDistanceMeters": 13.393377943945296,
+      "coverageStart": "2026-11-11T13:00:00Z",
+      "coverageEnd": "2026-11-21T00:00:00Z",
+      "lastValidatedAt": "2026-11-11T13:45:52.917Z",
+      "intervalStart": "2026-11-11T14:00:00Z",
+      "intervalEnd": "2026-11-11T15:00:00Z",
+      "timeStepSeconds": 3600,
+      "method": "linear_temperature_vector_wind",
+      "pressureKind": "sea_level",
+      "precipitationPeriod": {
+        "start": "2026-11-11T14:00:00Z",
+        "end": "2026-11-11T15:00:00.000Z",
+        "totalMm": 0,
+        "probabilityPercent": null
+      },
+      "warnings": [
+        "wind_is_modelled_at_10m",
+        "battery_temperature_is_not_ambient_temperature",
+        "snow_depth_unavailable",
+        "weather_temporally_interpolated",
+        "precipitation_probability_unavailable"
+      ],
+      "license": "CC-BY-4.0",
+      "attribution": "Weather data: MET Norway (modified by temporal interpolation)"
+    },
+    "source": {
+      "sourceId": "met-norway",
+      "recordId": null,
+      "version": "2026-11-11T13:17:12Z",
+      "url": "https://api.met.no/doc/locationforecast/datamodel",
+      "retrievedAt": "2026-11-11T13:45:52.917Z",
+      "publishedAt": "2026-11-11T13:17:12Z",
+      "license": "CC-BY-4.0"
+    }
+  },
+  "missingCoreFields": 0,
+  "issuedAtUnknown": true
+}

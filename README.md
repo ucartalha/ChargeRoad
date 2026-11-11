@@ -65,7 +65,7 @@ The first catalogue import populated 65 makes, 260 models, and 1,189 vehicle rec
 
 This source release has no direct consumption values or DC charge curves, and no explicit TR market entries. Missing values remain null or absent child records. Catalogue availability does not imply energy-planning readiness or verified Turkish-market coverage. The [source licence text](third_party/open-ev-data.LICENSE.md) is retained in the repository.
 
-Routing, battery corrections during trips, user accounts, stations, weather, navigation, and weekly import scheduling remain to be implemented.
+The Valhalla/OSM road adapter and MET Norway weather provider are implemented with shared PostgreSQL caching and quota coordination. See [road delivery](docs/ROAD_PROVIDERS.md) and [weather delivery](docs/WEATHER_PROVIDERS.md). EV energy/SOC calculation, stop optimization, trip battery corrections, user accounts, map/navigation UI and weekly import scheduling remain separate work.
 
 CR-007 update: the static station catalogue and indexed PostGIS corridor provider are implemented;
 17,165 EPDK locations and 50,259 connector claims are stored. Live availability, physical EVSE

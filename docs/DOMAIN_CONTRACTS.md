@@ -91,6 +91,8 @@ Ortalama hız tek başına dur-kalk dinamiği değildir. Ayrıntılı hız/ivme 
 
 WeatherQuery her segment için konum ve validAt taşır. Şarj durağı sonraki segmentin zamanını değiştirirse hava yeniden örneklenir. Yağış olasılığı, gerçek yağış miktarı ve kar derinliği farklı alanlardır. Rüzgâr yol yönüyle birlikte değerlendirilir. Ortam sıcaklığı doğrudan batarya sıcaklığına kopyalanmaz.
 
+CR-010 güncellemesi: `forecastIssuedAt` gerçek üretim zamanı bilinmiyorsa null; kaynak veri güncellemesi `sourceUpdatedAt`, indirme `fetchedAt`, 304 dahil doğrulama metadata'da ayrı tutulur. Query başına durum, kullanılan örnek konumu/kotu, interpolasyon aralığı, yağış periyodu ve basınç türü taşınır. Eksik temel hava veya kaynak zamanı güvenilir enerji planını desteklemez; indirme zamanı tazelik yerine geçmez. [Hava teslimi ve 72 saat politikası](WEATHER_PROVIDERS.md).
+
 ## 3. Şarj eğrisi, voltaj ve donanım
 
 DcChargingCurve tek bir araç-genel maksimum güç sayısı değildir. Varyant ve chargingPathId ile eşleşen, kaynaklı/sürümlü bir eğridir.
@@ -195,6 +197,6 @@ pnpm typecheck
 
 Root dev/typecheck görevleri önce bağımlı shared build'ini çalıştırır. Shared kaynakları değiştirilince build tekrar çalıştırılmalı; bu teslimde shared watch servisi eklenmedi.
 
-31 senaryo; geçerli mesajlar, enerji sınırı dönüşümü, eğri kapsamı, voltaj yolu, soğuk batarya, yük, shared power, eski müsaitlik, şarj sonrası hava, bilinmeyen bekleme, süre/SOC sürekliliği ve sürüm hatalarını sınar. Örneklerin başarısı gerçek araç tüketim doğruluğunu ölçmez; saha/kalibrasyon testleri ayrıca yapılacaktır.
+33 senaryo; geçerli mesajlar, enerji sınırı dönüşümü, eğri kapsamı, voltaj yolu, soğuk batarya, yük, shared power, eski müsaitlik, şarj sonrası hava, bilinmeyen bekleme, süre/SOC sürekliliği ve sürüm hatalarını sınar. CR-010 ile bilinmeyen model zamanı/kaynak güncellemesi ve yeni indirmeyle eski/eksik havanın gizlenmemesi eklenmiştir. Örneklerin başarısı gerçek araç tüketim doğruluğunu ölçmez; saha/kalibrasyon testleri ayrıca yapılacaktır.
 
 Rezerv yüzdeleri, bölme eşikleri, güvenilir kaynaklar, model katsayıları, sağlayıcı ve optimizasyon yöntemi bu teslimle kesinleştirilmedi. Örnek dosyadaki sayılar test fixture'ıdır.

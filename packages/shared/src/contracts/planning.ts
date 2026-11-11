@@ -20,6 +20,7 @@ export const energySegmentSchema = z.object({
   netBatteryEnergyKwh: finiteSchema,
   breakdown: z.object({
     tractionKwh: nonnegativeSchema,
+    baseAuxiliaryKwh:nonnegativeSchema.optional(),
     cabinAuxiliaryKwh: nonnegativeSchema,
     batteryThermalKwh: nonnegativeSchema,
     regeneratedKwh: nonnegativeSchema,
@@ -36,7 +37,7 @@ export const energySegmentSchema = z.object({
     ctx.addIssue({ code: 'custom', message: 'Battery energy and SOC move in opposite directions' });
   if (segment.breakdown) {
     const b = segment.breakdown;
-    if (Math.abs(b.tractionKwh + b.cabinAuxiliaryKwh + b.batteryThermalKwh - b.regeneratedKwh - segment.netBatteryEnergyKwh) > 0.001)
+    if (Math.abs(b.tractionKwh + (b.baseAuxiliaryKwh??0) + b.cabinAuxiliaryKwh + b.batteryThermalKwh - b.regeneratedKwh - segment.netBatteryEnergyKwh) > 0.001)
       ctx.addIssue({ code: 'custom', path: ['breakdown'], message: 'Energy components do not match net battery consumption' });
   }
   if ((segment.departureAt === null) !== (segment.arrivalAt === null) ||

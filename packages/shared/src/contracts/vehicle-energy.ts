@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import {energyModelSchema} from './energy-model.js';
 import {
   connectorStandardSchema, finiteSchema, idSchema, nonnegativeSchema, numberRangeSchema, percentRangeSchema,
   percentSchema, positiveRangeSchema, positiveSchema, sourceReferenceSchema, strictlyIncreasing,
@@ -120,6 +121,7 @@ export const dcChargingCurveSchema = z.object({
 });
 
 export const vehicleEnergyProfileSchema = z.object({
+  energyModel:energyModelSchema.optional(),
   dataQuality: z.object({
     schemaVersion:z.literal('vehicle-quality/1.0.0'),
     policy:z.enum(['verified_only','allow_engineering_estimates']),
@@ -155,6 +157,8 @@ export const vehicleEnergyProfileSchema = z.object({
     maxRegenerationKw: nonnegativeSchema.nullable(),
   }).strict(),
 }).strict().superRefine((profile, ctx) => {
+  if(profile.energyModel?.quality==='engineering_estimate'&&profile.dataQuality?.quality!=='engineering_estimate')
+    ctx.addIssue({code:'custom',path:['energyModel'],message:'An estimated energy model requires an estimated vehicle profile label'});
   const paths = new Set(profile.dcChargingPaths.map((path) => path.id));
   if (paths.size !== profile.dcChargingPaths.length)
     ctx.addIssue({ code: 'custom', path: ['dcChargingPaths'], message: 'Duplicate charging path ID' });

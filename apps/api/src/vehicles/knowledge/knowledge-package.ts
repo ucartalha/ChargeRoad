@@ -16,8 +16,12 @@ export function validateProfiles(r:KnowledgeRecord) {
   }
   for (const entry of r.profiles) {
     const p = entry.profile;
-    if (p.vehicleVariantId!==r.externalId || !p.consumptionReferences.length)
+    if (p.vehicleVariantId!==r.externalId || (!p.consumptionReferences.length&&p.energyModel?.mode!=='physics'))
       throw new Error('Published profile needs the same vehicle and consumption evidence');
+    if(p.energyModel?.mode==='physics'&&[p.physics.curbMassKg,p.physics.dragAreaSquareMeters,p.physics.rollingResistanceCoefficient,p.physics.drivetrainEfficiency].some(v=>v===null))
+      throw new Error('A physical profile requires complete road-load parameters');
+    if(p.energyModel?.quality==='engineering_estimate'&&(entry.policy==='verified_only'||entry.evidence.quality!=='engineering_estimate'))
+      throw new Error('Estimated energy calibration cannot be published as verified');
     const used = [entry.evidence];
     const capacity = r.facts.find(f=>f.field==='usableBatteryKwh' && f.value===p.capacity.referenceUsableBatteryKwh &&
       isDeepStrictEqual(f.evidence.source,p.capacity.source));
@@ -25,7 +29,8 @@ export function validateProfiles(r:KnowledgeRecord) {
     used.push(capacity.evidence);
     for (const ref of p.consumptionReferences) {
       const e = r.consumption.find(e=>isDeepStrictEqual(e.reference,ref));
-      if (!e || ref.energyBoundary!=='battery_dc') throw new Error('Profile lacks battery-DC consumption evidence');
+      if (!e || !(ref.energyBoundary==='battery_dc'||ref.energyBoundary==='ac_grid'&&ref.batteryDcConversion?.source.license))
+        throw new Error('Profile lacks battery-DC consumption evidence or licensed AC-to-DC conversion');
       used.push(e.evidence);
     }
     for (const curve of p.dcChargingCurves) {

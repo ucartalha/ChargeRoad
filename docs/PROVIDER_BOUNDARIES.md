@@ -2,6 +2,8 @@
 
 Tarih: 2026-11-10. Durum: Altyapı ve sahte sağlayıcı testleri uygulandı. Gerçek sağlayıcılar ve enerji/optimizasyon motoru bu teslimde yok.
 
+2026-11-11 güncellemesi: Gerçek [yol adapter'ı](ROAD_PROVIDERS.md) ve [hava adapter'ı](WEATHER_PROVIDERS.md) ayrı görevlerde uygulandı. Aşağıdaki ilk CR-004 teslim akışı korunur; hava tarafında buna PostgreSQL ortak cache/304, query durumları ve V1 72 saat/temel hava yeterlilik politikası eklenmiştir. Üretim enerji/optimizasyon motoru hâlâ ayrı görevdir.
+
 ## Sorumluluk ayrımı
 
 | Bileşen | Sorumluluk | Karar vermez |

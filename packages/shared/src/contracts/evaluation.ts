@@ -61,7 +61,11 @@ export const planningEvaluationSchema = z.object({
       if (energy.departureAt && energy.arrivalAt &&
           (Date.parse(weather.validAt) < Date.parse(energy.departureAt) || Date.parse(weather.validAt) > Date.parse(energy.arrivalAt)))
         issue('Weather must be sampled at segment passage time, including charging delays');
-      const age = (Date.parse(plan.createdAt) - Date.parse(weather.forecastIssuedAt)) / 1000;
+      const sourceTime=weather.sourceUpdatedAt??weather.forecastIssuedAt;
+      if(weather.status&& !['available','partial'].includes(weather.status))issue('Unavailable weather cannot support a reliable energy plan');
+      if(weather.temperatureCelsius===null||weather.windSpeedKph===null||(weather.windSpeedKph>0&&weather.windFromDegrees===null))
+        issue('Core weather fields are missing');
+      const age = sourceTime===null?Infinity:(Date.parse(plan.createdAt) - Date.parse(sourceTime)) / 1000;
       if ((age < 0 || age > request.policy.forecastMaxAgeSeconds) &&
           (request.policy.unknownWeather === 'reject' || !assumptions.has('stale_weather')))
         issue('Stale weather requires an allowed, documented assumption');

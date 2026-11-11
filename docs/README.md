@@ -30,6 +30,9 @@ Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sı
 - [Provider mimarisi ve OCM teslimi](STATION_PROVIDERS.md): Çok kaynaklı registry/politika, ortak worker koruması, 1.737 gerçek OCM kaydı, testler ve kalan canlı feed kapsamı.
 - [Task 9 hazırlığı](TASK_009_PREPARATION.md): Yönetilen yol API pilotu, hız/yükseklik/trafik ayrımı, gerçek istasyon sapması, kota ve doğrulama adımları.
 - [Task 9 yol provider teslimi](ROAD_PROVIDERS.md): Valhalla/OSM, ücretsiz veri/kendi haritamız, PostgreSQL cache/kota, gerçek sapma kanıtı ve kalan doğrulama kapıları.
+- [Task 10 hazırlığı](TASK_010_PREPARATION.md): MET Norway, geçiş saatine göre örnekleme, PostgreSQL cache/304, hava veri kalitesi ve alt görevler.
+- [Task 10 hava provider teslimi](WEATHER_PROVIDERS.md): Gerçek MET Türkiye verisi, örnekleme/geçiş zamanı, ortak cache/kota, HTTP pilotu ve p95/p99 kanıtı.
+- [Hava sağlayıcısı kararı](adr/008-weather-provider-and-planning-policy.md): MET Norway başlangıcı, eksik temel hava politikası ve 72 saatlik hareket penceresi.
 - [Yol pilotu kararı](adr/007-road-provider-pilot.md): Kabul edilen üç tercih ve sağlayıcı seçiminde ücretsiz plan koşulları.
 - [Canlı müsaitlik kararı](adr/006-live-availability-provider-boundary.md): Sağlayıcıdan bağımsız port, ortak PostgreSQL durumu ve kabul edilen kaynak erişim kapıları.
 - [İstasyon politika kararı](adr/005-station-catalogue-policy.md): Türkiye geneli + pilot, EPDK önceliği ve bilinmeyen müsaitlik için kabul edilen ilkeler.
