@@ -1,0 +1,73 @@
+{
+  "generatedAt": "2026-11-11T13:11:27.516Z",
+  "provider": "valhalla-osm",
+  "acquisitionElapsedMs": 8056.222900000001,
+  "alternatives": 1,
+  "distanceMeters": 3845,
+  "seconds": 512.4999999999999,
+  "segments": 207,
+  "sourceAttributions": [
+    {
+      "text": "© OpenStreetMap contributors",
+      "url": "https://www.openstreetmap.org/copyright",
+      "license": "ODbL-1.0"
+    },
+    {
+      "text": "Routing by Valhalla",
+      "url": "https://valhalla.github.io/valhalla/",
+      "license": "MIT"
+    },
+    {
+      "text": "Improve the map",
+      "url": "https://www.openstreetmap.org/fixthemap",
+      "license": "ODbL-1.0"
+    },
+    {
+      "text": "FOSSGIS development routing service",
+      "url": "https://routing.openstreetmap.de/about.html",
+      "license": "Service fair use"
+    }
+  ],
+  "traffic": "none",
+  "warnings": [
+    "osm_speed_tags_unavailable",
+    "live_traffic_unavailable",
+    "speed_is_travel_time_average",
+    "elevation_dataset_not_independently_verified",
+    "speed_limits_incomplete"
+  ],
+  "knownSpeedMeters": 0,
+  "unknownSpeedMeters": 3845,
+  "postedLimitsKph": [],
+  "altitudeSegments": 207,
+  "sourceBudget": [
+    {
+      "provider_id": "overpass-osm",
+      "used": 5,
+      "day": "2026-11-10T21:00:00.000Z"
+    },
+    {
+      "provider_id": "valhalla-osm",
+      "used": 5,
+      "day": "2026-11-10T21:00:00.000Z"
+    }
+  ],
+  "http": {
+    "status": 200,
+    "extraProviderCalls": 0
+  },
+  "stationAccess": [
+    {
+      "stationId": "aa640730-6ef7-40d7-8adb-15b9bed93e1e",
+      "status": "routed_to_catalogue_coordinate",
+      "physicalAccessVerified": false,
+      "snapDistanceMeters": 6.718748837801249,
+      "additionalDistanceMeters": 1170,
+      "additionalSeconds": 137.52814142324496,
+      "warnings": [
+        "catalogue_coordinate_is_not_a_verified_vehicle_entrance",
+        "approach_direction_and_physical_access_unverified"
+      ]
+    }
+  ]
+}

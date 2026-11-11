@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-10T18:49:18.305Z",
+  "scope": "offline_synthetic_reference_only_not_api_capacity_or_vehicle_accuracy",
+  "snapshotSha256": "5b44b4b31b9cd55e35340e6c9fe97d54797d342045eef0d56faf0e6f882a502f",
+  "pilotObservationsSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+  "correctness": {
+    "passed": 15,
+    "failed": 0,
+    "cases": [
+      {
+        "id": "single-stop-taper",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "oa",
+            "ad"
+          ],
+          "stops": [
+            {
+              "node": "a",
+              "arrivalWh": 20000,
+              "departureWh": 40000,
+              "chargingSeconds": 1080
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 20000,
+          "netConsumedWh": 50000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 3600,
+          "chargingSeconds": 1080,
+          "overheadSeconds": 60,
+          "totalSeconds": 4740,
+          "risks": []
+        },
+        "explored": 6
+      },
+      {
+        "id": "high-start-no-stop",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "direct"
+          ],
+          "stops": [],
+          "arrivalWh": 10000,
+          "chargedWh": 0,
+          "netConsumedWh": 40000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 3000,
+          "chargingSeconds": 0,
+          "overheadSeconds": 0,
+          "totalSeconds": 3000,
+          "risks": []
+        },
+        "explored": 7
+      },
+      {
+        "id": "lower-start-longer-charge",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "oa",
+            "ad"
+          ],
+          "stops": [
+            {
+              "node": "a",
+              "arrivalWh": 10000,
+              "departureWh": 40000,
+              "chargingSeconds": 1440
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 30000,
+          "netConsumedWh": 50000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 3600,
+          "chargingSeconds": 1440,
+          "overheadSeconds": 60,
+          "totalSeconds": 5100,
+          "risks": []
+        },
+        "explored": 6
+      },
+      {
+        "id": "unreachable-first-charger",
+        "status": "infeasible",
+        "explored": 1
+      },
+      {
+        "id": "arrival-target-distinct-from-reserve",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "oa",
+            "ad"
+          ],
+          "stops": [
+            {
+              "node": "a",
+              "arrivalWh": 20000,
+              "departureWh": 35000,
+              "chargingSeconds": 720
+            }
+          ],
+          "arrivalWh": 5000,
+          "chargedWh": 15000,
+          "netConsumedWh": 50000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 3600,
+          "chargingSeconds": 720,
+          "overheadSeconds": 60,
+          "totalSeconds": 4380,
+          "risks": []
+        },
+        "explored": 6
+      },
+      {
+        "id": "reserve-at-interior-segment",
+        "status": "infeasible",
+        "explored": 1
+      },
+      {
+        "id": "regeneration-capacity-clipping",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "regen"
+          ],
+          "stops": [],
+          "arrivalWh": 30000,
+          "chargedWh": 0,
+          "netConsumedWh": 0,
+          "curtailedRegenerationWh": 10000,
+          "drivingSeconds": 900,
+          "chargingSeconds": 0,
+          "overheadSeconds": 0,
+          "totalSeconds": 900,
+          "risks": []
+        },
+        "explored": 2
+      },
+      {
+        "id": "no-road",
+        "status": "infeasible",
+        "explored": 1
+      },
+      {
+        "id": "partial-catalogue",
+        "status": "insufficient_data",
+        "explored": 6
+      },
+      {
+        "id": "empty-partial-catalogue",
+        "status": "insufficient_data",
+        "explored": 2
+      },
+      {
+        "id": "explicit-cold-windy-energy-budget",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "cold-oa",
+            "cold-ad"
+          ],
+          "stops": [
+            {
+              "node": "a",
+              "arrivalWh": 15000,
+              "departureWh": 45000,
+              "chargingSeconds": 1620
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 30000,
+          "netConsumedWh": 60000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 3600,
+          "chargingSeconds": 1620,
+          "overheadSeconds": 60,
+          "totalSeconds": 5280,
+          "risks": []
+        },
+        "explored": 5
+      },
+      {
+        "id": "multiple-stops",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "oa",
+            "ab",
+            "bd"
+          ],
+          "stops": [
+            {
+              "node": "a",
+              "arrivalWh": 10000,
+              "departureWh": 35000,
+              "chargingSeconds": 1080
+            },
+            {
+              "node": "b",
+              "arrivalWh": 5000,
+              "departureWh": 40000,
+              "chargingSeconds": 1260
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 60000,
+          "netConsumedWh": 75000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 2700,
+          "chargingSeconds": 2340,
+          "overheadSeconds": 120,
+          "totalSeconds": 5160,
+          "risks": []
+        },
+        "explored": 22
+      },
+      {
+        "id": "after-charge-actual-60",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "ab",
+            "bd"
+          ],
+          "stops": [
+            {
+              "node": "b",
+              "arrivalWh": 15000,
+              "departureWh": 25000,
+              "chargingSeconds": 360
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 10000,
+          "netConsumedWh": 30000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 1800,
+          "chargingSeconds": 360,
+          "overheadSeconds": 60,
+          "totalSeconds": 2220,
+          "risks": []
+        },
+        "explored": 9
+      },
+      {
+        "id": "after-charge-actual-75",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "ab",
+            "bd"
+          ],
+          "stops": [
+            {
+              "node": "b",
+              "arrivalWh": 22500,
+              "departureWh": 25000,
+              "chargingSeconds": 90
+            }
+          ],
+          "arrivalWh": 10000,
+          "chargedWh": 2500,
+          "netConsumedWh": 30000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 1800,
+          "chargingSeconds": 90,
+          "overheadSeconds": 60,
+          "totalSeconds": 1950,
+          "risks": []
+        },
+        "explored": 10
+      },
+      {
+        "id": "after-charge-actual-90",
+        "status": "planned",
+        "plan": {
+          "edgeIds": [
+            "ad"
+          ],
+          "stops": [],
+          "arrivalWh": 15000,
+          "chargedWh": 0,
+          "netConsumedWh": 30000,
+          "curtailedRegenerationWh": 0,
+          "drivingSeconds": 1700,
+          "chargingSeconds": 0,
+          "overheadSeconds": 0,
+          "totalSeconds": 1700,
+          "risks": []
+        },
+        "explored": 4
+      }
+    ]
+  },
+  "performance": {
+    "sampleCount": 10000,
+    "warmup": 200,
+    "concurrency": 1,
+    "elapsedMs": 128.73259999999982,
+    "all": {
+      "samples": 10000,
+      "p50Ms": 0.008299999999962893,
+      "p95Ms": 0.024499999999989086,
+      "p99Ms": 0.05480000000011387,
+      "maxMs": 0.41409999999996217
+    },
+    "plannedOnly": {
+      "samples": 6665,
+      "p50Ms": 0.009000000000014552,
+      "p95Ms": 0.029299999999921056,
+      "p99Ms": 0.05910000000017135,
+      "maxMs": 0.41409999999996217
+    },
+    "counts": {
+      "infeasible": 2001,
+      "insufficient_data": 1334,
+      "planned": 6665
+    },
+    "cpuMilliseconds": 359,
+    "rssBytes": 296759296,
+    "eventLoopDelay": {
+      "samples": 12,
+      "p95Ms": 10.321919,
+      "p99Ms": 10.772479
+    },
+    "environment": {
+      "node": "v26.13.0",
+      "platform": "win32",
+      "architecture": "x64",
+      "cpuModel": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "logicalCpus": 20,
+      "memoryBytes": 16869548032
+    },
+    "limitations": [
+      "Small DAG and declared discrete Wh grid only",
+      "No HTTP, DB, external provider or concurrent load",
+      "Batch yielding does not make this CPU solver suitable for the API event loop",
+      "No production latency threshold has been selected"
+    ]
+  },
+  "pilotAccuracy": {
+    "calibrationRecords": 0,
+    "holdoutRecords": 0,
+    "status": "awaiting_field_data",
+    "errors": [],
+    "groups": []
+  }
+}

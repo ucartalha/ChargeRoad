@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-10T19:48:17.104Z",
+  "counts": {
+    "legacy_records": 1189,
+    "canonical_entries": 1191,
+    "staged_source_records": 1321,
+    "published_energy_profiles": 0
+  },
+  "sources": [
+    {
+      "source_key": "kilowatt-open-ev-data",
+      "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+      "checksum_sha256": "c1b6e45bad920b5c99c38b2e2eee0bad079e9080b3f2506f291895e2a1399b66",
+      "report": {
+        "source": "kilowatt-open-ev-data",
+        "records": 1321,
+        "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+        "publication": "review_candidates_only",
+        "consumptionClaims": 1321,
+        "acceptedSpeedTests": 0,
+        "genericChargingCurves": 445
+      }
+    }
+  ],
+  "pilot": [
+    {
+      "source": "chargeroad-pilot-configurations",
+      "records": [
+        {
+          "facts": 3,
+          "missing": [
+            "verified_model_year_market_wheel_match",
+            "usable_capacity_validation",
+            "licensed_conditioned_speed_consumption",
+            "conditioned_dc_curve",
+            "charging_path_limits"
+          ],
+          "charging": 0,
+          "externalId": "ioniq6-2023-53-rwd-18",
+          "consumption": 0,
+          "quarantined": [
+            {
+              "id": "kilowatt-consumption-claim",
+              "reason": "Average consumption has no declared speed, conditions, test cycle or AC/DC energy boundary. Not a battery-DC speed reference."
+            },
+            {
+              "id": "kilowatt-curve-claim",
+              "reason": "Curve lacks session provenance, temperature and power boundary; 50 kW limit is not independently validated. Not a vehicle acceptance curve."
+            }
+          ],
+          "observations": 3,
+          "publishedPolicies": []
+        },
+        {
+          "facts": 0,
+          "missing": [
+            "verified_model_year_market_match",
+            "usable_capacity",
+            "licensed_conditioned_speed_consumption",
+            "conditioned_dc_curve",
+            "charging_path_limits"
+          ],
+          "charging": 0,
+          "externalId": "ioniq5-2025-63-rwd-19",
+          "consumption": 0,
+          "quarantined": [],
+          "observations": 0,
+          "publishedPolicies": []
+        }
+      ],
+      "version": "2026-11-10.2",
+      "checksum": "42e3abba9806b23d92bb161972cd77b6c7d11cdd1e6c70f3017c97a962294016",
+      "coverage": "supplemental",
+      "schemaVersion": "knowledge-report/1"
+    }
+  ],
+  "acceptance": {
+    "technicalPlatform": "implemented_and_tested",
+    "pilotConditionedSpeedAndChargingCoverage": "incomplete",
+    "fullCr006Status": "IN_PROGRESS",
+    "reason": "Owner-reported ranges and source candidates are preserved; verified/conditioned pilot energy profiles are not yet publishable."
+  }
+}

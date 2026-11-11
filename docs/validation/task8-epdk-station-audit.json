@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-11T11:46:17.776Z",
+  "mode": "filtered",
+  "filters": {
+    "sarjIstasyonuNo": "ŞRJ/23604"
+  },
+  "cataloguePublished": false,
+  "requests": {
+    "catalogue": {
+      "endpoint": "https://apigateway.epdk.gov.tr/sarjIstasyonlari",
+      "retrievedAt": "2026-11-11T11:46:17.808Z",
+      "rawSha256": "95db707138ab7e82211483b063dac9f9801c2dee33900fe1f52c756bbc3936f7",
+      "httpStatus": 429,
+      "requestClass": "filtered",
+      "filters": {
+        "sarjIstasyonuNo": "ŞRJ/23604"
+      },
+      "method": "GET",
+      "requestBody": "{\"sarjIstasyonuNo\":\"ŞRJ/23604\"}",
+      "bytes": 236,
+      "elapsedMs": 179
+    }
+  },
+  "credentials": {
+    "GOOGLE_MAPS_API_KEY": false,
+    "GOOGLE_PLACES_API_KEY": false,
+    "HERE_API_KEY": false,
+    "HERE_ACCESS_TOKEN": false
+  },
+  "error": "EPDK HTTP 429",
+  "finishedAt": "2026-11-11T11:46:17.992Z"
+}

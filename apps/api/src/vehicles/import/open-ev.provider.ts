@@ -17,9 +17,9 @@ const releaseSchema = z.object({
   })),
 });
 
-async function download(url: string, maxBytes: number): Promise<Uint8Array> {
+export async function downloadVehicleSource(url: string, maxBytes: number, signal?:AbortSignal): Promise<Uint8Array> {
   const response = await fetch(url, {
-    signal: AbortSignal.timeout(60_000),
+    signal: signal ? AbortSignal.any([signal,AbortSignal.timeout(60_000)]) : AbortSignal.timeout(60_000),
     headers: { 'User-Agent': 'ChargeRoad-vehicle-import', Accept: 'application/json' },
   });
   if (!response.ok) throw new Error('Vehicle source returned HTTP ' + response.status);
@@ -49,7 +49,7 @@ export class OpenEvProvider implements VehicleDataProvider {
     if (version !== 'latest' && !/^v\d+\.\d+\.\d+$/.test(version))
       throw new Error('Vehicle version must be latest or vMAJOR.MINOR.PATCH');
     const endpoint = version === 'latest' ? 'latest' : 'tags/' + version;
-    const metadata = await download(
+    const metadata = await downloadVehicleSource(
       'https://api.github.com/repos/open-ev-data/open-ev-data-dataset/releases/' + endpoint,
       1_000_000,
     );
@@ -59,6 +59,6 @@ export class OpenEvProvider implements VehicleDataProvider {
     const asset = release.assets.find((candidate) => candidate.name === name);
     const expectedUrl = 'https://github.com/open-ev-data/open-ev-data-dataset/releases/download/' + release.tag_name + '/' + name;
     if (!asset || asset.browser_download_url !== expectedUrl) throw new Error('Expected vehicle dataset asset missing');
-    return parseSnapshot(await download(expectedUrl, 25_000_000), release.tag_name, expectedUrl, asset.digest ?? undefined);
+    return parseSnapshot(await downloadVehicleSource(expectedUrl, 25_000_000), release.tag_name, expectedUrl, asset.digest ?? undefined);
   }
 }

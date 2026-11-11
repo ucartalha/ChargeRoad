@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-11-11T13:16:10.141Z",
+  "scope": "local fixture / cache only; no provider load or production SLA",
+  "normalization": {
+    "samples": 1000,
+    "p50Ms": 0.8171999999999571,
+    "p95Ms": 1.3676000000000386,
+    "p99Ms": 1.8652999999999338,
+    "maxMs": 5.655599999999822
+  },
+  "postgresCacheConcurrency": 4,
+  "postgresCache": {
+    "samples": 1000,
+    "p50Ms": 0.570299999999861,
+    "p95Ms": 0.8827000000001135,
+    "p99Ms": 1.1799000000000888,
+    "maxMs": 11.710100000000239
+  },
+  "fakeTransportCalls": 1,
+  "externalHttpCalls": 0
+}

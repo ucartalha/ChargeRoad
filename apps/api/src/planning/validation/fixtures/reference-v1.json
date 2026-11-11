@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "provenance": "synthetic_hand_calculated_not_vehicle_measurements",
+  "base": {
+    "capacityWh": 50000, "stepWh": 5000, "startWh": 40000, "reserveWh": 5000, "targetWh": 10000,
+    "coverageComplete": true, "unknownAvailability": "reject", "nodes": ["o", "a", "d"],
+    "edges": [
+      {"id":"oa","from":"o","to":"a","seconds":1800,"energyWh":[20000]},
+      {"id":"ad","from":"a","to":"d","seconds":1800,"energyWh":[30000]},
+      {"id":"direct","from":"o","to":"d","seconds":3000,"energyWh":[40000]}
+    ],
+    "stations": [{
+      "node":"a","compatible":true,"roadAccessible":true,"status":"available",
+      "evseKw":200,"siteKw":200,"pathKw":200,"maxCurrentA":500,
+      "minVoltageV":200,"maxVoltageV":1000,"efficiency":1,"auxiliaryKw":0,
+      "connectionSeconds":60,"waitingSeconds":0,
+      "bands":[
+        {"fromWh":0,"toWh":30000,"acceptanceKw":100,"inletVoltageV":800},
+        {"fromWh":30000,"toWh":50000,"acceptanceKw":50,"inletVoltageV":800}
+      ]
+    }]
+  },
+  "cases": [
+    {"id":"single-stop-taper","rationale":"20 kWh arrival, charge to 40: 10/100 + 10/50 hours; drive 3600 + charge 1080 + connect 60.","overrides":{},"expected":{"status":"planned","totalSeconds":4740,"arrivalWh":10000,"edgeIds":["oa","ad"],"stopNodes":["a"],"chargedWh":20000,"risks":[]}},
+    {"id":"high-start-no-stop","rationale":"50 - 40 = 10 kWh: direct route meets arrival target.","overrides":{"startWh":50000},"expected":{"status":"planned","totalSeconds":3000,"arrivalWh":10000,"edgeIds":["direct"],"stopNodes":[],"chargedWh":0}},
+    {"id":"lower-start-longer-charge","rationale":"30 - 20 = 10; 20/100 + 10/50 hours charging, plus 3660 seconds.","overrides":{"startWh":30000},"expected":{"status":"planned","totalSeconds":5100,"arrivalWh":10000,"chargedWh":30000,"stopNodes":["a"]}},
+    {"id":"unreachable-first-charger","rationale":"20 - 20 violates 5 kWh reserve before any charge is possible.","overrides":{"startWh":20000},"expected":{"status":"infeasible"}},
+    {"id":"arrival-target-distinct-from-reserve","rationale":"Arrive with 5 kWh: charge 10/100 + 5/50 hours.","overrides":{"targetWh":5000},"expected":{"status":"planned","totalSeconds":4380,"arrivalWh":5000,"chargedWh":15000}},
+    {"id":"reserve-at-interior-segment","rationale":"End energy is 20 kWh but first 38 kWh draw leaves only 2; regeneration cannot repair a prior reserve violation.","overrides":{"edges":[{"id":"dip","from":"o","to":"d","seconds":900,"energyWh":[38000,-18000]}],"stations":[]},"expected":{"status":"infeasible"}},
+    {"id":"regeneration-capacity-clipping","rationale":"40 + 20 regen clips at 50 (10 curtailed), then consume 20 => 30 kWh.","overrides":{"edges":[{"id":"regen","from":"o","to":"d","seconds":900,"energyWh":[-20000,20000]}],"stations":[]},"expected":{"status":"planned","totalSeconds":900,"arrivalWh":30000,"chargedWh":0}},
+    {"id":"no-road","rationale":"Complete graph snapshot with no connecting road.","overrides":{"edges":[],"stations":[]},"expected":{"status":"infeasible"}},
+    {"id":"partial-catalogue","rationale":"A known feasible route does not establish an optimum when station coverage is incomplete.","overrides":{"coverageComplete":false},"expected":{"status":"insufficient_data"}},
+    {"id":"empty-partial-catalogue","rationale":"Missing station coverage cannot prove no feasible route.","overrides":{"coverageComplete":false,"stations":[]},"expected":{"status":"insufficient_data"}},
+    {"id":"explicit-cold-windy-energy-budget","rationale":"Synthetic adverse-condition energy inputs: 40-25=15; charge 15/100 + 15/50 hours to 45; consume35 =>10. No empirical weather multiplier implied.","overrides":{"edges":[{"id":"cold-oa","from":"o","to":"a","seconds":1800,"energyWh":[25000]},{"id":"cold-ad","from":"a","to":"d","seconds":1800,"energyWh":[35000]}]},"expected":{"status":"planned","totalSeconds":5280,"arrivalWh":10000,"chargedWh":30000}},
+    {"id":"multiple-stops","rationale":"A:10->35 costs1080s. B:5->40 costs1260s. Drive2700 + connect120 =5160.","overrides":{
+      "startWh":25000,"nodes":["o","a","b","d"],
+      "edges":[{"id":"oa","from":"o","to":"a","seconds":900,"energyWh":[15000]},{"id":"ab","from":"a","to":"b","seconds":900,"energyWh":[30000]},{"id":"bd","from":"b","to":"d","seconds":900,"energyWh":[30000]}],
+      "stations":[
+        {"node":"a","compatible":true,"roadAccessible":true,"status":"available","evseKw":200,"siteKw":200,"pathKw":200,"maxCurrentA":500,"minVoltageV":200,"maxVoltageV":1000,"efficiency":1,"auxiliaryKw":0,"connectionSeconds":60,"waitingSeconds":0,"bands":[{"fromWh":0,"toWh":30000,"acceptanceKw":100,"inletVoltageV":800},{"fromWh":30000,"toWh":50000,"acceptanceKw":50,"inletVoltageV":800}]},
+        {"node":"b","compatible":true,"roadAccessible":true,"status":"available","evseKw":200,"siteKw":200,"pathKw":200,"maxCurrentA":500,"minVoltageV":200,"maxVoltageV":1000,"efficiency":1,"auxiliaryKw":0,"connectionSeconds":60,"waitingSeconds":0,"bands":[{"fromWh":0,"toWh":50000,"acceptanceKw":100,"inletVoltageV":800}]}
+      ]},"expected":{"status":"planned","totalSeconds":5160,"arrivalWh":10000,"chargedWh":60000,"edgeIds":["oa","ab","bd"],"stopNodes":["a","b"]}},
+    {"id":"after-charge-actual-60","rationale":"User departure is 60%, not the recommended75%. B:15->25 costs360s +60; drive1800 =>2220.","overrides":{
+      "startWh":30000,"nodes":["a","b","d"],
+      "edges":[{"id":"ab","from":"a","to":"b","seconds":900,"energyWh":[15000]},{"id":"bd","from":"b","to":"d","seconds":900,"energyWh":[15000]},{"id":"ad","from":"a","to":"d","seconds":1700,"energyWh":[30000]}],
+      "stations":[{"node":"b","compatible":true,"roadAccessible":true,"status":"available","evseKw":200,"siteKw":200,"pathKw":200,"maxCurrentA":500,"minVoltageV":200,"maxVoltageV":1000,"efficiency":1,"auxiliaryKw":0,"connectionSeconds":60,"waitingSeconds":0,"bands":[{"fromWh":0,"toWh":50000,"acceptanceKw":100,"inletVoltageV":800}]}]
+    },"expected":{"status":"planned","totalSeconds":2220,"arrivalWh":10000,"chargedWh":10000,"stopNodes":["b"]}},
+    {"id":"after-charge-actual-75","rationale":"User75% gives37500Wh. B:22500->25000 is2500Wh costing90s; drive1800 + connect60 =>1950.","overrides":{
+      "startWh":37500,"nodes":["a","b","d"],
+      "edges":[{"id":"ab","from":"a","to":"b","seconds":900,"energyWh":[15000]},{"id":"bd","from":"b","to":"d","seconds":900,"energyWh":[15000]},{"id":"ad","from":"a","to":"d","seconds":1700,"energyWh":[30000]}],
+      "stations":[{"node":"b","compatible":true,"roadAccessible":true,"status":"available","evseKw":200,"siteKw":200,"pathKw":200,"maxCurrentA":500,"minVoltageV":200,"maxVoltageV":1000,"efficiency":1,"auxiliaryKw":0,"connectionSeconds":60,"waitingSeconds":0,"bands":[{"fromWh":0,"toWh":50000,"acceptanceKw":100,"inletVoltageV":800}]}]
+    },"expected":{"status":"planned","totalSeconds":1950,"arrivalWh":10000,"chargedWh":2500,"stopNodes":["b"]}},
+    {"id":"after-charge-actual-90","rationale":"Actual90% gives45 kWh: direct30 leaves15; skip B.","overrides":{
+      "startWh":45000,"nodes":["a","b","d"],
+      "edges":[{"id":"ab","from":"a","to":"b","seconds":900,"energyWh":[15000]},{"id":"bd","from":"b","to":"d","seconds":900,"energyWh":[15000]},{"id":"ad","from":"a","to":"d","seconds":1700,"energyWh":[30000]}],"stations":[]
+    },"expected":{"status":"planned","totalSeconds":1700,"arrivalWh":15000,"chargedWh":0,"stopNodes":[]}}
+  ]
+}

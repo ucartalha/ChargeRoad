@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-11-11T12:32:58.564Z",
+  "epdkIdentitiesPreserved": true,
+  "epdk": {
+    "aliases": 17165,
+    "identity_hash": "d25a21dfd81af21e635398a6c129a0b8"
+  },
+  "policy": {
+    "version": "station-sources/1.0.1",
+    "providers": {
+      "epdk-stations": {
+        "enabled": true,
+        "priority": 10,
+        "costRank": 0
+      },
+      "open-charge-map": {
+        "enabled": true,
+        "priority": 20,
+        "costRank": 0,
+        "quarantineReview": {
+          "version": "ocm-zero-coordinate-review/2026-11-11",
+          "exclusions": [
+            {
+              "externalId": "267423",
+              "reason": "ZERO_COORDINATE"
+            },
+            {
+              "externalId": "274244",
+              "reason": "ZERO_COORDINATE"
+            },
+            {
+              "externalId": "274246",
+              "reason": "ZERO_COORDINATE"
+            },
+            {
+              "externalId": "298083",
+              "reason": "ZERO_COORDINATE"
+            }
+          ]
+        }
+      }
+    },
+    "fields": {}
+  },
+  "counts": [
+    {
+      "source_key": "epdk-stations",
+      "locations": 17165,
+      "public_locations": 13238,
+      "connector_summary_rows": 50259,
+      "verified_evse_groups": 0
+    },
+    {
+      "source_key": "open-charge-map",
+      "locations": 1737,
+      "public_locations": 1714,
+      "connector_summary_rows": 2168,
+      "verified_evse_groups": 0
+    }
+  ],
+  "sources": [
+    {
+      "id": "e0ad7d2d-b3c5-4a62-901d-c9e2bbad51ff",
+      "source_key": "epdk-stations",
+      "scope_key": "TR:national-registry",
+      "source_row_count": 17165,
+      "quality_exclusions": 0,
+      "report": {
+        "source": "epdk-stations",
+        "accepted": 17165,
+        "rawSha256": "2010ea061de095b11bbb5ba8bf8296ce225ad43b8b4d1802270d1e5173857606",
+        "quarantine": [],
+        "sourceRows": 17165,
+        "actualEvses": 0,
+        "quarantined": 0,
+        "contentSha256": "ffeb17e1bbaa82555acd6e04086bb81089d20469fee402e7e46e45c8986f3f56",
+        "connectorClaims": 50259,
+        "publicLocations": 13238,
+        "privateLocations": 3927
+      },
+      "last_checked_at": "2026-11-10T20:02:47.212Z"
+    },
+    {
+      "id": "939263a9-4ca8-413f-b7b3-9281823f293f",
+      "source_key": "open-charge-map",
+      "scope_key": "TR:ocm:contributors",
+      "source_row_count": 1741,
+      "quality_exclusions": 4,
+      "report": {
+        "source": "open-charge-map",
+        "accepted": 1737,
+        "rawSha256": "8d2856fffbaeab776b5c4d3485d2837e0662fe5a7a93c7d96a82df00c3fea38c",
+        "quarantine": [
+          {
+            "raw": {
+              "ID": 267423,
+              "Latitude": 0,
+              "Longitude": 0
+            },
+            "reason": "ZERO_COORDINATE",
+            "externalId": "267423"
+          },
+          {
+            "raw": {
+              "ID": 274244,
+              "Latitude": 0,
+              "Longitude": 0
+            },
+            "reason": "ZERO_COORDINATE",
+            "externalId": "274244"
+          },
+          {
+            "raw": {
+              "ID": 274246,
+              "Latitude": 0,
+              "Longitude": 0
+            },
+            "reason": "ZERO_COORDINATE",
+            "externalId": "274246"
+          },
+          {
+            "raw": {
+              "ID": 298083,
+              "Latitude": 0,
+              "Longitude": 0
+            },
+            "reason": "ZERO_COORDINATE",
+            "externalId": "298083"
+          }
+        ],
+        "sourceRows": 1741,
+        "actualEvses": 0,
+        "quarantined": 4,
+        "contentSha256": "7892c246f43f51aafb018270b7203b5c865b2fbecba300af406829ef406465bb",
+        "connectorClaims": 2168,
+        "publicLocations": 1714,
+        "privateLocations": 23
+      },
+      "last_checked_at": "2026-11-11T12:27:04.742Z"
+    }
+  ],
+  "httpCheck": {
+    "status": 200,
+    "sourceId": "open-charge-map",
+    "license": "CC-BY-4.0"
+  },
+  "scope": "Local catalogue/provider delivery; no live availability verification or automatic cross-source matching"
+}

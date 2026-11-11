@@ -2,6 +2,8 @@
 
 Tarih: 2026-11-09. Kapsam: Ortak araç verisini dış kaynaktan DB'ye alıp uygulamaya DB üzerinden sunmak.
 
+2026-11-10 güncellemesi: Bu belge ilk OpenEV tesliminin kaydıdır. [CR-006 teknik katmanı](VEHICLE_KNOWLEDGE.md) katalog API'sini kaynaklardan bağımsız UUID kimliklerine taşıdı; eski ID'ler alias olarak desteklenir. Yeni kaynak adayları, kanıtlar, kullanıcı tüketim aralıkları ve sürümlü profiller ayrı tutulur. Aşağıdaki kaynak sahipliği garantileri korunur; public okumalar artık yayınlanmış ana katalog görünümündendir.
+
 ## Akış
 
 Manuel CLI → OpenEV Data sürüm çözümleme/indirme → checksum ve şema doğrulama → VehicleImportService → transaction içinde katalog güncelleme.

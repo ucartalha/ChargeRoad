@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "vehicle-knowledge/1.0.0",
+  "source": {
+    "key": "chargeroad-pilot-configurations",
+    "name": "ChargeRoad pilot configurations and source review",
+    "homepageUrl": "https://github.com/ucartalha/ChargeRoad",
+    "license": "LicenseRef-ChargeRoad-Pilot-Internal",
+    "permission": "own_data",
+    "permissionReference": "Anonymous vehicle configurations supplied by the project owner; external candidate facts retain the Kilowatt attribution license."
+  },
+  "version": "2026-11-10.1",
+  "generatedAt": "2026-11-10T19:22:58.190Z",
+  "retrievedAt": "2026-11-10T19:22:58.190Z",
+  "coverage": "supplemental",
+  "records": [
+    {
+      "externalId": "ioniq6-2023-53-rwd-18",
+      "matchedLegacyId": null,
+      "matchBasis": "Owner-declared exact configuration. Coarse OpenEV record deliberately not merged without wheel/market proof.",
+      "configuration": {
+        "make": "Hyundai",
+        "makeSlug": "hyundai",
+        "model": "Ioniq 6",
+        "modelSlug": "ioniq_6",
+        "modelYear": 2023,
+        "trim": "Pilot RWD",
+        "trimSlug": "pilot_rwd",
+        "variant": "53 kWh / 18 inch",
+        "variantSlug": "rwd_53_18",
+        "vehicleType": "car",
+        "markets": [],
+        "marketedBatteryKwh": 53,
+        "usableBatteryKwh": null,
+        "grossBatteryKwh": null,
+        "drivetrain": "rwd",
+        "wheelInches": 18,
+        "motorPowerKw": 111,
+        "maxAcChargeKw": null,
+        "maxDcChargeKw": null,
+        "connectorTypes": []
+      },
+      "facts": [
+        {
+          "id": "kilowatt-usable-claim",
+          "field": "usableBatteryKwh",
+          "value": 50,
+          "evidence": {
+            "quality": "source_reported",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Source reports 50 kWh; exact wheel/market and capacity validation remain open. Not selected into the public usable-capacity field.",
+            "derivation": null
+          }
+        },
+        {
+          "id": "kilowatt-consumption-claim",
+          "field": "consumptionClaim",
+          "value": {
+            "average_consumption": 14.9
+          },
+          "evidence": {
+            "quality": "quarantined",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Average consumption has no declared speed, conditions, test cycle or AC/DC energy boundary. Not a battery-DC speed reference.",
+            "derivation": null
+          }
+        },
+        {
+          "id": "kilowatt-curve-claim",
+          "field": "chargingCurveClaim",
+          "value": {
+            "max_power": 50,
+            "charging_curve": [
+              {
+                "percentage": 0,
+                "power": 50
+              },
+              {
+                "percentage": 40,
+                "power": 50
+              },
+              {
+                "percentage": 70,
+                "power": 40
+              },
+              {
+                "percentage": 90,
+                "power": 20
+              },
+              {
+                "percentage": 100,
+                "power": 11
+              }
+            ],
+            "is_default_charging_curve": false
+          },
+          "evidence": {
+            "quality": "quarantined",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Curve lacks session provenance, temperature and power boundary; 50 kW limit is not independently validated. Not a vehicle acceptance curve.",
+            "derivation": null
+          }
+        }
+      ],
+      "consumption": [],
+      "charging": [],
+      "profiles": [],
+      "missing": [
+        "verified_model_year_market_wheel_match",
+        "usable_capacity_validation",
+        "licensed_conditioned_speed_consumption",
+        "conditioned_dc_curve",
+        "charging_path_limits"
+      ]
+    },
+    {
+      "externalId": "ioniq5-2025-63-rwd-19",
+      "matchedLegacyId": null,
+      "matchBasis": "Owner-selected pilot configuration; no matching 63 kWh entry in pinned OpenEV/Kilowatt snapshots.",
+      "configuration": {
+        "make": "Hyundai",
+        "makeSlug": "hyundai",
+        "model": "Ioniq 5",
+        "modelSlug": "ioniq_5",
+        "modelYear": 2025,
+        "trim": "Pilot RWD",
+        "trimSlug": "pilot_rwd",
+        "variant": "63 kWh / 19 inch",
+        "variantSlug": "rwd_63_19",
+        "vehicleType": "car",
+        "markets": [],
+        "marketedBatteryKwh": 63,
+        "usableBatteryKwh": null,
+        "grossBatteryKwh": null,
+        "drivetrain": "rwd",
+        "wheelInches": 19,
+        "motorPowerKw": 125,
+        "maxAcChargeKw": null,
+        "maxDcChargeKw": null,
+        "connectorTypes": []
+      },
+      "facts": [],
+      "consumption": [],
+      "charging": [],
+      "profiles": [],
+      "missing": [
+        "verified_model_year_market_match",
+        "usable_capacity",
+        "licensed_conditioned_speed_consumption",
+        "conditioned_dc_curve",
+        "charging_path_limits"
+      ]
+    }
+  ]
+}

@@ -9,9 +9,14 @@ export const planningEvaluationSchema = z.object({
   const issue = (message: string) => ctx.addIssue({ code: 'custom', path: ['result'], message });
   if (result.status !== 'planned') {
     if (result.requestId !== input.request.requestId) issue('Failure result belongs to another request');
+    if(result.status==='infeasible' && input.stationSearch &&
+      (!input.stationSearch.coverage.completeForQuery||input.stationSearch.search.truncated))
+      issue('Incomplete station data/search cannot prove definitive infeasibility');
     return;
   }
   const plan = result.plan;
+  if(input.stationSearch && JSON.stringify(plan.stationSearch)!==JSON.stringify(input.stationSearch))
+    issue('Plan must retain station search coverage and revision metadata');
   const request = input.request;
   if (plan.requestId !== request.requestId || plan.vehicleVariantId !== request.vehicleVariantId ||
       plan.vehicleProfileId !== input.vehicle.id || plan.vehicleProfileVersion !== input.vehicle.version ||

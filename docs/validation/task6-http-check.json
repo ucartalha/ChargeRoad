@@ -1,0 +1,20 @@
+{
+    "ownerConsumptionObservations":  3,
+    "legacyIdResolvesToCanonical":  true,
+    "health":  {
+                   "status":  "ok",
+                   "service":  "chargeroad-api",
+                   "timestamp":  "2026-11-10T19:45:24.061Z"
+               },
+    "checkedAt":  "2026-11-10T19:45:24.1838588Z",
+    "pilotVersion":  "2026-11-10.2",
+    "missing":  [
+                    "verified_model_year_market_wheel_match",
+                    "usable_capacity_validation",
+                    "licensed_conditioned_speed_consumption",
+                    "conditioned_dc_curve",
+                    "charging_path_limits"
+                ],
+    "pilotCanonicalId":  "a82a3933-a3fe-41f8-b830-b4b1a747a5ba",
+    "referenceCount":  6
+}

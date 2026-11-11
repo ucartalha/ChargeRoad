@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-10T19:31:53.586Z",
+  "scope": "local_postgresql_microbenchmark_not_production_capacity",
+  "catalogue": {
+    "entries": 1191,
+    "legacy_rows": 1189,
+    "real_profile_revisions": 0
+  },
+  "concurrency": 4,
+  "warmupPerCase": 50,
+  "groups": [
+    {
+      "name": "legacy_projection_detail_baseline",
+      "elapsedMs": 742.5266000000001,
+      "samples": 2000,
+      "p50Ms": 1.4191999999998188,
+      "p95Ms": 1.8177999999998065,
+      "p99Ms": 2.2458999999998923,
+      "maxMs": 16.905399999999645,
+      "errors": 0,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "published_detail_canonical",
+      "elapsedMs": 345.53769999999986,
+      "samples": 2000,
+      "p50Ms": 0.6221000000000458,
+      "p95Ms": 0.8118000000004031,
+      "p99Ms": 0.9983000000001994,
+      "maxMs": 28.3759,
+      "errors": 0,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "published_detail_legacy_alias",
+      "elapsedMs": 326.6890000000003,
+      "samples": 2000,
+      "p50Ms": 0.6088999999997213,
+      "p95Ms": 0.8246000000003733,
+      "p99Ms": 1.1096999999999753,
+      "maxMs": 27.560300000000097,
+      "errors": 0,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "published_hyundai_page",
+      "elapsedMs": 734.6632,
+      "samples": 2000,
+      "p50Ms": 1.3864999999996144,
+      "p95Ms": 2.033499999999549,
+      "p99Ms": 2.5783000000001266,
+      "maxMs": 4.0504000000000815,
+      "errors": 0,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "published_profile_hit_synthetic_isolated_schema",
+      "elapsedMs": 1080.3329999999996,
+      "samples": 2000,
+      "p50Ms": 2.034700000000157,
+      "p95Ms": 2.7182000000002517,
+      "p99Ms": 4.2520999999997,
+      "maxMs": 24.4996000000001,
+      "errors": 0,
+      "maxPoolWaiting": 0
+    }
+  ],
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "win32",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H"
+  },
+  "limitations": [
+    "Short local benchmark; no production SLA selected",
+    "No live provider HTTP calls",
+    "Baseline is the legacy full-detail SQL projection, not the old list endpoint",
+    "Profile hit uses a synthetic record in a temporary schema, not a verified pilot profile",
+    "No sustained concurrent-import/telemetry load; pending-write visibility is covered by integration tests"
+  ]
+}

@@ -5,6 +5,7 @@
     "test",
     "dist",
     "**/*.spec.ts",
-    "**/__tests__/**"
+    "**/__tests__/**",
+    "src/planning/validation/**"
   ]
 }

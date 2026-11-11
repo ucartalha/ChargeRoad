@@ -23,7 +23,7 @@ export function useActiveVehicle() {
     try {
       const id = await AsyncStorage.getItem(STORAGE_KEY);
       if (!id) return;
-      if (!/^[a-f0-9]{64}$/.test(id)) {
+      if (!/^[a-f0-9]{64}$/.test(id) && !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(id)) {
         await AsyncStorage.removeItem(STORAGE_KEY);
         return;
       }

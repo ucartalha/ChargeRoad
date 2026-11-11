@@ -1,0 +1,21 @@
+{
+  "version": "station-sources/1.0.1",
+  "providers": {
+    "epdk-stations": { "enabled": true, "priority": 10, "costRank": 0 },
+    "open-charge-map": {
+      "enabled": true,
+      "priority": 20,
+      "costRank": 0,
+      "quarantineReview": {
+        "version": "ocm-zero-coordinate-review/2026-11-11",
+        "exclusions": [
+          { "externalId": "267423", "reason": "ZERO_COORDINATE" },
+          { "externalId": "274244", "reason": "ZERO_COORDINATE" },
+          { "externalId": "274246", "reason": "ZERO_COORDINATE" },
+          { "externalId": "298083", "reason": "ZERO_COORDINATE" }
+        ]
+      }
+    }
+  },
+  "fields": {}
+}

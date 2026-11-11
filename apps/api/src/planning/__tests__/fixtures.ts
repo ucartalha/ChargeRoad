@@ -1,5 +1,15 @@
 import type { PlanningInput, RoadRoute, RoutePlanRequest, SourceReference, VehicleEnergyProfile, WeatherForecast } from '@chargeroad/shared';
 import type { PreparationOptions } from '../planning-coordinator';
+import type { StationCandidateSet } from '@chargeroad/shared';
+
+export function stationSet():StationCandidateSet {
+  return {candidates:[],metadata:{schemaVersion:'station-search/1.0.0',
+    coverage:{completeForQuery:true,notes:[],sources:[{sourceId:'synthetic-stations',scopeKey:'known-test-graph',countryCode:'TR',
+      snapshotId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',sourceSnapshotComplete:true,geographicCoverageVerified:true,
+      retrievedAt:'2026-11-10T07:59:00+03:00',sourceUpdatedAt:null,stale:false,qualityExclusions:0}]},
+    search:{policyVersion:'synthetic-stations/1',corridorMeters:1500,maxCandidates:500,truncated:false,nextCorridorMeters:null,emptyReason:'no_matches_in_known_data'},
+    revisions:[{snapshotId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',checksumSha256:'a'.repeat(64)}]}};
+}
 
 const unknown = { origin: 'unknown', value: null } as const;
 export function source(id: string): SourceReference {

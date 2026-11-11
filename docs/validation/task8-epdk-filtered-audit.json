@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-11T11:44:00.640Z",
+  "mode": "filtered",
+  "filters": {
+    "markaAdi": "TRUGO"
+  },
+  "cataloguePublished": false,
+  "requests": {
+    "catalogue": {
+      "endpoint": "https://apigateway.epdk.gov.tr/sarjIstasyonlari",
+      "retrievedAt": "2026-11-11T11:44:00.677Z",
+      "rawSha256": "0cae03ec1d95c8e7dcf8fa23681f8a032cc63ba4278d210a2b20a5b849f8da16",
+      "httpStatus": 200,
+      "requestClass": "filtered",
+      "filters": {
+        "markaAdi": "TRUGO"
+      },
+      "method": "GET",
+      "requestBody": "{\"markaAdi\":\"TRUGO\"}",
+      "bytes": 1384808,
+      "elapsedMs": 3591
+    },
+    "swagger": {
+      "url": "https://apigateway.epdk.gov.tr/sarjIstasyonlari?swagger",
+      "status": 200,
+      "bytes": 1362,
+      "sha256": "6dd3efe6fe85f4ed8b637736ffdbd5fd28691b572f8d00b8a4ea9d0fa866c839",
+      "contentType": "application/json;charset=utf-8"
+    },
+    "guide": {
+      "url": "https://epdk.gov.tr/Detay/DownloadDocument?id=mqXhIJuluA8=",
+      "status": 200,
+      "bytes": 194744,
+      "sha256": "f48f3a3d59cee7fb1faa3385df3d5be91a8ec84f3126183fb564c2654a60c729",
+      "contentType": "application/octet-stream"
+    }
+  },
+  "credentials": {
+    "GOOGLE_MAPS_API_KEY": false,
+    "GOOGLE_PLACES_API_KEY": false,
+    "HERE_API_KEY": false,
+    "HERE_ACCESS_TOKEN": false
+  },
+  "catalogue": {
+    "rootFields": [
+      "statusCode",
+      "statusDescription",
+      "message",
+      "columnNames",
+      "numRows",
+      "result",
+      "elapsedTime",
+      "errors",
+      "data"
+    ],
+    "rows": 1428,
+    "sockets": 4383,
+    "serviceForms": {
+      "HALKA_ACIK": 1418,
+      "OZEL": 10
+    },
+    "stationFields": {
+      "sarjIstasyonuNo": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "sarjIstasyonuAdi": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "sarjIstasyonuIsletmecisi": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "sarjAgiIsletmecisiLisansNo": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "sarjAgiIsletmecisiUnvan": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "adres": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "hizmetSekli": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "marka": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "olumluGorusVerenDagitimSirketiLisansNo": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "olumluGorusVerenDagitimSirketiLisansUnvani": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "enlem": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "number"
+        ]
+      },
+      "boylam": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "number"
+        ]
+      },
+      "soketler": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "array"
+        ]
+      },
+      "yesilSarjIstasyonuMu": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      },
+      "dagitimSirketiOlumluGorusBelgeNumarasi": {
+        "present": 1428,
+        "nonNull": 1428,
+        "nonEmpty": 1428,
+        "types": [
+          "string"
+        ]
+      }
+    },
+    "socketFields": {
+      "soketNo": {
+        "present": 4383,
+        "nonNull": 4383,
+        "nonEmpty": 4383,
+        "types": [
+          "string"
+        ]
+      },
+      "soketTipi": {
+        "present": 4383,
+        "nonNull": 4383,
+        "nonEmpty": 4383,
+        "types": [
+          "string"
+        ]
+      },
+      "soketTuru": {
+        "present": 4383,
+        "nonNull": 4383,
+        "nonEmpty": 4383,
+        "types": [
+          "string"
+        ]
+      },
+      "soketGucu": {
+        "present": 4383,
+        "nonNull": 4383,
+        "nonEmpty": 4383,
+        "types": [
+          "string"
+        ]
+      }
+    }
+  },
+  "swagger": {
+    "version": "2.0",
+    "security": [],
+    "getParameters": [
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": {
+            "lisansNo": "?",
+            "sarjIstasyonuNo": "?",
+            "markaAdi": "?",
+            "yesilSarjIstasyonuMu": "?",
+            "sarjIstasyonuAdi": "?",
+            "hizmetSekli": "?"
+          }
+        }
+      }
+    ],
+    "definitions": {}
+  },
+  "finishedAt": "2026-11-11T11:44:04.554Z"
+}

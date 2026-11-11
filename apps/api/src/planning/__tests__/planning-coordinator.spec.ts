@@ -7,15 +7,16 @@ import { VehicleEnergyProvider } from '../../providers/vehicle-energy-provider';
 import { RoutingProvider } from '../../providers/routing-provider';
 import { StationDataProvider } from '../../providers/station-data-provider';
 import { WeatherProvider } from '../../providers/weather-provider';
-import { fixture, forecast, source, syntheticPlan } from './fixtures';
+import { fixture, forecast, source, syntheticPlan,stationSet } from './fixtures';
 
 function setup() {
   const data = fixture();
-  const vehicles = { profile: jest.fn().mockResolvedValue({ data: data.vehicle, source: source('vehicles') }) };
+  const vehicles = { resolveId:jest.fn().mockImplementation(async (id:string)=>id),
+    profile: jest.fn().mockResolvedValue({ data: data.vehicle, source: source('vehicles') }) };
   const routing = { routes: jest.fn().mockResolvedValue({
     data: { schemaVersion: '1.0.0', routes: [data.road] }, source: source('roads'),
   }) };
-  const stations = { findAlongRoutes: jest.fn().mockResolvedValue({ data: [], source: source('stations') }) };
+  const stations = { findAlongRoutes: jest.fn().mockResolvedValue({ data: stationSet(), source: source('stations') }) };
   const weather = { forecast: jest.fn().mockImplementation(async (queries) =>
     ({ data: queries.map(forecast), source: source('weather') })) };
   const engine = { step: jest.fn().mockImplementation(async (input: PlanningInput) => {
@@ -30,6 +31,41 @@ function setup() {
 }
 
 describe('Planning provider boundaries', () => {
+  it('does not call an incomplete station search definitive infeasibility',async()=>{
+    const f=setup(),set=stationSet();set.metadata.coverage.completeForQuery=false;
+    f.stations.findAlongRoutes.mockResolvedValue({data:set,source:source('stations')});
+    f.engine.step.mockResolvedValue({kind:'result',result:{status:'infeasible',requestId:f.request.requestId,
+      reasons:[{code:'NO_CHARGING_PLAN',explanation:'Synthetic test'}]}});
+    expect(await f.coordinator.plan(f.request,f.options)).toMatchObject({status:'insufficient_data',reasons:[{code:'STATION_COVERAGE_INCOMPLETE'}]});
+  });
+  it('records station search limitations on an otherwise valid plan',async()=>{
+    const f=setup(),set=stationSet();set.metadata.coverage.completeForQuery=false;
+    f.stations.findAlongRoutes.mockResolvedValue({data:set,source:source('stations')});
+    const result=await f.coordinator.plan(f.request,f.options);
+    if(result.status!=='planned')throw new Error('Expected synthetic valid plan');
+    expect(result.plan.warnings.some(w=>w.code==='station_coverage_incomplete')).toBe(true);
+  });
+  it('resolves a saved legacy ID before asking for the canonical energy profile',async()=>{
+    const f=setup();const canonical=f.request.vehicleVariantId;f.request.vehicleVariantId='saved-legacy-id';
+    f.vehicles.resolveId.mockResolvedValue(canonical);
+    expect((await f.coordinator.plan(f.request,f.options)).status).toBe('planned');
+    expect(f.vehicles.profile.mock.calls[0][0]).toBe(canonical);
+    expect(f.vehicles.profile.mock.calls[0][2]).toBe('verified_only');
+  });
+  it('rejects an engineering profile when the request requires verified data',async()=>{
+    const f=setup();f.vehicle.dataQuality={schemaVersion:'vehicle-quality/1.0.0',policy:'allow_engineering_estimates',
+      quality:'engineering_estimate',verificationNote:'Synthetic engineering profile',assumptions:['Synthetic only'],methodId:'test',methodVersion:'1'};
+    expect((await f.coordinator.plan(f.request,f.options)).status).toBe('provider_error');
+    expect(f.routing.routes).not.toHaveBeenCalled();
+  });
+  it('keeps the engineering label and assumptions in a plan that explicitly permits estimates',async()=>{
+    const f=setup();f.request.policy.vehicleDataQuality='allow_engineering_estimates';
+    f.vehicle.dataQuality={schemaVersion:'vehicle-quality/1.0.0',policy:'allow_engineering_estimates',
+      quality:'engineering_estimate',verificationNote:'Synthetic engineering profile',assumptions:['Synthetic only'],methodId:'test',methodVersion:'1'};
+    const result=await f.coordinator.plan(f.request,f.options);
+    expect(result.status).toBe('planned');
+    if(result.status==='planned') expect(result.plan.warnings.some(w=>w.code==='engineering_estimate')).toBe(true);
+  });
   it('runs through Nest DI using only fake data providers and our internal test engine', async () => {
     const f = setup();
     const module = await Test.createTestingModule({ imports: [PlanningModule.register([
@@ -204,12 +240,15 @@ describe('Planning provider boundaries', () => {
     const f = setup();
     const caller = new AbortController();
     let adapterSignal: AbortSignal | undefined;
+    let markStarted!:()=>void;
+    const started=new Promise<void>(resolve=>{markStarted=resolve;});
     f.vehicles.profile.mockImplementation((_id,signal) => new Promise((_resolve,reject) => {
       adapterSignal = signal;
       signal.addEventListener('abort',() => reject(signal.reason),{ once: true });
+      markStarted();
     }));
     const pending = f.coordinator.plan(f.request,f.options,caller.signal);
-    await Promise.resolve();
+    await started;
     caller.abort();
     await expect(pending).rejects.toMatchObject({ name: 'AbortError' });
     expect(adapterSignal?.aborted).toBe(true);

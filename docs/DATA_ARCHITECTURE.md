@@ -111,6 +111,8 @@ Async/await I/O beklemelerini verimli yönetir; CPU yoğun rota hesabını kendi
 
 ## Yolculuk sonu raporu
 
+Kullanıcının ek gereksinimiyle hız/koşul bazlı referanslar, yaklaşık 15 dakikalık sürüş pencereleri ve araç konfigürasyonuna bağlı kişisel modeller [kişisel enerji veri planında](PERSONALIZED_ENERGY_DATA.md) tanımlandı. Kişisel model öğrenme izni geçmiş saklama izninden ayrıdır; GPS hızı enerji ölçümü sayılmaz. Ortak referans ve kişisel model sürümleri/ağırlık politikası gelecekteki plan snapshot'ında birlikte sabitlenecek. CR-006 ortak veri şeması ve kişisel sözleşme/DDL tasarımını hazırlayacak; kişisel migration ve erişim sahiplik temeliyle uygulanacak.
+
 Ayrı göstergeler:
 
 - Toplam sürüş tüketimi: kWh.

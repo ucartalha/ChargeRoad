@@ -1,0 +1,1505 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-11T12:07:27.441Z",
+  "cataloguePublished": false,
+  "mode": "sample_comparison",
+  "requests": [
+    {
+      "url": "https://api.openchargemap.io/v3/referencedata/?client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:17.390Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 499021,
+      "sha256": "0b57af2a505baecd6e4405b2c0bd3625a2221305e4333741fc7ba61dfe3db587",
+      "elapsedMs": 2225,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.8502&longitude=35.4634&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:35.351Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 390,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.9263&longitude=40.1515&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:36.462Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 301,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.964534&longitude=27.373909&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:37.573Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 3879,
+      "sha256": "d827108d91eb0653e8d962e34e4b4f741c605bfe648f28e3d7a9490018f51eb1",
+      "elapsedMs": 240,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=36.8354&longitude=37.5923&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:38.688Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 336,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.22184&longitude=28.994369&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:39.794Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 246,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.056366&longitude=37.541653&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:40.905Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 7897,
+      "sha256": "1a8a687589a9fb7289cfd3bd28f31b6271b062de391dcb038fb1033cb3e45bf0",
+      "elapsedMs": 269,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.542214&longitude=41.992898&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:42.010Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 897,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=41.005471&longitude=29.196676&distance=2&distanceunit=km&operatorid=3712&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:43.117Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 193,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.524194&longitude=29.302611&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:44.220Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 326,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.204861&longitude=27.643806&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:45.329Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 5499,
+      "sha256": "b770b643d06a2b617f03ef1cea7b0d62cb61bbbf40f3104fa52dc987fccc3040",
+      "elapsedMs": 247,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.926778&longitude=29.311806&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:46.435Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 201,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.062849&longitude=36.223419&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:47.547Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 379,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=39.907597&longitude=32.745456&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:48.653Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 278,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.55283&longitude=30.314222&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:49.754Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 205,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=37.256022&longitude=40.664233&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:50.856Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 244,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=38.797584&longitude=30.452097&distance=2&distanceunit=km&operatorid=70&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:51.959Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 11442,
+      "sha256": "cb0d7f1299b4da3890ed15b87123536ef885a3e850b834c4884c6b129b79b438",
+      "elapsedMs": 652,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=39.780609&longitude=30.513492&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:53.069Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 27321,
+      "sha256": "9a0a044e07279c9cb70da4c0d1b573a9266e5fb1b04a88fb8404c7e36e5b55b8",
+      "elapsedMs": 342,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=36.84097&longitude=28.249914&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:54.175Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 7658,
+      "sha256": "0693f39e4f7735dc8419904aeb3ad8274d39ad240783e15a1950ba553b45ed69",
+      "elapsedMs": 239,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.467282&longitude=32.363501&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:55.278Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 224,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=40.25499&longitude=29.062149&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:56.389Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 202,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=38.723344&longitude=35.526788&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:57.499Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 1383,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=39.08668&longitude=26.916823&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:58.899Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 290,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=41.083763&longitude=28.983123&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:06:00.006Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "elapsedMs": 315,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&latitude=36.77668&longitude=34.546997&distance=2&distanceunit=km&operatorid=3323&maxresults=100&compact=false&verbose=true&includecomments=false&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:06:01.112Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 3876,
+      "sha256": "d585f654178ec376f1ad70bb3c240423f1f7255a6fb7dfed8d705626e0846c64",
+      "elapsedMs": 229,
+      "cached": true
+    }
+  ],
+  "reference": {
+    "countries": 250,
+    "operators": 1017,
+    "statusTypes": [
+      {
+        "IsOperational": null,
+        "IsUserSelectable": true,
+        "ID": 0,
+        "Title": "Unknown"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": false,
+        "ID": 10,
+        "Title": "Currently Available (Automated Status)"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": false,
+        "ID": 20,
+        "Title": "Currently In Use (Automated Status)"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 30,
+        "Title": "Temporarily Unavailable"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 50,
+        "Title": "Operational"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 75,
+        "Title": "Partly Operational (Mixed)"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 100,
+        "Title": "Not Operational"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 150,
+        "Title": "Planned For Future Date"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 200,
+        "Title": "Removed (Decommissioned)"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 210,
+        "Title": "Removed (Duplicate Listing)"
+      }
+    ],
+    "providers": [
+      {
+        "id": 1,
+        "title": "Open Charge Map Contributors",
+        "openLicensed": true,
+        "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      {
+        "id": 2,
+        "title": "afdc.energy.gov",
+        "openLicensed": true,
+        "license": "This data is provided by the National Renewable Energy Laboratory (\"NREL\"), which is operated by the Alliance for Sustainable Energy, LLC (\"Alliance\"), for the U.S. Department of Energy (\"DOE\"), and may be used for any purpose whatsoever."
+      },
+      {
+        "id": 7,
+        "title": "Mobie.pt",
+        "openLicensed": true,
+        "license": "Public Data redistributed by agreement"
+      },
+      {
+        "id": 15,
+        "title": "CarStations.com",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 18,
+        "title": "UK National Charge Point Registry",
+        "openLicensed": true,
+        "license": "Contains public sector information licensed under the Open Government Licence v2.0."
+      },
+      {
+        "id": 19,
+        "title": "NOBIL",
+        "openLicensed": true,
+        "license": "NOBIL by Enova is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) License."
+      },
+      {
+        "id": 22,
+        "title": "CHAdeMO.com",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 23,
+        "title": "ESB eCars",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 24,
+        "title": "AddÉnergie Technologies Inc.",
+        "openLicensed": true,
+        "license": "http://creativecommons.org/licenses/by/3.0"
+      },
+      {
+        "id": 25,
+        "title": "Catalan Energy Institute (ICAEN)",
+        "openLicensed": true,
+        "license": "General public data"
+      },
+      {
+        "id": 26,
+        "title": "Oplaadpalen.nl",
+        "openLicensed": true,
+        "license": "Licensed under Attribution-NonCommercial-ShareAlike 3.0 : http://creativecommons.org/licenses/by-nc-sa/3.0/"
+      },
+      {
+        "id": 27,
+        "title": "Place To Plug",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 28,
+        "title": "data.gouv.fr",
+        "openLicensed": true,
+        "license": "Open License: https://www.etalab.gouv.fr/wp-content/uploads/2014/05/Licence_Ouverte.pdf"
+      },
+      {
+        "id": 29,
+        "title": "Bundesnetzagentur.de",
+        "openLicensed": true,
+        "license": "Provided by Bundesnetzagentur.de under the CC-BY 4.0 license"
+      },
+      {
+        "id": 30,
+        "title": "EVIO - Electrical Mobility, Lda",
+        "openLicensed": true,
+        "license": "CC-BY"
+      },
+      {
+        "id": 31,
+        "title": "SITRONICS PAO",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 32,
+        "title": "Lithuanian Road Administration",
+        "openLicensed": true,
+        "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      {
+        "id": 33,
+        "title": "Gaia Green Tech SLU",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 34,
+        "title": "Toger.co",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 35,
+        "title": "Electric Era",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 36,
+        "title": "ITCharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 37,
+        "title": "Voltrelli",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 38,
+        "title": "PowerGo",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 39,
+        "title": "Punkt-E",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 40,
+        "title": "Easy Volt",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 41,
+        "title": "ChargeSini",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 42,
+        "title": "Otopriz",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 43,
+        "title": "EV24",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 45,
+        "title": "Greems Technologies",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 46,
+        "title": "Voltspot",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 47,
+        "title": " Stuart Energy, UAB",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 48,
+        "title": "QRSOLVE sp. z o. o.",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 53,
+        "title": "NordOCPI",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 54,
+        "title": "PowerGo",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 55,
+        "title": "Asynio",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 57,
+        "title": "YellotMob",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 61,
+        "title": "JuiceNet",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 62,
+        "title": "Petite Borne",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 66,
+        "title": "Salzer Electronics Limited",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 67,
+        "title": "ChargeX",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 68,
+        "title": "ENERG.IA GESTAO DE ENERGIA LTDA",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 69,
+        "title": "Gozero Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 72,
+        "title": "Thoth",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 74,
+        "title": "FARADAY EVCS INC",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 96,
+        "title": "ChargeNow (Pty) Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 97,
+        "title": "Chargia Mobility SL",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 98,
+        "title": "inergia GmbH",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 100,
+        "title": "Spott",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 103,
+        "title": "Viva Leisure Operations Pty Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 105,
+        "title": "EV PLUG",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 108,
+        "title": "Fount",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 110,
+        "title": "TriCharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 111,
+        "title": "Multcharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 113,
+        "title": "evMax.app",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 114,
+        "title": "Clube Charger",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 115,
+        "title": "EVee Buddy",
+        "openLicensed": false,
+        "license": "Licensed under CC0 by data sharing agreement"
+      }
+    ]
+  },
+  "comparison": {
+    "sourceSampleRetrievedAt": "2026-11-10T20:02:47.212Z",
+    "selected": 24,
+    "searchRadiusKm": 2,
+    "reviewRadiusMeters": 150,
+    "matchingPolicy": "distance/operator only creates review candidates; no automatic verified matches",
+    "rows": [
+      {
+        "epdkStationId": "ŞRJ/23604",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:35.351Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/20913",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:36.462Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/14417",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:37.573Z",
+        "candidatesReturned": 1,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 1,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 477236,
+            "distanceMeters": 25,
+            "operatorId": 3712,
+            "providerId": 1,
+            "title": "Trugo - Shell Selçuk ",
+            "address": "İzmir - Aydın Yolu, Selçuk",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2026-02-12T10:53:00Z",
+            "lastVerifiedAt": "2026-02-12T10:53:00Z",
+            "numberOfPoints": 4,
+            "connections": [
+              {
+                "ocmConnectionId": 800848,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 180,
+                "quantity": 4,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/20830",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:38.688Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/19311",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:39.794Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/13785",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:40.905Z",
+        "candidatesReturned": 2,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 295747,
+            "distanceMeters": 180,
+            "operatorId": 3712,
+            "providerId": 1,
+            "title": "Askoç Dinlenme Tesisleri Adana Yönü",
+            "address": "Küllü, Şehitkamil",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2024-02-20T14:27:00Z",
+            "lastVerifiedAt": "2024-02-20T14:27:00Z",
+            "numberOfPoints": 2,
+            "connections": [
+              {
+                "ocmConnectionId": 527322,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 180,
+                "quantity": 4,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 295748,
+            "distanceMeters": 227,
+            "operatorId": 3712,
+            "providerId": 1,
+            "title": "  Askoç Dinlenme Tesisleri Şanlıurfa Yönü",
+            "address": "Küllü, Şehitkamil",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2024-02-20T14:29:00Z",
+            "lastVerifiedAt": "2024-02-20T14:29:00Z",
+            "numberOfPoints": 2,
+            "connections": [
+              {
+                "ocmConnectionId": 527323,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 180,
+                "quantity": 4,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/21386",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:42.010Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/14911",
+        "operator": "Trugo",
+        "operatorIds": [
+          3712
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:43.117Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/14165",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:44.220Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/2638",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:45.329Z",
+        "candidatesReturned": 1,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 165277,
+            "distanceMeters": 1730,
+            "operatorId": 70,
+            "providerId": 1,
+            "title": "Eşarj - Otomol, Milas, Muğla",
+            "address": "Kemikler Mah. Muğla Bodrum Yolu, No: 5/5, Milas, Muğla",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2022-05-09T20:23:00Z",
+            "lastVerifiedAt": "2022-05-09T20:23:00Z",
+            "numberOfPoints": null,
+            "connections": [
+              {
+                "ocmConnectionId": 236964,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": null
+              },
+              {
+                "ocmConnectionId": 313766,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 46,
+                "quantity": 1,
+                "statusTypeId": 50
+              },
+              {
+                "ocmConnectionId": 313767,
+                "connectionTypeId": 2,
+                "type": "CHAdeMO",
+                "powerKw": null,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/5989",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:46.435Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/16384",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:47.547Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/10155",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:48.653Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/6644",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:49.754Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/10295",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:50.856Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/5991",
+        "operator": "Eşarj",
+        "operatorIds": [
+          70
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:51.959Z",
+        "candidatesReturned": 2,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 133740,
+            "distanceMeters": 634,
+            "operatorId": 70,
+            "providerId": 1,
+            "title": "EŞARJ - İkbal Thermal Hotel",
+            "address": "İkbal Thermal Hotel, İzmir",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2019-10-25T08:12:00Z",
+            "lastVerifiedAt": "2019-10-25T08:12:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 187171,
+                "connectionTypeId": 2,
+                "type": "CHAdeMO",
+                "powerKw": 45,
+                "quantity": 1,
+                "statusTypeId": 50
+              },
+              {
+                "ocmConnectionId": 187172,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 45,
+                "quantity": 1,
+                "statusTypeId": 50
+              },
+              {
+                "ocmConnectionId": 187173,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 165138,
+            "distanceMeters": 691,
+            "operatorId": 70,
+            "providerId": 1,
+            "title": "Eşarj - İkbal Thermal Hotel, Afyonkarahisar",
+            "address": "Dörtyol Mahallesi Kütahya Yolu Bulvarı No:2 / 3, Merkez, Afyonkarahisar",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-08-26T13:35:00Z",
+            "lastVerifiedAt": "2021-08-26T13:35:00Z",
+            "numberOfPoints": null,
+            "connections": [
+              {
+                "ocmConnectionId": 236761,
+                "connectionTypeId": 2,
+                "type": "CHAdeMO",
+                "powerKw": 45,
+                "quantity": 1,
+                "statusTypeId": null
+              },
+              {
+                "ocmConnectionId": 236762,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 45,
+                "quantity": 1,
+                "statusTypeId": null
+              },
+              {
+                "ocmConnectionId": 236763,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/1337",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:53.069Z",
+        "candidatesReturned": 7,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 1,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 174765,
+            "distanceMeters": 50,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Ibis Hotel Eskisehir",
+            "address": "Hotel ibis Eskisehir, Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270800,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 174764,
+            "distanceMeters": 171,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Park Plus Otopark ",
+            "address": "Üniversite Caddesi, Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270799,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 2,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 174762,
+            "distanceMeters": 656,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Capella Hotel",
+            "address": "İsmet İnönü Cad., Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270796,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 174761,
+            "distanceMeters": 912,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Tepebaşı Belediye Açık Otopark ",
+            "address": "İsmet İnönü Cad., Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270795,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 2,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 174759,
+            "distanceMeters": 1238,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Hilton Garden Inn",
+            "address": "İsmet İnönü Cad., Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270793,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 174760,
+            "distanceMeters": 1239,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Cassaba Modern",
+            "address": "Şahin Bulvarı, Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-14T21:38:00Z",
+            "lastVerifiedAt": "2021-04-14T21:38:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270794,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 509227,
+            "distanceMeters": 1452,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Esenli Sokak",
+            "address": "Esenli Sokak, Tepebaşı",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2026-09-17T05:42:00Z",
+            "lastVerifiedAt": "2026-09-17T05:42:00Z",
+            "numberOfPoints": 4,
+            "connections": [
+              {
+                "ocmConnectionId": 876521,
+                "connectionTypeId": 0,
+                "type": "Unknown",
+                "powerKw": 60,
+                "quantity": 4,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/21455",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:54.175Z",
+        "candidatesReturned": 2,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 1,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 211076,
+            "distanceMeters": 96,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "ZES 3M Migros Marmaris",
+            "address": "248. Sokak, Marmaris",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2023-01-03T22:05:00Z",
+            "lastVerifiedAt": "2023-01-03T22:05:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 351856,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 120,
+                "quantity": 1,
+                "statusTypeId": 50
+              }
+            ]
+          },
+          {
+            "ocmId": 272996,
+            "distanceMeters": 510,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Trugo 2M Migros Marmaris",
+            "address": "Kemal Seyfettin Elgin Bulvarı, Marmaris",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2023-07-22T19:43:00Z",
+            "lastVerifiedAt": "2023-07-22T19:43:00Z",
+            "numberOfPoints": 2,
+            "connections": [
+              {
+                "ocmConnectionId": 469225,
+                "connectionTypeId": 33,
+                "type": "CCS (Type 2)",
+                "powerKw": 180,
+                "quantity": 2,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "epdkStationId": "ŞRJ/12605",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:55.278Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/1063",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:56.389Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/2695",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:57.499Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/17847",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:05:58.899Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/2173",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:06:00.006Z",
+        "candidatesReturned": 0,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": []
+      },
+      {
+        "epdkStationId": "ŞRJ/8295",
+        "operator": "ZES",
+        "operatorIds": [
+          3323
+        ],
+        "status": "queried",
+        "retrievedAt": "2026-11-11T12:06:01.112Z",
+        "candidatesReturned": 1,
+        "searchLimitReached": false,
+        "candidatesWithin150m": 0,
+        "verifiedMatch": null,
+        "liveAvailabilityVerified": false,
+        "candidates": [
+          {
+            "ocmId": 174748,
+            "distanceMeters": 1103,
+            "operatorId": 3323,
+            "providerId": 1,
+            "title": "Zes - Sayapark Avm",
+            "address": "Sayapark, Yenişehir",
+            "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)",
+            "openLicensed": true,
+            "statusTypeId": 50,
+            "lastRecordUpdatedAt": "2021-04-11T20:27:00Z",
+            "lastVerifiedAt": "2021-04-11T20:27:00Z",
+            "numberOfPoints": 1,
+            "connections": [
+              {
+                "ocmConnectionId": 270781,
+                "connectionTypeId": 25,
+                "type": "Type 2 (Socket Only)",
+                "powerKw": 22,
+                "quantity": 2,
+                "statusTypeId": 50
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "queried": 24,
+      "rowsWithNearbyCandidates": 7,
+      "rowsWithCandidateWithin150m": 3,
+      "rowsWithoutNearbyOpenCandidate": 17,
+      "uniqueCandidateLocations": 16,
+      "verifiedMatches": 0,
+      "liveAvailableStatusClaims": 0,
+      "liveOccupiedStatusClaims": 0,
+      "effectiveLiveAvailability": "unknown",
+      "generalStatusPresent": 16,
+      "connectionTypePresent": 22,
+      "powerPresent": 21,
+      "equipmentSummaryRows": 22,
+      "perOperator": {
+        "Trugo": {
+          "selected": 8,
+          "withNearbyCandidates": 2,
+          "withCandidateWithin150m": 1
+        },
+        "Eşarj": {
+          "selected": 8,
+          "withNearbyCandidates": 2,
+          "withCandidateWithin150m": 0
+        },
+        "ZES": {
+          "selected": 8,
+          "withNearbyCandidates": 3,
+          "withCandidateWithin150m": 2
+        }
+      },
+      "caveat": "Nearby candidates are not confirmed POI/equipment matches or a national coverage estimate."
+    }
+  },
+  "finishedAt": "2026-11-11T12:07:27.527Z",
+  "networkCallsThisRun": 0
+}

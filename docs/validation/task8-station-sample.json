@@ -1,0 +1,585 @@
+{
+  "schemaVersion": 1,
+  "selectedAt": "2026-11-11T11:45:16.408Z",
+  "sourceRetrievedAt": "2026-11-10T20:02:47.212Z",
+  "sourceSha256": "2010ea061de095b11bbb5ba8bf8296ce225ad43b8b4d1802270d1e5173857606",
+  "selection": "8 public DC locations per exact normalized EPDK brand; SHA256 order and city diversity; convenience sample, not representative of national coverage",
+  "stations": [
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/23604",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Merzifon OSB",
+      "address": "Kümbethatun Mahallesi  No:2/1 Merzifon / AMASYA",
+      "latitude": 40.8502,
+      "longitude": 35.4634,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/20913",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Mega Arslan Plaza",
+      "address": "Peyas Mahallesi Kayapınar / DİYARBAKIR",
+      "latitude": 37.9263,
+      "longitude": 40.1515,
+      "socketClaims": 6,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/14417",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Shell İzmir Çıkışı",
+      "address": "İsa Bey Mahallesi  Selçuk-izmir Yanyolu Selçuk / İZMİR",
+      "latitude": 37.964534,
+      "longitude": 27.373909,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/20830",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "JET10 Oto Yıkama",
+      "address": "Üngüt Mahallesi 71092 Sokağı  No:4/1 Onikişubat / KAHRAMANMARAŞ",
+      "latitude": 36.8354,
+      "longitude": 37.5923,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/19311",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Marka AVM Kapalı Otopark",
+      "address": "Odunluk Mahallesi Akademi Caddesi  No:6/A Nilüfer / BURSA",
+      "latitude": 40.22184,
+      "longitude": 28.994369,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/13785",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Askoç Dinlenme Tesisleri Adana Yönü",
+      "address": "Küllü Mahallesi  No:43/1 Şehitkamil / GAZİANTEP",
+      "latitude": 37.056366,
+      "longitude": 37.541653,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/21386",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Oltu Kapalı Pazar Alanı",
+      "address": "Gönen Caddesi  No:5 Oltu / ERZURUM",
+      "latitude": 40.542214,
+      "longitude": 41.992898,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Trugo",
+      "epdkStationId": "ŞRJ/14911",
+      "epdkLicense": "ŞH/11009-3/00007",
+      "name": "Sancaktepe İlhan Varank Devlet Hastanesi",
+      "address": "Emek Mahallesi Namık Kemal Sokağı  No:54/1 Sancaktepe / İSTANBUL",
+      "latitude": 41.005471,
+      "longitude": 29.196676,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/14165",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Leblebi Çarşısı, Denizli",
+      "address": "Yassıhüyük Mahallesi İnönü Caddesi  No:48  Acıpayam-antalya Yolu Serinhisar / DENİZLİ",
+      "latitude": 37.524194,
+      "longitude": 29.302611,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/2638",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Turgut Otomotiv, Milas, Muğla",
+      "address": "Kemikler Mahallesi  No:31/1 Milas / MUĞLA",
+      "latitude": 37.204861,
+      "longitude": 27.643806,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/5989",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Lens Yaşam Merkezi, Pendik",
+      "address": "Yenişehir Mahallesi  No:4 Pendik / İSTANBUL",
+      "latitude": 40.926778,
+      "longitude": 29.311806,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/16384",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Toyota Plaza Özdemir, Osmaniye",
+      "address": "Yıldırım Beyazıt Mahallesi  No:33 Merkez / OSMANİYE",
+      "latitude": 37.062849,
+      "longitude": 36.223419,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/10155",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Toyota Plaza Efe, Ankara",
+      "address": "Mustafa Kemal Mahallesi  No:186 Çankaya / ANKARA",
+      "latitude": 39.907597,
+      "longitude": 32.745456,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/6644",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Aytemiz, Cihan Petrol, Sakarya",
+      "address": "Bağlarbaşı Mahallesi Merkez Sokağı  No:5 Geyve / SAKARYA",
+      "latitude": 40.55283,
+      "longitude": 30.314222,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/10295",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Kadoil, Mezopotamya, Mardin",
+      "address": "Ofis Mahallesi 1 Caddesi  No:345 Merkez / MARDİN",
+      "latitude": 37.256022,
+      "longitude": 40.664233,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "Eşarj",
+      "epdkStationId": "ŞRJ/5991",
+      "epdkLicense": "ŞH/11032-4/00014",
+      "name": "Önka Park AVM, Afyonkarahisar",
+      "address": "Dörtyol Mahallesi Afyon Kütahya Yolu Caddesi  No:9/2 Merkez / AFYONKARAHİSAR",
+      "latitude": 38.797584,
+      "longitude": 30.452097,
+      "socketClaims": 12,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/1337",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "İbis Hotel Eskişehir",
+      "address": "Honudiye Mahallesi Siloönü Sokağı  No:5 Tepebaşı / ESKİŞEHİR",
+      "latitude": 39.780609,
+      "longitude": 30.513492,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/21455",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Green Nature Diamond Hotel",
+      "address": "Siteler Mahallesi  No:9 Marmaris / MUĞLA",
+      "latitude": 36.84097,
+      "longitude": 28.249914,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/12605",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Kocalar Tatlak Dinlenme Tesisi Ankara Yönü",
+      "address": "Tatlak Mahallesi Güney Tatlak Sokağı  No:1 Çamlıdere / ANKARA",
+      "latitude": 40.467282,
+      "longitude": 32.363501,
+      "socketClaims": 4,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/1063",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Bursa As Merkez Outlet",
+      "address": "İstanbul Yolu Caddesi  9.km Osmangazi / BURSA",
+      "latitude": 40.25499,
+      "longitude": 29.062149,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/2695",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Mix Kayseri Yaşam Merkezi Açık Otopark",
+      "address": "Melikgazi Mahallesi  No:22 Melikgazi / KAYSERİ",
+      "latitude": 38.723344,
+      "longitude": 35.526788,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/17847",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Ramiz Plus Dikili",
+      "address": "Cumhuriyet Mahallesi Çanakkale Caddesi  No:80 Dikili / İZMİR",
+      "latitude": 39.08668,
+      "longitude": 26.916823,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/2173",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Metro Market Kağıthane",
+      "address": "Cendere Caddesi Ayazma Yolu Sokağı  No:51 Kağıthane / İSTANBUL",
+      "latitude": 41.083763,
+      "longitude": 28.983123,
+      "socketClaims": 3,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    },
+    {
+      "operator": "ZES",
+      "epdkStationId": "ŞRJ/8295",
+      "epdkLicense": "ŞH/11009-4/00008",
+      "name": "Anemon Otel Mersin",
+      "address": "Çiflikköy Mahallesi İstemihan Talay Sokağı  No:205 Yenişehir / MERSİN",
+      "latitude": 36.77668,
+      "longitude": 34.546997,
+      "socketClaims": 2,
+      "google": {
+        "status": "not_run",
+        "reason": "credentials_and_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      },
+      "here": {
+        "status": "not_run",
+        "reason": "credentials_and_ev_product_access_required",
+        "matched": null,
+        "availabilityFieldsPresent": null,
+        "usableTimestampPresent": null
+      }
+    }
+  ]
+}

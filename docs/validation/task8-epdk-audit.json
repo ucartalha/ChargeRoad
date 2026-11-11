@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-11T11:43:31.556Z",
+  "mode": "national",
+  "filters": {},
+  "cataloguePublished": false,
+  "requests": {},
+  "credentials": {
+    "GOOGLE_MAPS_API_KEY": false,
+    "GOOGLE_PLACES_API_KEY": false,
+    "HERE_API_KEY": false,
+    "HERE_ACCESS_TOKEN": false
+  },
+  "error": "EPDK shared source quota unavailable; no source request made",
+  "finishedAt": "2026-11-11T11:43:31.612Z"
+}

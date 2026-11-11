@@ -44,6 +44,7 @@ export class VehicleImportRepository {
         'UPDATE vehicle_variants SET is_active=false, updated_at=now() WHERE source_key=$1 AND last_import_id<>$2 AND is_active',
         [source.key, importId],
       );
+      await client.query('SELECT sync_open_ev_catalogue()');
       await client.query("UPDATE vehicle_imports SET status='succeeded', finished_at=now() WHERE id=$1", [importId]);
       await client.query('COMMIT');
       return { importId, source: source.key, version: snapshot.version,

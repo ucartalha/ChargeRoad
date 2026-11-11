@@ -2,105 +2,60 @@ import { Injectable } from '@nestjs/common';
 import type { VehicleCatalogueEntry, VehicleCatalogueDetail, VehicleCataloguePage } from '@chargeroad/shared' with { 'resolution-mode': 'import' };
 import { DatabaseService } from '../database/database.service';
 
-export type VehicleFilters = {
-  q?: string;
-  make?: string;
-  model?: string;
-  year?: number;
-  market?: string;
-  limit: number;
-  offset: number;
-};
-
-const fields = `
-  v.id, ma.name AS make, ma.slug AS "makeSlug", mo.name AS model, mo.slug AS "modelSlug",
-  v.model_year AS "modelYear", v.trim_name AS trim, v.trim_slug AS "trimSlug",
-  v.variant_name AS variant, v.variant_slug AS "variantSlug",
-  v.vehicle_type AS "vehicleType", v.markets,
-  v.usable_battery_kwh AS "usableBatteryKwh", v.gross_battery_kwh AS "grossBatteryKwh",
-  v.max_ac_charge_kw AS "maxAcChargeKw", v.max_dc_charge_kw AS "maxDcChargeKw",
-  cp.consumption_kwh_per_100km AS "consumptionKwhPer100Km",
-  cp.basis AS "consumptionBasis",
-  ARRAY(SELECT DISTINCT p.connector FROM vehicle_charge_ports p WHERE p.vehicle_id=v.id ORDER BY p.connector) AS "connectorTypes",
-  v.is_active AS "isActive",
-  jsonb_build_object(
-    'key', ds.key, 'name', ds.name, 'license', ds.license, 'homepageUrl', ds.homepage_url,
-    'vehicleId', v.source_vehicle_id, 'version', im.source_version, 'schemaVersion', im.schema_version,
-    'generatedAt', im.source_generated_at, 'fetchedAt', im.fetched_at,
-    'sourceUpdatedAt', v.source_updated_at
-  ) AS source`;
-const joins = `FROM vehicle_variants v
-  JOIN vehicle_models mo ON mo.id=v.model_id
-  JOIN vehicle_makes ma ON ma.id=mo.make_id
-  JOIN vehicle_data_sources ds ON ds.key=v.source_key
-  JOIN vehicle_imports im ON im.id=v.last_import_id
-  LEFT JOIN vehicle_consumption_profiles cp ON cp.vehicle_id=v.id`;
-const ordering = '"make", "model", "modelYear", "id"';
+export type VehicleFilters = { q?: string; make?: string; model?: string; year?: number; market?: string; limit: number; offset: number };
+const summary = `detail - ARRAY['chargePorts','rangeRatings','dcChargeCurve']`;
+const resolveEntity = `SELECT entity_id FROM catalogue_bindings WHERE legacy_id=$1
+  UNION SELECT id AS entity_id FROM catalogue_entities WHERE id=CASE
+    WHEN $1 ~ '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$' THEN $1::uuid ELSE NULL END`;
 
 @Injectable()
 export class VehiclesRepository {
   constructor(private readonly database: DatabaseService) {}
-
   async list(filters: VehicleFilters): Promise<VehicleCataloguePage> {
     const values: unknown[] = [];
-    const conditions = ['v.is_active'];
-    const add = (sql: string, value: unknown) => {
-      values.push(value);
-      conditions.push(sql.replace('?', '$' + values.length));
-    };
-    if (filters.make) add('ma.slug=?', filters.make);
-    if (filters.model) add('mo.slug=?', filters.model);
-    if (filters.year) add('v.model_year=?', filters.year);
-    if (filters.market) add('?=ANY(v.markets)', filters.market);
-    if (filters.q) {
-      const escaped = filters.q.replace(/[\\%_]/g, '\\$&');
-      add("concat_ws(' ',ma.name,mo.name,v.trim_name,v.variant_name) ILIKE ?", '%' + escaped + '%');
-    }
-    values.push(filters.limit, filters.offset);
-    const result = await this.database.pool.query<{ total: number; items: VehicleCatalogueEntry[] }>(
-      `WITH filtered AS (SELECT ${fields} ${joins} WHERE ${conditions.join(' AND ')})
-       SELECT (SELECT count(*)::integer FROM filtered) AS total,
-       COALESCE((SELECT jsonb_agg(page ORDER BY ${ordering}) FROM
-         (SELECT * FROM filtered ORDER BY ${ordering} LIMIT $${values.length - 1} OFFSET $${values.length}) page), '[]'::jsonb) AS items`,
-      values,
-    );
-    return { ...result.rows[0], limit: filters.limit, offset: filters.offset };
+    const conditions = ['is_active'];
+    const add = (sql: string, value: unknown) => { values.push(value); conditions.push(sql.replace('?', '$'+values.length)); };
+    if (filters.make) add('make_slug=?',filters.make);
+    if (filters.model) add('model_slug=?',filters.model);
+    if (filters.year) add('model_year=?',filters.year);
+    if (filters.market) add('?=ANY(markets)',filters.market);
+    if (filters.q) add('search_text ILIKE ?', '%'+filters.q.replace(/[\\%_]/g,'\\$&')+'%');
+    values.push(filters.limit,filters.offset);
+    const result = await this.database.pool.query<{total:number;items:VehicleCatalogueEntry[]}>(
+      `WITH filtered AS (SELECT *,${summary} AS item FROM catalogue_entries WHERE ${conditions.join(' AND ')})
+       SELECT (SELECT count(*)::int FROM filtered) AS total,
+       COALESCE((SELECT jsonb_agg(item ORDER BY make_slug,model_slug,model_year,entity_id) FROM
+         (SELECT * FROM filtered ORDER BY make_slug,model_slug,model_year,entity_id LIMIT $${values.length-1} OFFSET $${values.length}) p),'[]'::jsonb) AS items`,values);
+    return {...result.rows[0],limit:filters.limit,offset:filters.offset};
   }
-
   async makes() {
-    const result = await this.database.pool.query<{ slug: string; name: string; sourceKey: string }>(
-      `SELECT DISTINCT ma.slug,ma.name,ma.source_key AS "sourceKey"
-       FROM vehicle_makes ma JOIN vehicle_models mo ON mo.make_id=ma.id
-       JOIN vehicle_variants v ON v.model_id=mo.id WHERE v.is_active ORDER BY ma.name,ma.slug,ma.source_key`,
-    );
-    return result.rows;
+    return (await this.database.pool.query(
+      `SELECT DISTINCT make_slug AS slug,detail->>'make' AS name,'chargeroad-catalogue' AS "sourceKey"
+       FROM catalogue_entries WHERE is_active ORDER BY name,slug`)).rows;
   }
-
-  async models(make: string) {
-    const result = await this.database.pool.query<{ slug: string; name: string; sourceKey: string }>(
-      `SELECT DISTINCT mo.slug,mo.name,ma.source_key AS "sourceKey" FROM vehicle_models mo
-       JOIN vehicle_makes ma ON ma.id=mo.make_id JOIN vehicle_variants v ON v.model_id=mo.id
-       WHERE ma.slug=$1 AND v.is_active ORDER BY mo.name,mo.slug,ma.source_key`, [make],
-    );
-    return result.rows;
+  async models(make:string) {
+    return (await this.database.pool.query(
+      `SELECT DISTINCT model_slug AS slug,detail->>'model' AS name,'chargeroad-catalogue' AS "sourceKey"
+       FROM catalogue_entries WHERE is_active AND make_slug=$1 ORDER BY name,slug`,[make])).rows;
   }
-
-  async findById(id: string): Promise<VehicleCatalogueDetail | null> {
-    const result = await this.database.pool.query<VehicleCatalogueDetail>(
-      `SELECT ${fields},
-       COALESCE((SELECT jsonb_agg(jsonb_build_object(
-         'kind',p.kind,'connector',p.connector) ORDER BY p.ordinal)
-         FROM vehicle_charge_ports p WHERE p.vehicle_id=v.id),'[]'::jsonb) AS "chargePorts",
-       COALESCE((SELECT jsonb_agg(jsonb_build_object(
-         'kind',r.kind,'profile',r.profile,'rangeKm',r.range_km,'conditions',r.conditions) ORDER BY r.ordinal)
-         FROM vehicle_range_ratings r WHERE r.vehicle_id=v.id),'[]'::jsonb) AS "rangeRatings",
-       (SELECT jsonb_build_object('type',c.curve_type,'conditions',c.conditions,'sourceUrl',c.source_url,
-         'points',(SELECT jsonb_agg(jsonb_build_object(
-           'socPercent',p.soc_percent,'powerKw',p.power_kw,'currentA',p.current_a,'voltageV',p.voltage_v) ORDER BY p.soc_percent)
-           FROM vehicle_charge_curve_points p WHERE p.vehicle_id=c.vehicle_id))
-         FROM vehicle_charge_curves c WHERE c.vehicle_id=v.id) AS "dcChargeCurve"
-       ${joins} WHERE v.id=$1`, [id],
-    );
-    return result.rows[0] ?? null;
+  async findById(id:string):Promise<VehicleCatalogueDetail|null> {
+    const result = await this.database.pool.query<{detail:VehicleCatalogueDetail}>(
+      `SELECT detail FROM catalogue_entries WHERE entity_id IN (${resolveEntity})`,[id]);
+    return result.rows[0]?.detail ?? null;
+  }
+  async references(id:string,options:{limit:number;offset:number}={limit:100,offset:0}) {
+    const vehicle = await this.findById(id);
+    if (!vehicle) return null;
+    const result=await this.database.pool.query(
+      `WITH records AS (SELECT r.reference_id AS id,r.kind,r.quality,r.payload,b.source_key AS "sourceKey",b.version,
+        b.checksum_sha256 AS "snapshotSha256",b.generated_at AS "generatedAt"
+       FROM vehicle_reference_revisions r JOIN vehicle_knowledge_batches b ON b.id=r.batch_id
+       JOIN vehicle_knowledge_publications pub ON pub.source_key=b.source_key AND pub.batch_id=b.id AND pub.external_id=r.external_id
+       WHERE r.entity_id=$1)
+       SELECT (SELECT count(*)::int FROM records) AS total,
+       COALESCE((SELECT jsonb_agg(p ORDER BY kind,id,"sourceKey") FROM
+         (SELECT * FROM records ORDER BY kind,id,"sourceKey" LIMIT $2 OFFSET $3) p),'[]'::jsonb) AS items`,
+      [vehicle.id,options.limit,options.offset]);
+    return {...result.rows[0],...options};
   }
 }

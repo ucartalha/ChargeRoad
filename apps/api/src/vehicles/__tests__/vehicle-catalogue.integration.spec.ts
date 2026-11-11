@@ -150,6 +150,10 @@ integration('Vehicle catalogue with PostgreSQL and HTTP', () => {
     expect((await (await get('/vehicles/models?make=test_make')).json())[0].slug).toBe('test_ev');
     const detail = await (await get('/vehicles/' + body.items[0].id)).json();
     expect(detail.rangeRatings[0].rangeKm).toBe(400);
+    const legacy=stableId(OPEN_EV_SOURCE.key,fixtureVehicle().unique_code);
+    expect((await (await get('/vehicles/'+legacy)).json()).id).toBe(body.items[0].id);
+    expect((await (await get('/vehicles/'+legacy+'/references?limit=1')).json()).total).toBe(0);
+    expect((await get('/vehicles/'+legacy+'/references?limit=101')).status).toBe(400);
     expect(externalFetch.mock.calls.every(([url]) => String(url).startsWith(baseUrl))).toBe(true);
     externalFetch.mockRestore();
   });

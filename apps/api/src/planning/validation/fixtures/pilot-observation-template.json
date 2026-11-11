@@ -1,0 +1,14 @@
+{
+  "id": "replace-with-anonymous-trip-id",
+  "vehicleKey": "ioniq6-2023-53-rwd-18",
+  "split": "holdout",
+  "collectionPermission": "explicit_validation_permission",
+  "distanceKm": null,
+  "speed": {"kind": "trip_average", "kph": null},
+  "ambientTemperatureC": null,
+  "hvac": "unknown",
+  "measuredEnergyBoundary": "battery_dc",
+  "evidence": {"kind": "user_report", "method": "", "referenceId": ""},
+  "measured": {"arrivalSocPercent": null, "consumedKwh": null, "chargingSeconds": null},
+  "predicted": {"arrivalSocPercent": null, "consumedKwh": null, "chargingSeconds": null, "modelVersion": ""}
+}

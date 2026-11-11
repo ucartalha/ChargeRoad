@@ -3,6 +3,7 @@ node_modules/
 .turbo/
 dist/
 coverage/
+artifacts/
 .expo/
 .env
 .env.*

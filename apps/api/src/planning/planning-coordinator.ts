@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { z } from 'zod';
 import {
-  chargingStationSchema, planningEvaluationSchema, planningInputSchema, roadRoutingRequestSchema,
+  stationCandidateSetSchema, planningEvaluationSchema, planningInputSchema, roadRoutingRequestSchema,
   roadRoutingResultSchema, routePlanRequestSchema, sourceReferenceSchema,
   vehicleEnergyProfileSchema, weatherForecastSchema,
 } from '@chargeroad/shared';
@@ -61,7 +61,7 @@ export class PlanningCoordinator {
   ) {}
 
   async plan(rawRequest: RoutePlanRequest, rawOptions: PreparationOptions, callerSignal?: AbortSignal): Promise<PlanningResult> {
-    const request = routePlanRequestSchema.parse(rawRequest);
+    let request = routePlanRequestSchema.parse(rawRequest);
     const options = preparationOptionsSchema.parse(rawOptions);
     const controller = new AbortController();
     const signal = controller.signal;
@@ -97,16 +97,29 @@ export class PlanningCoordinator {
     };
 
     try {
+      if (this.vehicles.resolveId) {
+        let canonicalId:string;
+        try { canonicalId=await abortable(()=>this.vehicles.resolveId(request.vehicleVariantId,signal),signal); }
+        catch { if (signal.aborted) throw signal.reason; throw new ProviderBoundaryError('VEHICLE','FAILED'); }
+        request={...request,vehicleVariantId:canonicalId};
+      }
       const vehicle = await read('VEHICLE',vehicleEnergyProfileSchema.nullable(),
-        () => this.vehicles.profile(request.vehicleVariantId,signal));
+        () => this.vehicles.profile(request.vehicleVariantId,signal,request.policy.vehicleDataQuality ?? 'verified_only'));
       if (!vehicle) return failure('insufficient_data','VEHICLE_ENERGY_PROFILE_MISSING');
       if (vehicle.vehicleVariantId !== request.vehicleVariantId) throw new ProviderBoundaryError('VEHICLE','INVALID_DATA');
+      if ((request.policy.vehicleDataQuality ?? 'verified_only')==='verified_only' && vehicle.dataQuality?.quality==='engineering_estimate')
+        throw new ProviderBoundaryError('VEHICLE','INVALID_DATA');
       const roadRequest: RoadRoutingRequest = roadRoutingRequestSchema.parse({ ...options.road,
         schemaVersion: request.schemaVersion, origin: request.origin, destination: request.destination, departureAt: request.departureAt });
       const roads = await read('ROAD',roadRoutingResultSchema.nullable(), () => this.routing.routes(freeze(roadRequest),signal));
       if (!roads) return failure('infeasible','ROAD_ROUTE_NOT_FOUND');
-      const stations = await read('STATION',z.array(chargingStationSchema),
-        () => this.stations.findAlongRoutes(roads.routes,options.stationCorridorMeters,signal));
+      const stationSet = await read('STATION',stationCandidateSetSchema,
+        () => this.stations.findAlongRoutes(roads.routes,options.stationCorridorMeters,signal,vehicle.supportedConnectors));
+      const stations=stationSet.candidates.map(candidate=>candidate.station);
+      for(const candidate of stationSet.candidates)for(const match of candidate.routeMatches){
+        if(!roads.routes.some(r=>r.id===match.routeId&&r.segments.some(s=>s.id===match.segmentId)))
+          throw new ProviderBoundaryError('STATION','INVALID_DATA');
+      }
       const forecasts = new Map<string, WeatherForecast>();
       const segments = new Set(roads.routes.flatMap((road) => road.segments.map((segment) => segment.id)));
       const sameQuery = (query: WeatherQuery, forecast: WeatherForecast) => query.segmentId === forecast.segmentId &&
@@ -116,13 +129,23 @@ export class PlanningCoordinator {
       for (let iteration = 0; iteration < request.policy.maxIterations; iteration++) {
         checkBudget();
         const input = freeze(planningInputSchema.parse({ request, vehicle, roadCandidates: roads.routes,
-          stations, weather: [...forecasts.values()], dataSnapshots: [...snapshots] }));
+          stations,stationSearch:stationSet.metadata, weather: [...forecasts.values()], dataSnapshots: [...snapshots] }));
         const rawStep = await abortable(() => this.engine.step(input,signal),signal);
         checkBudget();
         const parsed = engineStepSchema.safeParse(rawStep);
         if (!parsed.success) throw new PlanningContractError('Invalid application engine response');
         const step = parsed.data;
         if (step.kind === 'result') {
+          if(step.result.status==='planned')step.result.plan.stationSearch=stationSet.metadata;
+          if(step.result.status==='infeasible' && (stationSet.metadata.search.truncated||!stationSet.metadata.coverage.completeForQuery))
+            return failure('insufficient_data',stationSet.metadata.search.truncated?'STATION_CANDIDATE_LIMIT':'STATION_COVERAGE_INCOMPLETE');
+          if(step.result.status==='planned' && !stationSet.metadata.coverage.completeForQuery)
+            step.result.plan.warnings.push({code:'station_coverage_incomplete',explanation:'Station coverage/search is incomplete; alternatives may be missing.'});
+          if (step.result.status==='planned' && vehicle.dataQuality?.quality==='engineering_estimate') {
+            step.result.plan.assumptions.push({id:'vehicle-engineering-profile',code:'engineering_estimate',
+              explanation:[vehicle.dataQuality.verificationNote,...vehicle.dataQuality.assumptions].join('; ')});
+            step.result.plan.warnings.push({code:'engineering_estimate',explanation:'Vehicle energy profile contains engineering estimates.'});
+          }
           const evaluated = planningEvaluationSchema.safeParse({ input, result: step.result });
           if (!evaluated.success) throw new PlanningContractError('Application plan does not match its input snapshots');
           return evaluated.data.result;

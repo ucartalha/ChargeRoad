@@ -1,0 +1,652 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-11T12:07:27.329Z",
+  "cataloguePublished": false,
+  "mode": "small_sample",
+  "requests": [
+    {
+      "url": "https://api.openchargemap.io/v3/referencedata/?client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:17.390Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 499021,
+      "sha256": "0b57af2a505baecd6e4405b2c0bd3625a2221305e4333741fc7ba61dfe3db587",
+      "elapsedMs": 2225,
+      "cached": true
+    },
+    {
+      "url": "https://api.openchargemap.io/v3/poi/?output=json&countrycode=TR&opendata=true&maxresults=25&compact=false&verbose=true&includecomments=false&sortby=id_asc&client=ChargeRoad",
+      "retrievedAt": "2026-11-11T12:05:19.661Z",
+      "httpStatus": 200,
+      "retryAfter": null,
+      "bytes": 137431,
+      "sha256": "a0590e726b73c367950e3c5d14921345a3a7e78ff19842b417c3aecfb6afa2fa",
+      "elapsedMs": 966,
+      "cached": true
+    }
+  ],
+  "reference": {
+    "countries": 250,
+    "operators": 1017,
+    "statusTypes": [
+      {
+        "IsOperational": null,
+        "IsUserSelectable": true,
+        "ID": 0,
+        "Title": "Unknown"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": false,
+        "ID": 10,
+        "Title": "Currently Available (Automated Status)"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": false,
+        "ID": 20,
+        "Title": "Currently In Use (Automated Status)"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 30,
+        "Title": "Temporarily Unavailable"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 50,
+        "Title": "Operational"
+      },
+      {
+        "IsOperational": true,
+        "IsUserSelectable": true,
+        "ID": 75,
+        "Title": "Partly Operational (Mixed)"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 100,
+        "Title": "Not Operational"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 150,
+        "Title": "Planned For Future Date"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 200,
+        "Title": "Removed (Decommissioned)"
+      },
+      {
+        "IsOperational": false,
+        "IsUserSelectable": true,
+        "ID": 210,
+        "Title": "Removed (Duplicate Listing)"
+      }
+    ],
+    "providers": [
+      {
+        "id": 1,
+        "title": "Open Charge Map Contributors",
+        "openLicensed": true,
+        "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      {
+        "id": 2,
+        "title": "afdc.energy.gov",
+        "openLicensed": true,
+        "license": "This data is provided by the National Renewable Energy Laboratory (\"NREL\"), which is operated by the Alliance for Sustainable Energy, LLC (\"Alliance\"), for the U.S. Department of Energy (\"DOE\"), and may be used for any purpose whatsoever."
+      },
+      {
+        "id": 7,
+        "title": "Mobie.pt",
+        "openLicensed": true,
+        "license": "Public Data redistributed by agreement"
+      },
+      {
+        "id": 15,
+        "title": "CarStations.com",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 18,
+        "title": "UK National Charge Point Registry",
+        "openLicensed": true,
+        "license": "Contains public sector information licensed under the Open Government Licence v2.0."
+      },
+      {
+        "id": 19,
+        "title": "NOBIL",
+        "openLicensed": true,
+        "license": "NOBIL by Enova is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) License."
+      },
+      {
+        "id": 22,
+        "title": "CHAdeMO.com",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 23,
+        "title": "ESB eCars",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 24,
+        "title": "AddÉnergie Technologies Inc.",
+        "openLicensed": true,
+        "license": "http://creativecommons.org/licenses/by/3.0"
+      },
+      {
+        "id": 25,
+        "title": "Catalan Energy Institute (ICAEN)",
+        "openLicensed": true,
+        "license": "General public data"
+      },
+      {
+        "id": 26,
+        "title": "Oplaadpalen.nl",
+        "openLicensed": true,
+        "license": "Licensed under Attribution-NonCommercial-ShareAlike 3.0 : http://creativecommons.org/licenses/by-nc-sa/3.0/"
+      },
+      {
+        "id": 27,
+        "title": "Place To Plug",
+        "openLicensed": false,
+        "license": null
+      },
+      {
+        "id": 28,
+        "title": "data.gouv.fr",
+        "openLicensed": true,
+        "license": "Open License: https://www.etalab.gouv.fr/wp-content/uploads/2014/05/Licence_Ouverte.pdf"
+      },
+      {
+        "id": 29,
+        "title": "Bundesnetzagentur.de",
+        "openLicensed": true,
+        "license": "Provided by Bundesnetzagentur.de under the CC-BY 4.0 license"
+      },
+      {
+        "id": 30,
+        "title": "EVIO - Electrical Mobility, Lda",
+        "openLicensed": true,
+        "license": "CC-BY"
+      },
+      {
+        "id": 31,
+        "title": "SITRONICS PAO",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 32,
+        "title": "Lithuanian Road Administration",
+        "openLicensed": true,
+        "license": "Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0)"
+      },
+      {
+        "id": 33,
+        "title": "Gaia Green Tech SLU",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 34,
+        "title": "Toger.co",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 35,
+        "title": "Electric Era",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 36,
+        "title": "ITCharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 37,
+        "title": "Voltrelli",
+        "openLicensed": true,
+        "license": "Licensed under CC0  by data sharing agreement"
+      },
+      {
+        "id": 38,
+        "title": "PowerGo",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 39,
+        "title": "Punkt-E",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 40,
+        "title": "Easy Volt",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 41,
+        "title": "ChargeSini",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 42,
+        "title": "Otopriz",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 43,
+        "title": "EV24",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 45,
+        "title": "Greems Technologies",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 46,
+        "title": "Voltspot",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 47,
+        "title": " Stuart Energy, UAB",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 48,
+        "title": "QRSOLVE sp. z o. o.",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 53,
+        "title": "NordOCPI",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 54,
+        "title": "PowerGo",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 55,
+        "title": "Asynio",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 57,
+        "title": "YellotMob",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 61,
+        "title": "JuiceNet",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 62,
+        "title": "Petite Borne",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 66,
+        "title": "Salzer Electronics Limited",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 67,
+        "title": "ChargeX",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 68,
+        "title": "ENERG.IA GESTAO DE ENERGIA LTDA",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 69,
+        "title": "Gozero Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 72,
+        "title": "Thoth",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 74,
+        "title": "FARADAY EVCS INC",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 96,
+        "title": "ChargeNow (Pty) Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 97,
+        "title": "Chargia Mobility SL",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 98,
+        "title": "inergia GmbH",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 100,
+        "title": "Spott",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 103,
+        "title": "Viva Leisure Operations Pty Ltd",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 105,
+        "title": "EV PLUG",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 108,
+        "title": "Fount",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 110,
+        "title": "TriCharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 111,
+        "title": "Multcharge",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 113,
+        "title": "evMax.app",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 114,
+        "title": "Clube Charger",
+        "openLicensed": true,
+        "license": "Licensed under CC0 by data sharing agreement"
+      },
+      {
+        "id": 115,
+        "title": "EVee Buddy",
+        "openLicensed": false,
+        "license": "Licensed under CC0 by data sharing agreement"
+      }
+    ]
+  },
+  "sample": {
+    "rows": 25,
+    "connections": 61,
+    "providers": {
+      "1": 21,
+      "26": 4
+    },
+    "operators": {
+      "1": 1,
+      "70": 12,
+      "78": 3,
+      "162": 1,
+      "3323": 7,
+      "3871": 1
+    },
+    "stationStatuses": {
+      "Operational": 25
+    },
+    "connectionStatuses": {
+      "missing": 7,
+      "Operational": 54
+    },
+    "stationFields": {
+      "DataProvider": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "OperatorInfo": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "UsageType": {
+        "present": 25,
+        "nonNull": 21
+      },
+      "StatusType": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "SubmissionStatus": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "UserComments": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "PercentageSimilarity": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "MediaItems": {
+        "present": 25,
+        "nonNull": 2
+      },
+      "IsRecentlyVerified": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "DateLastVerified": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "ID": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "UUID": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "ParentChargePointID": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "DataProviderID": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "DataProvidersReference": {
+        "present": 25,
+        "nonNull": 4
+      },
+      "OperatorID": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "OperatorsReference": {
+        "present": 25,
+        "nonNull": 7
+      },
+      "UsageTypeID": {
+        "present": 25,
+        "nonNull": 21
+      },
+      "UsageCost": {
+        "present": 25,
+        "nonNull": 8
+      },
+      "AddressInfo": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "Connections": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "NumberOfPoints": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "GeneralComments": {
+        "present": 25,
+        "nonNull": 6
+      },
+      "DatePlanned": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "DateLastConfirmed": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "StatusTypeID": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "DateLastStatusUpdate": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "MetadataValues": {
+        "present": 25,
+        "nonNull": 0
+      },
+      "DataQualityLevel": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "DateCreated": {
+        "present": 25,
+        "nonNull": 25
+      },
+      "SubmissionStatusTypeID": {
+        "present": 25,
+        "nonNull": 25
+      }
+    },
+    "connectionFields": {
+      "ID": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "ConnectionTypeID": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "ConnectionType": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "Reference": {
+        "present": 61,
+        "nonNull": 1
+      },
+      "StatusTypeID": {
+        "present": 61,
+        "nonNull": 54
+      },
+      "StatusType": {
+        "present": 61,
+        "nonNull": 54
+      },
+      "LevelID": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "Level": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "Amps": {
+        "present": 61,
+        "nonNull": 38
+      },
+      "Voltage": {
+        "present": 61,
+        "nonNull": 38
+      },
+      "PowerKW": {
+        "present": 61,
+        "nonNull": 60
+      },
+      "CurrentTypeID": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "CurrentType": {
+        "present": 61,
+        "nonNull": 61
+      },
+      "Quantity": {
+        "present": 61,
+        "nonNull": 53
+      },
+      "Comments": {
+        "present": 61,
+        "nonNull": 0
+      }
+    },
+    "licenseReview": {
+      "noncommercial_exclude_from_product_import": 4,
+      "requires_source_license_validation": 21
+    },
+    "liveAvailabilityVerified": false,
+    "reason": "General status timestamps are not verified EVSE observations."
+  },
+  "scope": "First 25 ID-ordered open-data TR records; not a representative national survey.",
+  "finishedAt": "2026-11-11T12:07:27.340Z",
+  "networkCallsThisRun": 0
+}

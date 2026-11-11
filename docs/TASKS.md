@@ -1,6 +1,6 @@
 # Geliştirme görevleri
 
-2026-11-09: Kullanıcı önceliğiyle araç kataloğu ilk teknik teslim olarak öne alındı. Katalog alt kapsamları uygulandı. 2026-11-10 itibarıyla CR-002 v1 sözleşmeleri DONE; CR-003 ve CR-006 daha geniş kabul kapsamları nedeniyle IN_PROGRESS. Pilot ve rota görevleri TODO.
+2026-11-09: Kullanıcı önceliğiyle araç kataloğu ilk teknik teslim olarak öne alındı. Katalog alt kapsamları uygulandı. 2026-11-10 itibarıyla CR-002/004/005/007 DONE; CR-001/003/006 daha geniş kabul kapsamları nedeniyle IN_PROGRESS. Gerçek rota motoru ve saha pilotu henüz uygulanmadı.
 
 Durumlar: TODO, IN_PROGRESS, BLOCKED, DONE. Bir göreve başlanırken durum ve sorumlu; bitirirken doğrulama kanıtı eklenir. DEC kayıtları görev değildir, ilgili teknik işin karar kapılarıdır.
 
@@ -46,10 +46,10 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - Kabul: Yol sağlayıcısı şarj durağı seçmiyor; plan motoru sahte sağlayıcılarla çalışabiliyor; hata ve eksik veri sonuçları açık; LLM SDK/API gerekmiyor.
 
 ### CR-005 — Referans senaryolar ve doğrulama düzeneği
-- Durum: IN_PROGRESS
+- Durum: DONE
 - Bağımlılık: CR-001, CR-002.
 - İş: Küçük elle doğrulanabilir yol/enerji örnekleri ve pilot seyahat veri seti hazırla.
-- 2026-11-10 analiz: Pilot model aileleri ve p99 ölçümü kabul edildi; [referans veri ve istasyon erişimi önerisi](PILOT_VALIDATION.md) hazırlandı. Gerçek veri, referans çözücü ve ölçüm düzeneği henüz uygulanmadı; görev DONE değildir.
+- 2026-11-10 teslim: 15 elle hesaplanan/checksum sabitlenmiş sentetik vaka, sınırlandırılmış exhaustive küçük ağ referansı, aday plan fizibilite/optimum denetimi, enerji/süre defterleri, %60/%75/%90 şarj düzeltmeleri, anonim pilot kayıt şeması/boş ölçüm dosyası ve 10.000 örnekli p95/p99 CLI tamamlandı. [Komutlar ve sınırlar](REFERENCE_VALIDATION.md), [örnek rapor](validation/reference-run-2026-11-10.json). Teknik doğrulama zemini DONE; gerçek sürüş verisi/tüketim doğruluğu CR-006/022, koridor ve üretim eşikleri CR-001'de açık. Üretim motoru veya API kapasitesi bu teslimle tamamlandı sayılmaz.
 - Kabul: Aynı veri anlık görüntüsüyle tekrar üretilebilir testler var; enerji korunumu, rezerv, ulaşılamaz rota ve şarj düzeltme senaryoları kapsanıyor. Özel konum verisinin kullanımı DEC-011'e uygun.
 
 ## Veriler ve planlama motoru
@@ -58,28 +58,41 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - Durum: IN_PROGRESS
 - Bağımlılık: DEC-007; CR-003.
 - İş: Seçilen açık veri kaynağından modelleri/varyantları normalize ederek aktar.
+- 2026-11-10 hazırlık: [ADR-004](adr/004-vehicle-identity-and-data-quality.md) ile bağımsız araç kimliği, açıkça etiketli mühendislik tahminleri ve açık lisanslı/izinli kaynaklar + kendi ölçümlerimiz kabul edildi. [Uygulama adımları](TASK_006_PREPARATION.md) hazır; yeni CR-006 kodu/migration/import'u bu hazırlık turunda başlatılmadı.
+- Ek veri kapsamı: Farklı hız/koşul tüketim noktaları; yaklaşık 15 dakikalık sürüş penceresi ve enerji kanıtı sözleşmeleri; sahip–sürüş profili–araç ilişkisi ve ortak/kişisel model revizyonları için DDL tasarımı. Kişisel migration sahiplik temeliyle uygulanır. [Kişiselleştirme veri planı](PERSONALIZED_ENERGY_DATA.md); aktif öğrenme/navigasyon CR-011–013/017/019, izin ve iş yürütümü CR-020/021'de kalır.
+- 2026-11-10 teknik teslim: 003/004/005 migration, UUID/legacy alias kataloğu, atomik/sürümlü kanıt yayını, kalite politikası, DB enerji provider'ı, global kaynak sync/staging ve kişisel veri sözleşmeleri uygulandı. 1.189 eski + 2 pilot katalog kaydı; Kilowatt kaynağından 1.321 inceleme adayı; Ioniq 6 için birimi doğrulanmış 3 kullanıcı tüketim aralığı kaydedildi. 132 API/DB + 31 shared testi; typecheck/build başarılı. [Teslim, komutlar ve açıklar](VEHICLE_KNOWLEDGE.md).
+- Teknik altyapı alt kapsamı DONE; görev bütünü IN_PROGRESS. Pilotlarda koşullu hız testi/şarj eğrisi ve kapasite/kimlik doğrulaması açık; kaynak adayı veya kullanıcı aralığı doğrulanmış planlama profili sayılmaz. Kişisel DDL taslağı sahiplik bağımlılığı nedeniyle uygulanmadı.
 - Tamamlanan alt teslim: DB katalog şeması, doğrulanan OpenEV Data adaptörü, manuel import, idempotent güncelleme, işlem kaydı ve DB okuma API'si. Teknik kanıt [katalog belgesinde](VEHICLE_CATALOGUE.md).
 - Kalan kabul: Pilot araç listesinin alan bazında doğrulanması; tüketim ve şarj eğrisi için yeterli kaynak. Mevcut sürüm bu değerleri içermiyor.
 - 2026-11-10 pilot veri açığı: OpenEV v1.24.0 kataloğunda seçilen 2025 Ioniq 5 63 kWh yok; izinli ek kaynakla ayrı provenance korunarak tamamlanmalı. Ioniq 6 53 kWh aday kaydının kullanılabilir kapasite/jant/aktarma eşleşmesi doğrulanmalı. [Kaynak kontrolü](PILOT_VALIDATION.md#varyant-kaynakları-ve-katalog-açıkları).
 - Kabul: Tekrarlanan import mükerrer üretmiyor; kaynak/sürüm kaydı var; eksik değerler uydurulmuyor; aynı modelin batarya varyantları ayrılıyor; pilot araçlar kontrol ediliyor.
 
 ### CR-007 — İstasyon kataloğu ve yol koridoru sorgusu
-- Durum: TODO
+- Durum: DONE
+- 2026-11-10: [ADR-005](adr/005-station-catalogue-policy.md) ilkeleri ve kullanıcının sabit güzergâh yerine girilen konumları kullanma tercihiyle uygulandı. EPDK GET+body adapter'ı, ortak kaynak kotası, 006/007 migration, aşamalı/atomik katalog, namespace kimlikleri ve alan kaynakları, socket-claim/EVSE ayrımı, indeksli koridor, kapsamlı provider/coordinator sözleşmesi ve salt okunur API teslim edildi. 17.165 lokasyon / 50.259 soket beyanı; 13.238 halka açık. 163 API/DB + 31 shared testi; typecheck/build başarılı. [Teslim ve p95/p99 kanıtı](STATION_CATALOGUE.md).
+- Başlangıç sunucu politikası: 2→5→10 km koridor, en çok 500 aday / 5 alternatif / 20.000 geometri noktası, SQL 2 sn, statik soft-age 24 saat; bunlar üretim SLA veya rota kalitesi garantisi değildir. OCM gerçek bağlantısı açılmadı; izinli normalize ek paket ve açık crosswalk altyapısı var. Canlı durum CR-008, gerçek yol/sapma CR-009, EV planı CR-013'te kalır.
 - Bağımlılık: DEC-007; CR-003, CR-004.
 - İş: Konum, EVSE, connector, güç ve erişim koşullarını içeri al; mekânsal aday araması ekle.
 - Kabul: Kaynaklar arası mükerrer istasyon politikası var; soket uyumu filtreleniyor; coğrafi adaylık gerçek yol erişilebilirliğiyle karıştırılmıyor.
 
 ### CR-008 — Canlı istasyon durumu
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-11 provider/OCM alt teslimi DONE: Kaynak registry/kabiliyetleri, alan/maliyet politikası, EPDK+OCM adapter'ları, PostgreSQL lease/fencing/kota/backoff, atomik materyalizasyon ve lisans/aggregate sözleşmeleri uygulandı. OCM'den 1.737 lokasyon / 2.168 ekipman özeti yayınlandı; dört 0,0 koordinat kaydı incelenmiş karantinada. EPDK 17.165 UUID korunuyor. 182 API/DB + 31 shared testi, typecheck/build ve p95/p99 başarılı. [Teslim raporu](STATION_PROVIDERS.md). Gerçek canlı müsaitlik feed'i/TTL ve EVSE eşleştirmesi açık olduğu için tüm CR-008 DONE değildir.
+- 2026-11-11 yetkili OCM doğrulaması: Anahtar yerel backend ortamına kaydedildi; reference data, 25 Türkiye kaydı ve 24 lokasyon çevresi HTTP 200 ile alındı. [Gerçek bulgular](OCM_VALIDATION.md): opendata filtresinde NC lisans; 7/24 yakın aday, 3/24 150 m içinde aday; otomatik crosswalk ve canlı müsaitlik yok. Normalizer/import/migration/yayın henüz yapılmadı.
+- 2026-11-11 güncel tercih: Başlangıçta OCM entegrasyonu; Google/HERE ve diğer ticari hizmetler yedekte. [OCM araştırması ve alt kabul adımları](OPEN_CHARGE_MAP_RESEARCH.md) hazır; anahtarı kullanıcı oluşturacak. Mevcut EPDK kataloğu korunur. OCM katalog/genel çalışma bilgisi gerçek canlı doluluk teslimi sayılmaz; başlangıçta müsaitlik `unknown`. Bu kayıt önceki Eco-Movement önceliğini günceller; adapter/import henüz uygulanmadı.
+- 2026-11-11 araştırma: EPDK marka sorgusu HTTP 200 ile 1.428 istasyon / 4.383 soket beyanı getirdi; canlı durum/tarife alanı yok. Swagger/kılavuz yeniden doğrulandı, istasyon kodu sorgusu 429 verdi. [Rapor ve 24 istasyon örneklemi](STATION_SOURCE_RESEARCH.md) hazır; Google/HERE alan doluluğu anahtar/ürün erişimi olmadığından ölçülmedi. Dış iletişim kullanıcı talebiyle pas geçildi.
+- 2026-11-11 hazırlık: [ADR-006](adr/006-live-availability-provider-boundary.md) ile yerel katalog + seçili durak/yedeklerin toplu canlı sorgusu, desteklenirse push/delta, açık EVSE kimlik eşleştirmesi ve ortak PostgreSQL durum katmanı kabul edildi. [Alt görevler ve kabul kapıları](TASK_008_PREPARATION.md) hazır. İlk inceleme Eco-Movement, alternatif Hubject; sağlayıcı seçimi/erişimi ve sayısal TTL/kota politikaları açık. Kod/migration veya canlı entegrasyon bu hazırlıkta başlatılmadı.
 - Bağımlılık: DEC-001, DEC-007; CR-007. Gerçek sağlayıcı erişimi gerekir.
 - İş: Durum alma, tazelik ve hata politikasını uygula.
 - Kabul: Kaynak güncelleme/alınma zamanları ayrı; eski veri bilinmiyor oluyor; timeout/kota/hata kontrol ediliyor; EVSE durumları doğru eşleniyor. Sağlayıcı yoksa görev DONE olmaz, katalog akışı bilinmiyor durumuyla ilerleyebilir.
 
 ### CR-009 — Yol verisi adaptörü
-- Durum: TODO
+- Durum: DONE (teknik uygulama kapsamı; V1 açıkları devredildi)
+- 2026-11-11 uygulama: [Teknik teslim](ROAD_PROVIDERS.md). Valhalla/OSM yol adapter'ı, değiştirilebilir registry/attribute portu, PostgreSQL ortak kota/cache/lease, HTTP API ve gerçek istasyon sapması hazır. Ankara örneği 3.845 m / 512,5 sn; gerçek sapma +1.170 m / +137,53 sn. Canlı trafik yok, bilinmeyen hız null. 206 API/DB testi ve 31 ortak sözleşme testi geçti; mobil dahil tip kontrolleri ve API derlemesi başarılı.
+- 2026-11-11 kapsam kararı: Kullanıcı kalan açıkları V1 çıkışına devretti. Gerçek hız alanı doğrulaması, tesis erişimi, geniş rota örneklemi, üretim hosting, yükseklik kaynağı ve periyodik temizlik [V1-ROAD-001–006](V1_RELEASE_BACKLOG.md) altında TODO; bu işler tamamlandı veya üretim onayı alındı sayılmaz. Kamu demo servislerinin üretim engeli korunur. [ADR-007](adr/007-road-provider-pilot.md), [önceki hazırlık/kabul planı](TASK_009_PREPARATION.md).
 - Bağımlılık: DEC-006; CR-004.
 - İş: Alternatif rota, gerçek istasyon sapması, süre, manevra ve mevcut kesim özelliklerini getir.
-- Kabul: Pilot koridorda yol geometrisi ve sapmalar doğrulanıyor; yükseklik/hız eksikleri açık; dış servisin hazır EV durakları motor yerine kullanılmıyor.
+- Kabul: Teknik pilotta gerçek yol geometrisi ve katalog koordinatına sapma üretildi; yükseklik/hız eksikleri açık; dış servisin hazır EV durakları motor yerine kullanılmıyor. Geniş doğrulama ve üretime hazırlık kapıları kullanıcı kararıyla V1 backlog'una taşındı.
 
 ### CR-010 — Hava durumu adaptörü
 - Durum: TODO
@@ -171,5 +184,7 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 ## Tamamlanma kaydı
 
 2026-11-09 — İlk araç kataloğu teknik teslimi tamamlandı. 65 marka, 260 model ve 1.189 varyant iki gerçek aktarım sonrasında mükerrer olmadan DB'de. 18 test, üç paket typecheck, production build ve gerçek DB üzerinde production HTTP kontrolü geçti. Daha geniş CR-002/003/006 kabul kapsamları açık; rota, pilot ve haftalık job tamamlandı sayılmadı.
+
+2026-11-10 — CR-005 teknik doğrulama zemini tamamlandı: 15 golden vaka ve bağımsız küçük ağ referansı, 52 yeni test ve 10.000 örnek p95/p99 raporu. Tüm API testlerinde 85 başarılı / 13 DB entegrasyon testi atlandı; shared 31 başarılı; üç paket typecheck ve API build başarılı. [Teslim ve saha sınırları](REFERENCE_VALIDATION.md).
 
 Tamamlanan görev için şu alanlar eklenir: tarih, ilgili değişiklik/commit bağlantısı, kabul ölçütü sonucu, test/ölçüm kanıtı ve kalan sınırlamalar.

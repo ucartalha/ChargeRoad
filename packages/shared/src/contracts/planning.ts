@@ -6,6 +6,7 @@ import {
 import { roadRouteSchema, weatherForecastSchema } from './road-weather.js';
 import { chargingStationSchema } from './stations.js';
 import { vehicleEnergyProfileSchema } from './vehicle-energy.js';
+import { stationSearchMetadataSchema } from './station-catalogue.js';
 import { routePlanRequestSchema } from './request.js';
 import { chargingStopSchema } from './charging-stop.js';
 
@@ -49,6 +50,7 @@ export const planningInputSchema = z.object({
   roadCandidates: z.array(roadRouteSchema).min(1),
   weather: z.array(weatherForecastSchema),
   stations: z.array(chargingStationSchema),
+  stationSearch:stationSearchMetadataSchema.optional(),
   dataSnapshots: z.array(z.object({
     sourceId: idSchema,
     version: idSchema.nullable(),
@@ -70,6 +72,7 @@ export const planningInputSchema = z.object({
 });
 
 export const routePlanSchema = z.object({
+  stationSearch:stationSearchMetadataSchema.optional(),
   schemaVersion: contractVersionSchema,
   planId: z.string().uuid(),
   revision: z.number().int().positive(),

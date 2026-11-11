@@ -29,6 +29,10 @@ export const roadSegmentSchema = z.object({
   bearingDegrees: nonnegativeSchema.lt(360),
   expectedSpeedKph: positiveSchema,
   speedLimitKph: positiveSchema.nullable(),
+  speedLimitKind:z.enum(['unknown','posted','unlimited','conditional_unresolved','provider_derived']).optional(),
+  speedLimitSource:sourceReferenceSchema.nullable().optional(),
+  speedLimitRaw:z.string().nullable().optional(),
+  expectedSpeedBasis:z.literal('travel_time_average').optional(),
   elevationProfile: z.array(z.object({
     distanceFromStartMeters: nonnegativeSchema,
     elevationMeters: finiteSchema,
@@ -66,6 +70,17 @@ export const roadRouteSchema = z.object({
   segments: z.array(roadSegmentSchema).min(1),
   segmentationPolicy: segmentationPolicySchema,
   source: sourceReferenceSchema,
+  metadata:z.object({
+    providerId:idSchema,traffic:z.enum(['none','historical','live','unknown']),
+    departureUsedAt:timestampSchema,originTimeZone:z.string(),
+    warnings:z.array(z.string()),
+    attributions:z.array(z.object({text:z.string(),url:z.string().url(),license:z.string()}).strict()),
+    maneuvers:z.array(z.object({instruction:z.string(),type:z.number().int(),
+      startDistanceMeters:nonnegativeSchema,endDistanceMeters:nonnegativeSchema}).strict()),
+    speedLimitKnownMeters:nonnegativeSchema,speedLimitUnknownMeters:nonnegativeSchema,
+    durationAllocation:z.literal('maneuver_weighted'),
+    usage:z.enum(['development_pilot','configured_service']),
+  }).strict().optional(),
 }).strict().superRefine((route, ctx) => {
   if (new Set(route.segments.map((segment) => segment.id)).size !== route.segments.length)
     ctx.addIssue({ code: 'custom', path: ['segments'], message: 'Duplicate route segment ID' });
@@ -99,6 +114,7 @@ export const roadRoutingRequestSchema = z.object({
   alternatives: z.number().int().min(1).max(10),
   avoidTolls: z.boolean(),
   avoidFerries: z.boolean(),
+  originTimeZone:z.string().min(1).optional(),
   segmentationPolicy: segmentationPolicySchema,
 }).strict();
 

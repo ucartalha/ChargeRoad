@@ -120,6 +120,13 @@ export const dcChargingCurveSchema = z.object({
 });
 
 export const vehicleEnergyProfileSchema = z.object({
+  dataQuality: z.object({
+    schemaVersion:z.literal('vehicle-quality/1.0.0'),
+    policy:z.enum(['verified_only','allow_engineering_estimates']),
+    quality:z.enum(['verified','engineering_estimate']),
+    verificationNote:z.string().min(1), assumptions:z.array(z.string().min(1)),
+    methodId:idSchema.nullable(), methodVersion:idSchema.nullable(),
+  }).strict().optional(),
   id: idSchema,
   version: idSchema,
   vehicleVariantId: idSchema,

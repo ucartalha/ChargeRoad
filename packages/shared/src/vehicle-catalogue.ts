@@ -1,5 +1,10 @@
 // Catalogue data can be incomplete. It is not a validated VehicleEnergyProfile.
 export type VehicleCatalogueEntry = {
+  marketedBatteryKwh?:number|null;
+  drivetrain?:'rwd'|'awd'|'fwd'|'unknown';
+  wheelInches?:number|null;
+  motorPowerKw?:number|null;
+  dataQuality?:{missing:string[];profiles:('verified_only'|'allow_engineering_estimates')[];sourceVersion:string};
   id: string;
   make: string;
   makeSlug: string;

@@ -1,0 +1,10 @@
+{
+  "version": "station-sources/example-1",
+  "providers": {
+    "epdk-stations": { "enabled": true, "priority": 10, "costRank": 0 },
+    "open-charge-map": { "enabled": true, "priority": 20, "costRank": 0 }
+  },
+  "fields": {
+    "access.membershipRequired": ["open-charge-map", "epdk-stations"]
+  }
+}

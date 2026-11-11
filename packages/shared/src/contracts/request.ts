@@ -5,6 +5,7 @@ import {
 } from './common.js';
 
 export const planningPolicySchema = z.object({
+  vehicleDataQuality: z.enum(['verified_only','allow_engineering_estimates']).optional(),
   id: idSchema,
   version: idSchema,
   objective: z.enum(['minimum_total_duration', 'minimum_energy', 'minimum_charging_stops']),

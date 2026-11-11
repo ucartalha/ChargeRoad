@@ -1,6 +1,6 @@
 # CR-005: Pilot doğrulama ve istasyon erişimi değerlendirmesi
 
-Tarih: 2026-11-10. Durum: Pilot araç konfigürasyonları ve p99 ölçümü kabul edildi. Kaynak/katalog eşleştirmesi, koridorlar, gerçek veri seti ve sayısal eşikler açık. İstasyon erişimi aşağıda öneridir; henüz uygulanmadı.
+Tarih: 2026-11-10. Durum: Pilot araç konfigürasyonları ve p99 ölçümü kabul edildi. [CR-005 referans senaryoları ve ölçüm düzeneği](REFERENCE_VALIDATION.md) tamamlandı. Kaynak/katalog eşleştirmesi, koridorlar, gerçek saha verisi ve sayısal eşikler açık. İstasyon erişimi aşağıda öneridir; henüz uygulanmadı.
 
 ## Kabul edilen pilot kapsamı
 
@@ -20,12 +20,14 @@ Batarya kapasitesi kWh, motor gücü kW olarak tutulur; PS ile mekanik hp aynı 
 Mevcut yerel katalog kontrolü (OpenEV v1.24.0, 2026-11-10):
 
 - 2023 Ioniq 6 Standard Range kaydı mevcut: `7274db9a8e4cc1edee6ef7bb4ed042b20899ebc6e0f0e0c8267a5189e03e09f2`. Kaynak 53 kWh brüt ve 50 kWh kullanılabilir bildiriyor. Bu bir aday eşleşmedir; jant/aktarma ve kullanılabilir kapasite bağımsız doğrulanmış sayılmaz.
-- 2025 Ioniq 5 için 63 kWh kayıt mevcut değil. Katalogdaki 77,4/84 kWh kayıtlar pilotun yerine kullanılamaz. CR-006 kapsamında izinli ek kaynak ve alan bazında provenance ile eksik varyant tamamlanmalı; OpenEV kaydı sessizce değiştirilmemeli.
+- OpenEV snapshot'ında 2025 Ioniq 5 için 63 kWh kayıt mevcut değil. CR-006 teknik tesliminde kullanıcı seçimine dayalı ayrı pilot konfigürasyonu ana kataloğa eklendi; kapasite/tüketim/eğri doğrulaması hâlâ açık. Kaynaktaki 77,4/84 kWh kayıtlar pilotun yerine kullanılmadı; OpenEV kaydı değiştirilmedi. [Teslim](VEHICLE_KNOWLEDGE.md).
 - İki pilotun doğrulanmış tüketim referansları ve koşullu DC şarj eğrileri henüz yok. Aynı platform/voltaj sınıfı aynı şarj eğrisi anlamına gelmez. Tek bir %10–80 süre beyanından tam eğri türetilmez.
 
 ## Tüketim referansının alınması
 
 Her kayıt için mümkünse tam varyant/yıl, lastik/jant, hızın anlamı (sabit seyir mi yolculuk ortalaması mı), kWh/100 km, mesafe, süre, sıcaklık, HVAC, yük, rüzgâr/eğim bağlamı ve gösterge/veri kaynağı istenir. Bilinmeyen alanlar boş/unknown kalır.
+
+2026-11-10: Kullanıcı Ioniq 6 için üç tüketim aralığı sağladı ve birimini kWh/100 km olarak doğruladı. Bunlar [v2 kaynak paketinde](../data/vehicle-knowledge/pilots-v2-user-observations.json) ve DB'de ayrı user-report gözlemleri olarak korundu; sabit hız testi veya başka aracın eğrisi sayılmadı. [Koşullar ve kalite durumu](VEHICLE_KNOWLEDGE.md#hız-koşul-ve-mühendislik-referansları).
 
 Aynı ortalama hız farklı dur-kalk, eğim ve hız dağılımlarını temsil edebilir. Tek bir ortalamadan evrensel hız–tüketim eğrisi veya kesin düzeltme katsayısı çıkarılmaz. Farklı kullanıcıların değerleri varyant ve koşulları eşleşmeden birleştirilmez.
 
@@ -40,7 +42,7 @@ Modeli ayarlamakta kullanılan yolculuklar aynı modelin bağımsız doğrulamas
 3. Sabit normalize kaynak snapshot'larıyla tekrarlanabilir replay.
 4. Model/koşul bilgisi bulunan gerçek seyahatlerle enerji, varış SOC'si ve şarj süresi ölçümü.
 
-İlk iki katman gerçek tüketim motoru mevcutmuş gibi raporlanmaz. Şu anda sözleşme ve coordinator testleri var; fiziksel model, referans çözücü ve saha veri seti henüz yok.
+İlk iki katman gerçek tüketim motoru mevcutmuş gibi raporlanmaz. Sözleşme/coordinator testlerine ek olarak 15 elle hesaplanmış snapshot vakası, küçük ağda exhaustive referans çözücü, aday karşılaştırma ve p95/p99 düzeneği var. Fiziksel model ve gerçek saha ölçümleri henüz yok; [uygulama sınırları ve komutlar](REFERENCE_VALIDATION.md).
 
 Varış SOC hatası yüzde puanı olarak ve işaretiyle raporlanır: tahmin eksi gerçek. Pozitif hata kalan enerjinin fazla tahminidir. Toplam tüketim kWh ve normalize tüketim kWh/100 km hataları ayrı tutulur. Şarj, kuyruk ve yol sapması süreleri birbirine karıştırılmaz.
 
@@ -86,7 +88,9 @@ Tek başına koordinat veya connector_id benzersiz kimlik sayılmaz. İç istasy
 - Kapsam bölgesi, son başarılı senkronizasyon, checkpoint ve tamamlık bilgisi saklanır. Boş sonuç ile henüz yüklenmemiş bölge ayrılır; eksik kapsamdan kesin rota yok sonucu çıkarılmaz.
 - Katalog kapsama bilgisi ve kaynak hata sınıfları CR-007/008 adaptör sözleşmelerinde somutlaştırılacak. Mevcut istasyon array portu tek başına bu tamamlık ayrımını kanıtlamaz.
 
-## CR-005'e eklenecek istasyon senaryoları
+## İstasyon adaptörleriyle doğrulanacak senaryolar
+
+Referans düzeneği erişilebilirlik, uyumluluk, durum politikası ve eksik kapsam girdilerini sınar. Aşağıdaki gerçek sorgu/veri toplama davranışları CR-007/008 entegrasyonlarında doğrulanacak; CR-005'in tamamlanması bunların uygulanmış olduğu anlamına gelmez.
 
 - Katalogda çok kayıt varken yalnızca koridor adayları okunur; yol arası boşluklar kaçırılmaz.
 - Yakın fakat karşı yönde/erişimsiz istasyon kullanılmaz.

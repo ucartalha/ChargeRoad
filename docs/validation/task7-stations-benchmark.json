@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-10T20:25:10.707Z",
+  "scope": "local_postgis_candidate_microbenchmark_not_navigation_or_live_availability",
+  "policy": {
+    "version": "station-corridor/1.0.0",
+    "corridorStepsMeters": [
+      2000,
+      5000,
+      10000
+    ],
+    "maxCandidates": 500,
+    "maxRoutes": 5,
+    "maxGeometryPoints": 20000,
+    "statementTimeoutMs": 2000,
+    "staticSoftAgeSeconds": 86400,
+    "maxAutomaticCoordinateMoveMeters": 2000
+  },
+  "concurrency": 4,
+  "warmupPerCase": 30,
+  "counts": {
+    "locations": 17165,
+    "public_locations": 13238,
+    "connector_claim_revisions": 50259,
+    "physical_evse_revisions": 0
+  },
+  "sources": [
+    {
+      "id": "e0ad7d2d-b3c5-4a62-901d-c9e2bbad51ff",
+      "source_key": "epdk-stations",
+      "scope_key": "TR:national-registry",
+      "content_sha256": "ffeb17e1bbaa82555acd6e04086bb81089d20469fee402e7e46e45c8986f3f56",
+      "report": {
+        "source": "epdk-stations",
+        "accepted": 17165,
+        "rawSha256": "2010ea061de095b11bbb5ba8bf8296ce225ad43b8b4d1802270d1e5173857606",
+        "quarantine": [],
+        "sourceRows": 17165,
+        "actualEvses": 0,
+        "quarantined": 0,
+        "contentSha256": "ffeb17e1bbaa82555acd6e04086bb81089d20469fee402e7e46e45c8986f3f56",
+        "connectorClaims": 50259,
+        "publicLocations": 13238,
+        "privateLocations": 3927
+      },
+      "last_checked_at": "2026-11-10T20:02:47.212Z"
+    }
+  ],
+  "groups": [
+    {
+      "name": "short_line",
+      "samples": 1000,
+      "p50Ms": 9.963399999999638,
+      "p95Ms": 14.624699999999848,
+      "p99Ms": 18.18669999999929,
+      "maxMs": 319.1122999999998,
+      "errors": 0,
+      "maxCandidates": 95,
+      "truncatedResponses": 0,
+      "elapsedMs": 2911.1219,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "two_directions",
+      "samples": 1000,
+      "p50Ms": 12.513500000000022,
+      "p95Ms": 16.47609999999986,
+      "p99Ms": 17.47820000000047,
+      "maxMs": 326.90149999999994,
+      "errors": 0,
+      "maxCandidates": 95,
+      "truncatedResponses": 0,
+      "elapsedMs": 3452.8337999999994,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "long_bending_line",
+      "samples": 1000,
+      "p50Ms": 33.598799999999756,
+      "p95Ms": 38.232200000000375,
+      "p99Ms": 44.1213000000007,
+      "maxMs": 344.6814999999988,
+      "errors": 0,
+      "maxCandidates": 231,
+      "truncatedResponses": 0,
+      "elapsedMs": 8414.9294,
+      "maxPoolWaiting": 0
+    },
+    {
+      "name": "sparse_line",
+      "samples": 1000,
+      "p50Ms": 4.042300000000978,
+      "p95Ms": 4.700199999999313,
+      "p99Ms": 5.784399999996822,
+      "maxMs": 7.783400000000256,
+      "errors": 0,
+      "maxCandidates": 0,
+      "truncatedResponses": 0,
+      "elapsedMs": 1031.8967000000011,
+      "maxPoolWaiting": 0
+    }
+  ],
+  "indexPlan": [
+    {
+      "Plan": {
+        "Node Type": "Bitmap Heap Scan",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Relation Name": "station_catalogue_heads",
+        "Alias": "station_catalogue_heads",
+        "Startup Cost": 4.48,
+        "Total Cost": 167.81,
+        "Plan Rows": 2,
+        "Plan Width": 16,
+        "Actual Startup Time": 0.082,
+        "Actual Total Time": 0.44,
+        "Actual Rows": 151,
+        "Actual Loops": 1,
+        "Filter": "st_dwithin(location_geog, '0102000020E61000000200000066666666666640403333333333F3434066666666666640403108AC1C5AF44340'::geography, '2000'::double precision, true)",
+        "Rows Removed by Filter": 28,
+        "Exact Heap Blocks": 176,
+        "Lossy Heap Blocks": 0,
+        "Shared Hit Blocks": 184,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0,
+        "Plans": [
+          {
+            "Node Type": "Bitmap Index Scan",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Index Name": "station_heads_geog_idx",
+            "Startup Cost": 0,
+            "Total Cost": 4.48,
+            "Plan Rows": 10,
+            "Plan Width": 0,
+            "Actual Startup Time": 0.057,
+            "Actual Total Time": 0.057,
+            "Actual Rows": 179,
+            "Actual Loops": 1,
+            "Index Cond": "(location_geog && _st_expand('0102000020E61000000200000066666666666640403333333333F3434066666666666640403108AC1C5AF44340'::geography, '2000'::double precision))",
+            "Shared Hit Blocks": 8,
+            "Shared Read Blocks": 0,
+            "Shared Dirtied Blocks": 0,
+            "Shared Written Blocks": 0,
+            "Local Hit Blocks": 0,
+            "Local Read Blocks": 0,
+            "Local Dirtied Blocks": 0,
+            "Local Written Blocks": 0,
+            "Temp Read Blocks": 0,
+            "Temp Written Blocks": 0
+          }
+        ]
+      },
+      "Planning": {
+        "Shared Hit Blocks": 0,
+        "Shared Read Blocks": 0,
+        "Shared Dirtied Blocks": 0,
+        "Shared Written Blocks": 0,
+        "Local Hit Blocks": 0,
+        "Local Read Blocks": 0,
+        "Local Dirtied Blocks": 0,
+        "Local Written Blocks": 0,
+        "Temp Read Blocks": 0,
+        "Temp Written Blocks": 0
+      },
+      "Planning Time": 1.235,
+      "Triggers": [],
+      "Execution Time": 0.85
+    }
+  ],
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "win32",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H"
+  },
+  "limitations": [
+    "Synthetic geometries against the real station catalogue; not actual route/detour validation",
+    "No operator HTTP load, live availability, battery/charging calculation or production SLA",
+    "Short test duration; no sustained imports/telemetry load"
+  ]
+}
