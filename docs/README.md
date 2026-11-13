@@ -1,14 +1,18 @@
 # ChargeRoad planlama belgeleri
 
-Son güncelleme: 2026-11-11
+Son güncelleme: 2026-11-12
 
 Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sırasını ve henüz kararlaştırılmamış mimari tercihleri ayırır. Buradaki görevler uygulamanın geliştirilmiş olduğu anlamına gelmez.
 
 ## Okuma sırası
 
+Yeni yerel altyapı dilimi: [Valhalla/DEM kararı](adr/009-in-app-navigation-and-self-hosted-routing.md), [dar görev](tasks/valhalla-dem-integration-hardening.md), [tekrarlanabilir kurulum](../infra/valhalla/README.md), [audit ve test raporu](validation/valhalla-dem-hardening-2026-11-12.md). Bu belgeler üretim/saha kabulü anlamına gelmez.
+
 1. [Ürün kapsamı](PRODUCT_SCOPE.md): Kullanıcı akışları ve sürüm sınırları.
 2. [Rota ve enerji kuralları](ROUTING_ENGINE.md): LLM'den bağımsız hesaplama ve yeniden planlama sözleşmesi.
 3. [Görevler](TASKS.md): Bağımlılıklar, kabul ölçütleri ve geliştirme sırası.
+   [Mevcut uygulama yetenekleri](PROJECT_STATUS.md): Mobilde çalışanlar, backend servisleri ve henüz bağlanmayan ürün akışları.
+   [Yönetilen rota ve navigasyon doğrulaması](validation/managed-routing-navigation-2026-11-12.md): Geoapify gerçek uzun rota, asenkron iş ve ön plan navigasyon kabul sınırları.
    [V1 çıkış backlog'u](V1_RELEASE_BACKLOG.md): Task 9'dan devredilen doğrulama ve üretime hazırlık açıkları; V1 öncesi kapanış ölçütleri.
 4. [Açık mimari kararlar](ARCHITECTURE_DECISIONS.md): Birlikte değerlendirilecek seçenekler.
 5. [Araç kataloğu](VEHICLE_CATALOGUE.md): DB aktarımı, API, testler ve kaynak sınırları.
@@ -32,6 +36,11 @@ Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sı
 - [Task 9 yol provider teslimi](ROAD_PROVIDERS.md): Valhalla/OSM, ücretsiz veri/kendi haritamız, PostgreSQL cache/kota, gerçek sapma kanıtı ve kalan doğrulama kapıları.
 - [Task 10 hazırlığı](TASK_010_PREPARATION.md): MET Norway, geçiş saatine göre örnekleme, PostgreSQL cache/304, hava veri kalitesi ve alt görevler.
 - [Task 10 hava provider teslimi](WEATHER_PROVIDERS.md): Gerçek MET Türkiye verisi, örnekleme/geçiş zamanı, ortak cache/kota, HTTP pilotu ve p95/p99 kanıtı.
+- [Task 11 enerji çekirdeği](ENERGY_ENGINE.md): Fizik/referans düzeltmesi, kalibrasyon, batarya/regen sınırları, doğrulama ve kalan saha kapıları.
+- [Task 12 DC şarj çekirdeği](CHARGING_ENGINE.md): SOC integrasyonu, elektriksel yol/istasyon sınırları, kayıp/yardımcı tüketim, kapasite snapshot'ı ve pilot veri kapıları.
+- [Bağımsız veri testleri ve SOC geri beslemesi](INDEPENDENT_DATASET_VALIDATION.md): İki XLSX değerlendirmesi, motor iyileştirmeleri, çevrimdışı kişisel/genel öğrenme ve V1 sonrası saha protokolü.
+- [Task 13 karar hazırlığı](TASK_013_PREPARATION.md): [Kabul edilen mod/SOC/kuyruk kararları](adr/011-planning-objectives-and-conditional-time.md) ve tarihsel hazırlık; güncel uygulama teknik teslim belgesindedir.
+- [Task 13 teknik teslim](STOP_OPTIMIZER.md): Üç mod, yönlü yol bağlantıları, sınırlı arama, koşullu zaman, bağımsız küçük ağ ve ağsız replay; gerçek veri kapıları açık.
 - [Hava sağlayıcısı kararı](adr/008-weather-provider-and-planning-policy.md): MET Norway başlangıcı, eksik temel hava politikası ve 72 saatlik hareket penceresi.
 - [Yol pilotu kararı](adr/007-road-provider-pilot.md): Kabul edilen üç tercih ve sağlayıcı seçiminde ücretsiz plan koşulları.
 - [Canlı müsaitlik kararı](adr/006-live-availability-provider-boundary.md): Sağlayıcıdan bağımsız port, ortak PostgreSQL durumu ve kabul edilen kaynak erişim kapıları.
@@ -60,4 +69,4 @@ Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sı
 - Kaynaklardan bağımsız katalog 1.189 eski ve 2 pilot konfigürasyonunu içerir. Kilowatt kaynağındaki 1.321 kayıt inceleme adayı olarak alındı; otomatik olarak doğrulanmış araç/test sayılmadı. Üç Ioniq 6 kullanıcı tüketim aralığı ayrıca korunur. Pilot enerji profilleri için veri yeterliliği açık.
 - CR-005 için 15 elle hesaplanan sentetik vaka, bağımsız küçük ağ referansı, aday plan denetimi ve 10.000 örnek p95/p99 raporu hazır; gerçek Ioniq saha verisi henüz yok.
 - Statik istasyon kataloğu ve dinamik yol geometrisiyle PostGIS aday sorgusu hazır: 17.165 lokasyon ve 50.259 soket beyanı. Canlı müsaitlik ve fiziksel EVSE gruplaması bu kaynaktan türetilmedi.
-- Rota motoru, kullanıcı hesabı, navigasyon ve haftalık veri jobu henüz uygulanmadı.
+- Backend EV durak/şarj optimizasyonu, [Task 14 genel plan API'si](PLANNING_API.md), [Task 15 mobil planlama bağlantısı](MOBILE_PLANNING.md) ve [harita/Hyundai geri bildirimi](HYUNDAI_AND_MAP_FEEDBACK.md) uygulandı. 26 Hyundai yaklaşık profili DB'de; saha ve telefon kabulü açık. Kullanıcı hesabı, kalıcı misafir geçmişi, ayrıntılı durak/navigasyon ve haftalık veri jobu henüz uygulanmadı.

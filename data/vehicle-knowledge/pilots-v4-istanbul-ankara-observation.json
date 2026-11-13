@@ -1,0 +1,345 @@
+{
+  "schemaVersion": "vehicle-knowledge/1.0.0",
+  "source": {
+    "key": "chargeroad-pilot-configurations",
+    "name": "ChargeRoad pilot configurations and source review",
+    "homepageUrl": "https://github.com/ucartalha/ChargeRoad",
+    "license": "LicenseRef-ChargeRoad-Pilot-Internal",
+    "permission": "own_data",
+    "permissionReference": "Anonymous vehicle configurations supplied by the project owner; external candidate facts retain the Kilowatt attribution license."
+  },
+  "version": "2026-11-11.4",
+  "generatedAt": "2026-11-11T18:34:23.084Z",
+  "retrievedAt": "2026-11-11T18:34:23.084Z",
+  "coverage": "supplemental",
+  "records": [
+    {
+      "externalId": "ioniq6-2023-53-rwd-18",
+      "matchedLegacyId": null,
+      "matchBasis": "Owner-declared exact configuration. Coarse OpenEV record deliberately not merged without wheel/market proof.",
+      "configuration": {
+        "make": "Hyundai",
+        "makeSlug": "hyundai",
+        "model": "Ioniq 6",
+        "modelSlug": "ioniq_6",
+        "modelYear": 2023,
+        "trim": "Pilot RWD",
+        "trimSlug": "pilot_rwd",
+        "variant": "53 kWh / 18 inch",
+        "variantSlug": "rwd_53_18",
+        "vehicleType": "car",
+        "markets": [],
+        "marketedBatteryKwh": 53,
+        "usableBatteryKwh": null,
+        "grossBatteryKwh": null,
+        "drivetrain": "rwd",
+        "wheelInches": 18,
+        "motorPowerKw": 111,
+        "maxAcChargeKw": null,
+        "maxDcChargeKw": null,
+        "connectorTypes": []
+      },
+      "facts": [
+        {
+          "id": "kilowatt-usable-claim",
+          "field": "usableBatteryKwh",
+          "value": 50,
+          "evidence": {
+            "quality": "source_reported",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Source reports 50 kWh; exact wheel/market and capacity validation remain open. Not selected into the public usable-capacity field.",
+            "derivation": null
+          }
+        },
+        {
+          "id": "kilowatt-consumption-claim",
+          "field": "consumptionClaim",
+          "value": {
+            "average_consumption": 14.9
+          },
+          "evidence": {
+            "quality": "quarantined",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Average consumption has no declared speed, conditions, test cycle or AC/DC energy boundary. Not a battery-DC speed reference.",
+            "derivation": null
+          }
+        },
+        {
+          "id": "kilowatt-curve-claim",
+          "field": "chargingCurveClaim",
+          "value": {
+            "max_power": 50,
+            "charging_curve": [
+              {
+                "percentage": 0,
+                "power": 50
+              },
+              {
+                "percentage": 40,
+                "power": 50
+              },
+              {
+                "percentage": 70,
+                "power": 40
+              },
+              {
+                "percentage": 90,
+                "power": 20
+              },
+              {
+                "percentage": 100,
+                "power": 11
+              }
+            ],
+            "is_default_charging_curve": false
+          },
+          "evidence": {
+            "quality": "quarantined",
+            "source": {
+              "sourceId": "kilowatt-open-ev-data",
+              "recordId": "4dd44dba-266f-4307-9604-fa6b594c48a2",
+              "version": "32d7dc59e7b8b7391572ca1e132a1517be9a3b5e",
+              "url": "https://raw.githubusercontent.com/KilowattApp/open-ev-data/32d7dc59e7b8b7391572ca1e132a1517be9a3b5e/data/ev-data.json",
+              "retrievedAt": "2026-11-10T19:22:58.190Z",
+              "publishedAt": null,
+              "license": "MIT-with-Attribution-Requirement"
+            },
+            "verificationNote": "Curve lacks session provenance, temperature and power boundary; 50 kW limit is not independently validated. Not a vehicle acceptance curve.",
+            "derivation": null
+          }
+        }
+      ],
+      "consumption": [],
+      "charging": [],
+      "profiles": [],
+      "missing": [
+        "verified_model_year_market_wheel_match",
+        "usable_capacity_validation",
+        "licensed_conditioned_speed_consumption",
+        "conditioned_dc_curve",
+        "charging_path_limits"
+      ],
+      "observations": [
+        {
+          "hvac": "off",
+          "drivingProfile": "city",
+          "id": "owner-city-mild-no-hvac",
+          "evidence": {
+            "derivation": null,
+            "quality": "source_reported",
+            "source": {
+              "version": "2026-11-10",
+              "recordId": "ioniq6-2023-53-rwd-18",
+              "license": "LicenseRef-ChargeRoad-Pilot-Internal",
+              "sourceId": "chargeroad-owner-observations",
+              "publishedAt": null,
+              "url": null,
+              "retrievedAt": "2026-11-10T19:40:01.174Z"
+            },
+            "verificationNote": "Owner report; kWh/100 km unit explicitly confirmed. No distance, trip average speed, battery-DC boundary or independent measurement provided."
+          },
+          "speedKind": "unknown",
+          "speedKph": null,
+          "energyBoundary": "unknown",
+          "consumptionKwhPer100Km": {
+            "min": 11,
+            "max": 12
+          },
+          "ambientTemperatureC": {
+            "min": 18,
+            "minInclusive": true,
+            "max": 21
+          },
+          "distanceKm": null,
+          "rawReport": "şehir içi 18-21 derece sıcaklıkta klimasız 11-12kw; birim kWh/100 km olarak doğrulandı"
+        },
+        {
+          "hvac": "unknown",
+          "drivingProfile": "highway",
+          "id": "owner-highway-mild-130",
+          "evidence": {
+            "derivation": null,
+            "quality": "source_reported",
+            "source": {
+              "version": "2026-11-10",
+              "recordId": "ioniq6-2023-53-rwd-18",
+              "license": "LicenseRef-ChargeRoad-Pilot-Internal",
+              "sourceId": "chargeroad-owner-observations",
+              "publishedAt": null,
+              "url": null,
+              "retrievedAt": "2026-11-10T19:40:01.174Z"
+            },
+            "verificationNote": "Owner report; kWh/100 km unit explicitly confirmed. No distance, trip average speed, battery-DC boundary or independent measurement provided."
+          },
+          "speedKind": "cruise_target",
+          "speedKph": 130,
+          "energyBoundary": "unknown",
+          "consumptionKwhPer100Km": {
+            "min": 17,
+            "max": 20
+          },
+          "ambientTemperatureC": {
+            "min": 18,
+            "minInclusive": true,
+            "max": 21
+          },
+          "distanceKm": null,
+          "rawReport": "şehirler arası 18-21 derece sıcaklıkta 130 kmh hızlarda 17-20kw tüketim; birim kWh/100 km olarak doğrulandı"
+        },
+        {
+          "hvac": "on",
+          "drivingProfile": "highway",
+          "id": "owner-highway-hot-hvac-130",
+          "evidence": {
+            "derivation": null,
+            "quality": "source_reported",
+            "source": {
+              "version": "2026-11-10",
+              "recordId": "ioniq6-2023-53-rwd-18",
+              "license": "LicenseRef-ChargeRoad-Pilot-Internal",
+              "sourceId": "chargeroad-owner-observations",
+              "publishedAt": null,
+              "url": null,
+              "retrievedAt": "2026-11-10T19:40:01.174Z"
+            },
+            "verificationNote": "Owner report; kWh/100 km unit explicitly confirmed. No distance, trip average speed, battery-DC boundary or independent measurement provided."
+          },
+          "speedKind": "cruise_target",
+          "speedKph": 130,
+          "energyBoundary": "unknown",
+          "consumptionKwhPer100Km": {
+            "min": 18,
+            "max": 22
+          },
+          "ambientTemperatureC": {
+            "min": 25,
+            "minInclusive": false,
+            "max": null
+          },
+          "distanceKm": null,
+          "rawReport": "şehirler arası klimalı 25 derece üzeri sıcaklıklarda 130 kmh 18-22kw tüketim; birim kWh/100 km olarak doğrulandı"
+        },
+        {
+          "id": "owner-istanbul-ankara-410km-16-5",
+          "evidence": {
+            "quality": "source_reported",
+            "source": {
+              "sourceId": "chargeroad-owner-observations",
+              "recordId": "ioniq6-2023-53-rwd-18",
+              "version": "2026-11-11.4",
+              "url": null,
+              "retrievedAt": "2026-11-11T18:34:23.084Z",
+              "publishedAt": null,
+              "license": "LicenseRef-ChargeRoad-Pilot-Internal"
+            },
+            "verificationNote": "Approximate owner journey report. kWh/100 km inferred from earlier explicit unit confirmation. Battery-DC energy boundary, trip-average speed, dates, reset scope and charge-session energy are unverified. Never a constant-speed curve or independent accuracy record.",
+            "derivation": null
+          },
+          "consumptionKwhPer100Km": {
+            "min": 16.5,
+            "max": 16.5
+          },
+          "speedKph": null,
+          "speedKind": "unknown",
+          "drivingProfile": "mixed",
+          "ambientTemperatureC": {
+            "min": 15,
+            "max": 15,
+            "minInclusive": true
+          },
+          "hvac": "on",
+          "distanceKm": 410,
+          "energyBoundary": "unknown",
+          "rawReport": "İstanbul–Ankara: 410 km, yaklaşık 15 °C, %8 şehir içi. Gösterilen ortalama tüketim 16,5 kWh/100 km. Otoyolda çoğunlukla 130, bazı yerlerde 110–120 km/sa; gerçek yolculuk ortalama hızı bilinmiyor. Klima 23 °C, ilk kademe, yolun yaklaşık yarısında açık. İstanbul çıkış %95; Bolu Highway giriş %14, şarj sonrası %90; Ankara varış %19.",
+          "reportedJourneyContext": {
+            "originLabel": "İstanbul",
+            "destinationLabel": "Ankara",
+            "observedDate": null,
+            "approximate": true,
+            "startingChargePercent": 95,
+            "arrivalChargePercent": 19,
+            "cabinTargetC": 23,
+            "hvacActiveSharePercent": 50,
+            "hvacShareBasis": "unspecified",
+            "cityDistanceSharePercent": 8,
+            "typicalCruisingKph": 130,
+            "otherReportedCruisingSpeedsKph": [
+              110,
+              120
+            ],
+            "chargingStops": [
+              {
+                "label": "Bolu Highway",
+                "arrivalChargePercent": 14,
+                "departureChargePercent": 90,
+                "distanceFromOriginKm": null,
+                "chargedEnergyKwh": null,
+                "durationSeconds": null
+              }
+            ],
+            "notes": [
+              "Ambient 15 °C is approximate, not a sensor series.",
+              "HVAC duty is a reported fraction of the journey; exact time/distance basis and electrical power unknown.",
+              "Date, durations, leg distances, battery temperature and actual battery-DC energy are unknown.",
+              "SOC-derived capacity is conditional and must not be promoted to a capacity or SoH fact."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "externalId": "ioniq5-2025-63-rwd-19",
+      "matchedLegacyId": null,
+      "matchBasis": "Owner-selected pilot configuration; no matching 63 kWh entry in pinned OpenEV/Kilowatt snapshots.",
+      "configuration": {
+        "make": "Hyundai",
+        "makeSlug": "hyundai",
+        "model": "Ioniq 5",
+        "modelSlug": "ioniq_5",
+        "modelYear": 2025,
+        "trim": "Pilot RWD",
+        "trimSlug": "pilot_rwd",
+        "variant": "63 kWh / 19 inch",
+        "variantSlug": "rwd_63_19",
+        "vehicleType": "car",
+        "markets": [],
+        "marketedBatteryKwh": 63,
+        "usableBatteryKwh": null,
+        "grossBatteryKwh": null,
+        "drivetrain": "rwd",
+        "wheelInches": 19,
+        "motorPowerKw": 125,
+        "maxAcChargeKw": null,
+        "maxDcChargeKw": null,
+        "connectorTypes": []
+      },
+      "facts": [],
+      "consumption": [],
+      "charging": [],
+      "profiles": [],
+      "missing": [
+        "verified_model_year_market_match",
+        "usable_capacity",
+        "licensed_conditioned_speed_consumption",
+        "conditioned_dc_curve",
+        "charging_path_limits"
+      ]
+    }
+  ]
+}

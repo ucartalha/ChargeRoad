@@ -28,6 +28,19 @@ export const planningEvaluationSchema = z.object({
   const candidate = input.roadCandidates.find((route) => route.id === plan.roadRoute.id);
   if (!candidate || JSON.stringify(candidate) !== JSON.stringify(plan.roadRoute))
     issue('Planned road must match an input road snapshot');
+  if(input.composedRoadLegs){
+    if(plan.roadRoute.composition?.length!==input.composedRoadLegs.length||input.composedRoadLegs.some((l,i)=>
+      plan.roadRoute.composition?.[i].routeId!==l.id||JSON.stringify(plan.roadRoute.composition?.[i].source)!==JSON.stringify(l.source)||
+      !plan.dataSnapshotChecksums.includes(plan.roadRoute.composition?.[i].checksumSha256??'')))issue('Composed road must preserve source leg provenance');
+    const original=input.composedRoadLegs.flatMap(r=>r.segments);let offset=0;
+    if(original.length!==plan.roadRoute.segments.length)issue('Composed road omitted or invented a leg segment');
+    original.forEach((s,i)=>{const actual=plan.roadRoute.segments[i];if(!actual)return;
+      const normalized={...s,id:actual.id,startDistanceMeters:offset,endDistanceMeters:offset+s.distanceMeters};offset+=s.distanceMeters;
+      // Boundary charging-access flags are derived from selected stop locations, all other road data stays unchanged.
+      normalized.startsAtChargingAccess=actual.startsAtChargingAccess;normalized.endsAtChargingAccess=actual.endsAtChargingAccess;
+      if(JSON.stringify(normalized)!==JSON.stringify(actual))issue('Composed segment differs from its source leg');
+    });
+  }
   const expectedSnapshots = [...new Set(input.dataSnapshots.map((snapshot) => snapshot.checksumSha256))].sort();
   const actualSnapshots = [...new Set(plan.dataSnapshotChecksums)].sort();
   if (JSON.stringify(expectedSnapshots) !== JSON.stringify(actualSnapshots)) issue('Plan snapshot identity differs from input');
@@ -58,8 +71,9 @@ export const planningEvaluationSchema = z.object({
         issue('Energy segment references missing or unrelated weather');
         continue;
       }
-      if (energy.departureAt && energy.arrivalAt &&
-          (Date.parse(weather.validAt) < Date.parse(energy.departureAt) || Date.parse(weather.validAt) > Date.parse(energy.arrivalAt)))
+      const timeline=energy.departureAt&&energy.arrivalAt?energy:plan.scenario?.segmentTimes.find(t=>t.segmentId===energy.segmentId);
+      if (timeline?.departureAt && timeline.arrivalAt &&
+          (Date.parse(weather.validAt) < Date.parse(timeline.departureAt) || Date.parse(weather.validAt) > Date.parse(timeline.arrivalAt)))
         issue('Weather must be sampled at segment passage time, including charging delays');
       const sourceTime=weather.sourceUpdatedAt??weather.forecastIssuedAt;
       if(weather.status&& !['available','partial'].includes(weather.status))issue('Unavailable weather cannot support a reliable energy plan');
@@ -84,6 +98,9 @@ export const planningEvaluationSchema = z.object({
     }
     if (connector.powerType !== 'dc' || !input.vehicle.supportedConnectors.includes(connector.standard))
       issue('DC charging stop uses an incompatible connector');
+    if(evse.identityBasis==='catalogue_scenario'&&(input.request.policy.stationDataQuality!=='catalogue_power_scenario'||
+      stop.hardwareBasis!=='catalogue_power_scenario'||!plan.assumptions.some(a=>a.code==='catalogue_power_scenario_not_verified_hardware')))
+      issue('Catalogue hardware scenario requires explicit policy and visible assumptions');
     if (curve.chargingPathId !== path.id || curve.version !== stop.curveReference.version)
       issue('Charging curve version or charging path differs from profile');
     const points = curve.curve.points;
@@ -94,7 +111,7 @@ export const planningEvaluationSchema = z.object({
         (connector.outputVoltageRangeV.max < path.inletVoltageRangeV.min ||
           connector.outputVoltageRangeV.min > path.inletVoltageRangeV.max))
       issue('EVSE and the selected vehicle input path have disjoint voltage ranges');
-    const temperature = stop.batteryTemperatureAtArrivalC.value;
+    const temperature = (stop.batteryTemperatureAtChargeStartC??stop.batteryTemperatureAtArrivalC).value;
     const range = curve.conditions.batteryTemperatureC;
     if ((temperature === null || range === null || temperature < range.min || temperature > range.max) &&
         stop.thermalModelVersion === null)
@@ -145,6 +162,26 @@ export const planningEvaluationSchema = z.object({
       (plan.estimatedArrivalAt === null) !== (time === null) ||
       (plan.estimatedArrivalAt && time && Date.parse(plan.estimatedArrivalAt) !== Date.parse(time)))
     issue('Final plan arrival differs from the final battery state or time');
+  if(plan.search&&plan.search.objective!==request.policy.objective)issue('Plan changed the selected optimization mode');
+  if(plan.scenario){const s=plan.scenario;let scenarioTime=request.departureAt;
+    if(s.departureAt!==request.departureAt)issue('Scenario changed requested departure');
+    const chargeAt=(distance:number)=>{for(const stop of plan.chargingStops.filter(p=>Math.abs(p.routeDistanceMeters-distance)<.001)){
+      const t=s.stopTimes.find(p=>p.stopId===stop.id);if(!t){issue('Missing scenario stop');continue;}
+      if(Math.abs(Date.parse(t.arrivalAt)-Date.parse(scenarioTime))>2||Math.abs((Date.parse(t.departureAt)-Date.parse(t.arrivalAt))/1000-
+        stop.chargingDurationSeconds-stop.connectionDurationSeconds-stop.blockingPreconditioningSeconds-(stop.waiting.seconds??0))>.01)issue('Scenario charging timeline is inconsistent');
+      if(stop.arrivalAt&&Math.abs(Date.parse(stop.arrivalAt)-Date.parse(t.arrivalAt))>2||stop.departureAt&&Math.abs(Date.parse(stop.departureAt)-Date.parse(t.departureAt))>2)issue('Known stop time differs from scenario');
+      scenarioTime=t.departureAt;
+    }};
+    chargeAt(0);
+    for(const [i,energy] of plan.energySegments.entries()){
+      const t=s.segmentTimes[i];if(!t)continue;
+      if(Math.abs(Date.parse(t.departureAt)-Date.parse(scenarioTime))>2||Math.abs((Date.parse(t.arrivalAt)-Date.parse(t.departureAt))/1000-plan.roadRoute.segments[i].drivingDurationSeconds)>.01)
+        issue('Scenario driving timeline is inconsistent');
+      if(energy.departureAt&&Math.abs(Date.parse(energy.departureAt)-Date.parse(t.departureAt))>2||energy.arrivalAt&&Math.abs(Date.parse(energy.arrivalAt)-Date.parse(t.arrivalAt))>2)issue('Known segment time differs from scenario');
+      scenarioTime=t.arrivalAt;chargeAt(plan.roadRoute.segments[i].endDistanceMeters);
+    }
+    if(Math.abs(Date.parse(scenarioTime)-Date.parse(s.arrivalAt))>2)issue('Scenario final arrival differs from its timeline');
+  }
 });
 
 export type PlanningEvaluation = z.infer<typeof planningEvaluationSchema>;

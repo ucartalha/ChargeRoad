@@ -8,27 +8,32 @@ function rate(reference:ConsumptionReference){
   if(reference.energyBoundary==='ac_grid'&&reference.batteryDcConversion?.source.license)return reference.valueKwhPer100Km*reference.batteryDcConversion.gridToBatteryEfficiency;
   return null;
 }
-export function selectReference(vehicle:VehicleEnergyProfile,model:EnergyModel,speed:number,temperature:number,batteryTemperature:number|null):Selection{
+export function createReferenceSelector(vehicle:VehicleEnergyProfile,model:EnergyModel){
   const groups=new Map<string,ConsumptionReference[]>();
   for(const r of vehicle.consumptionReferences){
     const c=r.conditions,e=r.includedEffects;
     if(r.testCycle!=='constant_speed'||rate(r)===null||(e.chargingLosses==='included'&&r.energyBoundary!=='ac_grid')||!c.meanSpeedKph||c.windSpeedKph!==0||c.elevationGainMetersPer100Km!==0||c.payloadKg===null||
-      !c.ambientTemperatureC||temperature<c.ambientTemperatureC.min||temperature>c.ambientTemperatureC.max||
-      (c.batteryTemperatureC&&(batteryTemperature===null||batteryTemperature<c.batteryTemperatureC.min||batteryTemperature>c.batteryTemperatureC.max))||
+      !c.ambientTemperatureC||
       e.cabinHvac==='unknown'||e.batteryThermalManagement==='unknown'||e.elevation==='unknown'||e.wind==='unknown'||
       c.tireDescription!==model.referenceTireDescription)continue;
     if(e.cabinHvac==='included'&&model.referenceCabinKw===null||e.batteryThermalManagement==='included'&&model.referenceBatteryThermalKw===null)continue;
-    const key=JSON.stringify({conditions:{...c,meanSpeedKph:null},effects:e,boundary:r.energyBoundary,
+    const key=JSON.stringify({series:r.comparabilityGroupId??r.source.recordId??r.id,source:r.source.sourceId,revision:r.source.version,
+      conditions:{...c,meanSpeedKph:null},effects:e,boundary:r.energyBoundary,
       conversion:r.batteryDcConversion?.gridToBatteryEfficiency??null});
     const group=groups.get(key)??[];group.push(r);groups.set(key,group);
   }
-  // Prefer measured references, then narrower speed support. IDs break ties reproducibly.
+  const series=[...groups.values()].map(group=>group.sort((a,b)=>a.conditions.meanSpeedKph!-b.conditions.meanSpeedKph!||(a.id<b.id?-1:a.id>b.id?1:0)))
+    .filter(group=>!group.some((r,i)=>i>0&&r.conditions.meanSpeedKph===group[i-1].conditions.meanSpeedKph));
+  // Compile once per evaluation; keep independent source/test series separate.
+  return (speed:number,temperature:number,batteryTemperature:number|null):Selection=>{
   const options:{selection:Selection;score:number;span:number;key:string}[]=[];
-  for(const group of groups.values()){
-    group.sort((a,b)=>a.conditions.meanSpeedKph!-b.conditions.meanSpeedKph!||(a.id<b.id?-1:a.id>b.id?1:0));
-    // Conflicting repeated measurements must be reconciled upstream, not silently averaged.
-    if(group.some((r,i)=>i>0&&r.conditions.meanSpeedKph===group[i-1].conditions.meanSpeedKph))continue;
-    const upper=group.findIndex(r=>r.conditions.meanSpeedKph!>=speed-1e-6);if(upper<0)continue;
+  for(const group of series){
+    const c=group[0].conditions;
+    if(temperature<c.ambientTemperatureC!.min||temperature>c.ambientTemperatureC!.max||
+      c.batteryTemperatureC&&(batteryTemperature===null||batteryTemperature<c.batteryTemperatureC.min||batteryTemperature>c.batteryTemperatureC.max))continue;
+    let lo=0,hi=group.length;
+    while(lo<hi){const mid=(lo+hi)>>>1;if(group[mid].conditions.meanSpeedKph!<speed-1e-6)lo=mid+1;else hi=mid;}
+    const upper=lo;if(upper===group.length)continue;
     const exact=Math.abs(group[upper].conditions.meanSpeedKph!-speed)<1e-6;
     if(!exact&&upper===0)continue;
     const a=group[exact?upper:upper-1],b=group[upper];
@@ -40,4 +45,8 @@ export function selectReference(vehicle:VehicleEnergyProfile,model:EnergyModel,s
   }
   options.sort((a,b)=>b.score-a.score||a.span-b.span||(a.key<b.key?-1:a.key>b.key?1:0));
   if(!options.length)throw new EnergyDataMissing('CONDITION_MATCHED_SPEED_REFERENCE_MISSING');return options[0].selection;
+  };
+}
+export function selectReference(vehicle:VehicleEnergyProfile,model:EnergyModel,speed:number,temperature:number,batteryTemperature:number|null):Selection{
+  return createReferenceSelector(vehicle,model)(speed,temperature,batteryTemperature);
 }

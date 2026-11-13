@@ -6,6 +6,9 @@
     "dist",
     "**/*.spec.ts",
     "**/__tests__/**",
-    "src/planning/validation/**"
+    "src/planning/validation/**",
+    "src/energy/validation/**",
+    "src/charging/validation/**",
+    "src/validation/**"
   ]
 }

@@ -12,6 +12,24 @@ import {normalizeRoadTrip} from '../../roads/normalize-road';
 import type {WeatherDocument} from '../weather-ports';
 const now=Date.parse(instant);
 
+describe('Weather budgets across route legs',()=>{
+  it('deduplicates 5003 segment forecasts and shares the external-call budget across leg signals',async()=>{
+    const clock=jest.spyOn(Date,'now').mockReturnValue(now);
+    try{
+      const cache={get:jest.fn(async()=>document())},service=new WeatherService(config,new WeatherAdapterRegistry([new MetNorwayAdapter(config)]),cache as any);
+      const scope={budgetScope:{}},queries=Array.from({length:5003},(_,i)=>query('dense-'+i));
+      const result=await service.forecast(queries,new AbortController().signal,scope);
+      expect(result.data).toHaveLength(5003);expect(result.data.every(f=>f.status==='available')).toBe(true);
+      expect(cache.get).toHaveBeenCalledTimes(1);
+      await service.forecast([query('next-leg')],new AbortController().signal,scope);
+      const calls=cache.get.mock.calls as unknown as unknown[][];
+      expect(calls[0][4]).toBe(calls[1][4]);expect(calls[0][4]).toMatchObject({limit:64});
+      await service.forecast([query('other-trip')],new AbortController().signal,{budgetScope:{}});
+      expect(calls[0][4]).not.toBe((cache.get.mock.calls as unknown as unknown[][])[2][4]);
+    }finally{clock.mockRestore();}
+  });
+});
+
 describe('Weather provenance, normalization and route sampling',()=>{
   it('interpolates 359° and 1° wind as vectors, preserving actual update and unknown model issue time',()=>{
     const series=new MetNorwayAdapter(config).parse(document()),forecast=normalizeWeather(series,query(),config.providerId,now);

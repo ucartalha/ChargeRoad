@@ -4,6 +4,7 @@ import type { RoadJsonClient,RoadShapeAdapter } from './provider-ports';
 import { RoadProviderError } from './road-client';
 import { z } from 'zod';
 import { decodePolyline6 } from './geometry';
+import {roadSourceVersion} from './road-source-policy';
 import type { RoadEdgeInput,RoadLegInput,RoadTripInput } from './provider-ports';
 
 const summary=z.object({length:z.number().nonnegative(),time:z.number().nonnegative(),has_toll:z.boolean().optional(),has_ferry:z.boolean().optional()}).passthrough();
@@ -35,17 +36,28 @@ export class ValhallaRoadAdapter implements RoadShapeAdapter {
     return [root.trip,...(root.alternates??[]).map(a=>a.trip)].slice(0,request.alternatives).map(trip=>{
       const zone=trip.locations?.[0]?.time_zone_name;
       if(zone&&zone!==(request.originTimeZone??'Europe/Istanbul'))throw new RoadProviderError('Origin timezone does not match request; provide originTimeZone',422);
-      return {hasToll:trip.summary.has_toll??null,hasFerry:trip.summary.has_ferry??null,retrievedAt:response.retrievedAt,
+      const elevationWarnings=new Set<string>();
+      const legs=trip.legs.map(leg=>{
+        const values=leg.elevation?.map(value=>{
+          // Valhalla 3.9.1 graphconstants.h kNoElevationData and skadi sample.cc NO_DATA_VALUE.
+          // Exact provider sentinels, never a geographic lower bound for other providers.
+          if(value===-500||value===-32768){elevationWarnings.add('valhalla_elevation_no_data');return null;}return value;
+        });
+        if(!values||!leg.elevation_interval)elevationWarnings.add('valhalla_elevation_unavailable');
+        if(values&&leg.elevation_interval&&values.length!==Math.ceil(leg.summary.length*1000/leg.elevation_interval)+1)elevationWarnings.add('elevation_sampling_count_mismatch');
+        return {geometry:decodePolyline6(leg.shape,this.config.maxPoints),attributeHandle:leg.shape,distanceMeters:leg.summary.length*1000,seconds:leg.summary.time,
+          maneuvers:leg.maneuvers.map(m=>({begin:m.begin_shape_index,end:m.end_shape_index,seconds:m.time,instruction:m.instruction??'',type:m.type})),
+          elevation:values&&leg.elevation_interval?{values,intervalMeters:leg.elevation_interval}:null,edges:[]};
+      });
+      return {hasToll:trip.summary.has_toll??null,hasFerry:trip.summary.has_ferry??null,retrievedAt:response.retrievedAt,sourceVersion:roadSourceVersion(this.config),
         traffic:'none',sourceUrl:this.config.baseUrl,license:'ODbL-1.0',attributions:[
           {text:'© OpenStreetMap contributors',url:'https://www.openstreetmap.org/copyright',license:'ODbL-1.0'},
           {text:'Routing by Valhalla',url:'https://valhalla.github.io/valhalla/',license:'MIT'},
           {text:'Improve the map',url:'https://www.openstreetmap.org/fixthemap',license:'ODbL-1.0'},
           ...(this.config.usePublicDemo?[{text:'FOSSGIS development routing service',url:'https://routing.openstreetmap.de/about.html',license:'Service fair use'}]:[])],
-        warnings:zone?[]:['origin_timezone_not_confirmed_by_provider'],legs:trip.legs.map(leg=>({
-          geometry:decodePolyline6(leg.shape,this.config.maxPoints),attributeHandle:leg.shape,distanceMeters:leg.summary.length*1000,seconds:leg.summary.time,
-          maneuvers:leg.maneuvers.map(m=>({begin:m.begin_shape_index,end:m.end_shape_index,seconds:m.time,instruction:m.instruction??'',type:m.type})),
-          elevation:leg.elevation&&leg.elevation_interval?{values:leg.elevation,intervalMeters:leg.elevation_interval}:null,edges:[],
-        }))} satisfies RoadTripInput;
+        warnings:[...(zone?[]:['origin_timezone_not_confirmed_by_provider']),...elevationWarnings,
+          ...(!this.config.graphVersion||this.config.graphVersion==='unknown'?['graph_version_unknown']:[]),
+          ...(!this.config.demVersion||this.config.demVersion==='unknown'?['dem_version_unknown']:[])],legs} satisfies RoadTripInput;
     });
   }
   async attributes(leg:RoadLegInput,client:RoadJsonClient,signal:AbortSignal){

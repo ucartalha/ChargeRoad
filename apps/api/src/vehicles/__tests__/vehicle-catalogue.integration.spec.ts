@@ -157,4 +157,14 @@ integration('Vehicle catalogue with PostgreSQL and HTTP', () => {
     expect(externalFetch.mock.calls.every(([url]) => String(url).startsWith(baseUrl))).toBe(true);
     externalFetch.mockRestore();
   });
+  it('returns one make/model option per stable slug even when source names have different capitalisation',async()=>{
+    const existing=(await pool.query('SELECT * FROM catalogue_entries LIMIT 1')).rows[0];
+    const id=(await pool.query('INSERT INTO catalogue_entities DEFAULT VALUES RETURNING id')).rows[0].id;
+    const detail={...existing.detail,id,make:existing.detail.make.toLowerCase(),model:existing.detail.model.toLowerCase()};
+    await pool.query(`INSERT INTO catalogue_entries(entity_id,primary_source,make_slug,model_slug,model_year,markets,search_text,is_active,detail)
+      VALUES($1,$2,$3,$4,$5,$6,$7,true,$8::jsonb)`,[id,existing.primary_source,existing.make_slug,existing.model_slug,existing.model_year,existing.markets,existing.search_text,JSON.stringify(detail)]);
+    const makes=await repository.makes(),models=await repository.models(existing.make_slug);
+    expect(makes.filter(m=>m.slug===existing.make_slug)).toHaveLength(1);expect(models.filter(m=>m.slug===existing.model_slug)).toHaveLength(1);
+    await pool.query('DELETE FROM catalogue_entries WHERE entity_id=$1',[id]);await pool.query('DELETE FROM catalogue_entities WHERE id=$1',[id]);
+  });
 });

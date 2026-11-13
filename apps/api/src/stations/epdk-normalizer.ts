@@ -29,11 +29,12 @@ export function normalizeEpdk(bytes:Buffer,retrievedAt=new Date().toISOString())
       retrievedAt,publishedAt:null,license:null};
     const warnings=['registry_lifecycle_not_live_status','evse_grouping_unknown'];
     const connectorClaims=r.soketler.map(c=>{
-      const standard=c.soketTuru==='AC_TYPE2'?'type2' as const:c.soketTuru==='DC_CHADEMO'?'chademo' as const:'other' as const;
+      const standard=c.soketTuru==='AC_TYPE2'?'type2' as const:c.soketTuru==='DC_CHADEMO'?'chademo' as const:
+        ['DC_CCS','DC_CCS2','DC_COMBO2'].includes(c.soketTuru)?'ccs2' as const:'other' as const;
       if(standard==='other')warnings.push('connector_subtype_unverified:'+c.soketTuru);
       const power=typeof c.soketGucu==='number'?c.soketGucu:Number(c.soketGucu?.replace(',','.'));
       return {sourceConnectorId:c.soketNo,standard,powerType:c.soketTipi==='AC'?'ac' as const:c.soketTipi==='DC'?'dc' as const:'unknown' as const,
-        maxPowerKw:Number.isFinite(power)&&power>0?power:null,rawType:c.soketTuru};
+        maxPowerKw:Number.isFinite(power)&&power>0?power:null,rawType:c.soketTuru,granularity:'physical_connector' as const,quantity:1};
     });
     const record=stationCatalogueRecordSchema.safeParse({externalId:r.sarjIstasyonuNo,partyId:r.sarjAgiIsletmecisiLisansNo,
       countryCode:'TR',matchCanonicalId:null,matchRationale:null,lifecycle:'unknown',

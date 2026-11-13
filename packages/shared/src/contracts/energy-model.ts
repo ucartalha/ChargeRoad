@@ -3,8 +3,9 @@ import {finiteSchema,idSchema,nonnegativeSchema,numberRangeSchema,percentSchema,
 
 // All coefficients are explicit, source-backed vehicle calibration, never universal defaults.
 export const energyModelSchema=z.object({
-  id:idSchema,version:idSchema,quality:z.enum(['verified','engineering_estimate']),source:sourceReferenceSchema,
+  id:idSchema,version:idSchema,vehicleVariantId:idSchema,quality:z.enum(['verified','engineering_estimate']),source:sourceReferenceSchema,
   verificationNote:z.string().min(1),assumptions:z.array(z.string().min(1)),
+  calibrationRecordIds:z.array(idSchema).max(10000).optional(),
   tireSetupId:idSchema.nullable(),referenceTireDescription:z.string().min(1).nullable(),
   mode:z.enum(['physics','reference_corrected']),
   speedPolicy:z.enum(['require_speed_trace','allow_travel_average_proxy']),
@@ -14,6 +15,8 @@ export const energyModelSchema=z.object({
   baseAuxiliaryKw:nonnegativeSchema,
   cabin:z.object({heatKwPerDegree:nonnegativeSchema,coolKwPerDegree:nonnegativeSchema,maxKw:nonnegativeSchema}).strict(),
   batteryThermalKw:nonnegativeSchema,
+  automaticBatteryThermal:z.object({controlBandC:numberRangeSchema,maxHeatingElectricalKw:nonnegativeSchema,
+    maxCoolingElectricalKw:nonnegativeSchema,heatingCop:positiveSchema,coolingCop:positiveSchema}).strict().optional(),
   regeneration:z.object({efficiency:nonnegativeSchema.max(1),temperatureRangeC:numberRangeSchema,
     taperStartSocPercent:percentSchema,zeroAtSocPercent:percentSchema}).strict(),
   rotationalMassFactor:positiveSchema.min(1).max(2),maxTractionBatteryKw:positiveSchema.nullable(),
@@ -21,10 +24,13 @@ export const energyModelSchema=z.object({
   capacityTemperatureCurve:z.array(z.object({temperatureC:finiteSchema,factor:positiveSchema.max(1)}).strict()).min(2).nullable(),
   passiveThermal:z.object({heatCapacityKwhPerC:positiveSchema,conductanceKwPerC:nonnegativeSchema}).strict().nullable(),
   unknowns:z.object({payloadKg:nonnegativeSchema.nullable(),sohPercent:positiveSchema.max(100).nullable(),
+    initialBatteryTemperature:z.literal('ambient_equilibrium').optional(),
     cabinTargetC:finiteSchema.nullable(),hvacKw:nonnegativeSchema.nullable(),
     capacityTemperatureFactor:positiveSchema.max(1).nullable(),airDensityKgPerM3:positiveSchema.nullable(),
     allowFlatElevation:z.boolean()}).strict(),
 }).strict().superRefine((model,ctx)=>{
+  if(model.automaticBatteryThermal&&(!model.passiveThermal||model.batteryThermalKw!==0))
+    ctx.addIssue({code:'custom',path:['automaticBatteryThermal'],message:'Automatic thermal control requires a thermal mass/conductance model and cannot double-count a fixed thermal load'});
   if(model.regeneration.taperStartSocPercent>=model.regeneration.zeroAtSocPercent)
     ctx.addIssue({code:'custom',path:['regeneration'],message:'Regeneration SOC taper must have positive width'});
   if(model.capacityTemperatureCurve&&!strictlyIncreasing(model.capacityTemperatureCurve.map(p=>p.temperatureC)))

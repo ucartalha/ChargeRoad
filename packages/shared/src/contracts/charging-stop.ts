@@ -11,11 +11,14 @@ export const chargingStopSchema = z.object({
   evseId: idSchema,
   connectorId: idSchema,
   chargingPathId: idSchema,
+  hardwareBasis:z.enum(['verified_hardware','catalogue_power_scenario']).optional(),
   location: coordinateSchema,
   routeDistanceMeters: nonnegativeSchema,
-  detourDistanceMeters: nonnegativeSchema,
-  detourDrivingSeconds: nonnegativeSchema,
+  detourDistanceMeters: nonnegativeSchema.nullable(),
+  detourDrivingSeconds: nonnegativeSchema.nullable(),
+  detourBasis:z.literal('included_in_road_not_separately_quantified').optional(),
   arrivalChargePercent: percentSchema,
+  chargeStartPercent:percentSchema.optional(),connectionBatteryEnergyKwh:nonnegativeSchema.optional(),
   targetChargePercent: percentSchema,
   effectiveBatteryCapacityKwh: positiveSchema,
   energyDeliveredAtInletKwh: positiveSchema,
@@ -28,6 +31,7 @@ export const chargingStopSchema = z.object({
     extrapolation: z.literal('forbidden'),
   }).strict(),
   batteryTemperatureAtArrivalC: numericObservationSchema,
+  batteryTemperatureAtChargeStartC:numericObservationSchema.optional(),
   batteryTemperatureAtDepartureC: numericObservationSchema,
   thermalModelVersion: idSchema.nullable(),
   chargingDurationSeconds: positiveSchema,
@@ -50,11 +54,16 @@ export const chargingStopSchema = z.object({
     sourceId: idSchema,
   }).strict(),
 }).strict().superRefine((stop, ctx) => {
+  if((stop.detourDistanceMeters===null||stop.detourDrivingSeconds===null)&&stop.detourBasis!=='included_in_road_not_separately_quantified')
+    ctx.addIssue({code:'custom',path:['detourBasis'],message:'Unknown separate detour needs explicit actual-road accounting'});
   if (stop.targetChargePercent <= stop.arrivalChargePercent)
     ctx.addIssue({ code: 'custom', path: ['targetChargePercent'], message: 'A charging stop must increase state of charge' });
-  if (stop.arrivalChargePercent < stop.curveReference.coveredSocPercent.min ||
+  if ((stop.chargeStartPercent??stop.arrivalChargePercent) < stop.curveReference.coveredSocPercent.min ||
       stop.targetChargePercent > stop.curveReference.coveredSocPercent.max)
     ctx.addIssue({ code: 'custom', path: ['curveReference'], message: 'Charging outside reference coverage is forbidden' });
+  if(stop.chargeStartPercent!==undefined&&(Math.abs((stop.arrivalChargePercent-stop.chargeStartPercent)*stop.effectiveBatteryCapacityKwh/100-(stop.connectionBatteryEnergyKwh??0))>1e-6||
+    Math.abs((stop.targetChargePercent-stop.chargeStartPercent)*stop.effectiveBatteryCapacityKwh/100-stop.energyStoredKwh)>1e-6))
+    ctx.addIssue({code:'custom',path:['chargeStartPercent'],message:'Connection discharge and actual charging SOC must conserve energy'});
   if (Math.abs(stop.energyDeliveredAtInletKwh - stop.energyStoredKwh - stop.auxiliaryEnergyKwh - stop.conversionLossKwh) > 0.001)
     ctx.addIssue({ code: 'custom', path: ['energyStoredKwh'], message: 'Stored, auxiliary and lost energy must balance inlet energy' });
   if (stop.energyStoredKwh > stop.effectiveBatteryCapacityKwh)

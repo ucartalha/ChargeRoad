@@ -42,6 +42,12 @@ export class VehicleKnowledgeRepository {
         const bound = await client.query<{entity_id:string}>(
           'SELECT entity_id FROM catalogue_bindings WHERE source_key=$1 AND external_id=$2',[data.source.key,record.externalId]);
         let entityId = bound.rows[0]?.entity_id;
+        if(record.matchedEntityId){
+          if(entityId&&entityId!==record.matchedEntityId)throw new Error('Existing source identity cannot be remapped');
+          if(record.matchedLegacyId){const legacy=await client.query<{entity_id:string}>('SELECT entity_id FROM catalogue_bindings WHERE legacy_id=$1',[record.matchedLegacyId]);
+            if(legacy.rows[0]?.entity_id!==record.matchedEntityId)throw new Error('Canonical and legacy match targets differ');}
+          entityId=record.matchedEntityId;await this.validateMatch(client,entityId,record);
+        }
         if (record.matchedLegacyId) {
           const match = await client.query<{entity_id:string}>(
             'SELECT entity_id FROM catalogue_bindings WHERE legacy_id=$1',[record.matchedLegacyId]);
@@ -81,6 +87,8 @@ export class VehicleKnowledgeRepository {
             assumptions:profileEntry.evidence.derivation?.assumptions ?? [],
             methodId:profileEntry.evidence.derivation?.methodId ?? null,methodVersion:profileEntry.evidence.derivation?.version ?? null};
           profile.vehicleVariantId=entityId;
+          if(profile.energyModel)profile.energyModel.vehicleVariantId=entityId;
+          if(profile.chargingModel)profile.chargingModel.vehicleVariantId=entityId;
           profile.consumptionReferences.forEach(r=>r.vehicleVariantId=entityId);
           profile.dcChargingCurves.forEach(c=>c.vehicleVariantId=entityId);
           const payload=canonicalJson(vehicleEnergyProfileSchema.parse(profile));

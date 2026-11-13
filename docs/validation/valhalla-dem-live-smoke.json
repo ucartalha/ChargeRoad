@@ -1,0 +1,119 @@
+{
+  "generatedAt": "2026-11-12T13:18:03.816Z",
+  "evidence": "live_smoke",
+  "engine": "3.9.1",
+  "graphVersion": "unknown",
+  "demVersion": "unknown",
+  "demLicense": "unknown",
+  "endpoint": "http://127.0.0.1:8003",
+  "apiPort": "53087",
+  "existingApi3000And3001": "not_restarted_or_reconfigured",
+  "request": {
+    "origin": {
+      "latitude": 39.9,
+      "longitude": 32.8
+    },
+    "destination": {
+      "latitude": 39.91,
+      "longitude": 32.8
+    }
+  },
+  "distanceMeters": 4407,
+  "seconds": 467.23787433928953,
+  "segments": 72,
+  "normalizedProfileEntries": 229,
+  "source": {
+    "sourceId": "valhalla-self-hosted",
+    "recordId": "db7ef1899e7fcd84d2a1",
+    "version": "engine=3.9.1;graph=unknown;dem=unknown;build=3d5d1de3808f",
+    "url": "http://127.0.0.1:8003",
+    "retrievedAt": "2026-11-12T13:18:03.794Z",
+    "publishedAt": null,
+    "license": "ODbL-1.0"
+  },
+  "heightsAtOriginalPoints": [
+    905,
+    890
+  ],
+  "rawProfiles": [
+    {
+      "intervalMeters": 30,
+      "samples": 148,
+      "distanceKm": 4.407,
+      "seconds": 463.297
+    },
+    {
+      "intervalMeters": 300,
+      "samples": 16,
+      "distanceKm": 4.407,
+      "seconds": 463.297
+    }
+  ],
+  "noDataSamples": 0,
+  "quality": "modelled",
+  "warnings": [
+    "graph_version_unknown",
+    "dem_version_unknown",
+    "live_traffic_unavailable",
+    "speed_is_travel_time_average",
+    "elevation_dataset_not_independently_verified",
+    "compatible_shape_intervals_coalesced_geometry_tolerance_1m",
+    "speed_limits_incomplete",
+    "road_duration_adjusted_to_speed_limits"
+  ],
+  "qa": {
+    "algorithm": "elevation-qa/1.0.0",
+    "sourceQuality": "modelled",
+    "sampleCount": 158,
+    "duplicateBoundaries": 71,
+    "conflictingBoundaries": 0,
+    "minElevationMeters": 868.1,
+    "maxElevationMeters": 911.2,
+    "lengthMeters": 4407,
+    "coveredMeters": 4407,
+    "missingSamples": 0,
+    "fullCoverage": true,
+    "gainMeters": 92.29999999999995,
+    "lossMeters": 109.89999999999998,
+    "netHeightMeters": -17.600000000000023,
+    "balanceErrorMeters": 0,
+    "suspectIntervals": [
+      {
+        "distanceMeters": 180,
+        "spanMeters": 30,
+        "gradePercent": -31.333333333333258
+      }
+    ],
+    "suspectThresholdPercent": 20,
+    "rolling": [
+      {
+        "windowMeters": 30,
+        "completeWindows": 156,
+        "missingWindows": 0,
+        "maxAbsoluteGradePercent": 31.333333333333258,
+        "minGradePercent": -31.333333333333258,
+        "maxGradePercent": 13.999999999999774
+      },
+      {
+        "windowMeters": 150,
+        "completeWindows": 150,
+        "missingWindows": 0,
+        "maxAbsoluteGradePercent": 15.53333333333338,
+        "minGradePercent": -15.53333333333338,
+        "maxGradePercent": 12.533333333333301
+      },
+      {
+        "windowMeters": 300,
+        "completeWindows": 144,
+        "missingWindows": 0,
+        "maxAbsoluteGradePercent": 7.033333333333341,
+        "minGradePercent": -7.033333333333341,
+        "maxGradePercent": 5.46666666666666
+      }
+    ],
+    "windowPolicy": "start_at_each_unique_sample_full_windows_only_no_interpolation_across_missing",
+    "partialWindows": false
+  },
+  "fieldVerified": false,
+  "note": "Original point /height and snapped road profile endpoints need not coincide. Equal SRTM results are not independent road elevation validation."
+}

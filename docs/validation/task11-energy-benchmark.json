@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-11-11T19:41:48.432Z",
+  "scope": "Synthetic local CPU/async engine only; no external HTTP or production SLA",
+  "groups": [
+    {
+      "id": "short_1_segment",
+      "segments": 1,
+      "distanceMeters": 1000,
+      "inputChecksum": "6cbcffcc9da0a2abad5244298c44fa01bb48f9b2b739b2b80f89d39e190d1134",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 0.18269999999984066,
+        "p95Ms": 0.3593999999998232,
+        "p99Ms": 0.8342000000002372,
+        "maxMs": 3.8073999999996886
+      },
+      "estimatedOnly": {
+        "samples": 1000,
+        "p50Ms": 0.18269999999984066,
+        "p95Ms": 0.3593999999998232,
+        "p99Ms": 0.8342000000002372,
+        "maxMs": 3.8073999999996886
+      },
+      "counts": {
+        "estimated": 1000
+      }
+    },
+    {
+      "id": "long_1000_segments",
+      "segments": 1000,
+      "distanceMeters": 1000000,
+      "inputChecksum": "ed7b3f7a93665df5ab333f768961d7f52276347d8ad0e4581ec0e2b06ed1c0a8",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 35.38420000000042,
+        "p95Ms": 42.074500000000626,
+        "p99Ms": 50.71049999999741,
+        "maxMs": 102.88660000000164
+      },
+      "estimatedOnly": {
+        "samples": 1000,
+        "p50Ms": 35.38420000000042,
+        "p95Ms": 42.074500000000626,
+        "p99Ms": 50.71049999999741,
+        "maxMs": 102.88660000000164
+      },
+      "counts": {
+        "estimated": 1000
+      }
+    },
+    {
+      "id": "reference_1000_segments_64_speed_points",
+      "segments": 1000,
+      "distanceMeters": 1000000,
+      "inputChecksum": "4143a07dc4c662a919177d049e236694169d61a001fb7f4a7966097cfa847fb6",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 38.998299999992014,
+        "p95Ms": 42.91719999999623,
+        "p99Ms": 50.733500000002095,
+        "maxMs": 96.79589999999735
+      },
+      "estimatedOnly": {
+        "samples": 1000,
+        "p50Ms": 38.998299999992014,
+        "p95Ms": 42.91719999999623,
+        "p99Ms": 50.733500000002095,
+        "maxMs": 96.79589999999735
+      },
+      "counts": {
+        "estimated": 1000
+      }
+    }
+  ]
+}

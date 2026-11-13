@@ -7,8 +7,8 @@ describe('EPDK station normalization and source boundaries',()=>{
   it('preserves real connector identities without inventing EVSE grouping or availability',()=>{
     const p=normalizeEpdk(epdkBytes());
     expect(p.records[0].station.evses).toEqual([]);
-    expect(p.records[0].connectorClaims[0]).toMatchObject({sourceConnectorId:'SKT/ŞRJ/test',standard:'other',rawType:'DC_CCS',maxPowerKw:150});
-    expect(p.records[0].warnings).toContain('connector_subtype_unverified:DC_CCS');
+    expect(p.records[0].connectorClaims[0]).toMatchObject({sourceConnectorId:'SKT/ŞRJ/test',standard:'ccs2',rawType:'DC_CCS',maxPowerKw:150,granularity:'physical_connector',quantity:1});
+    expect(p.records[0].warnings).not.toContain('connector_subtype_unverified:DC_CCS');
     expect(p.scope.geographicCoverageVerified).toBe(false);
   });
   it('distinguishes known private access from unknown access',()=>{

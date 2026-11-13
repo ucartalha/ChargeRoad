@@ -4,6 +4,13 @@ export * from './contracts/road-weather.js';
 export * from './contracts/weather-route.js';
 export * from './contracts/energy-model.js';
 export * from './contracts/energy-evaluation.js';
+export * from './contracts/capacity.js';
+export * from './contracts/charging-model.js';
+export * from './contracts/charging-evaluation.js';
+export * from './contracts/energy-feedback.js';
+export * from './contracts/optimizer.js';
+export * from './contracts/planning-http.js';
+export * from './contracts/planning-job.js';
 export * from './contracts/road-access.js';
 export * from './contracts/stations.js';
 export * from './contracts/request.js';
@@ -13,3 +20,4 @@ export type { VehicleCatalogueEntry, VehicleCatalogueDetail, VehicleCataloguePag
 export * from './contracts/evaluation.js';
 export * from './contracts/vehicle-knowledge.js';
 export * from './contracts/station-catalogue.js';
+export * from './contracts/location-search.js';

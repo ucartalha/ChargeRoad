@@ -103,19 +103,26 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 - Kabul: Bütün rota için yalnızca hareket saati kullanılmıyor; rüzgâr yönü mevcut; tahmin üretim zamanı kaydediliyor; eksik veri ve tahmin ufku aşımı açık sonuç veriyor.
 
 ### CR-011 — Enerji tüketimi motoru
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-11 teknik alt teslim: [Enerji çekirdeği](ENERGY_ENGINE.md), [ADR-009](adr/009-energy-evaluation-and-calibration.md). Fizik/referans fark düzeltmesi, varyanta bağlı immutable kalibrasyon, SOC/SOH, hava/eğim/yük/yardımcı enerji, hız izi, termal/regen sınırları, ara rezerv ve kısmi/deadline sonuçları uygulandı. Analitik replay, DB yayını ve p95/p99 raporları mevcut.
+- Doğrulama: 273 API/DB ve 35 shared test geçti; mobil dahil tip kontrolleri ve API derlemesi başarılı. Sentetik 1.000 kesimde p99 yaklaşık 73 ms; saha doğruluğu/üretim SLA kanıtı değil.
+- Kullanıcının İstanbul–Ankara kaydı v4 paketinde ve DB'de source-reported tutuluyor: 410 km, 16,5 kWh/100 km, %95 çıkış, Bolu %14→%90, %19 varış. Koşullu kapasite oranı gerçek kapasite/SOH sayılmadı. İki pilotta yayımlanmış profil/kalibrasyon yok; uygun bağımsız holdout 0, saha metriği `awaiting_field_data`. Teknik alt kapsam hazır; görev bütünü bu kabul kapıları nedeniyle IN_PROGRESS, DONE veya backlog'a devredildi sayılmaz.
 - Bağımlılık: DEC-008; CR-005, CR-006, CR-009, CR-010.
 - İş: Kesim bazında batarya tüketimini ve batarya profilini hesapla.
 - Kabul: Hız, sıcaklık, eğim, rüzgâr ve yardımcı tüketimin varsayımları kayıtlı; rejenerasyon fiziksel sınırları aşmıyor; enerji çift sayılmıyor; pilot hata metriği CR-001'e göre raporlanıyor.
 
 ### CR-012 — Şarj eğrisi ve süre hesabı
-- Durum: TODO
+- Durum: DONE
+- Sorumlu: Codex; 2026-11-11 teknik teslim. [Hesap, sınırlar ve kanıt](CHARGING_ENGINE.md), [ADR-010](adr/010-dc-charging-curve-integration.md).
 - Bağımlılık: DEC-007, DEC-008; CR-005, CR-006, CR-007.
 - İş: Araç eğrisi ve istasyon sınırlarından alınacak enerji ve süreyi hesapla.
 - Kabul: Sabit maksimum güç varsayımı yapılmıyor; yüzdelere bağlı güç ve kayıp tanımı açık; eksik eğri politikası var; elle hesaplanabilir örnekler ve kapasite sınırları geçiyor.
+- Doğrulama: SOC/güç ve akım×voltaj integrasyonu, gerçek giriş voltajı/şarj yolu/connector sınırları, ortak güç allocation'ı, enerji dengesi, kapasite snapshot'ı, iptal ve immutable DB replay testleri geçti. Elle hesaplanan dört örnek ve 1.000'er örnek p95/p99 raporu mevcut. İki gerçek Hyundai pilotunda profil eksikliği raporlandı; sentetik testler saha doğruluğu sayılmadı. CR-011 IN_PROGRESS kalır; gerçek araç planı ve mobil bağlantı bu teslimle tamamlanmaz.
 
 ### CR-013 — Şarj durağı optimizasyonu
-- Durum: TODO
+- Durum: DONE
+- 2026-11-12 teknik teslim: [Solver/coordinator, üç mod, conditional timeline ve doğrulama](STOP_OPTIMIZER.md). Bağımsız exhaustive küçük ağ referansı, ağsız replay, source/road/enerji/şarj doğrulaması ve 1.000'er örneklik p95/p99 mevcut. Gerçek pilot profil/EVSE/saha veri kapıları ve CR-011/008/022 açık kalır; API/mobil akışı sonraki görevlerdir.
+- 2026-11-11/12 kararları: [Hazırlık](TASK_013_PREPARATION.md) ve [ADR-011](adr/011-planning-objectives-and-conditional-time.md). Üç mod (default süre), kullanıcı rezerv/varış SOC girdileri, %80 üstünü de değerlendirme, bilinmeyen kuyrukta koşullu 0 dakika, net sürüş enerjisi ölçütü ve bütçede doğrulanmış incumbent sunumu kabul edildi ve uygulandı.
 - Bağımlılık: DEC-008; CR-007, CR-009, CR-010, CR-011, CR-012. Canlı durum varsa CR-008 eklenir.
 - İş: Alternatif yol ve durakları rezerv, zaman ve uyumluluk kısıtlarıyla değerlendir.
 - Kabul: Başlangıç şarjı sonucu değiştiriyor; şarjsız/tek/çok duraklı ve ulaşılamaz örnekler geçiyor; sapma ve şarj süreleri hesaba katılıyor; hava/varış zamanı yeniden değerlendiriliyor; arama sınırları ve veri belirsizliği sonuçta mevcut.
@@ -123,20 +130,23 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 ## API ve mobil planlama
 
 ### CR-014 — Planlama API'si
-- Durum: TODO
+- Durum: DONE
 - Bağımlılık: DEC-002, DEC-003; CR-013.
 - İş: Seçilen erişim modeline uygun plan isteği/yanıtı ve hata sözleşmesini uygula.
+- 2026-11-12 teslim: [POST /v1/plans, sözleşmeler ve yük koruması](PLANNING_API.md). Strict genel DTO, zorunlu rezerv/varış SOC'si, üç mod, güvenli hata ayrımı, model/veri sürümleri, gövde sınırları, IP rate limit ve iki instance ortak PostgreSQL admission uygulandı. Migration 011 yerel DB'de; 465 API/DB + 39 shared test, typecheck/build başarılı. Gerçek HTTP kontrolü eksik pilot enerji profilini doğru bildiriyor. Erişim stateless_guest; auth/misafir geçmişi, mobil bağlantı ve saha kabulü ayrı görevlerde açık.
 - Kabul: Yüzde/koordinat/zaman doğrulanıyor; sağlayıcı hatası ile ulaşılamaz rota ayrılıyor; plan/model/veri sürümü dönüyor; kötü veya aşırı büyük isteğe karşı sınırlar tanımlı.
 
 ### CR-015 — Araç seçimi ve başlangıç şarj formu
-- Durum: IN_PROGRESS
+- Durum: DONE
 - Bağımlılık: DEC-002, DEC-003; CR-006, CR-014.
 - İş: Araç varyantı, adres/konum, başlangıç şarjı, hareket zamanı ve rezerv tercihlerini bağla.
+- 2026-11-12 teknik teslim: [Mobil planlama akışı](MOBILE_PLANNING.md). Kullanıcı adres araması + isteğe bağlı konum, açık onaylı mühendislik profili ve veri yetersizliğinde yol önizlemesini seçti. Form gerçek API'lere bağlı; SOC/rezerv/varış, üç mod, zaman ve yol tercihleri doğrulanıyor. İptal/eski yanıt/Retry-After davranışı var. Photon adapter/ortak PG kota-cache, migration 012 ve ayrı yol önizlemesi eklendi. Gerçek İstanbul–Ankara HTTP akışı doğrulandı; 481 API/DB + 41 shared + 11 mobil akış testi, typecheck/API build ve Android/iOS export başarılı. Telefon üzerinde izin/GPS/görsel kabulü V1-MOBILE-001'de açık; gerçek EV kalibrasyonu, harita ve navigasyon tamamlandı sayılmaz.
 - 2026-11-10 alt teslim: Marka → model → yıl/varyant akışı, arama, sayfalama, yükleniyor/hata/tekrar dene, yerel araç ID saklama ve rota ekranında araç özeti uygulandı. Başlangıç şarjı alanı 0–100 doğrulamasıyla eklendi. Rota isteği, geocoding, hareket zamanı ve rezerv tercihleri henüz bağlı değil; görev bu nedenle IN_PROGRESS.
 - Kabul: Kullanıcıdan başlangıç şarjı alınıyor; geçersiz değer gönderilmiyor; seçilen varyantla plan yapılıyor; yükleniyor/hata/sonuç durumları görünür. Yerel veya hesapta saklama ilgili karara uyuyor.
 
 ### CR-016 — Haritada plan ve durak ayrıntıları
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-12 kullanıcı geri bildirimi: [Harita odaklı düzen](HYUNDAI_AND_MAP_FEEDBACK.md) açılış haritası, viewport DB istasyonları, gerçek rota çizgisi/durak işaretleri, kaydırılabilir panel ve profil/rota sırasında araç seçimini uygular. 26 Hyundai için kaynaklı yaklaşık profil yayını da tamamlandı. Ayrıntılı durak ekranı, gerçek cihaz ve şarjlı saha kabulü açık olduğundan görev IN_PROGRESS.
 - Bağımlılık: DEC-006; CR-014, CR-015.
 - İş: Rota çizgisi, duraklar, varış şarjları ve süre ayrımını göster.
 - Kabul: Gerçek cihazda harita açılıyor; duraklar doğru konumda; önerilen şarj ve veri yaşı görünür; bilinmeyen müsaitlik uygun şekilde belirtiliyor.
@@ -144,19 +154,23 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 ## Seyahat ve yeniden planlama
 
 ### CR-017 — Seyahat durumu ve olay sıralaması
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-12: [ADR-014](adr/014-managed-road-jobs-and-foreground-navigation.md) ile geçici yetkili PG plan işi, iptal/generation çitlemesi ve cihazda tek yolculuk snapshot'ı eklendi. Sunucu misafir/hesap geçmişi ve kalıcı olay idempotency/sahiplik kapsamı henüz tamamlanmadı.
 - Bağımlılık: DEC-003, DEC-009, DEC-011; CR-002, CR-014.
 - İş: Aktif seyahat, tamamlanan kesimler, son şarj girdisi ve plan sürümünü yönet.
 - Kabul: Aynı olayın tekrarı çift etki üretmiyor; gecikmiş plan yeni sonucu ezmiyor; yeniden başlatma/saklama davranışı tanımlı; özel uzak kayıtlar CR-020 erişim kontrolleri olmadan yayına açılmıyor.
 
 ### CR-018 — Kullanıcı şarj düzeltmesi ve kalan plan
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-12: Mobil gerçek SOC düzeltmesi/şarj sonrası eylemi yeni başlangıçla asenkron yeniden planlamaya bağlı; tahmini SOC ayrı provenance taşır ve eğitim gerçeği sayılmaz. Cihaz kabulü ve kalıcı kişisel/genel öğrenme yayın hattı açık.
+- 2026-11-11 hazırlığı: [SOC geri besleme çekirdeği](INDEPENDENT_DATASET_VALIDATION.md) çevrimdışı test edildi; şarj sonrası anchor reset ile tüketim öğrenmesi ayrıldı. Canlı seyahat/plan güncellemesi, auth/kalıcı olay ve mobil akış tamamlanmadı; görev TODO kalır.
 - Bağımlılık: CR-013, CR-017.
 - İş: Şarjdan ayrılırken veya yolculuk sırasında kullanıcı yüzdesini yeni başlangıç yap.
 - Kabul: Öneri %75 iken %60/%90/aynı değer örnekleri geçiyor; önceki tahmin yerine yeni enerji atanıyor; rezerv korunuyor; durak ekleme/atlama hesapla doğrulanıyor; geçmiş seyahat değişmiyor.
 
 ### CR-019 — Konum takibi ve navigasyon
-- Durum: TODO
+- Durum: IN_PROGRESS
+- 2026-11-12: Ön planda GPS/poliline eşleme, gürültü/eskilik filtreleri, manevra ve tahmini SOC, onaylı sapma tetikleyicisi, arka plana geçince duraklatma ve açık devam akışı eklendi. [Kontrollü/gerçek servis testleri](validation/managed-routing-navigation-2026-11-12.md). Android/iOS derlemesi cihaz testi yerine sayılmaz; arka plan kapsamı sonraya bırakıldı.
 - Bağımlılık: DEC-006, DEC-009; CR-016, CR-017, CR-018.
 - İş: Konumu rotaya eşle, tahmini şarjı güncelle, manevraları ve yeniden planlamayı bağla.
 - Kabul: GPS gürültüsü, rota sapması, arka plan, bağlantı kaybı ve izin reddi gerçek cihazda deneniyor; tahmin ölçümden ayrılıyor; tetikleme/kararlılık eşikleri uygulanıyor; eski müsaitlik güncel gösterilmiyor.
@@ -179,11 +193,14 @@ Bu sıra bağımlılıkların yerine geçmez. Kimlik ve erişim çalışmaları,
 
 ### CR-022 — Pilot uçtan uca doğrulama
 - Durum: TODO
+- 2026-11-11: İki XLSX dış regresyon veri kümesi olarak değerlendirildi; katsayı fit edilmedi, gerçek hata metriği veri yetersizliği nedeniyle null. V1 sonrası ayrı seyahat/kullanıcı holdout'u, referans-only karşılaştırma, koşul bazlı SOC/tüketim/şarj hatası ve rezerv riski [protokole](INDEPENDENT_DATASET_VALIDATION.md) eklendi. Saha kabulü tamamlanmış sayılmadı.
 - Bağımlılık: CR-001, CR-005, CR-014–021; canlı müsaitlik kapsamdaysa CR-008.
 - İş: Seçilen koridorda gerçek/denetimli seyahatlerle plan ve güncellemeleri doğrula.
 - Kabul: Tüketim hatası ve planlama süreleri raporlu; rezerv/ulaşılamaz rota senaryoları geçiyor; düşük/yüksek şarj düzeltmeleri doğrulanıyor; cihaz testi ve erişim testleri tamam; veri kapsamı ve bilinen sınırlamalar yazılı. Her sapma açık görev veya kapsam kararı olarak kaydediliyor.
 
 ## Tamamlanma kaydı
+
+2026-11-12 — `CR-009-P1-HARDENING` teknik alt teslimi: [görev](tasks/valhalla-dem-integration-hardening.md), [ADR-009 navigasyon/self-hosted](adr/009-in-app-navigation-and-self-hosted-routing.md), [kanıt raporu](validation/valhalla-dem-hardening-2026-11-12.md). Mevcut yerel pilot ve API'ler korunarak DEM kalite, QA, iç kapasite/dış kota ve cache sürümü sağlamlaştırıldı. V1-ROAD-003/004/005 IN_PROGRESS; lisans/saha/üretim kapanışı ve rota optimizasyonu yapılmadı.
 
 2026-11-09 — İlk araç kataloğu teknik teslimi tamamlandı. 65 marka, 260 model ve 1.189 varyant iki gerçek aktarım sonrasında mükerrer olmadan DB'de. 18 test, üç paket typecheck, production build ve gerçek DB üzerinde production HTTP kontrolü geçti. Daha geniş CR-002/003/006 kabul kapsamları açık; rota, pilot ve haftalık job tamamlandı sayılmadı.
 

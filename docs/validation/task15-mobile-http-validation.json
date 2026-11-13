@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-11-11T22:08:04.154Z",
+  "scope": "Real Nest HTTP + local PostgreSQL + Photon city search + Valhalla road-only preview; no device GPS or calibrated EV plan acceptance",
+  "origin": {
+    "id": "photon:N:1882099475",
+    "label": "İstanbul, Fatih",
+    "coordinate": {
+      "latitude": 41.006381,
+      "longitude": 28.9758715
+    }
+  },
+  "destination": {
+    "id": "photon:N:25869410",
+    "label": "Ankara, Çankaya",
+    "coordinate": {
+      "latitude": 39.9207759,
+      "longitude": 32.8540497
+    }
+  },
+  "geocoding": {
+    "providerId": "photon",
+    "attribution": "© OpenStreetMap contributors · Photon"
+  },
+  "planning": {
+    "status": "insufficient_data",
+    "reasons": [
+      {
+        "code": "VEHICLE_ENERGY_PROFILE_MISSING",
+        "explanation": "Seçilen araç için planlamaya yeterli enerji profili bulunmuyor."
+      }
+    ]
+  },
+  "preview": {
+    "schemaVersion": "1.0.0",
+    "status": "available",
+    "route": {
+      "distanceMeters": 457776,
+      "drivingDurationSeconds": 17411.376,
+      "originSnapMeters": 131.9536369099975,
+      "destinationSnapMeters": 9.556854486191543,
+      "traffic": "none",
+      "source": {
+        "sourceId": "valhalla-osm",
+        "recordId": null,
+        "version": null,
+        "url": "https://valhalla1.openstreetmap.de",
+        "retrievedAt": "2026-11-11T22:08:04.131Z",
+        "publishedAt": null,
+        "license": "ODbL-1.0"
+      },
+      "attributions": [
+        {
+          "text": "© OpenStreetMap contributors",
+          "url": "https://www.openstreetmap.org/copyright",
+          "license": "ODbL-1.0"
+        },
+        {
+          "text": "Routing by Valhalla",
+          "url": "https://valhalla.github.io/valhalla/",
+          "license": "MIT"
+        },
+        {
+          "text": "Improve the map",
+          "url": "https://www.openstreetmap.org/fixthemap",
+          "license": "ODbL-1.0"
+        },
+        {
+          "text": "FOSSGIS development routing service",
+          "url": "https://routing.openstreetmap.de/about.html",
+          "license": "Service fair use"
+        }
+      ],
+      "warnings": [
+        "live_traffic_unavailable",
+        "road_preview_endpoint_snapped"
+      ]
+    }
+  },
+  "note": "Smoke-test SOC/reserve/arrival values are explicit example inputs, not API defaults. Road preview does not claim energy reachability."
+}

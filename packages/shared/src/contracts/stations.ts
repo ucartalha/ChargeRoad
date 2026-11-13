@@ -17,6 +17,7 @@ export const availabilityObservationSchema = z.object({
 const dcConnectorSchema = z.object({
   id: idSchema,
   powerType: z.literal('dc'),
+  permissionBasis:z.literal('public_service').optional(),
   standard: connectorStandardSchema,
   maxPowerKw: positiveSchema.nullable(),
   maxCurrentA: positiveSchema.nullable(),
@@ -26,6 +27,7 @@ const dcConnectorSchema = z.object({
     maxCurrentA: positiveSchema,
     maxPowerKw: positiveSchema,
   }).strict()),
+  powerEnvelopeInterpolation:z.literal('linear').optional(),
   source: sourceReferenceSchema,
 }).strict();
 const acConnectorSchema = z.object({
@@ -42,6 +44,7 @@ export const stationConnectorSchema = z.discriminatedUnion('powerType', [dcConne
 
 export const evseSchema = z.object({
   id: idSchema,
+  identityBasis:z.enum(['provider_evse','catalogue_scenario']).optional(),
   availability: availabilityObservationSchema,
   sharedPowerPoolId: idSchema.nullable(),
   connectors: z.array(stationConnectorSchema).min(1),

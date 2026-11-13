@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-11-11T21:00:04.142Z",
+  "optimizerVersion": "chargeroad-optimizer/1.0.0",
+  "scope": "Local bounded solver + actual energy/charging engines + in-memory synthetic provider snapshots; excludes real HTTP/DB and production concurrency/SLA",
+  "groups": [
+    {
+      "id": "no_charge",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 26.72439999999915,
+        "p95Ms": 30.803900000002614,
+        "p99Ms": 33.68179999999984,
+        "maxMs": 50.045099999999366
+      },
+      "plannedOnly": {
+        "samples": 1000,
+        "p50Ms": 26.72439999999915,
+        "p95Ms": 30.803900000002614,
+        "p99Ms": 33.68179999999984,
+        "maxMs": 50.045099999999366
+      },
+      "counts": {
+        "planned": 1000
+      }
+    },
+    {
+      "id": "two_partial_charges",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 34.349499999996624,
+        "p95Ms": 41.83389999999781,
+        "p99Ms": 48.724400000006426,
+        "maxMs": 113.60719999999856
+      },
+      "plannedOnly": {
+        "samples": 1000,
+        "p50Ms": 34.349499999996624,
+        "p95Ms": 41.83389999999781,
+        "p99Ms": 48.724400000006426,
+        "maxMs": 113.60719999999856
+      },
+      "counts": {
+        "planned": 1000
+      }
+    }
+  ]
+}

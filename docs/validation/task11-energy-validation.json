@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-11-11T21:10:37.986Z",
+  "algorithmVersion": "chargeroad-energy/1.2.0",
+  "analytical": [
+    {
+      "id": "flat-roll-and-drag-1km",
+      "status": "estimated",
+      "expectedNetKwh": 0.04653081790123456,
+      "actualNetKwh": 0.04653081790124247,
+      "errorKwh": 7.91033905045424e-15,
+      "inputChecksum": "6cbcffcc9da0a2abad5244298c44fa01bb48f9b2b739b2b80f89d39e190d1134"
+    },
+    {
+      "id": "internal-100m-peak-half-recovery",
+      "status": "estimated",
+      "expectedNetKwh": 0.13620347222222223,
+      "actualNetKwh": 0.1362034722221921,
+      "errorKwh": -3.0142555118573e-14,
+      "inputChecksum": "111158c15461bed7d45622ab473da9eb0e61a9c82ed449054fc9b8366a52a02b"
+    },
+    {
+      "id": "reference-baseline-no-double-count",
+      "status": "estimated",
+      "expectedNetKwh": 0.2,
+      "actualNetKwh": 0.19999999999998863,
+      "errorKwh": -1.1379786002407855e-14,
+      "inputChecksum": "6a7deda6088e8f41c1ba135239506ef6185f7f7cd4fa05eb83244807acea05fb"
+    },
+    {
+      "id": "base-cabin-thermal-time-loads",
+      "status": "estimated",
+      "expectedNetKwh": 0.08819748456790123,
+      "actualNetKwh": 0.08819748456789966,
+      "errorKwh": -1.5681900222830336e-15,
+      "inputChecksum": "13da7042e4e644cccc0802d8552e249b67b595ab674a1b18af230a9da13da650"
+    }
+  ],
+  "pilotCoverage": [
+    {
+      "vehicleKey": "ioniq6-2023-53-rwd-18",
+      "canonicalId": "a82a3933-a3fe-41f8-b830-b4b1a747a5ba",
+      "gate": "VEHICLE_ENERGY_PROFILE_MISSING",
+      "userObservations": 4
+    },
+    {
+      "vehicleKey": "ioniq5-2025-63-rwd-19",
+      "canonicalId": "fefb8beb-6353-4e51-b3d0-c98fb4c9a37f",
+      "gate": "VEHICLE_ENERGY_PROFILE_MISSING",
+      "userObservations": 0
+    }
+  ],
+  "ownerJourneyReviews": [
+    {
+      "id": "owner-istanbul-ankara-410km-16-5",
+      "kind": "user_reported_journey_context",
+      "consumptionKwhPer100Km": {
+        "min": 16.5,
+        "max": 16.5
+      },
+      "distanceKm": 410,
+      "reportedJourney": {
+        "originLabel": "İstanbul",
+        "destinationLabel": "Ankara",
+        "observedDate": null,
+        "approximate": true,
+        "startingChargePercent": 95,
+        "arrivalChargePercent": 19,
+        "cabinTargetC": 23,
+        "hvacActiveSharePercent": 50,
+        "hvacShareBasis": "unspecified",
+        "cityDistanceSharePercent": 8,
+        "typicalCruisingKph": 130,
+        "otherReportedCruisingSpeedsKph": [
+          110,
+          120
+        ],
+        "chargingStops": [
+          {
+            "label": "Bolu Highway",
+            "arrivalChargePercent": 14,
+            "departureChargePercent": 90,
+            "distanceFromOriginKm": null,
+            "chargedEnergyKwh": null,
+            "durationSeconds": null
+          }
+        ],
+        "notes": [
+          "Ambient 15 °C is approximate, not a sensor series.",
+          "HVAC duty is a reported fraction of the journey; exact time/distance basis and electrical power unknown.",
+          "Date, durations, leg distances, battery temperature and actual battery-DC energy are unknown.",
+          "SOC-derived capacity is conditional and must not be promoted to a capacity or SoH fact."
+        ]
+      },
+      "displayAverageDerivedEnergyKwh": {
+        "min": 67.65,
+        "max": 67.65
+      },
+      "chargedSocPoints": 76,
+      "dischargedSocPoints": 152,
+      "conditionalCapacityKwh": {
+        "min": 44.506578947368425,
+        "max": 44.506578947368425
+      },
+      "calibrationEligibility": "context_only_not_independent_accuracy",
+      "notes": [
+        "Conditional capacity requires consistent dashboard energy boundary, unchanged capacity and complete SOC accounting.",
+        "It is not a usable-capacity or SoH measurement.",
+        "No cruise speed was relabeled as a trip-average speed.",
+        "Route/time, charge-session energy and independent battery-DC measurement are missing."
+      ]
+    }
+  ],
+  "fieldAccuracy": {
+    "calibrationRecords": 0,
+    "holdoutRecords": 0,
+    "status": "awaiting_field_data",
+    "errors": [],
+    "groups": []
+  },
+  "unassessable": [],
+  "notes": [
+    "Analytical cases are synthetic, not field accuracy.",
+    "Owner consumption intervals lack trip snapshots and are not holdout observations.",
+    "No production vehicle calibration was invented or published."
+  ]
+}

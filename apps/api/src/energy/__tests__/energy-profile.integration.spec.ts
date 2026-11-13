@@ -17,7 +17,7 @@ integration('Immutable DB energy calibration profiles',()=>{
   afterAll(async()=>{await pool.end();if(!/^energy_test_[a-f0-9]{16}$/.test(schema))throw new Error('Unsafe schema');await admin.query('DROP SCHEMA '+schema+' CASCADE');await admin.end();});
   function packageFixture(){
     const p=knowledgeFixture(true),r=p.records[0],v=energyFixture().vehicle;
-    p.source.key='energy-fixture-'+randomBytes(4).toString('hex');v.vehicleVariantId=r.externalId;v.capacity.referenceUsableBatteryKwh=60;
+    p.source.key='energy-fixture-'+randomBytes(4).toString('hex');v.vehicleVariantId=r.externalId;v.energyModel!.vehicleVariantId=r.externalId;v.capacity.referenceUsableBatteryKwh=60;
     v.consumptionReferences[0].vehicleVariantId=r.externalId;r.profiles[0].profile=v;
     r.consumption=[{...r.consumption[0],reference:structuredClone(v.consumptionReferences[0])}];return p;
   }

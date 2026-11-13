@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {energyModelSchema} from './energy-model.js';
+import {chargingModelSchema} from './charging-model.js';
 import {
   connectorStandardSchema, finiteSchema, idSchema, nonnegativeSchema, numberRangeSchema, percentRangeSchema,
   percentSchema, positiveRangeSchema, positiveSchema, sourceReferenceSchema, strictlyIncreasing,
@@ -10,6 +11,7 @@ export const consumptionReferenceSchema = z.object({
   id: idSchema,
   vehicleVariantId: idSchema,
   version: idSchema,
+  comparabilityGroupId:idSchema.optional(),
   valueKwhPer100Km: positiveSchema,
   energyBoundary: z.enum(['battery_dc', 'ac_grid', 'unknown']),
   basis: z.enum(['manufacturer_declared', 'measured', 'derived']),
@@ -121,6 +123,7 @@ export const dcChargingCurveSchema = z.object({
 });
 
 export const vehicleEnergyProfileSchema = z.object({
+  chargingModel:chargingModelSchema.optional(),
   energyModel:energyModelSchema.optional(),
   dataQuality: z.object({
     schemaVersion:z.literal('vehicle-quality/1.0.0'),
@@ -157,6 +160,12 @@ export const vehicleEnergyProfileSchema = z.object({
     maxRegenerationKw: nonnegativeSchema.nullable(),
   }).strict(),
 }).strict().superRefine((profile, ctx) => {
+  if(profile.chargingModel&&profile.chargingModel.vehicleVariantId!==profile.vehicleVariantId)
+    ctx.addIssue({code:'custom',path:['chargingModel'],message:'Charging model belongs to another vehicle'});
+  if(profile.chargingModel?.quality==='engineering_estimate'&&profile.dataQuality?.quality!=='engineering_estimate')
+    ctx.addIssue({code:'custom',path:['chargingModel'],message:'Estimated charging calibration requires an estimated profile label'});
+  if(profile.energyModel&&profile.energyModel.vehicleVariantId!==profile.vehicleVariantId)
+    ctx.addIssue({code:'custom',path:['energyModel'],message:'Energy calibration belongs to another vehicle variant'});
   if(profile.energyModel?.quality==='engineering_estimate'&&profile.dataQuality?.quality!=='engineering_estimate')
     ctx.addIssue({code:'custom',path:['energyModel'],message:'An estimated energy model requires an estimated vehicle profile label'});
   const paths = new Set(profile.dcChargingPaths.map((path) => path.id));

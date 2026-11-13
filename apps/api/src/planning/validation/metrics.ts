@@ -29,7 +29,7 @@ export const tripValidationRecordSchema = z.object({
   split: z.enum(['calibration', 'holdout']),
   collectionPermission: z.literal('explicit_validation_permission'),
   distanceKm: z.number().finite().positive(),
-  speed: z.object({ kind: z.enum(['cruise', 'trip_average']), kph: z.number().finite().nonnegative() }).strict(),
+  speed: z.object({ kind: z.enum(['cruise', 'trip_average','modelled_trip_average']), kph: z.number().finite().nonnegative() }).strict(),
   ambientTemperatureC: z.number().finite().nullable(), hvac: z.enum(['on', 'off', 'unknown']),
   measuredEnergyBoundary: z.literal('battery_dc'),
   evidence: z.object({ kind: z.enum(['user_report', 'documented_field_measurement']),

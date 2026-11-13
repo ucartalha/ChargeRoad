@@ -2,6 +2,8 @@
 
 Tarih: 2026-11-10. Durum: Kullanıcının ürün/veri gereksinimleri kabul edildi; aşağıdaki teknik ayrıntılar uygulama planıdır. Kod, migration, telemetri toplama veya öğrenme sistemi bu belgede uygulanmış sayılmaz.
 
+2026-11-11 güncellemesi: [Bağımsız dosya değerlendirmesi ve çevrimdışı öğrenme çekirdeği](INDEPENDENT_DATASET_VALIDATION.md) uygulandı. İki gerçek SOC gözleminden koşullu enerji sapması, sahip/araç/izin/sürüm ayrımı, dedup/çakışan pencere, seyahat ve kullanıcı holdout'u, yaşlanma, sağlam birleştirme ve referans/kişisel/cohort ağırlıkları test edildi. Üretim eşikleri, auth/kalıcı kayıt/job, bucket üretimi ve navigasyon bağlantısı açık kalır; canlı öğrenme açılmadı.
+
 CR-006 teknik güncellemesi: Ortak referans/kanıt altyapısı ve kişisel profil/pencere/model Zod sözleşmeleri uygulandı; [kişisel DDL](schema/personal-energy.draft.sql) sahiplik temelini bekleyen taslaktır. Kullanıcı üç Ioniq 6 tüketim aralığını kWh/100 km olarak doğruladı; bunlar kendi varyantına bağlı source_reported gözlemler olarak saklandı. Aktif kişisel öğrenme veya navigasyon toplaması henüz yok. [Teslim](VEHICLE_KNOWLEDGE.md).
 
 ## Kabul edilen gereksinimler

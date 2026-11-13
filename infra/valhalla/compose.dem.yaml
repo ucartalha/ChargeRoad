@@ -1,0 +1,36 @@
+# Separate opt-in deployment: does not modify compose.yaml or existing 8002/8003 services.
+services:
+  router:
+    image: ghcr.io/valhalla/valhalla-scripted:3.9.1
+    ports:
+      - "127.0.0.1:${VALHALLA_DEM_PORT:-8004}:8002"
+    volumes:
+      - "${VALHALLA_DEM_DATA_DIR:-./datasets/current}:/custom_files:ro"
+    # Serve a prepared graph. Bypass the scripted build/download entrypoint at runtime.
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["test -s /custom_files/valhalla.json && test -s /custom_files/valhalla_tiles.tar && test -d /custom_files/elevation_data && exec /usr/local/bin/valhalla_service /custom_files/valhalla.json 2"]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8002/status', timeout=3).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    cpus: "2.0"
+    restart: "no"
+  graph-build:
+    image: ghcr.io/valhalla/valhalla-scripted:3.9.1
+    profiles: ["build"]
+    volumes:
+      - "${VALHALLA_BUILD_DATA_DIR:-./datasets/staging}:/custom_files"
+    environment:
+      server_threads: "2"
+      build_admins: "True"
+      build_time_zones: "True"
+      build_elevation: "True"
+      build_tar: "True"
+      force_rebuild: "True"
+      use_tiles_ignore_pbf: "False"
+      serve_tiles: "False"
+    command: ["build_tiles"]
+    cpus: "2.0"
+    restart: "no"

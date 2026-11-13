@@ -32,6 +32,17 @@ integration('Road providers: shared caching, licensing, access and HTTP',()=>{
     const stored=(await pool.query('SELECT request_key,payload FROM road_response_cache')).rows[0];
     expect(stored.request_key).toMatch(/^[a-f0-9]{64}$/);expect(JSON.stringify(stored)).not.toContain('privateCoordinate');
   });
+  it('partitions graph/DEM revisions without changing shared capacity or resetting public quota',async()=>{
+    const internal={...config,providerId:'valhalla-osm',baseUrl:'http://127.0.0.1:8003',deploymentMode:'self_hosted' as const,graphVersion:'graph-a',demVersion:'dem-a'};
+    await pool.query("INSERT INTO road_provider_budget(provider_id,day,used,next_allowed_at) VALUES('valhalla-osm',(now() AT TIME ZONE 'UTC')::date,100,now())");
+    let calls=0;const transport=async()=>({value:++calls}),client=new PgRoadClient(database,internal,secret,transport),url=internal.baseUrl+'/route';
+    const first=await client.post(internal.providerId,url,{},signal);expect(calls).toBe(1);
+    expect(await new PgRoadClient(database,internal,secret,transport).post(internal.providerId,url,{},signal)).toEqual(first);expect(calls).toBe(1);
+    await new PgRoadClient(database,{...internal,demVersion:'dem-b'},secret,transport).post(internal.providerId,url,{},signal);expect(calls).toBe(2);
+    expect((await pool.query("SELECT used FROM road_provider_budget WHERE provider_id='valhalla-osm'")).rows[0].used).toBe(100);
+    const capacity=(await pool.query("SELECT used FROM road_provider_budget WHERE provider_id LIKE 'self-hosted:%'")).rows;
+    expect(capacity).toHaveLength(1);expect(capacity[0].used).toBe(2);
+  });
   it('fences a late worker and preserves successor ownership',async()=>{
     const token=randomUUID();const transport=async()=>{await pool.query(`UPDATE road_response_cache SET token=$1,generation=generation+1`,[token]);return {};};
     await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/route',{},signal)).rejects.toThrow('Expired');
@@ -40,10 +51,10 @@ integration('Road providers: shared caching, licensing, access and HTTP',()=>{
   it('enforces daily budget and propagates shared 429 backoff without paid fallback',async()=>{
     const transport=jest.fn(async()=>{throw new RoadProviderError('rate limited',429,120);});
     await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/a',{},signal)).rejects.toThrow('rate');
-    await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/b',{},signal)).rejects.toThrow('quota');
+    await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/b',{},signal)).rejects.toMatchObject({code:'ROAD_PROVIDER_BACKOFF'});
     expect(transport).toHaveBeenCalledTimes(1);
     await pool.query("UPDATE road_provider_budget SET blocked_until=now(),next_allowed_at=now(),used=100");
-    await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/c',{},signal)).rejects.toThrow('quota');
+    await expect(new PgRoadClient(database,config,secret,transport).post('fake','https://example.invalid/c',{},signal)).rejects.toMatchObject({code:'ROAD_PROVIDER_QUOTA_EXHAUSTED'});
   });
   it('persists only speed-related OSM tags with attribution and reuses them without network calls',async()=>{
     const provider=new OsmWayAttributeProvider(database,{...config,overpassEnabled:true});
@@ -52,10 +63,16 @@ integration('Road providers: shared caching, licensing, access and HTTP',()=>{
     await provider.getWays(['123'],client,signal);expect(client.post).toHaveBeenCalledTimes(1);
     expect((await pool.query('SELECT license FROM osm_way_attributes')).rows[0].license).toBe('ODbL-1.0');
   });
+  it('a busy local pacing gate never creates global provider backoff or subtracts infinite timestamps',async()=>{
+    await pool.query("INSERT INTO road_provider_budget(provider_id,day,used,next_allowed_at) VALUES('busy',(now() AT TIME ZONE 'UTC')::date,1,now()+interval '1 minute')");
+    const transport=jest.fn(async()=>({}));
+    await expect(new PgRoadClient(database,config,secret,transport).post('busy','https://example.invalid/a',{},signal)).rejects.toMatchObject({code:'ROAD_PROVIDER_PACING_LIMIT'});
+    expect(transport).not.toHaveBeenCalled();expect((await pool.query("SELECT blocked_until>now() AS blocked FROM road_provider_budget WHERE provider_id='busy'")).rows[0].blocked).toBe(false);
+  });
   it('backs off optional upstream failures across instances instead of repeating slow requests',async()=>{
     const transport=jest.fn(async()=>{throw new RoadProviderError('upstream timeout');});
     await expect(new PgRoadClient(database,config,secret,transport).post('optional','https://example.invalid/a',{},signal)).rejects.toThrow('timeout');
-    await expect(new PgRoadClient(database,config,secret,transport).post('optional','https://example.invalid/b',{},signal)).rejects.toThrow('quota');
+    await expect(new PgRoadClient(database,config,secret,transport).post('optional','https://example.invalid/b',{},signal)).rejects.toMatchObject({code:'ROAD_PROVIDER_BACKOFF'});
     expect(transport).toHaveBeenCalledTimes(1);
   });
   function service(adapter:RoadShapeAdapter){return new RoadRoutingService(config,new RoadAdapterRegistry([adapter]),{post:jest.fn()},

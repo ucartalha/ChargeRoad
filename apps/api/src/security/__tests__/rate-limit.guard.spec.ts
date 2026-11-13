@@ -11,7 +11,7 @@ const options: RateLimitOptions = {
   secret: 'test-only-secret-of-at-least-32-characters', timezone: 'Europe/Istanbul',
   strikeLimit: 3, maxPending: 1, policies: {
     general: { limit: 2, windowSeconds: 60 }, catalogue: { limit: 2, windowSeconds: 60 },
-    auth: { limit: 2, windowSeconds: 60 },
+    auth: { limit: 2, windowSeconds: 60 },planning:{limit:2,windowSeconds:60},
   },
 };
 const makeContext = () => ({

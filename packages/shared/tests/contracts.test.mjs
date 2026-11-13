@@ -4,10 +4,53 @@ import { createRequire } from 'node:module';
 import * as schemas from '../dist/esm/index.js';
 import { makeExample } from '../examples/planning.mjs';
 
+test('address selection contracts reject arbitrary provider packets and unbounded searches',()=>{
+  assert.equal(schemas.locationSearchRequestSchema.safeParse({query:'Ankara'}).success,true);
+  for(const body of [{query:'a'},{query:'x'.repeat(121)},{query:'Ankara',providerUrl:'https://attacker'}])assert.equal(schemas.locationSearchRequestSchema.safeParse(body).success,false);
+  assert.equal(schemas.locationResultSchema.safeParse({id:'place',label:'Ankara',coordinate:{latitude:999,longitude:33}}).success,false);
+});
+test('road-only previews cannot carry fabricated SOC or inconsistent availability',()=>{
+  assert.equal(schemas.roadPreviewResponseSchema.safeParse({schemaVersion:'1.0.0',status:'not_found',route:null}).success,true);
+  assert.equal(schemas.roadPreviewResponseSchema.safeParse({schemaVersion:'1.0.0',status:'available',route:null}).success,false);
+  assert.equal(schemas.roadPreviewResponseSchema.safeParse({schemaVersion:'1.0.0',status:'not_found',route:null,estimatedArrivalChargePercent:50}).success,false);
+});
+
+test('usable capacity snapshots apply SOH and temperature exactly once',()=>{
+  const snapshot={vehicleProfileId:'profile',vehicleProfileVersion:'1',vehicleVariantId:'vehicle',referenceUsableKwh:80,
+    referenceSohPercent:100,sohPercent:90,temperatureFactor:.8,temperatureAtAssessmentC:0,temperatureModelId:'capacity-model',temperatureModelVersion:'1',effectiveKwh:57.6,assumptions:[]};
+  assert.equal(schemas.usableCapacitySnapshotSchema.safeParse(snapshot).success,true);
+  assert.equal(schemas.usableCapacitySnapshotSchema.safeParse({...snapshot,effectiveKwh:51.84}).success,false);
+});
+test('charging intervals must progress and conserve energy',()=>{
+  const interval={fromSocPercent:20,toSocPercent:80,seconds:1800,storedKwh:48,inletKwh:52,auxiliaryKwh:1,lossKwh:3,minInletKw:50,maxInletKw:150,limiter:'curve'};
+  assert.equal(schemas.chargingIntervalSchema.safeParse(interval).success,true);
+  assert.equal(schemas.chargingIntervalSchema.safeParse({...interval,lossKwh:5}).success,false);
+  assert.equal(schemas.chargingIntervalSchema.safeParse({...interval,toSocPercent:10}).success,false);
+});
+
 const evaluate = (example) => schemas.planningEvaluationSchema.safeParse({
   input: example.input, result: example.result,
 });
 const rejects = (example) => assert.equal(evaluate(example).success, false);
+
+test('public plan requests default only mode/unknown observations and reject internal controls',()=>{
+  const {request}=makeExample().input;
+  const body={schemaVersion:'1.0.0',requestId:request.requestId,origin:request.origin,destination:request.destination,
+    vehicleVariantId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',departureAt:request.departureAt,startingChargePercent:80,
+    startingChargeObservedAt:request.startingChargeObservedAt,constraints:request.constraints};
+  const parsed=schemas.planningApiRequestSchema.parse(body);assert.equal(parsed.objective,'minimum_total_duration');
+  assert.equal(parsed.stateOfHealthPercent.origin,'unknown');assert.equal(parsed.vehicleDataQuality,'verified_only');
+  assert.equal(schemas.planningApiRequestSchema.safeParse({...body,policy:request.policy}).success,false);
+  assert.equal(schemas.planningApiRequestSchema.safeParse({...body,initialBatteryTemperatureC:{origin:'estimated',value:30,modelVersion:'fake'}}).success,false);
+  assert.equal(schemas.planningApiRequestSchema.safeParse({...body,constraints:{minimumReserveChargePercent:10}}).success,false);
+});
+
+test('approved planning mode defaults to duration but reserve and arrival SOC stay mandatory',()=>{
+  const {input}=makeExample();delete input.request.policy.objective;
+  assert.equal(schemas.routePlanRequestSchema.parse(input.request).policy.objective,'minimum_total_duration');
+  delete input.request.constraints.targetArrivalChargePercent;
+  assert.equal(schemas.routePlanRequestSchema.safeParse(input.request).success,false);
+});
 
 test('a complete synthetic envelope round-trips through the runtime contracts', () => {
   const example = makeExample();
@@ -91,6 +134,20 @@ test('road gaps, speed/time inconsistencies and unsplit long segments are reject
   e = makeExample();
   e.input.roadCandidates[0].segmentationPolicy.maxDistanceMeters = 500;
   rejects(e);
+});
+
+test('speed traces must integrate to the road distance and cover the full segment duration',()=>{
+  const segment=makeExample().input.roadCandidates[0].segments[0];
+  segment.speedProfile=[{elapsedSeconds:0,speedKph:60},{elapsedSeconds:60,speedKph:60}];
+  assert.equal(schemas.roadSegmentSchema.safeParse(segment).success,true);
+  segment.speedProfile[1].speedKph=0;assert.equal(schemas.roadSegmentSchema.safeParse(segment).success,false);
+});
+
+test('base auxiliaries participate in battery energy balance instead of disappearing in the breakdown',()=>{
+  const segment=makeExample().result.plan.energySegments[0];
+  segment.breakdown={tractionKwh:segment.netBatteryEnergyKwh,baseAuxiliaryKwh:.01,cabinAuxiliaryKwh:0,batteryThermalKwh:0,regeneratedKwh:0};
+  assert.equal(schemas.energySegmentSchema.safeParse(segment).success,false);
+  segment.breakdown.tractionKwh-=.01;assert.equal(schemas.energySegmentSchema.safeParse(segment).success,true);
 });
 
 test('weather is tied to passage time after charging, not just initial departure', () => {

@@ -1,5 +1,7 @@
 # CR-010 — Hava sağlayıcısı teknik teslimi
 
+12 Kasım güncellemesi: beş konumlu `POST /v1/weather/route-preview`, `WeatherService.forNavigation` ileri penceresi ve koşullu hücre cache paylaşımı eklendi. [Review, politika, testler, ölçümler ve açıklar](WEATHER_REVIEW_2026_11.md). Bu yeni modlar mevcut ayrıntılı enerji planlamasının yerine geçmez; mobil aktif navigasyon bağlantısı henüz yoktur.
+
 Tarih: 2026-11-11. Durum: DONE. MET Norway adapter'ı, provider registry, PostgreSQL paylaşılan cache/kota, rota örnekleyici, geçiş saatine eşleme ve HTTP pilotu uygulandı. Bu teslim hava veri altyapısıdır; tüketim/SOC motoru CR-011, şarj hesabı CR-012, durak optimizasyonu CR-013 ve navigasyon CR-019 kapsamındadır.
 
 ## Kabul edilen davranış
@@ -41,16 +43,16 @@ Bu örnekleme sunucudaki `forRoute` yardımcısında uygulanır. Core engine'in 
 | Sınır | Uygulanan başlangıç değeri |
 | --- | --- |
 | Geçiş query / seçilmiş örnek | En fazla 10.000 / 64 |
-| Aynı hesaplamada gerçek dış çağrı | En fazla 16; aynı AbortSignal ile engine iterasyonları arasında ortak |
+| Aynı hesaplamada gerçek dış çağrı | En fazla 64; planın bütçe bağlamı ile bütün bacaklar arasında ortak, doğrudan çağrıda aynı AbortSignal kapsamında |
 | Ortak provider hızı / aktif fetch | En fazla 2 istek/sn / 2; bütün instance'ların toplamı |
 | Günlük dış çağrı | 1.000, UTC günü; bize ait koruma, sağlayıcı kotası iddiası değil |
-| Fetch / hava adımı timeout | 5 sn / 20 sn; daha kısa caller deadline'ı öncelikli |
+| Fetch / hava adımı timeout | 5 sn / 30 sn; daha kısa caller deadline'ı öncelikli |
 | Kaynak güncelleme yaşı / model veri aralığı | En fazla 12 saat / 6 saat |
 | Lease | 15 sn; geç worker yeni sahibin verisini veya backoff durumunu değiştiremez |
 | SQL transaction / lock timeout | 2 sn / 250 ms |
 | Yanıt boyutu | En fazla 1 MiB, JSON |
 
-Cache isabeti dış çağrı bütçesini tüketmez. Özellikle soğuk cache'li uzun rotada 16 yeni konum bütçesi yetmeyebilir; eksik kesimler açıkça `budget_exhausted` olur ve güvenilir plan yerine veri yetersiz sonucu döner. Örnekler sessizce seyreltilmez; bu sınırlar sınırsız uzun rota hizmeti veya üretim SLA değildir.
+Cache isabeti dış çağrı bütçesini tüketmez. `weather/1.1.0` politikasında 64 örneğe kadar veri alınabilir; küresel hız sınırı ve 30 saniyelik yürütme bütçesi nedeniyle soğuk cache'te hepsinin yetişeceği garanti edilmez. Eksik kesimler açıkça `budget_exhausted` veya ilgili sağlayıcı durumu olarak döner. Örnekler sessizce seyreltilmez; bu sınırlar sınırsız uzun rota hizmeti veya üretim SLA değildir.
 
 [MET istemci kurallarına](https://api.met.no/doc/locationforecast/HowTO) uygun `Expires` / `Last-Modified` tutulur, süre sonrasında `If-Modified-Since` kullanılır. Eksik/bozuk/geçmiş `Expires` için uyarılı 1 saat güvenli tekrar beklemesi vardır; bu meteorolojik tazelik kanıtı sayılmaz. Kaynak bayatsa header hâlâ tekrar istemeyi yasaklıyorsa yeni istek yerine yetersiz veri sonucu döner. 429/Retry-After ve diğer hatalarda instance'lar ortak bekler; otomatik retry/fallback döngüsü yoktur. 203 ürün eskime uyarısı taşınır.
 

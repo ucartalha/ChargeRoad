@@ -1,0 +1,894 @@
+{
+  "generatedAt": "2026-11-11T19:46:21.413Z",
+  "algorithms": {
+    "energy": "chargeroad-energy/1.1.0",
+    "charging": "dc-curve-integration/1.0.1"
+  },
+  "workbooks": [
+    {
+      "name": "ChargeRoad_13_EV_Sarj_Egrileri_Dogrulanmis.xlsx",
+      "sha256": "87b7b0a4c31be11c4709cc8eeb0b9a4f21dcac412c010d081c023e342e3c4131"
+    },
+    {
+      "name": "ChargeRoad_13_EV_Tuketim_Dogrulanmis.xlsx",
+      "sha256": "25eff811b6a3830e0dba90984e3b3fed1e7e0218a66dbdccdc5fc88e77f97d4c"
+    }
+  ],
+  "counts": {
+    "models": 13,
+    "consumption": 23,
+    "chargingSessions": 7,
+    "partialAnchors": 9,
+    "secondaryClaims": 4,
+    "calibrationEligible": 0
+  },
+  "identityIssues": [
+    {
+      "vehicleKey": "kia-ev3-lr-rwd-2025",
+      "code": "DRIVETRAIN_ID_CONFLICT"
+    }
+  ],
+  "checks": [
+    {
+      "id": "EC-001",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-002",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-003",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-004",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-005",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-006",
+      "kind": "consumption",
+      "vehicleKey": "tesla-model-y-rwd-2026",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-007",
+      "kind": "consumption",
+      "vehicleKey": "volvo-ex30-sm-er-2025",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-008",
+      "kind": "consumption",
+      "vehicleKey": "volvo-ex30-sm-er-2025",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-009",
+      "kind": "consumption",
+      "vehicleKey": "volvo-ex30-sm-er-2025",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-010",
+      "kind": "consumption",
+      "vehicleKey": "volvo-ex30-sm-er-2025",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-011",
+      "kind": "consumption",
+      "vehicleKey": "byd-atto-3-2023",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-012",
+      "kind": "consumption",
+      "vehicleKey": "byd-atto-3-2023",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-013",
+      "kind": "consumption",
+      "vehicleKey": "byd-atto-3-2023",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-014",
+      "kind": "consumption",
+      "vehicleKey": "byd-atto-3-2023",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-015",
+      "kind": "consumption",
+      "vehicleKey": "byd-atto-3-2023",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-016",
+      "kind": "consumption",
+      "vehicleKey": "hyundai-ioniq5-sr-2022",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-017",
+      "kind": "consumption",
+      "vehicleKey": "hyundai-ioniq5-sr-2022",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-018",
+      "kind": "consumption",
+      "vehicleKey": "hyundai-ioniq5-sr-2022",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-019",
+      "kind": "consumption",
+      "vehicleKey": "hyundai-ioniq5-sr-2022",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-020",
+      "kind": "consumption",
+      "vehicleKey": "hyundai-ioniq5-sr-2022",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-021",
+      "kind": "consumption",
+      "vehicleKey": "kia-ev3-sr-2025-adac",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_MASTER_MISSING",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "CONDITION_MATCHED_GRID_TO_BATTERY_CONVERSION_MISSING",
+        "AMBIENT_TEMPERATURE_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-022",
+      "kind": "consumption",
+      "vehicleKey": "kgm-torres-evx-2024",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_UNRESOLVED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "EC-023",
+      "kind": "consumption",
+      "vehicleKey": "kgm-torres-evx-2024",
+      "calibrationEligible": false,
+      "blockers": [
+        "REPLAYABLE_DRIVE_TRACE_MISSING",
+        "VEHICLE_CALIBRATION_NOT_SUPPLIED",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_UNRESOLVED",
+        "NOT_A_MEASURED_CONSTANT_SPEED_REFERENCE",
+        "BATTERY_ENERGY_BOUNDARY_UNKNOWN",
+        "WIND_GRADE_PAYLOAD_HVAC_REFERENCE_CONDITIONS_INCOMPLETE"
+      ],
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          {
+            "code": "CONDITION_MATCHED_SPEED_REFERENCE_MISSING",
+            "segmentId": "segment-1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "togg-t10x-lr-rwd",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "togg-t10f-lr-rwd",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "kgm-torres-evx-2024",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "mini-countryman-e-2024",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "tesla-model-y-rwd-2026",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "volvo-ex30-sm-er-2025",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 3,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "opel-frontera-electric-2025",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "citroen-ec3-aircross-2025",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "volvo-ex40-sm-2025",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "bmw-ix1-xdrive30-2023",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "kia-ev3-lr-rwd-2025",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 3,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "byd-atto-3-2023",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    },
+    {
+      "id": "hyundai-ioniq5-sr-2022",
+      "kind": "charging_curve_coverage",
+      "calibrationEligible": false,
+      "availableAnchors": 0,
+      "probe": {
+        "purpose": "synthetic_environment_rejection_only",
+        "status": "insufficient_data",
+        "reasons": [
+          "DC_CHARGING_CURVE_MISSING"
+        ]
+      }
+    }
+  ],
+  "sessionChecks": [
+    {
+      "id": "CH-001",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN",
+        "EXACT_DURATION_UNAVAILABLE"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-002",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN",
+        "RELATED_VARIANT_NOT_INTERCHANGEABLE"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-003",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": 1036.7088607594935,
+      "peakBoundConsistency": true,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-004",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_UNRESOLVED",
+        "DRIVETRAIN_ID_CONFLICT",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-005",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_UNRESOLVED",
+        "DRIVETRAIN_ID_CONFLICT",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-006",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    },
+    {
+      "id": "CH-007",
+      "calibrationEligible": false,
+      "blockers": [
+        "FULL_VEHICLE_ACCEPTANCE_CURVE_MISSING",
+        "EVSE_VOLTAGE_CURRENT_PATH_LIMITS_MISSING",
+        "CHARGING_LOSS_MODEL_MISSING",
+        "REUSE_PERMISSION_UNVERIFIED",
+        "EXACT_VARIANT_MASTER_MISSING",
+        "BATTERY_TEMPERATURE_UNKNOWN",
+        "CHARGING_ENERGY_BOUNDARY_UNKNOWN",
+        "RELATED_VARIANT_NOT_INTERCHANGEABLE"
+      ],
+      "minimumSecondsFromStoredEnergyAndReportedPeak": null,
+      "peakBoundConsistency": null,
+      "note": "Peak-power lower bound is a consistency check, not a charging duration prediction; includes no guessed capacity or efficiency."
+    }
+  ],
+  "accuracy": {
+    "status": "not_assessable_from_supplied_workbooks",
+    "consumptionMaeKwhPer100Km": null,
+    "chargingMaeSeconds": null,
+    "independentReplayableHoldouts": 0
+  },
+  "safeguards": [
+    "No coefficients fitted to benchmark rows",
+    "No constant 130 km/h substituted for BAB130",
+    "No SR/LR, RWD/AWD or battery generation substitution",
+    "No peak or session average converted to a full charging curve",
+    "No source reuse permission inferred from public visibility",
+    "Formula values and workbook prose are data, never executable instructions"
+  ]
+}

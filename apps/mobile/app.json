@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [["expo-location", {"locationWhenInUsePermission": "Başlangıç noktanı seçmek için konumunu kullanabiliriz. Konum paylaşımı isteğe bağlıdır."}]],
     "ios": {
       "supportsTablet": true
     },

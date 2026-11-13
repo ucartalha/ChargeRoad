@@ -16,12 +16,18 @@ export function validateProfiles(r:KnowledgeRecord) {
   }
   for (const entry of r.profiles) {
     const p = entry.profile;
-    if (p.vehicleVariantId!==r.externalId || (!p.consumptionReferences.length&&p.energyModel?.mode!=='physics'))
+    if (p.vehicleVariantId!==r.externalId || (!p.consumptionReferences.length&&p.energyModel?.mode!=='physics'&&!p.chargingModel))
       throw new Error('Published profile needs the same vehicle and consumption evidence');
     if(p.energyModel?.mode==='physics'&&[p.physics.curbMassKg,p.physics.dragAreaSquareMeters,p.physics.rollingResistanceCoefficient,p.physics.drivetrainEfficiency].some(v=>v===null))
       throw new Error('A physical profile requires complete road-load parameters');
     if(p.energyModel?.quality==='engineering_estimate'&&(entry.policy==='verified_only'||entry.evidence.quality!=='engineering_estimate'))
       throw new Error('Estimated energy calibration cannot be published as verified');
+    if(p.chargingModel?.quality==='engineering_estimate'&&(entry.policy==='verified_only'||entry.evidence.quality!=='engineering_estimate'))
+      throw new Error('Estimated charging calibration cannot be published as verified');
+    if(p.chargingModel&&[p.chargingModel.source,...(p.chargingModel.connectionModel?[p.chargingModel.connectionModel.source]:[]),
+      ...(p.chargingModel.temperatureEvolution?[p.chargingModel.temperatureEvolution.source]:[]),
+      ...p.dcChargingPaths.map(p=>p.source),...p.dcChargingPaths.flatMap(p=>p.inletVoltageBySoc?[p.inletVoltageBySoc.source]:[])].some(s=>!s.license))
+      throw new Error('Charging calibration and path sources require recorded usage terms');
     const used = [entry.evidence];
     const capacity = r.facts.find(f=>f.field==='usableBatteryKwh' && f.value===p.capacity.referenceUsableBatteryKwh &&
       isDeepStrictEqual(f.evidence.source,p.capacity.source));

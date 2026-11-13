@@ -7,20 +7,31 @@ import { STATION_POLICY } from './station-policy';
 
 export type StationQueryPolicy={version:string;corridorStepsMeters:readonly number[];maxCandidates:number;maxRoutes:number;maxGeometryPoints:number;statementTimeoutMs:number;staticSoftAgeSeconds:number};
 export const CORRIDOR_SQL=`WITH segments AS (
-  SELECT "routeId","segmentId",public.ST_SetSRID(public.ST_GeomFromGeoJSON(geometry::text),4326) AS geom
-  FROM jsonb_to_recordset($1::jsonb) AS x("routeId" text,"segmentId" text,geometry jsonb)
-), matches AS (
-  SELECT h.location_id,h.payload,s."routeId",s."segmentId",
-    public.ST_Distance(h.location_geog,s.geom::public.geography) AS distance_meters,
-    public.ST_LineLocatePoint(s.geom,public.ST_ClosestPoint(s.geom,h.location_geog::public.geometry)) AS progress
-  FROM segments s JOIN station_catalogue_heads h
-    ON public.ST_DWithin(h.location_geog,s.geom::public.geography,$2)
+  SELECT "routeId","segmentId",((row_number() OVER(PARTITION BY "routeId" ORDER BY ordinal))-1)/64 AS chunk,
+    public.ST_SetSRID(public.ST_GeomFromGeoJSON(geometry::text),4326) AS geom
+  FROM jsonb_array_elements($1::jsonb) WITH ORDINALITY AS input(value,ordinal)
+    CROSS JOIN LATERAL jsonb_to_record(input.value) AS x("routeId" text,"segmentId" text,geometry jsonb)
+), chunks AS (
+  SELECT "routeId",chunk,public.ST_Collect(geom)::public.geography AS geog FROM segments GROUP BY "routeId",chunk
+), chunk_matches AS (
+  SELECT h.location_id,c."routeId",c.chunk FROM chunks c JOIN station_catalogue_heads h
+    ON public.ST_DWithin(h.location_geog,c.geog,$2)
   WHERE h.public_access IS DISTINCT FROM false AND h.lifecycle IN ('operating','unknown')
     AND (cardinality($4::text[])=0 OR cardinality(h.connector_standards)=0 OR 'other'=ANY(h.connector_standards) OR h.connector_standards && $4::text[])
-), ids AS (SELECT DISTINCT location_id FROM matches ORDER BY location_id LIMIT $3)
-SELECT m.location_id,m.payload,jsonb_agg(jsonb_build_object('routeId',m."routeId",'segmentId',m."segmentId",
+), ids AS (SELECT DISTINCT location_id FROM chunk_matches ORDER BY location_id LIMIT $3
+), matches AS (
+  SELECT h.location_id,s."routeId",s."segmentId",
+    public.ST_Distance(h.location_geog,s.geom::public.geography) AS distance_meters,
+    public.ST_LineLocatePoint(s.geom,public.ST_ClosestPoint(s.geom,h.location_geog::public.geometry)) AS progress
+  FROM chunk_matches c JOIN ids ON ids.location_id=c.location_id
+    JOIN station_catalogue_heads h ON h.location_id=c.location_id JOIN segments s ON s."routeId"=c."routeId" AND s.chunk=c.chunk
+  WHERE public.ST_DWithin(h.location_geog,s.geom::public.geography,$2)
+)
+SELECT m.location_id,h.payload,m.route_matches FROM (
+SELECT m.location_id,jsonb_agg(jsonb_build_object('routeId',m."routeId",'segmentId',m."segmentId",
   'distanceMeters',m.distance_meters,'segmentProgress',m.progress) ORDER BY m."routeId",m."segmentId") AS route_matches
-FROM matches m JOIN ids ON ids.location_id=m.location_id GROUP BY m.location_id,m.payload ORDER BY m.location_id`;
+FROM matches m JOIN ids ON ids.location_id=m.location_id GROUP BY m.location_id
+) m JOIN station_catalogue_heads h ON h.location_id=m.location_id ORDER BY m.location_id`;
 
 export class DbStationDataProvider extends StationDataProvider {
   constructor(private readonly database:DatabaseService,private readonly policy:StationQueryPolicy=STATION_POLICY){super();}

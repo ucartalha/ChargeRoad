@@ -31,7 +31,7 @@ integration('Shared PostgreSQL rate limiting', () => {
     secret: 'test-only-shared-secret-32-characters',
     timezone: 'Europe/Istanbul', strikeLimit: 3, maxPending: 32,
     policies: { general: { limit: 1, windowSeconds: 60 },
-      catalogue: { limit: 1, windowSeconds: 60 }, auth: { limit: 1, windowSeconds: 60 } },
+      catalogue: { limit: 1, windowSeconds: 60 }, auth: { limit: 1, windowSeconds: 60 },planning:{limit:1,windowSeconds:60} },
   };
   const command = (name = 'test', policy = 'catalogue:v1'): RateLimitCommand => ({
     ipKey: createHash('sha256').update(name).digest('hex'),

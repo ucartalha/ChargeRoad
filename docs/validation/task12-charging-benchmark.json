@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-11T19:40:28.683Z",
+  "scope": "Synthetic local CPU/async engine only; no DB/HTTP, production SLA or real vehicle accuracy claim",
+  "groups": [
+    {
+      "id": "linear_taper",
+      "inputChecksum": "8ae4f3b67e29bf91647ec95d2db821f5781718bd4efabc8e832a76e826552b09",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 0.14679999999998472,
+        "p95Ms": 0.2580000000002656,
+        "p99Ms": 0.6938999999997577,
+        "maxMs": 3.217200000000048
+      },
+      "estimatedOnly": {
+        "samples": 1000,
+        "p50Ms": 0.14679999999998472,
+        "p95Ms": 0.2580000000002656,
+        "p99Ms": 0.6938999999997577,
+        "maxMs": 3.217200000000048
+      },
+      "counts": {
+        "estimated": 1000
+      }
+    },
+    {
+      "id": "101_points_voltage_envelope",
+      "inputChecksum": "5b98a74f502f4158d47a8c249efbcc074f8dc3f0b939ac46613780f1ec245761",
+      "all": {
+        "samples": 1000,
+        "p50Ms": 0.7858000000001084,
+        "p95Ms": 1.5271999999999935,
+        "p99Ms": 2.0095000000001164,
+        "maxMs": 4.482200000000375
+      },
+      "estimatedOnly": {
+        "samples": 1000,
+        "p50Ms": 0.7858000000001084,
+        "p95Ms": 1.5271999999999935,
+        "p99Ms": 2.0095000000001164,
+        "maxMs": 4.482200000000375
+      },
+      "counts": {
+        "estimated": 1000
+      }
+    }
+  ]
+}

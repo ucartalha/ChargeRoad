@@ -4,5 +4,5 @@ import type { ProviderResponse } from './provider-response';
 // Each query carries its own position and predicted passage time.
 export abstract class WeatherProvider {
   readonly departureWindowSeconds?:number;
-  abstract forecast(queries: WeatherQuery[], signal: AbortSignal): Promise<ProviderResponse<WeatherForecast[]>>;
+  abstract forecast(queries: WeatherQuery[], signal: AbortSignal,context?:{budgetScope:object}): Promise<ProviderResponse<WeatherForecast[]>>;
 }

@@ -9,6 +9,7 @@ import { vehicleEnergyProfileSchema } from './vehicle-energy.js';
 import { stationSearchMetadataSchema } from './station-catalogue.js';
 import { routePlanRequestSchema } from './request.js';
 import { chargingStopSchema } from './charging-stop.js';
+import {planScenarioSchema,optimizerSearchSchema} from './optimizer.js';
 
 export const energySegmentSchema = z.object({
   segmentId: idSchema,
@@ -49,6 +50,7 @@ export const planningInputSchema = z.object({
   request: routePlanRequestSchema,
   vehicle: vehicleEnergyProfileSchema,
   roadCandidates: z.array(roadRouteSchema).min(1),
+  composedRoadLegs:z.array(roadRouteSchema).min(1).optional(),
   weather: z.array(weatherForecastSchema),
   stations: z.array(chargingStationSchema),
   stationSearch:stationSearchMetadataSchema.optional(),
@@ -73,6 +75,7 @@ export const planningInputSchema = z.object({
 });
 
 export const routePlanSchema = z.object({
+  scenario:planScenarioSchema.optional(),search:optimizerSearchSchema.optional(),
   stationSearch:stationSearchMetadataSchema.optional(),
   schemaVersion: contractVersionSchema,
   planId: z.string().uuid(),
@@ -108,14 +111,14 @@ export const routePlanSchema = z.object({
   if (plan.supersedes && plan.supersedes.planId === plan.planId && plan.revision <= plan.supersedes.revision)
     ctx.addIssue({ code: 'custom', path: ['revision'], message: 'A replacement revision must be newer' });
   if (plan.targetArrivalChargePercent < plan.minimumReserveChargePercent ||
-      plan.estimatedArrivalChargePercent < plan.targetArrivalChargePercent)
+      plan.estimatedArrivalChargePercent < plan.targetArrivalChargePercent-1e-8)
     ctx.addIssue({ code: 'custom', path: ['estimatedArrivalChargePercent'], message: 'Plan fails reserve or arrival target' });
   const road = plan.roadRoute.segments;
   if (road.length !== plan.energySegments.length ||
       road.some((segment, index) => segment.id !== plan.energySegments[index]?.segmentId))
     ctx.addIssue({ code: 'custom', path: ['energySegments'], message: 'Energy segments must match road order exactly' });
   for (const [index, segment] of plan.energySegments.entries()) {
-    if (segment.minimumChargePercent < plan.minimumReserveChargePercent)
+    if (segment.minimumChargePercent < plan.minimumReserveChargePercent-1e-8)
       ctx.addIssue({ code: 'custom', path: ['energySegments', index], message: 'Predicted battery reserve is violated' });
     if (segment.departureAt && segment.arrivalAt && road[index] &&
         Math.abs((Date.parse(segment.arrivalAt) - Date.parse(segment.departureAt)) / 1000 - road[index].drivingDurationSeconds) > 1)
@@ -130,7 +133,7 @@ export const routePlanSchema = z.object({
       ctx.addIssue({ code: 'custom', path: ['chargingStops'], message: 'Charging after destination arrival cannot satisfy arrival SOC' });
     if (!boundaries.some((distance) => Math.abs(stop.routeDistanceMeters - distance) <= 0.001))
       ctx.addIssue({ code: 'custom', path: ['chargingStops'], message: 'Split road segments at each charging stop' });
-    if (stop.routeDistanceMeters > 0 && stop.arrivalChargePercent < plan.minimumReserveChargePercent)
+    if (stop.routeDistanceMeters > 0 && stop.arrivalChargePercent < plan.minimumReserveChargePercent-1e-8)
       ctx.addIssue({ code: 'custom', path: ['chargingStops'], message: 'Charging arrival violates reserve' });
   }
   const d = plan.duration;
@@ -156,6 +159,17 @@ export const routePlanSchema = z.object({
   if (plan.energySegments.length &&
       Math.abs(plan.energySegments[plan.energySegments.length - 1].endChargePercent - plan.estimatedArrivalChargePercent) > 0.001)
     ctx.addIssue({ code: 'custom', path: ['estimatedArrivalChargePercent'], message: 'Final segment SOC differs from arrival SOC' });
+  if(plan.scenario){const s=plan.scenario;
+    if(Math.abs((Date.parse(s.arrivalAt)-Date.parse(s.departureAt))/1000-s.totalSeconds)>.01||
+      Math.abs(s.totalSeconds-d.drivingSeconds-d.chargingSeconds-d.connectionSeconds-d.blockingPreconditioningSeconds-(d.waitingSeconds??0))>.01||
+      s.segmentTimes.length!==road.length||s.segmentTimes.some((t,i)=>t.segmentId!==road[i].id)||
+      s.stopTimes.length!==stops.length||s.stopTimes.some((t,i)=>t.stopId!==stops[i].id))
+      ctx.addIssue({code:'custom',path:['scenario'],message:'Scenario must cover the complete route and account for all known durations'});
+    if(waitUnknown&&!s.conditions.includes('unknown_queue_zero_wait_scenario'))ctx.addIssue({code:'custom',path:['scenario'],message:'Unknown queue requires an explicit scenario condition'});
+  }
+  if(plan.search&&(Math.abs(plan.search.drivingNetBatteryKwh-plan.energySegments.reduce((sum,s)=>sum+s.netBatteryEnergyKwh,0))>1e-6||
+    !plan.scenario||Math.abs(plan.search.scenarioDurationSeconds-plan.scenario.totalSeconds)>.01))
+    ctx.addIssue({code:'custom',path:['search'],message:'Search objective values must match the validated plan'});
 });
 
 export const planningResultSchema = z.discriminatedUnion('status', [

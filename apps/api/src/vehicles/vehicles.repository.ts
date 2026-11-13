@@ -30,13 +30,13 @@ export class VehiclesRepository {
   }
   async makes() {
     return (await this.database.pool.query(
-      `SELECT DISTINCT make_slug AS slug,detail->>'make' AS name,'chargeroad-catalogue' AS "sourceKey"
-       FROM catalogue_entries WHERE is_active ORDER BY name,slug`)).rows;
+      `SELECT make_slug AS slug,min(detail->>'make') AS name,'chargeroad-catalogue' AS "sourceKey"
+       FROM catalogue_entries WHERE is_active GROUP BY make_slug ORDER BY name,slug`)).rows;
   }
   async models(make:string) {
     return (await this.database.pool.query(
-      `SELECT DISTINCT model_slug AS slug,detail->>'model' AS name,'chargeroad-catalogue' AS "sourceKey"
-       FROM catalogue_entries WHERE is_active AND make_slug=$1 ORDER BY name,slug`,[make])).rows;
+      `SELECT model_slug AS slug,min(detail->>'model') AS name,'chargeroad-catalogue' AS "sourceKey"
+       FROM catalogue_entries WHERE is_active AND make_slug=$1 GROUP BY model_slug ORDER BY name,slug`,[make])).rows;
   }
   async findById(id:string):Promise<VehicleCatalogueDetail|null> {
     const result = await this.database.pool.query<{detail:VehicleCatalogueDetail}>(

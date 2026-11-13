@@ -7,7 +7,7 @@ import type {EnergyEvaluationRequest} from '@chargeroad/shared';
 
 describe('Energy assessment orchestration',()=>{
   function setup(){const e=energyFixture();const vehicles={resolveId:jest.fn(async()=>e.vehicle.vehicleVariantId),profile:jest.fn(async()=>({data:e.vehicle,source:source('db-profile')}))};
-    const weather={forRoute:jest.fn(async()=>({status:'weather_ready',forecasts:e.weather,reasons:[]}))};
+    const weather={forRoute:jest.fn(async(_input:unknown,_signal:AbortSignal)=>({status:'weather_ready',forecasts:e.weather,reasons:[]}))};
     const engine={evaluate:jest.fn(async(_input:EnergyEvaluationRequest,_signal:AbortSignal)=>({status:'estimated',reasons:[]}))};
     const service=new EnergyAssessmentService(vehicles,weather as unknown as WeatherService,engine as unknown as EnergyConsumptionEngine);
     return {e,vehicles,weather,engine,service};}
@@ -33,5 +33,13 @@ describe('Energy assessment orchestration',()=>{
     expect(f.weather.forRoute).not.toHaveBeenCalled();
     const wrong=setup();wrong.vehicles.resolveId.mockResolvedValue('other-car');
     await expect(wrong.service.assess(wrong.e.request,wrong.e.route,new AbortController().signal)).rejects.toThrow('identity');
+  });
+  it('bounds the whole assessment, including weather acquisition',async()=>{
+    const f=setup();f.e.request.policy.maxComputationMilliseconds=5;
+    f.weather.forRoute.mockImplementation(async(_input:unknown,signal:AbortSignal)=>new Promise((_resolve,reject)=>{
+      if(signal.aborted)reject(signal.reason);else signal.addEventListener('abort',()=>reject(signal.reason),{once:true});
+    }) as any);
+    expect(await f.service.assess(f.e.request,f.e.route,new AbortController().signal)).toMatchObject({status:'computation_limit',reasons:['ENERGY_ASSESSMENT_DEADLINE']});
+    expect(f.engine.evaluate).not.toHaveBeenCalled();
   });
 });

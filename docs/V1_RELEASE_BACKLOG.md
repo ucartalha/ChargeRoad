@@ -1,8 +1,8 @@
 # V1 çıkışı öncesi kapanacak açıklar
 
-Son güncelleme: 2026-11-11.
+Son güncelleme: 2026-11-12.
 
-Kullanıcı kararıyla CR-009'un kalan doğrulama ve üretime hazırlık işleri bu backlog'a taşındı. CR-009 teknik uygulama kapsamı DONE; aşağıdaki işler tamamlanmış sayılmaz. Sonraki görevler ilerleyebilir, V1 yayını öncesinde bu maddelerin kapanış kanıtları birlikte incelenir. Bu liste şu an yalnızca Task 9'dan devredilen işleri içerir; diğer görevlerin açıkları otomatik kapanmaz.
+Kullanıcı kararıyla CR-009'un kalan doğrulama ve üretime hazırlık işleri bu backlog'a taşındı; CR-015'in cihaz ve üretim adres sağlayıcısı kabulü de eklendi. Teknik uygulama kapsamları DONE; aşağıdaki işler tamamlanmış sayılmaz. Sonraki görevler ilerleyebilir, V1 yayını öncesinde bu maddelerin kapanış kanıtları birlikte incelenir. Diğer görevlerin açıkları otomatik kapanmaz.
 
 Tüm maddeler TODO. Sorumlu henüz atanmadı. V1 çıkış kontrolünde açık madde bırakılacaksa kapsam/ürün davranışı için ayrıca açık karar kaydedilir; yalnızca erteleme, mevcut üretim korumalarını kaldırmaz.
 
@@ -14,7 +14,16 @@ Tüm maddeler TODO. Sorumlu henüz atanmadı. V1 çıkış kontrolünde açık m
 | V1-ROAD-004 | Üretim yol/hız servisini ve işletim bütçesini seç | Kendi barındırmamız veya kullanımımıza izin veren yönetilen servis seçilip çalıştırılır. Saklama/kendi haritamızda gösterim koşulları, atıflar, kapasite, aylık maliyet ve hata davranışı belgelenir. Üretim provası kamu demo/Overpass bağımlılığı olmadan geçer; mevcut üretim engeli korunur. | CR-009, CR-016, CR-019 |
 | V1-ROAD-005 | Yükseklik veri seti ve lisansını doğrula | Kaynak/veri sürümü, örnekleme, saklama/gösterim hakkı ve atıf kaydedilir; ara tırmanış/iniş ve eksik yükseklik örnekleri bağımsız kontrol edilir. Uygun değilse ayrı yükseklik provider'ı seçilir. Doğrulanmamış profil kesin enerji girdisi sayılmaz. | CR-009, CR-011 |
 | V1-ROAD-006 | Önbellek fiziksel temizliğini işletime al | Mevcut `roads:cleanup` komutu periyodik çalıştırılır. Süresi dolan rota yanıtları/OSM etiketleri silinir, aktif lease korunur; hata takibi ve erişim/saklama politikası doğrulanır. TTL'nin okuma sırasında geçersizleşmesi ile fiziksel silmenin ayrı olduğu işletim belgesinde kalır. | CR-009, üretim işletimi |
+| V1-ROAD-007 | Yol süresi ile hız sınırı çelişkisini çöz | İstanbul–Ankara örneğindeki `ROAD_TIME_OR_TRACE_EXCEEDS_SPEED_LIMIT` kesimleri incelenir; manevra süresi dağılımı/kenar hızları ve OSM yön/sınır kaynağı ayrıştırılır. Süre/hız tutarlılığı, varsa açıkça etiketli yeniden zamanlama ve hava geçiş zamanları birlikte doğrulanır. Hız değeri sessizce kırpılıp eski ETA korunmaz. | CR-009, CR-011, CR-013 |
+| V1-STATION-001 | Uzun rota için kullanılabilir DC donanım verisini tamamla | Katalogdaki bağlantı beyanı ile fiziksel EVSE/soket verisi ayrımı korunur. İzinli sağlayıcıdan kimlik, uyumluluk ve gerekli şarj donanımı bilgileri alınır veya belirsiz verinin yaklaşık planlarda kullanım politikası ayrıca kararlaştırılır. Gerçek İstanbul–Ankara güzergâhında en az bir tam doğrulanmış şarjlı plan ve karşı yöndeki test kaydedilir. Mevcut 0 fiziksel aday sonucu kapanış değildir. | CR-007/008, CR-012/013/016 |
+| V1-MOBILE-001 | Gerçek cihaz planlama kabulü | Android/iOS'ta foreground izin ver/ret/kalıcı ret, GPS zaman aşımı/doğruluk, adres seçimi, klavye/tarih/SOC, sekme/araç değişimi, ağ kesilmesi, iptal ve metinsel sonuçlar gözlenir. Metro export cihaz kabulü sayılmaz. | CR-015/016 |
+| V1-GEO-001 | Üretim adres servisi ve Türkiye kapsamı | İzinli yönetilen veya kendi barındırılan geocoder seçilir; lisans/saklama/atıf, maliyet/kota, Türkiye adres sonuçları ve hata davranışı doğrulanır. Public Photon production engeli korunur. | CR-015/016 |
+| V1-GEO-002 | Arama cache'inin periyodik temizliği | 24 saat TTL ile fiziksel silme ayrımı korunur; trafik olmadığında da süresi geçen sonuçlar silinir. Konum payload'larının saklama/erişim politikası doğrulanır. | CR-015, üretim işletimi |
 
 Her madde kapanırken durum, tarih ve test/rapor/saha kanıtının bağlantısı bu dosyaya eklenir. Canlı trafik desteği bu açıkların tamamlanmış bir özelliği değildir; kabul edilen V1 davranışı, trafik yoksa açık uyarıyla devam etmektir. Harita ekranı ve navigasyon kendi görevlerinde uygulanır.
 
+2026-11-12 `CR-009-P1-HARDENING`: **V1-ROAD-003/004/005 IN_PROGRESS; kapanmadı.** Yerel Valhalla 3.9.1/DEM, salt okunur ayrı 8004 Compose runtime, mevcut 8003'e yeni API entegrasyonu, kesin sağlayıcı no-data değerleri, `modelled/unknown`, 30 m ham/300 m QA ve cache/kapasite ayrımı test edildi. [Audit](validation/valhalla-dem-hardening-audit-2026-11-12.md), [teslim/kanıt](validation/valhalla-dem-hardening-2026-11-12.md). DEM kaynak/lisans/datum manifesti, bağımsız yol kotu, sıfırdan ülke graf build'i, geniş rota örneklemi ve üretim kapasitesi açık. CR-016/019, canlı trafik veya saha kabulü bu işten dolayı DONE olmadı.
+
 Başlangıç kanıtları: [yol provider teslimi](ROAD_PROVIDERS.md), [gerçek rota/sapma raporu](validation/task9-road-validation.json), [yerel performans raporu](validation/task9-road-benchmark.json), [ADR-007](adr/007-road-provider-pilot.md).
+
+Task 15 [gerçek yol önizlemesi](validation/task15-mobile-http-validation.json) yalnız mesafe/süre ve yola eşleme mesafelerini doğrular. Tam enerji rotasında uzun yol segment bütçesi ve 100 m uç doğrulaması ayrıca değerlendirilmelidir; V1-ROAD-003 veya gerçek EV plan kabulü bu önizlemeyle kapanmaz. [Mobil teslim ve sınırlar](MOBILE_PLANNING.md).

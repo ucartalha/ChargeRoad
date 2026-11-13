@@ -1,0 +1,22 @@
+﻿services:
+  valhalla:
+    image: ghcr.io/valhalla/valhalla-scripted:3.9.1
+    container_name: chargeroad-valhalla
+
+    ports:
+      - "127.0.0.1:8002:8002"
+
+    volumes:
+      - ./custom_files:/custom_files
+
+    environment:
+      server_threads: "2"
+      build_admins: "True"
+      build_time_zones: "True"
+      build_elevation: "False"
+      build_tar: "True"
+      force_rebuild: "False"
+      use_tiles_ignore_pbf: "False"
+      serve_tiles: "True"
+
+    restart: "no"

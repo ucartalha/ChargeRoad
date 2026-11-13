@@ -94,10 +94,11 @@ describe('Deterministic battery-DC energy engine',()=>{
   it('will not silently use a different vehicle, uncalibrated model, missing terrain or unknown HVAC',async()=>{
     const input=energyFixture();input.request.vehicleVariantId='another';expect((await run(input)).reasons[0].code).toBe('VEHICLE_VARIANT_MISMATCH');
     const missing=energyFixture();delete missing.vehicle.energyModel;expect((await run(missing)).reasons[0].code).toBe('ENERGY_CALIBRATION_MISSING');
-    const terrainMissing=energyFixture();terrainMissing.route.segments[0].elevationProfile=null;terrainMissing.route.segments[0].elevationGainMeters=null;terrainMissing.route.segments[0].elevationLossMeters=null;
+    const terrainMissing=energyFixture();terrainMissing.route.segments[0].elevationProfile=null;terrainMissing.route.segments[0].elevationQuality='unknown';terrainMissing.route.segments[0].elevationGainMeters=null;terrainMissing.route.segments[0].elevationLossMeters=null;
     expect((await run(terrainMissing)).reasons[0].code).toBe('ELEVATION_MISSING');
     terrainMissing.vehicle.energyModel!.unknowns.allowFlatElevation=true;expect((await run(terrainMissing)).assumptions).toContain('explicit_flat_elevation_fallback');
     const hvac=energyFixture();hvac.request.operatingConditions.hvacMode='unknown';expect((await run(hvac)).reasons[0].code).toBe('HVAC_STATE_MISSING');
+    const wrongModel=energyFixture();wrongModel.vehicle.energyModel!.vehicleVariantId='other-vehicle';await expect(run(wrongModel)).rejects.toThrow('another vehicle');
   });
   it('rejects stale or absent core weather even if the caller permits assumptions',async()=>{
     const input=energyFixture();input.request.policy.unknownWeather='allow_with_documented_assumption';input.weather[0].windSpeedKph=null;
@@ -137,6 +138,12 @@ describe('Conditioned reference correction without double counting',()=>{
   it('returns the original reference in its flat, calm baseline, without adding base auxiliary twice',async()=>{
     const e=input();e.vehicle.energyModel!.baseAuxiliaryKw=5;const result=await run(e);
     expect(result.netBatteryEnergyKwh).toBeCloseTo(.2,10);expect(result.segments[0].breakdown).toBeNull();expect(result.audit[0].baseAuxiliaryKwh).toBe(0);
+  });
+  it('can use a fully matched reference without inventing missing physics, but cannot correct wind without them',async()=>{
+    const e=input();e.vehicle.physics={curbMassKg:null,dragAreaSquareMeters:null,rollingResistanceCoefficient:null,drivetrainEfficiency:null,maxRegenerationKw:null};
+    expect((await run(e)).netBatteryEnergyKwh).toBeCloseTo(.2,10);
+    e.weather[0].windSpeedKph=10;e.weather[0].windFromDegrees=0;
+    expect((await run(e)).reasons[0].code).toBe('REFERENCE_CORRECTION_PHYSICS_MISSING');
   });
   it('interpolates only within a matched speed band and never extrapolates or substitutes WLTP',async()=>{
     const e=input(),a=e.vehicle.consumptionReferences[0];a.conditions.meanSpeedKph=40;a.valueKwhPer100Km=10;

@@ -6,9 +6,10 @@ import {
 
 export const planningPolicySchema = z.object({
   vehicleDataQuality: z.enum(['verified_only','allow_engineering_estimates']).optional(),
+  stationDataQuality:z.enum(['verified_hardware','catalogue_power_scenario']).optional(),
   id: idSchema,
   version: idSchema,
-  objective: z.enum(['minimum_total_duration', 'minimum_energy', 'minimum_charging_stops']),
+  objective: z.enum(['minimum_total_duration', 'minimum_energy', 'minimum_charging_stops']).default('minimum_total_duration'),
   availabilityMaxAgeSeconds: positiveSchema,
   forecastMaxAgeSeconds: positiveSchema,
   unknownAvailability: z.enum(['exclude', 'allow_with_documented_risk']),
@@ -18,6 +19,7 @@ export const planningPolicySchema = z.object({
   maxComputationMilliseconds: z.number().int().positive(),
 }).strict();
 
+export const startingChargeEstimateSchema=z.object({planId:z.string().uuid(),revision:z.number().int().positive(),algorithmVersion:idSchema,generatedAt:timestampSchema}).strict();
 export const routePlanRequestSchema = z.object({
   schemaVersion: contractVersionSchema,
   requestId: z.string().uuid(),
@@ -26,7 +28,8 @@ export const routePlanRequestSchema = z.object({
   vehicleVariantId: idSchema,
   departureAt: timestampSchema,
   startingChargePercent: percentSchema,
-  startingChargeSource: z.enum(['user_input', 'measured']),
+  startingChargeSource: z.enum(['user_input', 'measured','estimated']),
+  startingChargeEstimate:startingChargeEstimateSchema.optional(),
   startingChargeObservedAt: timestampSchema,
   initialBatteryTemperatureC: numericObservationSchema,
   stateOfHealthPercent: numericObservationSchema.refine(
@@ -45,6 +48,7 @@ export const routePlanRequestSchema = z.object({
   }).strict(),
   policy: planningPolicySchema,
 }).strict().superRefine((request, ctx) => {
+  if((request.startingChargeSource==='estimated')!==!!request.startingChargeEstimate)ctx.addIssue({code:'custom',path:['startingChargeEstimate'],message:'Estimated SOC requires model provenance, observations cannot carry it'});
   if (request.constraints.targetArrivalChargePercent < request.constraints.minimumReserveChargePercent)
     ctx.addIssue({ code: 'custom', path: ['constraints'], message: 'Arrival target cannot be below the reserve' });
   if (Date.parse(request.startingChargeObservedAt) > Date.parse(request.departureAt))

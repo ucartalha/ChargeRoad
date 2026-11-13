@@ -19,7 +19,7 @@ export function energyFixture():EnergyEvaluationRequest{
   const climate=forecast({id:'weather-1',segmentId:segment.id,location:f.request.origin,validAt:new Date(Date.parse(at)+30000).toISOString()});
   return {request:f.request,vehicle:f.vehicle,route:f.road,weather:[climate],evaluatedAt:at};
 }
-export function modelFixture():EnergyModel{return {id:'synthetic-model',version:'1',quality:'engineering_estimate',source:source('test-only-calibration'),
+export function modelFixture():EnergyModel{return {id:'synthetic-model',version:'1',vehicleVariantId:'synthetic-vehicle',quality:'engineering_estimate',source:source('test-only-calibration'),
   verificationNote:'TEST ONLY: analytical coefficients; not a vehicle or a field accuracy claim',assumptions:['synthetic_calibration_only'],tireSetupId:null,referenceTireDescription:null,
   mode:'physics',speedPolicy:'allow_travel_average_proxy',ambientRangeC:{min:-40,max:50},referenceAirDensityKgPerM3:1,
   referenceCabinKw:null,referenceBatteryThermalKw:null,baseAuxiliaryKw:0,cabin:{heatKwPerDegree:.1,coolKwPerDegree:.1,maxKw:5},

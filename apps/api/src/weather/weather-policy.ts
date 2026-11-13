@@ -1,9 +1,15 @@
 import {z} from 'zod';
 
-export const WEATHER_POLICY={version:'weather/1.0.0',maxSamples:64,maxExternalCalls:16,maxQueries:10000,
+export const WEATHER_POLICY={version:'weather/1.1.0',maxSamples:64,maxExternalCalls:64,maxQueries:10000,
   sampleDistanceMeters:10000,sampleSeconds:900,maxAgeSeconds:43200,maxGapSeconds:21600,
-  minIntervalMs:500,maxConcurrency:2,dailyLimit:1000,fetchTimeoutMs:5000,deadlineMs:20000,leaseSeconds:15,
+  minIntervalMs:500,maxConcurrency:2,dailyLimit:1000,fetchTimeoutMs:5000,deadlineMs:30000,leaseSeconds:15,
   fallbackCacheSeconds:3600,retentionSeconds:86400,departureWindowSeconds:259200} as const;
+// Separate from detailed energy validation: coarse weather never certifies a charging decision.
+export const WEATHER_SAMPLING_POLICY={version:'weather-sampling/2.0.0',previewLocations:5,
+  shortRouteMeters:150000,shortStepMeters:10000,longStepMeters:20000,riskStepMeters:5000,
+  lookAheadMeters:50000,advanceMeters:20000,etaChangeSeconds:900,terrainReliefMeters:100,
+  spatialGridDegrees:.005,spatialMaxOffsetMeters:500,spatialMaxElevationDeltaMeters:100,
+  maxPendingKeys:128} as const;
 const configSchema=z.object({enabled:z.boolean(),providerId:z.string().min(1),endpoint:z.string().url(),userAgent:z.string(),termsAccepted:z.boolean()}).strict();
 export type WeatherConfig=z.infer<typeof configSchema>;
 export function weatherConfig():WeatherConfig{

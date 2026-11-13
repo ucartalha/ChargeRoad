@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-11-12T08:34:18.159Z",
+  "scope": "Real mobile HTTP client, temporary Nest HTTP server, real PostgreSQL catalogue, Geoapify and MET. Public landmark road points, test SOC 95/reserve10/arrival20. Not device or field accuracy acceptance.",
+  "requestId": "e6827e7a-ee7f-4d7f-be88-e4043a9bcabc",
+  "status": "planned",
+  "elapsedMs": 77566,
+  "phases": [
+    "queued",
+    "running"
+  ],
+  "previewDuringJob": true,
+  "distanceMeters": 480895.9999999994,
+  "stops": 2,
+  "arrivalChargePercent": 25.917336945551423,
+  "search": {
+    "policyId": "bounded-ev-search",
+    "policyVersion": "1.1.0",
+    "objective": "minimum_total_duration",
+    "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+    "optimality": "not_proven",
+    "searchComplete": false,
+    "stoppedReason": "data_budget",
+    "expandedStates": 6,
+    "evaluatedTransitions": 30,
+    "roadQueries": 26,
+    "weatherQueries": 28849,
+    "elapsedMilliseconds": 76051.72459999999,
+    "skippedData": [
+      "BATTERY_TEMPERATURE_OUTSIDE_CURVE",
+      "PHYSICAL_DC_EVSE_DATA_MISSING",
+      "STATION_CANDIDATE_LIMIT",
+      "WEATHER_QUERY_BUDGET",
+      "operator_membership_required",
+      "station_access_hours_unverified"
+    ],
+    "socStepPercent": 5,
+    "drivingNetBatteryKwh": 108.60090864204616,
+    "scenarioDurationSeconds": 20512.253
+  },
+  "duration": {
+    "drivingSeconds": 15505.43156548497,
+    "chargingSeconds": 4766.8241074127745,
+    "connectionSeconds": 240,
+    "blockingPreconditioningSeconds": 0,
+    "waitingSeconds": null,
+    "totalSeconds": null
+  },
+  "wireDecodedBytes": 5080230,
+  "budgetBefore": [
+    {
+      "provider_id": "geoapify",
+      "used": 2
+    },
+    {
+      "provider_id": "overpass-osm",
+      "used": 8
+    },
+    {
+      "provider_id": "valhalla-osm",
+      "used": 100
+    }
+  ],
+  "budgetAfter": [
+    {
+      "provider_id": "geoapify",
+      "used": 28
+    },
+    {
+      "provider_id": "overpass-osm",
+      "used": 8
+    },
+    {
+      "provider_id": "valhalla-osm",
+      "used": 100
+    }
+  ]
+}

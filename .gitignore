@@ -11,3 +11,13 @@ artifacts/
 *.tsbuildinfo
 apps/mobile/ios/
 apps/mobile/android/
+
+infra/valhalla/custom_files/
+infra/valhalla/elevation-pilot/
+# Prepared graph/DEM bundles are local inputs, never source-controlled artifacts.
+infra/valhalla/datasets/
+infra/valhalla/**/*.hgt
+infra/valhalla/**/*.hgt.gz
+infra/valhalla/**/*.osm.pbf
+infra/valhalla/**/*.gph
+infra/valhalla/**/*.tar

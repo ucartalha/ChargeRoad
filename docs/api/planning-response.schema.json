@@ -1,0 +1,2644 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "status": {
+          "type": "string",
+          "const": "planned"
+        },
+        "plan": {
+          "type": "object",
+          "properties": {
+            "scenario": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "conditional_timeline"
+                },
+                "queueAssumptionSeconds": {
+                  "type": "number",
+                  "const": 0
+                },
+                "departureAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                "arrivalAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                "totalSeconds": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "segmentTimes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "segmentId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "departureAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      "arrivalAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "segmentId",
+                      "departureAt",
+                      "arrivalAt"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "stopTimes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "stopId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "arrivalAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      "departureAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "stopId",
+                      "arrivalAt",
+                      "departureAt"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "conditions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "kind",
+                "queueAssumptionSeconds",
+                "departureAt",
+                "arrivalAt",
+                "totalSeconds",
+                "segmentTimes",
+                "stopTimes",
+                "conditions"
+              ],
+              "additionalProperties": false
+            },
+            "search": {
+              "type": "object",
+              "properties": {
+                "policyId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "policyVersion": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "objective": {
+                  "type": "string",
+                  "enum": [
+                    "minimum_total_duration",
+                    "minimum_energy",
+                    "minimum_charging_stops"
+                  ]
+                },
+                "scope": {
+                  "type": "string",
+                  "const": "bounded_corridor_no_repeated_stations_sampled_soc"
+                },
+                "optimality": {
+                  "type": "string",
+                  "const": "not_proven"
+                },
+                "searchComplete": {
+                  "type": "boolean"
+                },
+                "stoppedReason": {
+                  "type": "string",
+                  "enum": [
+                    "frontier_exhausted",
+                    "state_budget",
+                    "frontier_budget",
+                    "transition_budget",
+                    "deadline",
+                    "data_budget"
+                  ]
+                },
+                "expandedStates": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "evaluatedTransitions": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "roadQueries": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "weatherQueries": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "elapsedMilliseconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "skippedData": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "socStepPercent": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 20
+                },
+                "drivingNetBatteryKwh": {
+                  "type": "number"
+                },
+                "scenarioDurationSeconds": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "policyId",
+                "policyVersion",
+                "objective",
+                "scope",
+                "optimality",
+                "searchComplete",
+                "stoppedReason",
+                "expandedStates",
+                "evaluatedTransitions",
+                "roadQueries",
+                "weatherQueries",
+                "elapsedMilliseconds",
+                "skippedData",
+                "socStepPercent",
+                "drivingNetBatteryKwh",
+                "scenarioDurationSeconds"
+              ],
+              "additionalProperties": false
+            },
+            "stationSearch": {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "const": "station-search/1.0.0"
+                },
+                "coverage": {
+                  "type": "object",
+                  "properties": {
+                    "completeForQuery": {
+                      "type": "boolean"
+                    },
+                    "sources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "scopeKey": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "countryCode": {
+                            "type": "string"
+                          },
+                          "snapshotId": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                          },
+                          "sourceSnapshotComplete": {
+                            "type": "boolean"
+                          },
+                          "geographicCoverageVerified": {
+                            "type": "boolean"
+                          },
+                          "retrievedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "sourceUpdatedAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "stale": {
+                            "type": "boolean"
+                          },
+                          "qualityExclusions": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "sourceId",
+                          "scopeKey",
+                          "countryCode",
+                          "snapshotId",
+                          "sourceSnapshotComplete",
+                          "geographicCoverageVerified",
+                          "retrievedAt",
+                          "sourceUpdatedAt",
+                          "stale",
+                          "qualityExclusions"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "completeForQuery",
+                    "sources",
+                    "notes"
+                  ],
+                  "additionalProperties": false
+                },
+                "search": {
+                  "type": "object",
+                  "properties": {
+                    "policyVersion": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "corridorMeters": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "maxCandidates": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "truncated": {
+                      "type": "boolean"
+                    },
+                    "nextCorridorMeters": {
+                      "anyOf": [
+                        {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "emptyReason": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "no_matches_in_known_data",
+                        "coverage_missing",
+                        "search_limited"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "policyVersion",
+                    "corridorMeters",
+                    "maxCandidates",
+                    "truncated",
+                    "nextCorridorMeters",
+                    "emptyReason"
+                  ],
+                  "additionalProperties": false
+                },
+                "revisions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "snapshotId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      "checksumSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    },
+                    "required": [
+                      "snapshotId",
+                      "checksumSha256"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "coverage",
+                "search",
+                "revisions"
+              ],
+              "additionalProperties": false
+            },
+            "schemaVersion": {
+              "type": "string",
+              "const": "1.0.0"
+            },
+            "planId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "revision": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "requestId": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "supersedes": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "planId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "planId",
+                    "revision"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+            },
+            "vehicleVariantId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "vehicleProfileId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "vehicleProfileVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "algorithmVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "policyVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "dataSnapshotChecksums": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "roadRoute": {
+              "type": "object",
+              "properties": {
+                "composition": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "routeId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "checksumSha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          "recordId": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 200
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "version": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 200
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "url": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "retrievedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "publishedAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "license": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "sourceId",
+                          "recordId",
+                          "version",
+                          "url",
+                          "retrievedAt",
+                          "publishedAt",
+                          "license"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "departureAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "routeId",
+                      "checksumSha256",
+                      "source",
+                      "departureAt"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "distanceMeters": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "drivingDurationSeconds": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "segments": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "sourceEdgeIds": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "startDistanceMeters": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "endDistanceMeters": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "distanceMeters": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "drivingDurationSeconds": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "geometry": {
+                        "minItems": 2,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "latitude": {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90
+                            },
+                            "longitude": {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180
+                            }
+                          },
+                          "required": [
+                            "latitude",
+                            "longitude"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "roadClass": {
+                        "type": "string",
+                        "enum": [
+                          "motorway",
+                          "primary",
+                          "secondary",
+                          "local",
+                          "ferry",
+                          "unknown"
+                        ]
+                      },
+                      "bearingDegrees": {
+                        "type": "number",
+                        "minimum": 0,
+                        "exclusiveMaximum": 360
+                      },
+                      "expectedSpeedKph": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "speedLimitKph": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "speedLimitKind": {
+                        "type": "string",
+                        "enum": [
+                          "unknown",
+                          "posted",
+                          "unlimited",
+                          "conditional_unresolved",
+                          "provider_derived"
+                        ]
+                      },
+                      "speedLimitSource": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "sourceId": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 200
+                              },
+                              "recordId": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 200
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "version": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 200
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "url": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "uri"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "retrievedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              "publishedAt": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "license": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "sourceId",
+                              "recordId",
+                              "version",
+                              "url",
+                              "retrievedAt",
+                              "publishedAt",
+                              "license"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "speedLimitRaw": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "expectedSpeedBasis": {
+                        "type": "string",
+                        "const": "travel_time_average"
+                      },
+                      "elevationQuality": {
+                        "type": "string",
+                        "enum": [
+                          "verified",
+                          "modelled",
+                          "unknown"
+                        ]
+                      },
+                      "speedProfile": {
+                        "minItems": 2,
+                        "maxItems": 1000,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "elapsedSeconds": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "speedKph": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "elapsedSeconds",
+                            "speedKph"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "elevationProfile": {
+                        "anyOf": [
+                          {
+                            "minItems": 2,
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "distanceFromStartMeters": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "elevationMeters": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "distanceFromStartMeters",
+                                "elevationMeters"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "elevationGainMeters": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "elevationLossMeters": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "startsAtChargingAccess": {
+                        "type": "boolean"
+                      },
+                      "endsAtChargingAccess": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "sourceEdgeIds",
+                      "startDistanceMeters",
+                      "endDistanceMeters",
+                      "distanceMeters",
+                      "drivingDurationSeconds",
+                      "geometry",
+                      "roadClass",
+                      "bearingDegrees",
+                      "expectedSpeedKph",
+                      "speedLimitKph",
+                      "elevationProfile",
+                      "elevationGainMeters",
+                      "elevationLossMeters",
+                      "startsAtChargingAccess",
+                      "endsAtChargingAccess"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "segmentationPolicy": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "version": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "maxDistanceMeters": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "maxDurationSeconds": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "splitAtSpeedChangeKph": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "splitAtGradeChangePercent": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "splitAtBearingChangeDegrees": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 180
+                    },
+                    "maxWeatherTimeStepSeconds": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "splitAtRoadClassChanges": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "splitAtChargingAccess": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "version",
+                    "maxDistanceMeters",
+                    "maxDurationSeconds",
+                    "splitAtSpeedChangeKph",
+                    "splitAtGradeChangePercent",
+                    "splitAtBearingChangeDegrees",
+                    "maxWeatherTimeStepSeconds",
+                    "splitAtRoadClassChanges",
+                    "splitAtChargingAccess"
+                  ],
+                  "additionalProperties": false
+                },
+                "source": {
+                  "type": "object",
+                  "properties": {
+                    "sourceId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "recordId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "version": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "retrievedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "publishedAt": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "license": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "sourceId",
+                    "recordId",
+                    "version",
+                    "url",
+                    "retrievedAt",
+                    "publishedAt",
+                    "license"
+                  ],
+                  "additionalProperties": false
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "providerId": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "traffic": {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "historical",
+                        "live",
+                        "unknown"
+                      ]
+                    },
+                    "departureUsedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    },
+                    "originTimeZone": {
+                      "type": "string"
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "attributions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "license": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "text",
+                          "url",
+                          "license"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "maneuvers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "instruction": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "startDistanceMeters": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "endDistanceMeters": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "instruction",
+                          "type",
+                          "startDistanceMeters",
+                          "endDistanceMeters"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "speedLimitKnownMeters": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "speedLimitUnknownMeters": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "durationAllocation": {
+                      "type": "string",
+                      "const": "maneuver_weighted"
+                    },
+                    "usage": {
+                      "type": "string",
+                      "enum": [
+                        "development_pilot",
+                        "configured_service"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "providerId",
+                    "traffic",
+                    "departureUsedAt",
+                    "originTimeZone",
+                    "warnings",
+                    "attributions",
+                    "maneuvers",
+                    "speedLimitKnownMeters",
+                    "speedLimitUnknownMeters",
+                    "durationAllocation",
+                    "usage"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "id",
+                "distanceMeters",
+                "drivingDurationSeconds",
+                "segments",
+                "segmentationPolicy",
+                "source"
+              ],
+              "additionalProperties": false
+            },
+            "minimumReserveChargePercent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "targetArrivalChargePercent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "estimatedArrivalChargePercent": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "energySegments": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "segmentId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "departureAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "arrivalAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startChargePercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "endChargePercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "minimumChargePercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "netBatteryEnergyKwh": {
+                    "type": "number"
+                  },
+                  "breakdown": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "tractionKwh": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "baseAuxiliaryKwh": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "cabinAuxiliaryKwh": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "batteryThermalKwh": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "regeneratedKwh": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "tractionKwh",
+                          "cabinAuxiliaryKwh",
+                          "batteryThermalKwh",
+                          "regeneratedKwh"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "batteryTemperatureAtEndC": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "measured"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt",
+                          "sourceId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "user_input"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "estimated"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "estimatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "validAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "estimatedAt",
+                          "validAt",
+                          "modelVersion"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "unknown"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "consumptionReferenceIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    }
+                  },
+                  "weatherQueryIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    }
+                  },
+                  "modelVersion": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  }
+                },
+                "required": [
+                  "segmentId",
+                  "departureAt",
+                  "arrivalAt",
+                  "startChargePercent",
+                  "endChargePercent",
+                  "minimumChargePercent",
+                  "netBatteryEnergyKwh",
+                  "breakdown",
+                  "batteryTemperatureAtEndC",
+                  "consumptionReferenceIds",
+                  "weatherQueryIds",
+                  "modelVersion"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "chargingStops": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "stationId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "evseId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "connectorId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "chargingPathId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "latitude": {
+                        "type": "number",
+                        "minimum": -90,
+                        "maximum": 90
+                      },
+                      "longitude": {
+                        "type": "number",
+                        "minimum": -180,
+                        "maximum": 180
+                      }
+                    },
+                    "required": [
+                      "latitude",
+                      "longitude"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "routeDistanceMeters": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "detourDistanceMeters": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "detourDrivingSeconds": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "detourBasis": {
+                    "type": "string",
+                    "const": "included_in_road_not_separately_quantified"
+                  },
+                  "arrivalChargePercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "chargeStartPercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "connectionBatteryEnergyKwh": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "targetChargePercent": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 100
+                  },
+                  "effectiveBatteryCapacityKwh": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "energyDeliveredAtInletKwh": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "energyStoredKwh": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "auxiliaryEnergyKwh": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "conversionLossKwh": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "curveReference": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "version": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "coveredSocPercent": {
+                        "type": "object",
+                        "properties": {
+                          "min": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "max": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 100
+                          }
+                        },
+                        "required": [
+                          "min",
+                          "max"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "extrapolation": {
+                        "type": "string",
+                        "const": "forbidden"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "version",
+                      "coveredSocPercent",
+                      "extrapolation"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "batteryTemperatureAtArrivalC": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "measured"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt",
+                          "sourceId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "user_input"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "estimated"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "estimatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "validAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "estimatedAt",
+                          "validAt",
+                          "modelVersion"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "unknown"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "batteryTemperatureAtChargeStartC": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "measured"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt",
+                          "sourceId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "user_input"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "estimated"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "estimatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "validAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "estimatedAt",
+                          "validAt",
+                          "modelVersion"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "unknown"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "batteryTemperatureAtDepartureC": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "measured"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "sourceId": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt",
+                          "sourceId"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "user_input"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "observedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "observedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "estimated"
+                          },
+                          "value": {
+                            "type": "number"
+                          },
+                          "estimatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          "validAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "modelVersion": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value",
+                          "estimatedAt",
+                          "validAt",
+                          "modelVersion"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "origin": {
+                            "type": "string",
+                            "const": "unknown"
+                          },
+                          "value": {
+                            "type": "null"
+                          }
+                        },
+                        "required": [
+                          "origin",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "thermalModelVersion": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "chargingDurationSeconds": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "connectionDurationSeconds": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "blockingPreconditioningSeconds": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "waiting": {
+                    "type": "object",
+                    "properties": {
+                      "basis": {
+                        "type": "string",
+                        "enum": [
+                          "none_needed",
+                          "operator_forecast",
+                          "historical_model",
+                          "policy_assumption",
+                          "unknown"
+                        ]
+                      },
+                      "seconds": {
+                        "anyOf": [
+                          {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "justificationId": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "basis",
+                      "seconds",
+                      "justificationId"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "arrivalAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "departureAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "availabilitySnapshot": {
+                    "type": "object",
+                    "properties": {
+                      "reportedStatus": {
+                        "type": "string",
+                        "enum": [
+                          "available",
+                          "occupied",
+                          "reserved",
+                          "blocked",
+                          "out_of_service",
+                          "unknown"
+                        ]
+                      },
+                      "effectiveStatus": {
+                        "type": "string",
+                        "enum": [
+                          "available",
+                          "occupied",
+                          "reserved",
+                          "blocked",
+                          "out_of_service",
+                          "unknown"
+                        ]
+                      },
+                      "sourceObservedAt": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "receivedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      "evaluatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      },
+                      "maxAgeSeconds": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "sourceId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      }
+                    },
+                    "required": [
+                      "reportedStatus",
+                      "effectiveStatus",
+                      "sourceObservedAt",
+                      "receivedAt",
+                      "evaluatedAt",
+                      "maxAgeSeconds",
+                      "sourceId"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "stationId",
+                  "evseId",
+                  "connectorId",
+                  "chargingPathId",
+                  "location",
+                  "routeDistanceMeters",
+                  "detourDistanceMeters",
+                  "detourDrivingSeconds",
+                  "arrivalChargePercent",
+                  "targetChargePercent",
+                  "effectiveBatteryCapacityKwh",
+                  "energyDeliveredAtInletKwh",
+                  "energyStoredKwh",
+                  "auxiliaryEnergyKwh",
+                  "conversionLossKwh",
+                  "curveReference",
+                  "batteryTemperatureAtArrivalC",
+                  "batteryTemperatureAtDepartureC",
+                  "thermalModelVersion",
+                  "chargingDurationSeconds",
+                  "connectionDurationSeconds",
+                  "blockingPreconditioningSeconds",
+                  "waiting",
+                  "arrivalAt",
+                  "departureAt",
+                  "availabilitySnapshot"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "estimatedArrivalAt": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "duration": {
+              "type": "object",
+              "properties": {
+                "drivingSeconds": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "chargingSeconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "connectionSeconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "blockingPreconditioningSeconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "waitingSeconds": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "totalSeconds": {
+                  "anyOf": [
+                    {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "drivingSeconds",
+                "chargingSeconds",
+                "connectionSeconds",
+                "blockingPreconditioningSeconds",
+                "waitingSeconds",
+                "totalSeconds"
+              ],
+              "additionalProperties": false
+            },
+            "assumptions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "explanation": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "id",
+                  "code",
+                  "explanation"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "explanation": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "code",
+                  "explanation"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "planId",
+            "revision",
+            "requestId",
+            "supersedes",
+            "createdAt",
+            "vehicleVariantId",
+            "vehicleProfileId",
+            "vehicleProfileVersion",
+            "algorithmVersion",
+            "policyId",
+            "policyVersion",
+            "dataSnapshotChecksums",
+            "roadRoute",
+            "minimumReserveChargePercent",
+            "targetArrivalChargePercent",
+            "estimatedArrivalChargePercent",
+            "energySegments",
+            "chargingStops",
+            "estimatedArrivalAt",
+            "duration",
+            "assumptions",
+            "warnings"
+          ],
+          "additionalProperties": false
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "apiVersion": {
+              "type": "string",
+              "const": "planning-http/1.0.0"
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "policyVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "access": {
+              "type": "string",
+              "const": "stateless_guest"
+            },
+            "historyStored": {
+              "type": "boolean",
+              "const": false
+            },
+            "algorithms": {
+              "type": "object",
+              "properties": {
+                "optimizer": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "energy": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "charging": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "optimizer",
+                "energy",
+                "charging"
+              ],
+              "additionalProperties": false
+            },
+            "models": {
+              "type": "object",
+              "properties": {
+                "energy": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "charging": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "energy",
+                "charging"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "apiVersion",
+            "policyId",
+            "policyVersion",
+            "access",
+            "historyStored",
+            "algorithms",
+            "models"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "status",
+        "plan",
+        "metadata"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "requestId": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "infeasible",
+            "insufficient_data",
+            "provider_error",
+            "computation_limit"
+          ]
+        },
+        "reasons": {
+          "minItems": 1,
+          "maxItems": 100,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "code",
+              "explanation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "apiVersion": {
+              "type": "string",
+              "const": "planning-http/1.0.0"
+            },
+            "policyId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "policyVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "access": {
+              "type": "string",
+              "const": "stateless_guest"
+            },
+            "historyStored": {
+              "type": "boolean",
+              "const": false
+            },
+            "algorithms": {
+              "type": "object",
+              "properties": {
+                "optimizer": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "energy": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "charging": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "optimizer",
+                "energy",
+                "charging"
+              ],
+              "additionalProperties": false
+            },
+            "models": {
+              "type": "object",
+              "properties": {
+                "energy": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "charging": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "version": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "energy",
+                "charging"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "apiVersion",
+            "policyId",
+            "policyVersion",
+            "access",
+            "historyStored",
+            "algorithms",
+            "models"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "requestId",
+        "status",
+        "reasons",
+        "metadata"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

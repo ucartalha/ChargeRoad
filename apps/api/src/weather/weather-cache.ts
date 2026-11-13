@@ -1,7 +1,7 @@
 import {createHmac,randomUUID} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {DatabaseService} from '../database/database.service';
-import {WEATHER_POLICY} from './weather-policy';
+import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY} from './weather-policy';
 import {WeatherUnavailable} from './weather-ports';
 import type {WeatherDocument,WeatherTransport} from './weather-ports';
 
@@ -11,16 +11,33 @@ function waitFor<T>(work:Promise<T>,signal:AbortSignal):Promise<T>{
     work.then(resolve,reject).finally(()=>signal.removeEventListener('abort',cancel));if(signal.aborted)cancel();});
 }
 export class WeatherCacheStore {
+  private readonly pending=new Map<string,Promise<WeatherDocument>>();
+  readonly counters={lookups:0,hits:0,misses:0,coalesced:0,externalCalls:0};
   constructor(private readonly database:DatabaseService,private readonly transport:WeatherTransport,private readonly secret:string){}
   async get(provider:string,version:string,url:string,signal:AbortSignal,budget:WeatherCallBudget,
     validate:(document:WeatherDocument)=>void):Promise<WeatherDocument>{
     if(this.secret.length<32)throw new WeatherUnavailable('provider_unavailable','Weather cache secret missing');
+    signal.throwIfAborted();
+    this.counters.lookups++;
     const key=createHmac('sha256',this.secret).update('weather-cache/v1\0'+provider+'\0'+version+'\0'+url).digest('hex');
+    let work=this.pending.get(key);
+    if(work)this.counters.coalesced++;
+    if(!work){
+      if(this.pending.size>=WEATHER_SAMPLING_POLICY.maxPendingKeys)throw new WeatherUnavailable('budget_exhausted','Weather pending key budget');
+      work=this.acquire(key,provider,url,AbortSignal.timeout(WEATHER_POLICY.deadlineMs),budget,validate);
+      this.pending.set(key,work);const remove=()=>{if(this.pending.get(key)===work)this.pending.delete(key);};
+      void work.then(remove,remove);
+    }
+    return waitFor(work,signal);
+  }
+  private async acquire(key:string,provider:string,url:string,signal:AbortSignal,budget:WeatherCallBudget,
+    validate:(document:WeatherDocument)=>void):Promise<WeatherDocument>{
     for(let attempt=0;attempt<210;attempt++){
       signal.throwIfAborted();
       const row=(await this.database.pool.query(`SELECT c.document,c.expires_at>now() AS fresh,c.retry_at>now() AS retry,s.blocked_kind
         FROM weather_forecast_cache c LEFT JOIN weather_provider_state s USING(provider_id) WHERE c.request_key=$1`,[key])).rows[0];
-      if(row?.fresh&&row.document)return row.document;
+      if(row?.fresh&&row.document){this.counters.hits++;return row.document;}
+      if(attempt===0)this.counters.misses++;
       if(row?.retry)throw new WeatherUnavailable(row.blocked_kind??'provider_unavailable','Weather key backoff');
       const lease=await this.claim(key,provider,budget);
       if(lease){
@@ -68,6 +85,7 @@ export class WeatherCacheStore {
     validate:(document:WeatherDocument)=>void):Promise<WeatherDocument>{
     try{
       const fetchSignal=AbortSignal.timeout(WEATHER_POLICY.fetchTimeoutMs);
+      this.counters.externalCalls++;
       const result=await waitFor(this.transport(url,old?.lastModified??null,fetchSignal),fetchSignal);
       if(result.status===304&&!old)throw new Error('Weather 304 without cached representation');
       const document:WeatherDocument={...result,body:result.status===304?old!.body:result.body,

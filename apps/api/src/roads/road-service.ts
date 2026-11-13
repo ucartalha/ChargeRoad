@@ -1,4 +1,4 @@
-import { roadRoutingRequestSchema,stationRoadAccessSchema,stationRoadAccessRequestSchema } from '@chargeroad/shared';
+import { roadRoutingRequestSchema,stationRoadAccessSchema,stationRoadAccessRequestSchema,roadPreviewResponseSchema } from '@chargeroad/shared';
 import type { RoadRoute,RoadRoutingRequest,Coordinate,StationRoadAccessRequest,StationRoadAccess } from '@chargeroad/shared';
 import { RoutingProvider } from '../providers/routing-provider';
 import { DbStationDataProvider } from '../stations/db-station.provider';
@@ -7,7 +7,7 @@ import type { RoadAttributeProvider,RoadJsonClient,RoadShapeAdapter } from './pr
 import { BoundedRoadClient,RoadProviderError } from './road-client';
 import type { RoadConfig } from './road-policy';
 import { normalizeRoadTrip } from './normalize-road';
-import { interpolate,meters } from './geometry';
+import { interpolate,meters,simplifyDisplayGeometry } from './geometry';
 
 export class RoadAdapterRegistry {
   private readonly adapters=new Map<string,RoadShapeAdapter>();
@@ -17,6 +17,24 @@ export class RoadAdapterRegistry {
 export class RoadRoutingService extends RoutingProvider {
   constructor(private readonly config:RoadConfig,readonly registry:RoadAdapterRegistry,private readonly client:RoadJsonClient,
     private readonly attributes:RoadAttributeProvider,private readonly database:DatabaseService){super();}
+  async preview(input:RoadRoutingRequest,signal:AbortSignal){
+    const request=this.validate(input),adapter=this.registry.get(this.config.providerId),client=new BoundedRoadClient(this.client,this.config.maxActions);
+    const trips=await adapter.route(request,[request.origin,request.destination],client,signal);
+    if(trips===null)return roadPreviewResponseSchema.parse({schemaVersion:'1.0.0',status:'not_found',route:null});
+    const eligible=trips.filter(t=>(!request.avoidTolls||t.hasToll===false)&&(!request.avoidFerries||t.hasFerry===false));
+    if(!eligible.length)throw new RoadProviderError('No returned road route confirms the requested toll/ferry constraints',422);
+    const trip=eligible[0];
+    if(!trip.license||!trip.legs.length)throw new RoadProviderError('Road preview attribution missing');
+    const originSnapMeters=meters(trip.legs[0].geometry[0],request.origin),destinationSnapMeters=meters(trip.legs.at(-1)!.geometry.at(-1)!,request.destination);
+    if(originSnapMeters>1000||destinationSnapMeters>1000)throw new RoadProviderError('Konum yola yeterince yakın değil. Daha kesin bir sokak veya bina adresi seçin.',422);
+    // A distance/time preview does not require energy segmentation or trace-attribute calls.
+    // Keep the full energy route's segment/geometry budgets unchanged.
+    return roadPreviewResponseSchema.parse({schemaVersion:'1.0.0',status:'available',route:{
+      geometry:simplifyDisplayGeometry(trip.legs.flatMap((l,i)=>i?l.geometry.slice(1):l.geometry)),
+      distanceMeters:trip.legs.reduce((sum,l)=>sum+l.distanceMeters,0),drivingDurationSeconds:trip.legs.reduce((sum,l)=>sum+l.seconds,0),originSnapMeters,destinationSnapMeters,
+      traffic:trip.traffic,source:{sourceId:this.config.providerId,recordId:null,version:trip.sourceVersion??null,url:trip.sourceUrl,retrievedAt:trip.retrievedAt,publishedAt:null,license:trip.license},
+      attributions:trip.attributions,warnings:[...trip.warnings,...(trip.traffic!=='live'?['live_traffic_unavailable']:[]),...(originSnapMeters>100||destinationSnapMeters>100?['road_preview_endpoint_snapped']:[])]}});
+  }
   async routes(request:RoadRoutingRequest,signal:AbortSignal){
     const parsed=this.validate(request);const client=new BoundedRoadClient(this.client,this.config.maxActions);
     const routes=await this.calculate(parsed,[parsed.origin,parsed.destination],client,signal);
@@ -35,8 +53,9 @@ export class RoadRoutingService extends RoutingProvider {
   private async calculate(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal){
     const adapter=this.registry.get(this.config.providerId);signal.throwIfAborted();
     if(locations.length>2&&!adapter.capabilities.via)throw new RoadProviderError('Configured road adapter does not support via locations',422);
-    if(request.alternatives>1&&!adapter.capabilities.alternatives)throw new RoadProviderError('Configured road adapter does not support alternatives',422);
-    const trips=await adapter.route(request,locations,client,signal);if(trips===null)return null;
+    const providerRequest=request.alternatives>1&&!adapter.capabilities.alternatives?{...request,alternatives:1}:request;
+    const trips=await adapter.route(providerRequest,locations,client,signal);if(trips===null)return null;
+    if(providerRequest!==request)for(const trip of trips)trip.warnings.push('provider_supports_single_road_alternative');
     const eligible=trips.filter(t=>(!request.avoidTolls||t.hasToll===false)&&(!request.avoidFerries||t.hasFerry===false));
     if(!eligible.length)throw new RoadProviderError('No returned road route confirms the requested toll/ferry constraints',422);
     const results:RoadRoute[]=[];

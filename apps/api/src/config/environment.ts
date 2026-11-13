@@ -18,6 +18,7 @@ const environmentSchema = z.object({
   RATE_LIMIT_GENERAL_PER_MINUTE: z.coerce.number().int().min(1).max(1000000).default(60),
   RATE_LIMIT_CATALOGUE_PER_MINUTE: z.coerce.number().int().min(1).max(1000000).default(120),
   RATE_LIMIT_AUTH_PER_MINUTE: z.coerce.number().int().min(1).max(1000000).default(10),
+  RATE_LIMIT_PLANNING_PER_MINUTE: z.coerce.number().int().min(1).max(1000000).default(6),
   RATE_LIMIT_MAX_PENDING: z.coerce.number().int().min(1).max(1000).default(32),
   TRUSTED_PROXY_CIDRS: z.string().default(''),
 });

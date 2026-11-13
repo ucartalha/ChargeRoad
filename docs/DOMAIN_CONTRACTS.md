@@ -11,7 +11,13 @@ Bu teslim TypeScript modellerini, çalışma zamanı doğrulamalarını ve örne
 | [common.ts](../packages/shared/src/contracts/common.ts) | Birimler, koordinat, zaman, kaynak ve gözlem türleri |
 | [vehicle-energy.ts](../packages/shared/src/contracts/vehicle-energy.ts) | Tüketim referansları, voltaj, şarj yolları ve koşullu eğriler |
 | [road-weather.ts](../packages/shared/src/contracts/road-weather.ts) | Yol kesimleri, bölme politikası ve geçiş zamanına bağlı hava |
+| [energy-model.ts](../packages/shared/src/contracts/energy-model.ts) | Kaynaklı ve varyanta bağlı enerji kalibrasyonu |
+| [energy-evaluation.ts](../packages/shared/src/contracts/energy-evaluation.ts) | Enerji/SOC değerlendirmesi, audit ve korunma kontrolleri |
 | [stations.ts](../packages/shared/src/contracts/stations.ts) | İstasyon → EVSE → connector, güç paylaşımı ve erişim |
+| [capacity.ts](../packages/shared/src/contracts/capacity.ts) | SOH/sıcaklığı bir kez uygulayan sürümlü etkin kapasite snapshot'ı |
+| [charging-model.ts](../packages/shared/src/contracts/charging-model.ts) | Kaynaklı şarj verimi ve yardımcı güç kalibrasyonu |
+| [charging-evaluation.ts](../packages/shared/src/contracts/charging-evaluation.ts) | DC değerlendirme girdisi, enerji/süre aralıkları ve sonuç dengesi |
+| [energy-feedback.ts](../packages/shared/src/contracts/energy-feedback.ts) | İki SOC gözlemi, kişiselleştirilmemiş baseline, sahip/araç/koşul/izin kapsamı ve çevrimdışı politika |
 | [request.ts](../packages/shared/src/contracts/request.ts) | Plan isteği, açık kısıtlar ve kullanıcı şarj düzeltmesi |
 | [charging-stop.ts](../packages/shared/src/contracts/charging-stop.ts) | Durak, alınan/depolanan enerji ve süreler |
 | [planning.ts](../packages/shared/src/contracts/planning.ts) | Plan girdisi/sonucu, enerji profili ve hata durumları |
@@ -62,6 +68,8 @@ AC-priz referansı batarya tüketimi olarak doğrudan kullanılamaz. Açık ve k
 
 İkisi körlemesine toplanmaz. Örneğin referans HVAC içeriyorsa ayrıca bütün klima tüketimini eklemek yanlış olur. Toplam batarya enerjisinin bileşenlere ayrımı bilinmiyorsa breakdown=null kalır.
 
+CR-011 teknik çekirdeği bu iki yolu uyguluyor; [enerji teslimi](ENERGY_ENGINE.md). Genel yardımcı enerji `baseAuxiliaryKwh` olarak kabin/termal bileşenden ayrı taşınır. Sonuç sözleşmesi toplam-kesim, SOC-kapasite ve fren enerjisi dengesini doğrular. Hız izi süreyi kapsamalı ve yol uzunluğuna entegre olmalı; yalnız ortalama hızdan ivmelenme türetilmez. Pilot veri/saha kabulü halen açık.
+
 Güncel katalogda tüketim referansı ve gerçek şarj eğrisi yok. Katalogdaki menzilden bu değerler üretilmedi. VehicleCatalogueEntry ile VehicleEnergyProfile ayrı modellerdir; katalog kaydı otomatik olarak planlamaya hazır sayılmaz.
 
 ## 2. Rota kesimleri ve hava
@@ -94,6 +102,8 @@ WeatherQuery her segment için konum ve validAt taşır. Şarj durağı sonraki 
 CR-010 güncellemesi: `forecastIssuedAt` gerçek üretim zamanı bilinmiyorsa null; kaynak veri güncellemesi `sourceUpdatedAt`, indirme `fetchedAt`, 304 dahil doğrulama metadata'da ayrı tutulur. Query başına durum, kullanılan örnek konumu/kotu, interpolasyon aralığı, yağış periyodu ve basınç türü taşınır. Eksik temel hava veya kaynak zamanı güvenilir enerji planını desteklemez; indirme zamanı tazelik yerine geçmez. [Hava teslimi ve 72 saat politikası](WEATHER_PROVIDERS.md).
 
 ## 3. Şarj eğrisi, voltaj ve donanım
+
+CR-012 güncellemesi: [DC hesap çekirdeği](CHARGING_ENGINE.md) bu sözleşmeler üzerinde uygulandı. Eğrinin elektriksel sınırı ve kayıp/yardımcı etkilerin bayrakları normalize edilmelidir; yorumu belirsiz veri kabul edilmez. Şarj motoru dinamik termal simülatör veya durak seçicisi değildir; gerçek pilot profili/kalibrasyon ayrı veri kapısıdır.
 
 DcChargingCurve tek bir araç-genel maksimum güç sayısı değildir. Varyant ve chargingPathId ile eşleşen, kaynaklı/sürümlü bir eğridir.
 
@@ -197,6 +207,6 @@ pnpm typecheck
 
 Root dev/typecheck görevleri önce bağımlı shared build'ini çalıştırır. Shared kaynakları değiştirilince build tekrar çalıştırılmalı; bu teslimde shared watch servisi eklenmedi.
 
-33 senaryo; geçerli mesajlar, enerji sınırı dönüşümü, eğri kapsamı, voltaj yolu, soğuk batarya, yük, shared power, eski müsaitlik, şarj sonrası hava, bilinmeyen bekleme, süre/SOC sürekliliği ve sürüm hatalarını sınar. CR-010 ile bilinmeyen model zamanı/kaynak güncellemesi ve yeni indirmeyle eski/eksik havanın gizlenmemesi eklenmiştir. Örneklerin başarısı gerçek araç tüketim doğruluğunu ölçmez; saha/kalibrasyon testleri ayrıca yapılacaktır.
+35 shared senaryo; geçerli mesajlar, enerji sınırı dönüşümü, eğri kapsamı, voltaj yolu, soğuk batarya, yük, shared power, eski müsaitlik, şarj sonrası hava, bilinmeyen bekleme, süre/SOC sürekliliği ve sürüm hatalarını sınar. CR-010 zaman ayrımına ek olarak CR-011 hız izi bütünlüğü ve genel yardımcı enerji dengesi sınanır. API tarafındaki enerji testleri ayrıca vardır. Örneklerin başarısı gerçek araç tüketim doğruluğunu ölçmez.
 
 Rezerv yüzdeleri, bölme eşikleri, güvenilir kaynaklar, model katsayıları, sağlayıcı ve optimizasyon yöntemi bu teslimle kesinleştirilmedi. Örnek dosyadaki sayılar test fixture'ıdır.

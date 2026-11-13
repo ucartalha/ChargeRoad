@@ -19,3 +19,14 @@ export function decodePolyline6(text:string,maxPoints=20000):Coordinate[]{
   if(points.length<2)throw new Error('Road polyline too short');return points;
 }
 export function cumulative(points:Coordinate[]){const result=[0];for(let i=1;i<points.length;i++)result.push(result[i-1]+meters(points[i-1],points[i]));return result;}
+
+/** Display-only Douglas-Peucker simplification. Energy/road ledgers retain their original geometry. */
+export function simplifyDisplayGeometry(points:Coordinate[],toleranceMeters=5):Coordinate[]{
+  if(points.length<3)return points;const keep=new Set([0,points.length-1]),stack:[[number,number]]|[number,number][]=[[0,points.length-1]];
+  while(stack.length){const [start,end]=stack.pop()!,a=points[start],b=points[end],factor=Math.cos(rad(a.latitude)),dx=(b.longitude-a.longitude)*factor,dy=b.latitude-a.latitude;
+    let far=-1,max=toleranceMeters;for(let i=start+1;i<end;i++){const p=points[i],x=(p.longitude-a.longitude)*factor,y=p.latitude-a.latitude;
+      const t=dx*dx+dy*dy?Math.max(0,Math.min(1,(x*dx+y*dy)/(dx*dx+dy*dy))):0,d=Math.hypot(x-t*dx,y-t*dy)*111195;
+      if(d>max){max=d;far=i;}}
+    if(far>=0){keep.add(far);stack.push([start,far],[far,end]);}}
+  return [...keep].sort((a,b)=>a-b).map(i=>points[i]);
+}

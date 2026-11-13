@@ -20,7 +20,7 @@ const routingOptionsSchema = roadRoutingRequestSchema.omit({ schemaVersion: true
 export const preparationOptionsSchema = z.object({
   road: routingOptionsSchema,
   stationCorridorMeters: z.number().positive().max(100000),
-  maxWeatherQueries: z.number().int().positive().max(10000),
+  maxWeatherQueries: z.number().int().positive().max(30000),
 }).strict();
 export type PreparationOptions = z.infer<typeof preparationOptionsSchema>;
 

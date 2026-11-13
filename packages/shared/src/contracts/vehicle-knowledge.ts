@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { idSchema, timestampSchema, finiteSchema, nonnegativeSchema, positiveSchema, sourceReferenceSchema } from './common.js';
+import { idSchema, timestampSchema, finiteSchema, nonnegativeSchema, positiveSchema, sourceReferenceSchema,percentSchema } from './common.js';
 import { consumptionReferenceSchema, dcChargingCurveSchema, vehicleEnergyProfileSchema } from './vehicle-energy.js';
 
 export const dataQualityPolicySchema = z.enum(['verified_only', 'allow_engineering_estimates']);
@@ -39,6 +39,15 @@ export const consumptionObservationSchema=z.object({
     .refine(r=>r.min===null||r.max===null||r.min<=r.max),
   hvac:z.enum(['on','off','unknown']),distanceKm:positiveSchema.nullable(),
   energyBoundary:z.enum(['battery_dc','ac_grid','unknown']),rawReport:z.string().min(1),
+  reportedJourneyContext:z.object({
+    originLabel:z.string().min(1),destinationLabel:z.string().min(1),observedDate:z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+    approximate:z.literal(true),startingChargePercent:percentSchema.nullable(),arrivalChargePercent:percentSchema.nullable(),
+    cabinTargetC:finiteSchema.nullable(),hvacActiveSharePercent:percentSchema.nullable(),hvacShareBasis:z.enum(['time','distance','unspecified']),
+    cityDistanceSharePercent:percentSchema.nullable(),typicalCruisingKph:nonnegativeSchema.nullable(),otherReportedCruisingSpeedsKph:z.array(nonnegativeSchema).max(20),
+    chargingStops:z.array(z.object({label:z.string().min(1),arrivalChargePercent:percentSchema.nullable(),departureChargePercent:percentSchema.nullable(),
+      distanceFromOriginKm:nonnegativeSchema.nullable(),chargedEnergyKwh:nonnegativeSchema.nullable(),durationSeconds:nonnegativeSchema.nullable()}).strict()).max(20),
+    notes:z.array(z.string()),
+  }).strict().optional(),
 }).strict().refine(r=>r.speedKind!=='constant_speed'||(r.speedKph!==null&&r.speedKph>0),'Constant-speed observation requires a speed');
 export const factEvidenceSchema = z.object({
   id: idSchema, field: z.enum(['usableBatteryKwh','grossBatteryKwh','marketedBatteryKwh','motorPowerKw',
@@ -59,6 +68,7 @@ export const configurationSchema = z.object({
 }).strict().refine((c) => c.usableBatteryKwh === null || c.grossBatteryKwh === null || c.usableBatteryKwh <= c.grossBatteryKwh,
   'Usable capacity cannot exceed gross capacity');
 export const knowledgeRecordSchema = z.object({
+  matchedEntityId:z.string().uuid().optional(),
   externalId: idSchema, matchedLegacyId: idSchema.nullable(), matchBasis: z.string().min(1),
   configuration: configurationSchema,
   facts: z.array(factEvidenceSchema).max(100),

@@ -1,0 +1,46 @@
+{
+    "evidence":  "runtime_check",
+    "checkedAt":  "2026-11-12T13:23:00.2686526Z",
+    "apiReady":  [
+                     {
+                         "status":  200,
+                         "port":  3000
+                     },
+                     {
+                         "status":  200,
+                         "port":  3001
+                     }
+                 ],
+    "preservedContainers":  [
+                                {
+                                    "Names":  "chargeroad-valhalla-elevation",
+                                    "Image":  "ghcr.io/valhalla/valhalla-scripted:3.9.1",
+                                    "Ports":  "127.0.0.1:8003-\u003e8002/tcp",
+                                    "Status":  "Up 2 hours"
+                                },
+                                {
+                                    "Names":  "chargeroad-valhalla",
+                                    "Image":  "ghcr.io/valhalla/valhalla-scripted:3.9.1",
+                                    "Ports":  "127.0.0.1:8002-\u003e8002/tcp",
+                                    "Status":  "Up 3 hours"
+                                },
+                                {
+                                    "Names":  "chargeroad-db-1",
+                                    "Image":  "postgis/postgis:16-3.4",
+                                    "Ports":  "0.0.0.0:5432-\u003e5432/tcp, [::]:5432-\u003e5432/tcp",
+                                    "Status":  "Up 6 hours (healthy)"
+                                },
+                                {
+                                    "Names":  "orderlane-sqlserver",
+                                    "Image":  "mcr.microsoft.com/mssql/server:2022-latest",
+                                    "Ports":  "0.0.0.0:1433-\u003e1433/tcp, [::]:1433-\u003e1433/tcp",
+                                    "Status":  "Up 6 hours (healthy)"
+                                }
+                            ],
+    "newValidationRuntime":  {
+                                 "cleanup":  "Only this task-created validation runtime was stopped after successful smoke; not deleted",
+                                 "status":  "exited",
+                                 "name":  "/chargeroad-dem-hardening-check-router-1",
+                                 "dataMountReadWrite":  false
+                             }
+}

@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-11-12T08:29:26.719Z",
+  "provider": "geoapify",
+  "routes": [
+    {
+      "name": "Ankara short",
+      "elapsedMs": 44,
+      "distanceMeters": 3038,
+      "seconds": 267.52299999999997,
+      "segments": 34,
+      "elevationSegments": 34,
+      "speedLimitKnownMeters": 3038,
+      "speedLimitUnknownMeters": 0,
+      "limitsKph": [
+        50
+      ],
+      "warnings": [
+        "geoapify_free_flow_no_live_traffic",
+        "live_traffic_unavailable",
+        "speed_is_travel_time_average",
+        "elevation_dataset_not_independently_verified",
+        "compatible_shape_intervals_coalesced_geometry_tolerance_1m"
+      ],
+      "attributions": [
+        {
+          "text": "Powered by Geoapify",
+          "url": "https://www.geoapify.com/",
+          "license": "Geoapify terms"
+        },
+        {
+          "text": "© OpenStreetMap contributors",
+          "url": "https://www.openstreetmap.org/copyright",
+          "license": "ODbL-1.0"
+        }
+      ],
+      "previewExtraCalls": 0
+    },
+    {
+      "name": "Istanbul Ankara",
+      "elapsedMs": 2041,
+      "distanceMeters": 446120,
+      "seconds": 14136.25842465632,
+      "segments": 2168,
+      "elevationSegments": 2168,
+      "speedLimitKnownMeters": 446120,
+      "speedLimitUnknownMeters": 0,
+      "limitsKph": [
+        90,
+        50,
+        30,
+        80,
+        70,
+        120,
+        130,
+        140,
+        82
+      ],
+      "warnings": [
+        "geoapify_free_flow_no_live_traffic",
+        "live_traffic_unavailable",
+        "speed_is_travel_time_average",
+        "elevation_dataset_not_independently_verified",
+        "maneuver_duration_reconciled_to_leg_total",
+        "compatible_shape_intervals_coalesced_geometry_tolerance_1m",
+        "road_duration_adjusted_to_speed_limits"
+      ],
+      "attributions": [
+        {
+          "text": "Powered by Geoapify",
+          "url": "https://www.geoapify.com/",
+          "license": "Geoapify terms"
+        },
+        {
+          "text": "© OpenStreetMap contributors",
+          "url": "https://www.openstreetmap.org/copyright",
+          "license": "ODbL-1.0"
+        }
+      ],
+      "previewExtraCalls": 0
+    }
+  ],
+  "budget": [
+    {
+      "provider_id": "geoapify",
+      "used": 2,
+      "day": "2026-11-11T21:00:00.000Z"
+    }
+  ]
+}

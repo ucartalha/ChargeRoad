@@ -8,6 +8,12 @@ const endpoint=z.string().url().refine(v=>{const u=new URL(v);return !u.username
   (u.protocol==='https:'||(u.protocol==='http:'&&['localhost','127.0.0.1'].includes(u.hostname)));},'Use a credential-free HTTPS service endpoint');
 export const roadConfigSchema=z.object({
   enabled:z.boolean(),providerId:z.string().min(1),baseUrl:endpoint,overpassUrl:endpoint,
+  deploymentMode:z.enum(['external','self_hosted']).optional(),
+  selfHostedDailySafetyLimit:z.number().int().min(1).max(1000000).optional(),
+  engineVersion:z.string().regex(/^[a-zA-Z0-9._-]{1,48}$/).optional(),
+  graphVersion:z.string().regex(/^[a-zA-Z0-9._-]{1,48}$/).optional(),
+  demVersion:z.string().regex(/^[a-zA-Z0-9._-]{1,48}$/).optional(),
+  cacheRevision:z.string().regex(/^[a-zA-Z0-9._-]{1,48}$/).optional(),
   usePublicDemo:z.boolean(),overpassEnabled:z.boolean(),clientId:z.string().min(1),
   dailyRequestLimit:z.number().int().min(1).max(1000),minIntervalMs:z.number().int().min(1100),
   maxActions:z.number().int().min(1).max(20),maxAlternatives:z.number().int().min(1).max(3),
@@ -16,10 +22,19 @@ export const roadConfigSchema=z.object({
 }).strict();
 export type RoadConfig=z.infer<typeof roadConfigSchema>;
 export function roadConfig():RoadConfig{
-  const baseUrl=process.env.ROAD_ROUTING_BASE_URL||'https://valhalla1.openstreetmap.de';
+  const providerId=process.env.ROAD_ROUTING_PROVIDER_ID||'valhalla-osm';
+  const baseUrl=process.env.ROAD_ROUTING_BASE_URL||(providerId==='geoapify'?'https://api.geoapify.com':'https://valhalla1.openstreetmap.de');
   const usePublicDemo=new URL(baseUrl).hostname==='valhalla1.openstreetmap.de';
+  const loopback=['localhost','127.0.0.1'].includes(new URL(baseUrl).hostname);
+  const deploymentMode=process.env.ROAD_ROUTING_DEPLOYMENT_MODE||(loopback?'self_hosted':'external');
+  if(deploymentMode==='self_hosted'&&(usePublicDemo||providerId==='geoapify'))throw new Error('Public providers cannot use self-hosted capacity policy');
+  const legacyLimit=process.env.NODE_ENV!=='production'&&loopback?process.env.ROAD_ROUTING_DAILY_REQUEST_LIMIT:undefined;
+  const safetyLimit=process.env.ROAD_ROUTING_SELF_HOSTED_DAILY_SAFETY_LIMIT||legacyLimit;
   const config=roadConfigSchema.parse({enabled:process.env.ROAD_ROUTING_PILOT_ENABLED==='true',
-    providerId:process.env.ROAD_ROUTING_PROVIDER_ID||'valhalla-osm',baseUrl,
+    providerId,baseUrl,
+    deploymentMode,selfHostedDailySafetyLimit:safetyLimit?Number(safetyLimit):undefined,
+    engineVersion:process.env.ROAD_ROUTING_ENGINE_VERSION||undefined,graphVersion:process.env.ROAD_ROUTING_GRAPH_VERSION||undefined,
+    demVersion:process.env.ROAD_ROUTING_DEM_VERSION||undefined,cacheRevision:process.env.ROAD_ROUTING_CACHE_REVISION||undefined,
     overpassUrl:process.env.ROAD_OSM_TAGS_URL||'https://overpass-api.de/api/interpreter',usePublicDemo,
     overpassEnabled:process.env.ROAD_OSM_TAGS_ENABLED==='true',clientId:'chargeroad-local-development',
     dailyRequestLimit:100,minIntervalMs:1100,maxActions:12,maxAlternatives:3,maxPoints:20000,maxSegments:10000,timeoutMs:25000,cacheSeconds:3600});

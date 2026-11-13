@@ -8,6 +8,12 @@ import { stationPackage } from './fixtures';
 import { ocmRef,ocmRow,ocmPackage } from './ocm.fixtures';
 
 describe('OCM catalogue adapter and provider policy',()=>{
+  it('preserves source current, nominal voltage and operator reference without inventing a voltage range',()=>{
+    const row={...ocmRow(),Connections:[{...ocmRow().Connections[0],Amps:250,Voltage:920,Reference:'operator-port-17'}]};
+    const r=normalizeOcm([row],ocmRef,'2026-11-11T00:00:00Z',Buffer.from('electrical-fields')).records[0];
+    expect(r.connectorClaims[0]).toMatchObject({maxCurrentA:250,nominalVoltageV:920,operatorReference:'operator-port-17'});
+    expect(r.station.evses).toEqual([]);expect(r.connectorClaims[0]).not.toHaveProperty('outputVoltageRangeV');
+  });
   it('preserves equipment summaries, quantities and licence without fabricating EVSE groups',()=>{
     const r=ocmPackage().data.records[0];
     expect(r.connectorClaims[0]).toMatchObject({standard:'ccs2',maxPowerKw:180,quantity:4,granularity:'equipment_summary'});

@@ -7,6 +7,9 @@ export const connectorClaimSchema=z.object({
   maxPowerKw:positiveSchema.nullable(),rawType:z.string(),
   granularity:z.enum(['physical_connector','equipment_summary']).optional(),
   quantity:z.number().int().positive().nullable().optional(),
+  maxCurrentA:positiveSchema.nullable().optional(),
+  nominalVoltageV:positiveSchema.nullable().optional(),
+  operatorReference:z.string().max(500).nullable().optional(),
 }).strict();
 export const stationLicenseEvidenceSchema=z.object({
   sourceId:idSchema,dataProviderId:idSchema,license:idSchema,licenseUrl:z.string().url(),

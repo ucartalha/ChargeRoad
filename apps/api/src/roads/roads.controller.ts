@@ -1,14 +1,21 @@
 import { BadRequestException,Body,Controller,HttpException,HttpCode,Post,Req,Res } from '@nestjs/common';
 import type { Request,Response } from 'express';
-import { roadRoutingRequestSchema,stationRoadAccessRequestSchema } from '@chargeroad/shared';
+import { roadRoutingRequestSchema,stationRoadAccessRequestSchema,roadPreviewRequestSchema } from '@chargeroad/shared';
 import { RoadRoutingService } from './road-service';
 import { RoadProviderError } from './road-client';
 import { RateLimitPolicy } from '../security/rate-limit.guard';
+import {ROAD_SEGMENTATION} from './road-policy';
+import {meters} from './geometry';
 
 @Controller('roads')
 @RateLimitPolicy('general')
 export class RoadsController {
   constructor(private readonly service:RoadRoutingService){}
+  @Post('preview') @HttpCode(200) async preview(@Body() raw:unknown,@Req() request:Request,@Res({passthrough:true}) response:Response){
+    const parsed=roadPreviewRequestSchema.safeParse(raw);if(!parsed.success)throw new BadRequestException('Invalid road preview');
+    const input=parsed.data,distance=meters(input.origin,input.destination);if(distance<1||distance>2000000)throw new BadRequestException('Invalid road preview distance');
+    return this.execute(signal=>this.service.preview({...input,schemaVersion:'1.0.0',alternatives:1,segmentationPolicy:{...ROAD_SEGMENTATION}},signal),request,response);
+  }
   @Post('routes') @HttpCode(200) async routes(@Body() raw:unknown,@Req() request:Request,@Res({passthrough:true}) response:Response){
     const parsed=roadRoutingRequestSchema.safeParse(raw);if(!parsed.success)throw new BadRequestException('Invalid road route request');
     return this.execute(signal=>this.service.routes(parsed.data,signal),request,response);

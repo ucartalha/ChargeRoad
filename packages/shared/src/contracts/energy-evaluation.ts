@@ -1,11 +1,15 @@
 import {z} from 'zod';
-import {timestampSchema,idSchema,nonnegativeSchema,positiveSchema,finiteSchema,percentSchema} from './common.js';
+import {timestampSchema,idSchema,nonnegativeSchema,positiveSchema,finiteSchema,percentSchema,numericObservationSchema} from './common.js';
 import {roadRouteSchema,weatherForecastSchema} from './road-weather.js';
 import {vehicleEnergyProfileSchema} from './vehicle-energy.js';
 import {routePlanRequestSchema} from './request.js';
 import {energySegmentSchema} from './planning.js';
+import {usableCapacitySnapshotSchema} from './capacity.js';
 
 export const energyEvaluationRequestSchema=z.object({request:routePlanRequestSchema,vehicle:vehicleEnergyProfileSchema,
+  capacitySnapshot:usableCapacitySnapshotSchema.optional(),
+  continuation:z.object({kind:z.enum(['modelled_leg','upper_charge_preview']),departureAt:timestampSchema,startingChargePercent:percentSchema,
+    batteryTemperatureC:numericObservationSchema,targetArrivalChargePercent:percentSchema}).strict().optional(),
   route:roadRouteSchema,weather:z.array(weatherForecastSchema).max(10000),evaluatedAt:timestampSchema}).strict();
 export const energyAuditSchema=z.object({segmentId:idSchema,mode:z.enum(['physics','reference_corrected']),
   referenceKwh:nonnegativeSchema,referenceRoadLoadKwh:nonnegativeSchema,referenceIncludedAuxiliaryKwh:nonnegativeSchema,
@@ -21,6 +25,7 @@ export const energyEvaluationResultSchema=z.object({
   requestId:z.string().uuid(),routeId:idSchema,algorithmVersion:idSchema,inputChecksumSha256:z.string().regex(/^[a-f0-9]{64}$/),
   vehicleProfileId:idSchema,vehicleProfileVersion:idSchema,modelId:idSchema.nullable(),modelVersion:idSchema.nullable(),
   capacityKwh:positiveSchema.nullable(),segments:z.array(energySegmentSchema),audit:z.array(energyAuditSchema),
+  capacitySnapshot:usableCapacitySnapshotSchema.optional(),
   netBatteryEnergyKwh:finiteSchema,finalChargePercent:percentSchema.nullable(),minimumChargePercent:percentSchema.nullable(),
   completedDistanceMeters:nonnegativeSchema,referenceIds:z.array(idSchema),
   partialSegmentId:idSchema.nullable(),

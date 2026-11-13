@@ -50,6 +50,10 @@ export const roadSegmentSchema = z.object({
   if (Math.abs(expectedSpeed - segment.expectedSpeedKph) > 0.1)
     ctx.addIssue({ code: 'custom', path: ['expectedSpeedKph'], message: 'Speed must agree with road distance and driving duration' });
   const elevations = segment.elevationProfile;
+  if(elevations===null&&(segment.elevationGainMeters!==null||segment.elevationLossMeters!==null||segment.elevationQuality==='modelled'||segment.elevationQuality==='verified'))
+    ctx.addIssue({code:'custom',path:['elevationQuality'],message:'Missing elevation must have unknown quality and null ascent/descent'});
+  // Older clients may carry a numeric profile with unknown confidence. It remains
+  // unverified in the energy policy; normalizers now explicitly emit modelled.
   const speeds=segment.speedProfile;
   if(speeds){
     const seconds=speeds.at(-1)!.elapsedSeconds;
@@ -74,6 +78,7 @@ export const roadSegmentSchema = z.object({
 });
 
 export const roadRouteSchema = z.object({
+  composition:z.array(z.object({routeId:idSchema,checksumSha256:z.string().regex(/^[a-f0-9]{64}$/),source:sourceReferenceSchema,departureAt:timestampSchema}).strict()).min(1).optional(),
   id: idSchema,
   distanceMeters: positiveSchema,
   drivingDurationSeconds: positiveSchema,
@@ -139,6 +144,9 @@ export const weatherQuerySchema = z.object({
   location: coordinateSchema,
   validAt: timestampSchema,
   sampleLocation: coordinateSchema.optional(),
+  // Sharing is allowed only with an explicit, locally bounded terrain context.
+  sampleElevationMeters:finiteSchema.optional(),
+  sampleReliefMeters:nonnegativeSchema.optional(),
 }).strict();
 
 export const weatherForecastSchema = z.object({

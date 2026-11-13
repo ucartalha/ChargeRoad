@@ -1,0 +1,146 @@
+{
+  "generatedAt": "2026-11-11T21:10:32.105Z",
+  "optimizerVersion": "chargeroad-optimizer/1.0.0",
+  "scope": "Synthetic scaled analytical graph, exact reference comparison and local DB profile gates; no public provider calls or field accuracy claim",
+  "checks": [
+    {
+      "mode": "minimum_total_duration",
+      "scenarioSeconds": 235.2,
+      "referenceSeconds": 235.2,
+      "errorSeconds": 0,
+      "stops": [
+        {
+          "stationId": "a",
+          "arrivalSoc": 15.000000000000014,
+          "targetSoc": 50
+        },
+        {
+          "stationId": "b",
+          "arrivalSoc": 12.499999999999996,
+          "targetSoc": 57.5
+        }
+      ],
+      "drivingNetKwh": 4,
+      "actualEta": null,
+      "replay": "matched",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.0.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 154,
+        "roadQueries": 6,
+        "weatherQueries": 77,
+        "elapsedMilliseconds": 103.61619999999994,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    },
+    {
+      "mode": "minimum_charging_stops",
+      "scenarioSeconds": 251.38961439586762,
+      "referenceSeconds": 251.38961437878766,
+      "errorSeconds": 1.7079969438782427e-8,
+      "stops": [
+        {
+          "stationId": "a",
+          "arrivalSoc": 15.000000000000014,
+          "targetSoc": 95
+        }
+      ],
+      "drivingNetKwh": 3.9999999999999982,
+      "actualEta": null,
+      "replay": "matched",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.0.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 164,
+        "roadQueries": 6,
+        "weatherQueries": 83,
+        "elapsedMilliseconds": 59.50520000000006,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 3.9999999999999982,
+        "scenarioDurationSeconds": 251.389
+      }
+    },
+    {
+      "mode": "minimum_energy",
+      "scenarioSeconds": 235.2,
+      "referenceSeconds": 235.2,
+      "errorSeconds": 0,
+      "stops": [
+        {
+          "stationId": "a",
+          "arrivalSoc": 15.000000000000014,
+          "targetSoc": 50
+        },
+        {
+          "stationId": "b",
+          "arrivalSoc": 12.499999999999996,
+          "targetSoc": 57.5
+        }
+      ],
+      "drivingNetKwh": 4,
+      "actualEta": null,
+      "replay": "matched",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.0.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 164,
+        "roadQueries": 6,
+        "weatherQueries": 83,
+        "elapsedMilliseconds": 54.11480000000029,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    }
+  ],
+  "pilots": [
+    {
+      "vehicleKey": "ioniq6-2023-53-rwd-18",
+      "canonicalId": "a82a3933-a3fe-41f8-b830-b4b1a747a5ba",
+      "gate": "VEHICLE_ENERGY_PROFILE_MISSING"
+    },
+    {
+      "vehicleKey": "ioniq5-2025-63-rwd-19",
+      "canonicalId": "fefb8beb-6353-4e51-b3d0-c98fb4c9a37f",
+      "gate": "VEHICLE_ENERGY_PROFILE_MISSING"
+    }
+  ],
+  "realWorldAcceptance": "awaiting_vehicle_calibration_physical_evse_and_independent_field_data",
+  "notes": [
+    "No global optimality claim.",
+    "Unknown queue keeps actual ETA null.",
+    "No user reserve/arrival SOC defaults were inserted."
+  ]
+}

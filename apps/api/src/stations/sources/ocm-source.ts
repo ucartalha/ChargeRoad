@@ -9,7 +9,8 @@ const rowSchema=z.object({ID:id,DataProviderID:id,OperatorID:z.number().int().nu
   AddressInfo:z.object({Title:z.string().min(1),Latitude:z.number().min(35).max(43),Longitude:z.number().min(25).max(46),
     Country:z.object({ISOCode:z.literal('TR')})}).passthrough(),
   Connections:z.array(z.object({ID:id,ConnectionTypeID:z.number().int().nonnegative().nullable(),PowerKW:z.number().nullable().optional(),
-    Quantity:z.number().int().nullable().optional(),CurrentTypeID:z.number().int().nullable().optional()}).passthrough()).max(1000),
+    Quantity:z.number().int().nullable().optional(),CurrentTypeID:z.number().int().nullable().optional(),
+    Amps:z.number().nullable().optional(),Voltage:z.number().nullable().optional(),Reference:z.string().nullable().optional()}).passthrough()).max(1000),
   StatusTypeID:z.number().int().nullable().optional(),UsageTypeID:z.number().int().nullable().optional(),
   DateLastStatusUpdate:z.string().nullable().optional(),
   DataProvider:z.object({ID:id,IsOpenDataLicensed:z.boolean().nullable(),License:z.string().nullable()}).passthrough(),
@@ -61,14 +62,15 @@ export function normalizeOcm(rows:unknown[],reference:unknown,retrievedAt:string
       connectorClaims:r.Connections.map(c=>({sourceConnectorId:String(c.ID),standard:standards[c.ConnectionTypeID??0]??'other',
         powerType:c.CurrentTypeID===30?'dc':c.CurrentTypeID===10||c.CurrentTypeID===20?'ac':'unknown',
         maxPowerKw:c.PowerKW&&c.PowerKW>0?c.PowerKW:null,rawType:types.get(c.ConnectionTypeID??0)??String(c.ConnectionTypeID),
-        granularity:'equipment_summary',quantity:c.Quantity&&c.Quantity>0?c.Quantity:null})),
+        granularity:'equipment_summary',quantity:c.Quantity&&c.Quantity>0?c.Quantity:null,
+        maxCurrentA:c.Amps&&c.Amps>0?c.Amps:null,nominalVoltageV:c.Voltage&&c.Voltage>0?c.Voltage:null,operatorReference:c.Reference??null})),
       warnings:['ocm_general_status_not_live_availability','evse_grouping_unknown',...(!recent?['record_status_age_unverified_or_stale']:[])],
       // Strip comments, media, users, and volatile computed verification fields from normalized evidence.
       raw:{ID:r.ID,OperatorID:r.OperatorID??null,StatusTypeID:r.StatusTypeID??null,UsageTypeID:r.UsageTypeID??null,
         DateLastStatusUpdate:r.DateLastStatusUpdate??null,NumberOfPoints:r.NumberOfPoints??null,
         AddressInfo:{Title:r.AddressInfo.Title,Latitude:r.AddressInfo.Latitude,Longitude:r.AddressInfo.Longitude},
         Connections:r.Connections.map(c=>({ID:c.ID,ConnectionTypeID:c.ConnectionTypeID,PowerKW:c.PowerKW??null,
-          Quantity:c.Quantity??null,CurrentTypeID:c.CurrentTypeID??null}))}});
+          Quantity:c.Quantity??null,CurrentTypeID:c.CurrentTypeID??null,Amps:c.Amps??null,Voltage:c.Voltage??null,Reference:c.Reference??null}))}});
     if(!normalized.success){quarantine.push({externalId:String(r.ID),reason:'INVALID_OCM_NORMALIZED_RECORD',raw:{ID:r.ID}});continue;}
     records.push(normalized.data);
   }

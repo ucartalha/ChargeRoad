@@ -65,7 +65,9 @@ The first catalogue import populated 65 makes, 260 models, and 1,189 vehicle rec
 
 This source release has no direct consumption values or DC charge curves, and no explicit TR market entries. Missing values remain null or absent child records. Catalogue availability does not imply energy-planning readiness or verified Turkish-market coverage. The [source licence text](third_party/open-ev-data.LICENSE.md) is retained in the repository.
 
-The Valhalla/OSM road adapter and MET Norway weather provider are implemented with shared PostgreSQL caching and quota coordination. See [road delivery](docs/ROAD_PROVIDERS.md) and [weather delivery](docs/WEATHER_PROVIDERS.md). EV energy/SOC calculation, stop optimization, trip battery corrections, user accounts, map/navigation UI and weekly import scheduling remain separate work.
+The Valhalla/OSM road adapter and MET Norway weather provider are implemented with shared PostgreSQL caching and quota coordination. The [deterministic energy/SOC core](docs/ENERGY_ENGINE.md), [DC charging calculator](docs/CHARGING_ENGINE.md), [bounded EV stop optimizer](docs/STOP_OPTIMIZER.md), [public planning HTTP API](docs/PLANNING_API.md) and [mobile planning form with road-only fallback](docs/MOBILE_PLANNING.md) are implemented; pilot calibration, device acceptance and independent field acceptance remain open. See [all current capabilities](docs/PROJECT_STATUS.md), [road delivery](docs/ROAD_PROVIDERS.md) and [weather delivery](docs/WEATHER_PROVIDERS.md). Trip battery corrections, user accounts/history, map/navigation UI and weekly import scheduling remain separate work.
+
+[Independent workbook evaluation and offline SOC feedback](docs/INDEPENDENT_DATASET_VALIDATION.md) preserves source/variant/energy boundaries, adds trace-aware references and conditional thermal control, and tests bounded personal/cohort residual blending. The workbooks were not fitted as vehicle calibration; live collection and automatic model publication are not enabled.
 
 CR-007 update: the static station catalogue and indexed PostGIS corridor provider are implemented;
 17,165 EPDK locations and 50,259 connector claims are stored. Live availability, physical EVSE
@@ -75,3 +77,5 @@ Supplemental vehicle evidence uses a source-independent catalogue and versioned 
 See [Task 6 delivery and data gaps](docs/VEHICLE_KNOWLEDGE.md).
 Additional source attribution: [Open EV Data](https://github.com/KilowattApp/open-ev-data),
 MIT License with Attribution Requirement; [retained licence](third_party/kilowatt-open-ev-data.LICENSE.md).
+
+Latest feedback: [map-first mobile layout and Hyundai engineering baselines](docs/HYUNDAI_AND_MAP_FEEDBACK.md). All 26 current Hyundai variants have labelled approximate profiles; independent field accuracy and device acceptance remain open.

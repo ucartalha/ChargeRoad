@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-11-11T21:10:40.806Z",
+  "algorithmVersion": "dc-curve-integration/1.1.0",
+  "analytical": [
+    {
+      "id": "constant_100kw",
+      "status": "estimated",
+      "expectedSeconds": 1728,
+      "actualSeconds": 1728,
+      "errorSeconds": 0,
+      "storedKwh": 48,
+      "inletKwh": 48,
+      "auxiliaryKwh": 0,
+      "lossKwh": 0,
+      "inputChecksum": "17e4ff3f9d8c87ca655f3a0366cdb264dbdd66ee4e9fdd73f88cda0241df2ed4"
+    },
+    {
+      "id": "linear_taper_100_to_50",
+      "status": "estimated",
+      "expectedSeconds": 2395.5166560151706,
+      "actualSeconds": 2395.5166560585158,
+      "errorSeconds": 4.33451532444451e-8,
+      "storedKwh": 48,
+      "inletKwh": 48,
+      "auxiliaryKwh": 0,
+      "lossKwh": 0,
+      "inputChecksum": "8ae4f3b67e29bf91647ec95d2db821f5781718bd4efabc8e832a76e826552b09"
+    },
+    {
+      "id": "converter_storage_auxiliary",
+      "status": "estimated",
+      "expectedSeconds": 2066.9856459330144,
+      "actualSeconds": 2066.985645933015,
+      "errorSeconds": 4.547473508864641e-13,
+      "storedKwh": 48,
+      "inletKwh": 57.416267942583744,
+      "auxiliaryKwh": 1.1483253588516749,
+      "lossKwh": 8.26794258373206,
+      "inputChecksum": "880de2641d0a5db398d38ba964a0e9c204464a37cde5593cdd210dd0d72d6ec7"
+    },
+    {
+      "id": "current_limited_40kw",
+      "status": "estimated",
+      "expectedSeconds": 4320,
+      "actualSeconds": 4320,
+      "errorSeconds": 0,
+      "storedKwh": 48,
+      "inletKwh": 48,
+      "auxiliaryKwh": 0,
+      "lossKwh": 0,
+      "inputChecksum": "207705fbb698926da7ce7671f65f605a8d5bf42314633c9e8a0de973b23879da"
+    }
+  ],
+  "pilotCoverage": [
+    {
+      "vehicleKey": "ioniq6-2023-53-rwd-18",
+      "canonicalId": "a82a3933-a3fe-41f8-b830-b4b1a747a5ba",
+      "gate": "VEHICLE_CHARGING_PROFILE_MISSING"
+    },
+    {
+      "vehicleKey": "ioniq5-2025-63-rwd-19",
+      "canonicalId": "fefb8beb-6353-4e51-b3d0-c98fb4c9a37f",
+      "gate": "VEHICLE_CHARGING_PROFILE_MISSING"
+    }
+  ],
+  "fieldAccuracy": {
+    "status": "awaiting_field_data",
+    "independentSessions": 0,
+    "durationMaeSeconds": null,
+    "durationP95AbsoluteErrorSeconds": null
+  },
+  "notes": [
+    "Synthetic analytical agreement is not vehicle field accuracy.",
+    "No Hyundai charging curve, converter limit or efficiency was invented.",
+    "Availability, waiting, opening hours and stop optimization belong to the planner."
+  ]
+}

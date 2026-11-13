@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "valhalla-dataset/1",
+  "engine": {"version": "3.9.1", "image": "ghcr.io/valhalla/valhalla-scripted:3.9.1", "imageDigest": null},
+  "graph": {"version": "unknown", "sourceUrl": "https://download.geofabrik.de/europe/turkey.html", "downloadedAt": null, "osmTimestamp": null, "pbfSha256": null, "extractSha256": null, "license": "ODbL-1.0", "attributionUrl": "https://www.openstreetmap.org/copyright"},
+  "dem": {"version": "unknown", "product": "unknown", "sourceUrl": null, "license": "unknown", "verticalDatum": "unknown", "downloadedAt": null, "files": [{"path": "elevation_data/N39E032.hgt", "sha256": null}]},
+  "build": {"builtAt": null, "cacheRevision": "replace-with-unique-build-id", "configSha256": null, "peakRssBytes": null, "elapsedSeconds": null},
+  "note": "Template only. Existing local HGT files do not prove their product version or license. Runtime configuration must use /custom_files paths and explicitly known versions."
+}

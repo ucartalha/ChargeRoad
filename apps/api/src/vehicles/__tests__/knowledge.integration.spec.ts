@@ -53,6 +53,15 @@ integration('Canonical catalogue and knowledge publication with PostgreSQL',()=>
     expect(new Set(results.map(r=>r.batchId)).size).toBe(1);
     expect((await pool.query('SELECT count(*)::int AS n FROM catalogue_bindings WHERE source_key=$1',[p.source.key])).rows[0].n).toBe(1);
   });
+  it('publishes reviewed supplemental evidence against an existing canonical ID without making a duplicate vehicle',async()=>{
+    const first=await clear();await knowledge.publish(knowledgeBytes(first));
+    const id=(await pool.query('SELECT entity_id FROM catalogue_bindings WHERE source_key=$1',[first.source.key])).rows[0].entity_id;
+    const supplement=structuredClone(first);supplement.source.key='canonical-'+randomBytes(4).toString('hex');supplement.records[0].matchedEntityId=id;
+    await knowledge.publish(knowledgeBytes(supplement));
+    expect((await pool.query('SELECT entity_id FROM catalogue_bindings WHERE source_key=$1',[supplement.source.key])).rows[0].entity_id).toBe(id);
+    const wrong=structuredClone(supplement);wrong.source.key+='-conflict';wrong.records[0].configuration.modelYear++;
+    await expect(knowledge.publish(knowledgeBytes(wrong))).rejects.toThrow('Conflicting explicit match');
+  });
   it('keeps estimates out of verified-only reads',async()=>{
     const p=knowledgeFixture(true);p.source.key='estimated-'+randomBytes(4).toString('hex');
     await knowledge.publish(knowledgeBytes(p));

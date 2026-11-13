@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-11-11T22:44:58.969Z",
+  "scope": "Real PostgreSQL Hyundai profile coverage + real Ankara HTTP plan/road preview. Approximate model; not field accuracy or full charging-route acceptance.",
+  "catalogueVariants": 26,
+  "publishedEnergyAndChargingProfiles": 26,
+  "http": 200,
+  "status": "planned",
+  "result": {
+    "distanceMeters": 3845,
+    "arrivalChargePercent": 93.3283489470227,
+    "segments": 61,
+    "chargingStops": 0,
+    "algorithm": {
+      "optimizer": "chargeroad-optimizer/1.0.0",
+      "energy": "chargeroad-energy/1.3.0",
+      "charging": "dc-curve-integration/1.1.0"
+    },
+    "assumptions": [
+      {
+        "id": "energy-assumption-0",
+        "code": "Bilinmeyen SOH %95, ek yük 100 kg, klima 1 kW ve ilk batarya sıcaklığı dış havaya eşit varsayılır; bunlar gözlem değildir.",
+        "explanation": "Bilinmeyen SOH %95, ek yük 100 kg, klima 1 kW ve ilk batarya sıcaklığı dış havaya eşit varsayılır; bunlar gözlem değildir."
+      },
+      {
+        "id": "energy-assumption-1",
+        "code": "Eski katalogdaki bilinen kullanılabilir kapasite korunur; pilot 63 kWh paket için %95 kullanılabilir oranı mühendislik tahminidir.",
+        "explanation": "Eski katalogdaki bilinen kullanılabilir kapasite korunur; pilot 63 kWh paket için %95 kullanılabilir oranı mühendislik tahminidir."
+      },
+      {
+        "id": "energy-assumption-2",
+        "code": "Hız ve sıcaklık kırılımları fizik tabanlı türetimdir; ölçülmüş internet testleri olarak sunulmaz. Saha hata payı henüz belirlenmedi.",
+        "explanation": "Hız ve sıcaklık kırılımları fizik tabanlı türetimdir; ölçülmüş internet testleri olarak sunulmaz. Saha hata payı henüz belirlenmedi."
+      },
+      {
+        "id": "energy-assumption-3",
+        "code": "Kaynak DC gücü kapasiteyle aynı göründüğünden şüpheli güç/eğri doğrudan kullanılmadı.",
+        "explanation": "Kaynak DC gücü kapasiteyle aynı göründüğünden şüpheli güç/eğri doğrudan kullanılmadı."
+      },
+      {
+        "id": "energy-assumption-4",
+        "code": "Kaynak eşleştirmesi 6 standard range 2wd / ; aynı batarya/çekiş ailesinden yıl aktarımı yaklaşık olarak yapılır.",
+        "explanation": "Kaynak eşleştirmesi 6 standard range 2wd / ; aynı batarya/çekiş ailesinden yıl aktarımı yaklaşık olarak yapılır."
+      },
+      {
+        "id": "energy-assumption-5",
+        "code": "Kaynak ortalamaları bağımsız sabit hız testleri değildir; 90 km/s temsilî mühendislik ankrajı varsayılmıştır.",
+        "explanation": "Kaynak ortalamaları bağımsız sabit hız testleri değildir; 90 km/s temsilî mühendislik ankrajı varsayılmıştır."
+      },
+      {
+        "id": "energy-assumption-6",
+        "code": "Nominal 800V mimari gerçek inlet voltajı değildir; voltaj/akım ve istasyon sınırları ayrıca uygulanır.",
+        "explanation": "Nominal 800V mimari gerçek inlet voltajı değildir; voltaj/akım ve istasyon sınırları ayrıca uygulanır."
+      },
+      {
+        "id": "energy-assumption-7",
+        "code": "capacity_fixed_at_evaluation_start_no_energy_created_by_warming",
+        "explanation": "capacity_fixed_at_evaluation_start_no_energy_created_by_warming"
+      },
+      {
+        "id": "energy-assumption-8",
+        "code": "continuation_soc_is_modelled_not_a_new_user_measurement",
+        "explanation": "continuation_soc_is_modelled_not_a_new_user_measurement"
+      },
+      {
+        "id": "energy-assumption-9",
+        "code": "explicit_payload_fallback",
+        "explanation": "explicit_payload_fallback"
+      },
+      {
+        "id": "energy-assumption-10",
+        "code": "explicit_soh_fallback",
+        "explanation": "explicit_soh_fallback"
+      },
+      {
+        "id": "energy-assumption-11",
+        "code": "explicit_unknown_hvac_power",
+        "explanation": "explicit_unknown_hvac_power"
+      },
+      {
+        "id": "energy-assumption-12",
+        "code": "initial_battery_temperature_modelled_at_ambient_equilibrium",
+        "explanation": "initial_battery_temperature_modelled_at_ambient_equilibrium"
+      },
+      {
+        "id": "energy-assumption-13",
+        "code": "isothermal_sea_level_to_surface_pressure",
+        "explanation": "isothermal_sea_level_to_surface_pressure"
+      },
+      {
+        "id": "energy-assumption-14",
+        "code": "modelled_elevation_not_independently_verified",
+        "explanation": "modelled_elevation_not_independently_verified"
+      },
+      {
+        "id": "energy-assumption-15",
+        "code": "passive_battery_thermal_model_no_ohmic_or_active_heat",
+        "explanation": "passive_battery_thermal_model_no_ohmic_or_active_heat"
+      },
+      {
+        "id": "energy-assumption-16",
+        "code": "temperature_capacity_derating_not_modelled",
+        "explanation": "temperature_capacity_derating_not_modelled"
+      },
+      {
+        "id": "energy-assumption-17",
+        "code": "tire_setup_assumed_from_calibration",
+        "explanation": "tire_setup_assumed_from_calibration"
+      },
+      {
+        "id": "energy-assumption-18",
+        "code": "travel_average_used_as_steady_speed_proxy",
+        "explanation": "travel_average_used_as_steady_speed_proxy"
+      },
+      {
+        "id": "energy-assumption-19",
+        "code": "Şarj voltajı SOC boyunca yaklaşık modellenir; soğukta güç düşürülür; ısıtma/ön koşullandırma tamamlandı varsayılmaz.",
+        "explanation": "Şarj voltajı SOC boyunca yaklaşık modellenir; soğukta güç düşürülür; ısıtma/ön koşullandırma tamamlandı varsayılmaz."
+      },
+      {
+        "id": "engineering-model",
+        "code": "engineering_estimate",
+        "explanation": "Kaynaklı yaklaşık başlangıç profili; ölçülmüş varyant testi veya saha doğruluğu garantisi değildir."
+      }
+    ]
+  },
+  "preview": {
+    "http": 200,
+    "status": "available",
+    "displayGeometryPoints": 27
+  },
+  "preservedUserObservations": 2
+}
