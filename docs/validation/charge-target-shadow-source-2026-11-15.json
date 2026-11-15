@@ -1,0 +1,6 @@
+{
+  "date": "2026-11-15",
+  "optimizerVersion": "chargeroad-optimizer/1.1.0",
+  "scope": "Current search algorithm vs same algorithm with shadow observation removed; NOT old/new business equivalence",
+  "optimizerWithoutShadowSha256": "cc746bf1222a34fc14a04fa512186ce59c8eb9a8ae3bf5bcba522ccf32ce468d"
+}

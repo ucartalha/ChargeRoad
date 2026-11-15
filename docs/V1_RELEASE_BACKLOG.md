@@ -1,6 +1,8 @@
 # V1 çıkışı öncesi kapanacak açıklar
 
-Son güncelleme: 2026-11-12.
+2026-11-16 ek kapsam: Şarj tamamlanınca veya plan dışı istasyona girilince devam eden seyahat oturumunun hava örnekleme ufkunu yeni konum/gerçek SOC ile yeniden kurma; kullanıcı düzeltmesini kişisel sürüş profiline geri besleme; güncel ETA, sıcaklık/termal koşul ve kalan şarj duraklarını yeniden doğrulama. Bu olay tabanlı akış mevcut menzile göre ilk-plan örneklemesinden ayrı kabul edilecek; mevcut navigation yetenekleri bu birleşik saha kabulünün tamamlandığı anlamına gelmez. Kapanış: gerçek cihazda şarj sonrası, sapma, iptal/yeniden başlatma ve stale forecast senaryoları.
+
+Son güncelleme: 2026-11-16.
 
 Kullanıcı kararıyla CR-009'un kalan doğrulama ve üretime hazırlık işleri bu backlog'a taşındı; CR-015'in cihaz ve üretim adres sağlayıcısı kabulü de eklendi. Teknik uygulama kapsamları DONE; aşağıdaki işler tamamlanmış sayılmaz. Sonraki görevler ilerleyebilir, V1 yayını öncesinde bu maddelerin kapanış kanıtları birlikte incelenir. Diğer görevlerin açıkları otomatik kapanmaz.
 

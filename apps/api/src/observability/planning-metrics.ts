@@ -7,7 +7,7 @@ import {STATE_SHADOW_COUNTERS} from '../planning/state-dominance';
 
 export const metricStages=['vehicle_profile','base_road','station_corridor','road_leg_acquisition','road_http','weather_http','weather_cache_acquisition','weather_sampling','weather_acquisition',
  'energy_evaluation','charge_integration','optimizer_search','plan_compile','http_plan','response_preflight_serialize','json_serialize','gzip','job_execute','job_wait','candidate_eligibility','candidate_call_shadow','state_shadow'] as const;
-export const metricCounters=['road_leg_acquisitions','road_session_cache_hits','weather_session_cache_hits','weather_sample_queries','weather_forecast_query_items',
+export const metricCounters=['road_leg_acquisitions','road_session_cache_hits','weather_session_cache_hits','weather_sample_queries','weather_forecast_query_items','weather_sample_evaluations',
  'energy_evaluations','charge_integrations','frontier_peak','expanded_states','transitions','road_queries_budgeted','weather_queries_budgeted',
  'road_pg_cache_hits','road_pg_cache_misses','road_cache_coalesced_hits','weather_pg_cache_hits','weather_pg_cache_misses','weather_cache_coalesced',
  'road_http_acquisitions','weather_http_acquisitions','response_decoded_bytes','response_wire_bytes','cancelled','timeout',

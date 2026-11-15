@@ -4,8 +4,8 @@ export function roadBudgetPolicy(config:RoadConfig,providerId:string,url:string)
  const routing=providerId===config.providerId&&new URL(url).origin===new URL(config.baseUrl).origin;
  if(routing&&config.deploymentMode==='self_hosted')return {
   key:'self-hosted:'+providerId+':'+createHash('sha256').update(config.baseUrl).digest('hex').slice(0,16),
-  dailyLimit:config.selfHostedDailySafetyLimit??null,kind:'self_hosted_capacity' as const};
- return {key:providerId,dailyLimit:routing?config.dailyRequestLimit:100,kind:'external_daily' as const};
+  dailyLimit:config.selfHostedDailySafetyLimit??null,minIntervalMs:0,kind:'self_hosted_capacity' as const};
+ return {key:providerId,dailyLimit:routing?config.dailyRequestLimit:100,minIntervalMs:config.minIntervalMs,kind:'external_daily' as const};
 }
 export function roadCacheRevision(config:RoadConfig,providerId:string,url:string){
  if(providerId!==config.providerId||new URL(url).origin!==new URL(config.baseUrl).origin)return '';

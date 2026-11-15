@@ -6,10 +6,21 @@ import { DatabaseService } from '../../database/database.service';
 import { VehicleEnergyProvider } from '../../providers/vehicle-energy-provider';
 import { canonicalJson } from './knowledge-package';
 import type { QueryResultRow } from 'pg';
+import {catalogueRangeSchema} from '../../weather/planning-weather-policy';
 
 @Injectable()
 export class DbVehicleEnergyProvider extends VehicleEnergyProvider {
   constructor(private readonly database:DatabaseService) { super(); }
+  async catalogueRange(id:string,signal:AbortSignal){
+    const row=(await this.read<{detail:any}>('SELECT detail FROM catalogue_entries WHERE entity_id=$1 AND is_active',[id],signal)).rows[0];
+    const source=row?.detail?.source,ratings=(row?.detail?.rangeRatings??[]).filter((r:any)=>r.kind==='rated'&&typeof r.profile==='string'&&r.profile.length>0&&Number.isFinite(r.rangeKm)&&r.rangeKm>0&&r.rangeKm<=20000);
+    const ranks=['wltp','epa','nedc','cltc'];ratings.sort((a:any,b:any)=>(ranks.indexOf(a.profile.toLowerCase())<0?99:ranks.indexOf(a.profile.toLowerCase()))-
+      (ranks.indexOf(b.profile.toLowerCase())<0?99:ranks.indexOf(b.profile.toLowerCase()))||a.rangeKm-b.rangeKm);
+    const rating=ratings[0];if(!rating||!source?.license)return null;
+    const parsed=catalogueRangeSchema.safeParse({rangeKm:rating.rangeKm,cycle:rating.profile,source:{sourceId:source.key,recordId:source.vehicleId??id,version:source.version??null,
+      url:source.homepageUrl??null,retrievedAt:source.fetchedAt,publishedAt:source.generatedAt??null,license:source.license}});
+    return parsed.success?parsed.data:null;
+  }
   async resolveId(id:string, signal:AbortSignal) {
     signal.throwIfAborted();
     if (/^[0-9a-f-]{36}$/.test(id)) return id;

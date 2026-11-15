@@ -100,6 +100,8 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     {output&&<View style={s.card} accessibilityLiveRegion="polite">
       {output.status==='planned'?<>
         <Text style={s.title}>Planın hazır</Text>
+        {output.plan.warnings.some(w=>w.code==='coarse_future_weather_scenario')&&<Text testID="planning-future-weather" style={s.notice}>Rotanın ilerisi daha seyrek hava örnekleriyle tahmin edildi. Şarj sonrası koşullar ve rota yeniden değerlendirilmelidir.</Text>}
+        {output.plan.search&&!output.plan.search.searchComplete&&<Text testID="planning-search-limited" style={s.notice}>Arama sınırları içinde doğrulanan plan. Seçtiğin hedef için daha iyi bir seçenek bulunabilir; en iyi sonuç garanti edilmez.</Text>}
         {output.metadata.requestedDepartureAt&&output.plan.scenario&&<Text style={s.small}>Hesaplanan hareket: {new Date(output.plan.scenario.departureAt).toLocaleTimeString('tr-TR')}</Text>}
         <Text style={s.text}>{(output.plan.roadRoute.distanceMeters/1000).toFixed(1)} km · Varış şarjı %{output.plan.estimatedArrivalChargePercent.toFixed(1)}</Text>
         <Text style={s.text}>{output.plan.chargingStops.length} şarj durağı · Sürüş {minutes(output.plan.duration.drivingSeconds)} · Şarj {minutes(output.plan.duration.chargingSeconds)}</Text>

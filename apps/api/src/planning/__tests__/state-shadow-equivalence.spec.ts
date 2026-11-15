@@ -1,6 +1,6 @@
 import {stateCases,validateStateCase} from '../validation/state-dominance-validation';
 import {objectives} from '../validation/frontier-performance-harness';
-describe('Original production vs bounded state shadow',()=>{
+describe('Current versioned algorithm with/without bounded state shadow',()=>{
  const flag=process.env.PLANNING_METRICS_ENABLED;
  beforeAll(()=>{process.env.PLANNING_METRICS_ENABLED='false';jest.useFakeTimers({now:new Date('2026-11-15T09:00:00Z'),doNotFake:['performance','hrtime','nextTick','setImmediate','setTimeout','clearTimeout','setInterval','clearInterval']});});
  afterAll(()=>{jest.useRealTimers();if(flag===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=flag;});

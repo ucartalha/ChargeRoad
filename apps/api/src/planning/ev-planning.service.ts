@@ -22,6 +22,7 @@ import {catalogueStationScenario,selectCatalogueCandidates} from './catalogue-st
 import {RoadProviderError} from '../roads/road-client';
 import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
 import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
+import {samplingRange,buildPlanningWeather} from '../weather/planning-weather-policy';
 
 @Injectable()
 export class EvPlanningService {
@@ -67,6 +68,8 @@ export class EvPlanningService {
         return failure('insufficient_data',nearby?'ROAD_ENDPOINT_CONFIRMATION_REQUIRED':'ROAD_ENDPOINT_NOT_REACHABLE');}
       base={...base,routes:matched};
       const context:PlanningContext={request,vehicle,evaluatedAt,options:{...options},candidates:null as unknown as StationCandidateSet,nodes:[],baseRoutes:base.routes};
+      const catalogueRange=this.vehicles.catalogueRange?await read('VEHICLE',s=>this.vehicles.catalogueRange!(id,s)):null;
+      context.weatherSampling=buildPlanningWeather(base.routes[0],samplingRange(vehicle,catalogueRange));
       const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes);
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;

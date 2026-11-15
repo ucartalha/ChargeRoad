@@ -36,8 +36,8 @@ describe('Preview and rolling navigation weather sampling',()=>{
     const input=windowRoute(km),result=sampleNavigationWeather(input,{progressMeters:0});
     expect(result.queries).toHaveLength(50);expect(result.samples).toHaveLength(4);
     expect(result.coverage.wholeRouteReady).toBe(false);
-    if(km===800)expect(()=>sampleRouteWeather(input)).toThrow('sample budget');
-    else expect(sampleRouteWeather(input).samples.length).toBeGreaterThan(result.samples.length);
+    expect(sampleRouteWeather(input).samples.length).toBeGreaterThan(result.samples.length);
+    expect(sampleRouteWeather(input).samples.length).toBeLessThanOrEqual(128);
   });
   it('does no new work on each GPS tick, then extends at 20 km or a material ETA change',()=>{
     const input=windowRoute(450),first=sampleNavigationWeather(input,{progressMeters:0});

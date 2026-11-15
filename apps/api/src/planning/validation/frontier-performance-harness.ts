@@ -77,7 +77,7 @@ function fixture(profile:Profile,objective:Objective){
  const roads={routes:async(request:{origin:Coordinate;destination:Coordinate})=>({data:{schemaVersion:'1.0.0' as const,routes:Array.from({length:alternatives},(_,i)=>route(key(request.origin),key(request.destination),i))},source:roadTemplate.source})};
  return {...w,roads,locations};
 }
-export function makeRunner(strategy:Strategy|'native'){
+export function makeRunner(strategy:Strategy|'native',seedlessStress=false){
  let current:{queue:QueueObservation;pop:ReturnType<typeof createHash>}|null=null;
  class ObservedQueue<T> {
   private readonly array:T[]=[];private readonly heap:StablePriorityQueue<T>|null;private readonly observation= current!;
@@ -99,14 +99,18 @@ export function makeRunner(strategy:Strategy|'native'){
   const w=fixture(profile,objective),trace=createHash('sha256');let traceCalls=0,snapshot:PlanningMetricSnapshot|null=null;
   const queue:QueueObservation={peak:0,push:0,pop:0,comparisons:0,milliseconds:0,popHash:''};current={queue,pop:createHash('sha256')};
   class ObservedOptimizer extends Optimizer {
-   override solve(context:PlanningContext,port:TransitionPort,signal:AbortSignal){return super.solve(context,{
+   override solve(context:PlanningContext,port:TransitionPort,signal:AbortSignal){
+    // Explicit, hash-bound structural fixture only: optional baseRoutes are absent so a
+    // seed cannot spend the two-state stress budget before the queue is exercised.
+    // Normal benchmark/native paths keep the full production context.
+    return super.solve(seedlessStress?{...context,baseRoutes:undefined}:context,{
     issues:port.issues,counters:port.counters,remainingMilliseconds:()=>port.remainingMilliseconds?.()??Infinity,
     drive:async(state,to,preview,s)=>{traceCalls++;trace.update(JSON.stringify(normalized(['drive',state,to,preview])));return port.drive(state,to,preview,s);},
     charge:async(state,target,s)=>{traceCalls++;trace.update(JSON.stringify(normalized(['charge',state,target])));return port.charge(state,target,s);},
    },signal);}
   }
   const service=new EvPlanningService(w.vehicles as never,w.roads as never,w.stations as never,w.weather as never,new EnergyConsumptionEngine(),new ChargingCurveEngine(),new ObservedOptimizer());
-  const fixtureHash=digest({profile,request:w.request,preparation:w.preparation,options:w.options,vehicle:w.vehicle,candidates:w.candidates,locations:w.locations});
+  const fixtureHash=digest({profile,seedlessStress,request:w.request,preparation:w.preparation,options:w.options,vehicle:w.vehicle,candidates:w.candidates,locations:w.locations});
   const before=process.memoryUsage().heapUsed,cpu=process.cpuUsage(),began=performance.now();
   const outcome:OptimizerOutcome=await withPlanningMetrics(w.request.requestId,()=>service.plan(w.request,w.preparation,w.options),{enabled:metricsEnabled,scope:'benchmark',sink:s=>{snapshot=s;}});
   const wallMs=performance.now()-began,used=process.cpuUsage(cpu),after=process.memoryUsage().heapUsed;

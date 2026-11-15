@@ -9,6 +9,7 @@ import { config,roadRequest,trip,tags } from './fixtures';
 import { RoadAdapterRegistry,RoadRoutingService } from '../road-service';
 import type { RoadShapeAdapter,RoadTripInput } from '../provider-ports';
 import { OsmWayAttributeProvider } from '../osm-attributes';
+import {roadBudgetPolicy} from '../road-source-policy';
 import { AppModule } from '../../app.module';
 import { StationImportRepository } from '../../stations/station-import.repository';
 import { stationPackage } from '../../stations/__tests__/fixtures';
@@ -42,6 +43,37 @@ integration('Road providers: shared caching, licensing, access and HTTP',()=>{
     expect((await pool.query("SELECT used FROM road_provider_budget WHERE provider_id='valhalla-osm'")).rows[0].used).toBe(100);
     const capacity=(await pool.query("SELECT used FROM road_provider_budget WHERE provider_id LIKE 'self-hosted:%'")).rows;
     expect(capacity).toHaveLength(1);expect(capacity[0].used).toBe(2);
+  });
+  it('does not pace self-hosted requests, including a future pacing timestamp left by the old policy',async()=>{
+    const internal={...config,providerId:'valhalla-osm',baseUrl:'http://127.0.0.1:8002',deploymentMode:'self_hosted' as const};
+    const url=internal.baseUrl+'/route',policy=roadBudgetPolicy(internal,internal.providerId,url);
+    await pool.query("INSERT INTO road_provider_budget(provider_id,day,used,next_allowed_at) VALUES($1,(now() AT TIME ZONE 'UTC')::date,1,now()+interval '1 minute')",[policy.key]);
+    const transport=jest.fn(async()=>({route:'synthetic-local'}));
+    const clients=[new PgRoadClient(database,internal,secret,transport),new PgRoadClient(database,internal,secret,transport)];
+    await Promise.all(Array.from({length:6},(_,i)=>clients[i%2].post(internal.providerId,url,{case:i},signal)));
+    expect(transport).toHaveBeenCalledTimes(6);
+    const budget=(await pool.query('SELECT used,next_allowed_at<=clock_timestamp() AS not_paced FROM road_provider_budget WHERE provider_id=$1',[policy.key])).rows[0];
+    expect(budget).toEqual({used:7,not_paced:true});
+    await clients[0].post(internal.providerId,url,{case:0},signal);expect(transport).toHaveBeenCalledTimes(6);
+    expect((await pool.query('SELECT used FROM road_provider_budget WHERE provider_id=$1',[policy.key])).rows[0].used).toBe(7);
+  });
+  it('retains atomic self-hosted safety limits across clients without pacing',async()=>{
+    const internal={...config,providerId:'valhalla-osm',baseUrl:'http://127.0.0.1:8002',deploymentMode:'self_hosted' as const,selfHostedDailySafetyLimit:2};
+    const transport=jest.fn(async()=>({})),url=internal.baseUrl+'/route';
+    const outcomes=await Promise.allSettled(Array.from({length:4},(_,i)=>new PgRoadClient(database,internal,secret,transport).post(internal.providerId,url,{case:i},signal)));
+    expect(outcomes.filter(r=>r.status==='fulfilled')).toHaveLength(2);
+    for(const outcome of outcomes)if(outcome.status==='rejected')expect(outcome.reason).toMatchObject({code:'ROAD_SELF_HOSTED_SAFETY_BUDGET'});
+    expect(transport).toHaveBeenCalledTimes(2);
+  });
+  it('retains self-hosted error backoff and caller cancellation',async()=>{
+    const internal={...config,providerId:'valhalla-osm',baseUrl:'http://127.0.0.1:8002',deploymentMode:'self_hosted' as const};
+    const transport=jest.fn(async()=>{throw new RoadProviderError('synthetic local failure',503,60);});
+    const client=new PgRoadClient(database,internal,secret,transport),url=internal.baseUrl+'/route';
+    await expect(client.post(internal.providerId,url,{case:0},signal)).rejects.toThrow('synthetic local failure');
+    await expect(client.post(internal.providerId,url,{case:1},signal)).rejects.toMatchObject({code:'ROAD_PROVIDER_BACKOFF'});
+    const cancelled=new AbortController();cancelled.abort(new Error('synthetic cancellation'));
+    await expect(client.post(internal.providerId,url,{case:2},cancelled.signal)).rejects.toBe(cancelled.signal.reason);
+    expect(transport).toHaveBeenCalledTimes(1);
   });
   it('fences a late worker and preserves successor ownership',async()=>{
     const token=randomUUID();const transport=async()=>{await pool.query(`UPDATE road_response_cache SET token=$1,generation=generation+1`,[token]);return {};};

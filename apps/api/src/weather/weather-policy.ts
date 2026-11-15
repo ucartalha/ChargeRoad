@@ -1,7 +1,7 @@
 import {z} from 'zod';
 
-export const WEATHER_POLICY={version:'weather/1.1.0',maxSamples:64,maxExternalCalls:64,maxQueries:10000,
-  sampleDistanceMeters:10000,sampleSeconds:900,maxAgeSeconds:43200,maxGapSeconds:21600,
+export const WEATHER_POLICY={version:'weather/1.2.0',maxSamples:128,maxExternalCalls:128,maxQueries:10000,
+  sampleDistanceMeters:15000,sampleSeconds:900,maxAgeSeconds:43200,maxGapSeconds:21600,
   minIntervalMs:500,maxConcurrency:2,dailyLimit:1000,fetchTimeoutMs:5000,deadlineMs:30000,leaseSeconds:15,
   fallbackCacheSeconds:3600,retentionSeconds:86400,departureWindowSeconds:259200} as const;
 // Separate from detailed energy validation: coarse weather never certifies a charging decision.

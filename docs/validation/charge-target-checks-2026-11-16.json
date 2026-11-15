@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-16",
+  "head": "f5d16c8eb8b6ea7c32807d7450fc29fdbc1bcf1b",
+  "apiDb": {
+    "pass": 1132,
+    "fail": 0,
+    "suites": 68
+  },
+  "shared": {
+    "pass": 41
+  },
+  "mobile": {
+    "pass": 21
+  },
+  "typecheck": "PASS",
+  "build": "PASS",
+  "engineSourcesUnchanged": true,
+  "historicalTrackedValidationUnchanged": true,
+  "qualityCases": 6,
+  "sourceHashesMatch": true,
+  "logs": [
+    {
+      "path": "artifacts/charge-target-closure-db.log",
+      "sha256": "a12deb46d3868841190087ae07a814b345ffe9035ed134bf39af7105533c67ad"
+    },
+    {
+      "path": "artifacts/charge-target-closure-types.log",
+      "sha256": "318a1e484e94868b9752d22a8e56369f1d472cb974c7abf235c4b0b09d76e3ca"
+    },
+    {
+      "path": "artifacts/charge-target-closure-build.log",
+      "sha256": "d1dac96fca076b4764cbd63526846c619f806fa62718fe7de2971ed95c9fd39f"
+    },
+    {
+      "path": "artifacts/charge-target-shared.log",
+      "sha256": "869cd4a832dd6731b3a766bf0898fc0847d345293b130e6ab77a02094bbe906e"
+    },
+    {
+      "path": "artifacts/charge-target-mobile.log",
+      "sha256": "92cd3afe0fdc4bcd0a5af26d315fd7928cac29c93177ca4d6e3f25946ed1df98"
+    }
+  ],
+  "scope": "Charge-target optimization closure; NOT acceptance of long-route weather sampling"
+}

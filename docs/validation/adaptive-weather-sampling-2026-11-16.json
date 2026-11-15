@@ -1,0 +1,119 @@
+{
+  "date": "2026-11-16",
+  "scope": "Synthetic geometry sampling proof; sample locations are NOT actual HTTP requests or vehicle-range guarantees",
+  "policy": {
+    "version": "range-adaptive/1.0.0",
+    "longRouteMeters": 200000,
+    "nearStepMeters": 15000,
+    "futureStepMeters": 25000,
+    "partitionThresholdMeters": 1000000,
+    "futurePartitions": 25,
+    "rangeFraction": 0.85,
+    "maxSegmentPasses": 32,
+    "maxSegmentEvaluations": 200000,
+    "maxSamples": 128
+  },
+  "rows": [
+    {
+      "routeKm": 199,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 199,
+      "futureStepKm": 25,
+      "sampleLocations": 15,
+      "segmentQueryItems": 199,
+      "futurePartitionCount": null,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 200,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 200,
+      "futureStepKm": 25,
+      "sampleLocations": 15,
+      "segmentQueryItems": 200,
+      "futurePartitionCount": null,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 201,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 201,
+      "futureStepKm": 25,
+      "sampleLocations": 15,
+      "segmentQueryItems": 201,
+      "futurePartitionCount": null,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 700,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 340,
+      "futureStepKm": 25,
+      "sampleLocations": 39,
+      "segmentQueryItems": 700,
+      "futurePartitionCount": null,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 1000,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 340,
+      "futureStepKm": 25,
+      "sampleLocations": 51,
+      "segmentQueryItems": 1000,
+      "futurePartitionCount": null,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 1001,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 340,
+      "futureStepKm": 26.44,
+      "sampleLocations": 49,
+      "segmentQueryItems": 1001,
+      "futurePartitionCount": 25,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 1200,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 340,
+      "futureStepKm": 34.4,
+      "sampleLocations": 49,
+      "segmentQueryItems": 1200,
+      "futurePartitionCount": 25,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    },
+    {
+      "routeKm": 2000,
+      "catalogueRangeKm": 400,
+      "detailedHorizonKm": 340,
+      "futureStepKm": 66.4,
+      "sampleLocations": 49,
+      "segmentQueryItems": 2000,
+      "futurePartitionCount": 25,
+      "samplingAvailable": true,
+      "providerHttpCalls": 0
+    }
+  ],
+  "sourceHashes": {
+    "src/weather/planning-weather-policy.ts": "8b9f989a910af24f06604441d144378205ffc374097b25dda16fd749aecba330",
+    "src/weather/weather-sampler.ts": "511570cc180ebd47f6ff79a508a76c9a7b439f740791d2154f71977a608de88a",
+    "src/weather/weather.service.ts": "1bb3f4f3435738def95680721bb302bf3fb964322a28c931707782071e277cc4",
+    "src/weather/weather-normalize.ts": "27f8505c72604ecf679ed2b61e5bb93b3e2f216a671b84189b9438dd83e05c67",
+    "src/planning/planning-session.ts": "e8edf05756e862490007e1d18321893d985684576b65124343ef079e8182b67a",
+    "src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "src/energy/energy-policy.ts": "35c92bc6e04a63292ebb813ff6ce4f5197db6b778087f463b4aec834a5bfeb57"
+  },
+  "physicsEquationsChanged": false,
+  "globalOptimality": "NOT_PROVEN",
+  "realIstanbulKelkitAcceptance": "PENDING_DEVICE_TEST"
+}

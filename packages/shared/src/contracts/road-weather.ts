@@ -138,12 +138,21 @@ export const roadRoutingResultSchema = z.object({
   routes: z.array(roadRouteSchema).min(1),
 }).strict();
 
+export const weatherSamplingResolutionSchema=z.object({
+  policyVersion:z.literal('range-adaptive/1.0.0'),phase:z.enum(['near_term','future']),
+  intervalMeters:positiveSchema.max(800000),
+}).strict().superRefine((v,ctx)=>{
+  if(v.phase==='near_term'&&v.intervalMeters!==15000)ctx.addIssue({code:'custom',message:'Near-term spacing must be 15 km'});
+});
+export const weatherSampleDistanceLimit=(resolution?:z.infer<typeof weatherSamplingResolutionSchema>)=>resolution?resolution.intervalMeters:10000;
+
 export const weatherQuerySchema = z.object({
   id: idSchema,
   segmentId: idSchema,
   location: coordinateSchema,
   validAt: timestampSchema,
   sampleLocation: coordinateSchema.optional(),
+  samplingResolution:weatherSamplingResolutionSchema.optional(),
   // Sharing is allowed only with an explicit, locally bounded terrain context.
   sampleElevationMeters:finiteSchema.optional(),
   sampleReliefMeters:nonnegativeSchema.optional(),
@@ -168,6 +177,7 @@ export const weatherForecastSchema = z.object({
   airPressureHpa: positiveSchema.nullable(),
   metadata: z.object({
     sampledLocation: coordinateSchema, sampledElevationMeters:finiteSchema.nullable(), sampleDistanceMeters:nonnegativeSchema,
+    samplingResolution:weatherSamplingResolutionSchema.optional(),
     coverageStart:timestampSchema, coverageEnd:timestampSchema, lastValidatedAt:timestampSchema,
     intervalStart:timestampSchema, intervalEnd:timestampSchema, timeStepSeconds:nonnegativeSchema,
     method:z.enum(['exact','linear_temperature_vector_wind']),

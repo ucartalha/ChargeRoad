@@ -6,6 +6,7 @@ import {WeatherAdapterRegistry,WeatherService} from '../weather.service';
 import {sampleRouteWeather} from '../weather-sampler';
 import {weatherTransport} from '../weather-http';
 import {weatherConfig} from '../weather-policy';
+import {WEATHER_POLICY} from '../weather-policy';
 import {config,document,query,instant} from './fixtures';
 import {trip,roadRequest,config as roadConfig} from '../../roads/__tests__/fixtures';
 import {normalizeRoadTrip} from '../../roads/normalize-road';
@@ -23,7 +24,7 @@ describe('Weather budgets across route legs',()=>{
       expect(cache.get).toHaveBeenCalledTimes(1);
       await service.forecast([query('next-leg')],new AbortController().signal,scope);
       const calls=cache.get.mock.calls as unknown as unknown[][];
-      expect(calls[0][4]).toBe(calls[1][4]);expect(calls[0][4]).toMatchObject({limit:64});
+      expect(calls[0][4]).toBe(calls[1][4]);expect(calls[0][4]).toMatchObject({limit:WEATHER_POLICY.maxExternalCalls});
       await service.forecast([query('other-trip')],new AbortController().signal,{budgetScope:{}});
       expect(calls[0][4]).not.toBe((cache.get.mock.calls as unknown as unknown[][])[2][4]);
     }finally{clock.mockRestore();}
@@ -85,8 +86,8 @@ describe('Weather provenance, normalization and route sampling',()=>{
     expect(cache.get).not.toHaveBeenCalled();
   });
   it('reports a sample budget instead of silently thinning a large route',()=>{
-    const large=trip();large.legs[0].distanceMeters=700000;large.legs[0].seconds=25200;
-    large.legs[0].maneuvers[0].seconds=25200;large.legs[0].elevation=null;
+    const large=trip();large.legs[0].distanceMeters=2400000;large.legs[0].seconds=86400;
+    large.legs[0].maneuvers[0].seconds=86400;large.legs[0].elevation=null;
     const route=normalizeRoadTrip(large,roadRequest(),roadConfig,new Map());
     expect(()=>sampleRouteWeather({route,departureAt:instant,stops:[]})).toThrow('sample budget');
   });

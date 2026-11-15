@@ -2,9 +2,11 @@ import type {Coordinate,WeatherQuery,RouteWeatherRequest,RoadSegment} from '@cha
 import {interpolate,meters} from '../roads/geometry';
 import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY as policy} from './weather-policy';
 import {WeatherUnavailable} from './weather-ports';
+import type {PlanningWeather} from './planning-weather-policy';
+import {weatherSampleDistanceLimit} from '@chargeroad/shared';
 
 // Stops apply immediately BEFORE the named segment. Null means unknown waiting time.
-export function sampleRouteWeather(input:RouteWeatherRequest){
+export function sampleRouteWeather(input:RouteWeatherRequest,planning?:PlanningWeather,travelledMeters=0){
   const segments=input.route.segments;
   if(segments.length>WEATHER_POLICY.maxQueries)throw new WeatherUnavailable('budget_exhausted','Weather segment budget');
   const ids=new Set(segments.map(s=>s.id)),delays=new Map<string,number|null>();
@@ -23,18 +25,24 @@ export function sampleRouteWeather(input:RouteWeatherRequest){
     let half=lengths.reduce((a,b)=>a+b,0)/2,index=0;
     while(index<lengths.length-1&&half>lengths[index])half-=lengths[index++];
     const location=interpolate(segment.geometry[index],segment.geometry[index+1],lengths[index]===0?0:half/lengths[index]);
+    const progress=travelledMeters+(segment.startDistanceMeters+segment.endDistanceMeters)/2,
+      future=planning&&planning.routeMeters>200000&&progress>planning.detailedHorizonMeters;
     queries.push({id:input.route.id+':weather:'+segment.id,segmentId:segment.id,location,
+      samplingResolution:{policyVersion:'range-adaptive/1.0.0',phase:future?'future':'near_term',intervalMeters:future?planning!.futureStepMeters:15000},
       validAt:new Date(Date.parse(input.departureAt)+(elapsed+segment.drivingDurationSeconds/2)*1000).toISOString()});
     elapsed+=segment.drivingDurationSeconds;
   }
   if(!unknown)samples.push(segments.at(-1)!.geometry.at(-1)!);
-  const unique=[...new Map(samples.map(p=>[p.latitude+','+p.longitude,p])).values()];
+  const candidates=planning?planning.anchors.map(a=>a.location):samples;
+  const unique=[...new Map(candidates.map(p=>[p.latitude+','+p.longitude,p])).values()];
   if(unique.length>WEATHER_POLICY.maxSamples)throw new WeatherUnavailable('budget_exhausted','Weather sample budget');
   for(const query of queries){
     query.sampleLocation=unique.reduce((best,p)=>meters(query.location,p)<meters(query.location,best)?p:best,unique[0]);
-    if(meters(query.location,query.sampleLocation)>WEATHER_POLICY.sampleDistanceMeters)throw new WeatherUnavailable('budget_exhausted','Weather spatial coverage gap');
+    // An off-corridor alternative cannot inherit a distant base-road forecast. Fall back
+    // to this exact midpoint; provider acquisition limits still bound these exceptions.
+    if(meters(query.location,query.sampleLocation)>weatherSampleDistanceLimit(query.samplingResolution))query.sampleLocation=query.location;
   }
-  return {queries,samples:unique,unknownTimingSegmentIds:unknownTiming};
+  return {queries,samples:planning?[...new Map(queries.map(q=>[q.sampleLocation!.latitude+','+q.sampleLocation!.longitude,q.sampleLocation!])).values()]:unique,unknownTimingSegmentIds:unknownTiming};
 }
 
 export interface NavigationWeatherState {routeId:string;windowStartMeters:number;windowEndMeters:number;departureAt:string;stopsKey:string;riskKey:string;}

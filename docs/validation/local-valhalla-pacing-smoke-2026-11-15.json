@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-15",
+  "scope": "Six sequential synthetic cold-cache transport calls per strategy; isolated PostgreSQL schema. No provider HTTP, no full-plan or latency acceptance claim.",
+  "beforeCommit": "f5d16c8",
+  "rows": [
+    {
+      "strategy": "before",
+      "calls": 6,
+      "elapsedMs": 5824.915800000001,
+      "cpuMs": {
+        "user": 15,
+        "system": 0
+      },
+      "outcomeHash": "18d98b8577a57f3a6ec6a4e1902176313ef60581670a158ac8e9f5486d13b3a7"
+    },
+    {
+      "strategy": "after",
+      "calls": 6,
+      "elapsedMs": 37.41179999999986,
+      "cpuMs": {
+        "user": 0,
+        "system": 0
+      },
+      "outcomeHash": "18d98b8577a57f3a6ec6a4e1902176313ef60581670a158ac8e9f5486d13b3a7"
+    }
+  ],
+  "outcomesEquivalent": true,
+  "productionCacheModified": false,
+  "sourceHashes": {
+    "road-client.ts": "e7017108a7b5f35371513c3af5609f31fd7a8e47f17c9b86deb9bc501403bb9d",
+    "road-source-policy.ts": "f629f05652b1916d7420216f68a47316747616f6afaf7ac551584f339a12b783"
+  }
+}

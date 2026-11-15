@@ -1,4 +1,4 @@
-import {routeWeatherRequestSchema,weatherQuerySchema} from '@chargeroad/shared';
+import {routeWeatherRequestSchema,weatherQuerySchema,weatherSampleDistanceLimit} from '@chargeroad/shared';
 import type {WeatherQuery,WeatherForecast,RouteWeatherRequest} from '@chargeroad/shared';
 import {z} from 'zod';
 import {WeatherProvider} from '../providers/weather-provider';
@@ -39,7 +39,7 @@ export class WeatherService extends WeatherProvider {
       if(Date.parse(query.validAt)<now){result.set(query.id,unavailableForecast(query,'outside_horizon',adapter.id));continue;}
       if(!this.config.enabled){result.set(query.id,unavailableForecast(query,'provider_unavailable',adapter.id));continue;}
       const sample=query.sampleLocation??query.location;
-      if(meters(query.location,sample)>WEATHER_POLICY.sampleDistanceMeters){result.set(query.id,unavailableForecast(query,'outside_horizon',adapter.id));continue;}
+      if(meters(query.location,sample)>weatherSampleDistanceLimit(query.samplingResolution)){result.set(query.id,unavailableForecast(query,'outside_horizon',adapter.id));continue;}
       const url=adapter.url(weatherSampleLocation(query)),group=groups.get(url)??[];group.push(query);groups.set(url,group);
     }
     // Per-batch dedup also covers exact-coordinate fallbacks from a rejected terrain cell.
@@ -66,7 +66,7 @@ export class WeatherService extends WeatherProvider {
             const original=query.sampleLocation??query.location,chosen=weatherSampleLocation(query);
             const exact=chosen.latitude===original.latitude&&chosen.longitude===original.longitude;
             const selected=exact||terrainSharingIsSafe(query,series.elevation)?series:await seriesAt(original);
-            const forecast=meters(query.location,selected.location)>WEATHER_POLICY.sampleDistanceMeters?
+            const forecast=meters(query.location,selected.location)>weatherSampleDistanceLimit(query.samplingResolution)+30?
               unavailableForecast(query,'outside_horizon',adapter.id):normalizeWeather(selected,query,adapter.id,Date.now());
             if(!exact&&forecast.metadata)forecast.metadata.warnings.push(selected===series?'weather_spatial_cell_shared':'weather_cell_rejected_elevation_mismatch');
             result.set(query.id,forecast);

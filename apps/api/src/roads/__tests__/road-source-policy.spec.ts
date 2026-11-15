@@ -5,9 +5,12 @@ describe('Self-hosted capacity is separate from public daily quota',()=>{
  it('isolates endpoints, retains same-endpoint sharing and does not reapply public 100/day internally',()=>{
   const internal={...config,deploymentMode:'self_hosted' as const,baseUrl:'http://127.0.0.1:8003'};
   const a=roadBudgetPolicy(internal,internal.providerId,internal.baseUrl+'/route'),b=roadBudgetPolicy(internal,internal.providerId,internal.baseUrl+'/trace_attributes');
-  expect(a.dailyLimit).toBeNull();expect(a.key).toBe(b.key);expect(a.key).not.toBe(config.providerId);
+  expect(a.dailyLimit).toBeNull();expect(a.minIntervalMs).toBe(0);expect(b.minIntervalMs).toBe(0);expect(a.key).toBe(b.key);expect(a.key).not.toBe(config.providerId);
   const other={...internal,baseUrl:'http://127.0.0.1:8002'};expect(roadBudgetPolicy(other,other.providerId,other.baseUrl+'/route').key).not.toBe(a.key);
-  expect(roadBudgetPolicy(internal,'overpass-osm','https://overpass-api.de/api/interpreter')).toEqual({key:'overpass-osm',dailyLimit:100,kind:'external_daily'});
+  expect(roadBudgetPolicy(internal,'overpass-osm','https://overpass-api.de/api/interpreter')).toEqual({key:'overpass-osm',dailyLimit:100,minIntervalMs:1100,kind:'external_daily'});
+  expect(roadBudgetPolicy(internal,internal.providerId,'https://other.invalid/route').minIntervalMs).toBe(1100);
+  expect(roadBudgetPolicy(internal,'overpass-osm',internal.baseUrl+'/osm').minIntervalMs).toBe(1100);
+  expect(roadBudgetPolicy({...internal,deploymentMode:'external'},internal.providerId,internal.baseUrl+'/route').minIntervalMs).toBe(1100);
  });
  it('partitions graph, DEM, engine and manual revision caches without secrets or budget reset',()=>{
   const c={...config,deploymentMode:'self_hosted' as const},original=roadCacheRevision(c,c.providerId,c.baseUrl+'/route');

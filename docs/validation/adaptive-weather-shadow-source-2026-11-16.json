@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.2.0",
+  "scope": "Current adaptive weather search vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "d6134045c35ae5cb2d384ec9ac5e9b71eb20b0b59f4172740c2fc2d52f1f1561"
+}

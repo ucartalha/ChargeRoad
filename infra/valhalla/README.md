@@ -1,5 +1,11 @@
 # Valhalla 3.9.1 + DEM yerel pilot runbook
 
+## Yerel istek bekleme politikası — 2026-11-15
+
+Backend `self_hosted` modundayken, yalnız yapılandırılmış routing provider ID'si ve base URL origin'i eşleşen çağrılar için pacing aralığı **0 ms**'dir. Önceki politikadan kalan ileri tarihli `next_allowed_at` bu çağrıları bekletmez; cache/lease/fencing, istek iptali, provider hata backoff'u ve varsa `ROAD_ROUTING_SELF_HOSTED_DAILY_SAFETY_LIMIT` korunur. Yeni worker veya ek paralel route araması oluşturulmaz; mevcut hesaplamanın yapay beklemesi kaldırılır.
+
+Dış routing sağlayıcıları, farklı origin/provider çağrıları ve Overpass mevcut en az 1100 ms aralığı ve günlük kota politikasını kullanır. Aynı backend'de yerel Valhalla kullanılması dış sağlayıcının korumalarını kaldırmaz. Ayarı uygulamak için backend yeniden derlenip başlatılmalıdır; Docker veri veya kota tablolarını temizlemek gerekmez. Bu değişiklik hava edinimi ve optimizer aramasının toplam süresini ortadan kaldırmaz.
+
 Bu kurulum üretim onayı değildir. Mevcut `compose.yaml` ve `custom_files` korunur: eski 8002 ve DEM'li 8003 örneklerine dokunmaz. Yeni `compose.dem.yaml`, ayrı Compose projesi ve varsayılan **8004** portuyla çalışır. Port 3000/3001 API'leri, PostgreSQL ve OrderLane bu komutların hedefi değildir. `down -v`, `rm -f`, dataset üzerinde recursive silme/taşıma kullanmayın.
 
 ## Veri yerleşimi ve kaynak

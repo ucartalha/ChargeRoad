@@ -27,6 +27,7 @@ export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provid
   const core=temperature!==null&&wind!==null&&(wind===0||from!==null);
   const warnings=[...series.warnings,'wind_is_modelled_at_10m','battery_temperature_is_not_ambient_temperature','snow_depth_unavailable'];
   if(!exact)warnings.push('weather_temporally_interpolated');
+  if(query.samplingResolution?.phase==='future')warnings.push('coarse_future_weather_scenario');
   if(!period)warnings.push('precipitation_unavailable');else if(period.hours!==1)warnings.push('precipitation_is_period_average');
   if(period?.probability==null)warnings.push('precipitation_probability_unavailable');
   const status=age<0||age>WEATHER_POLICY.maxAgeSeconds?'stale':core?'available':'partial';
@@ -37,6 +38,7 @@ export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provid
     temperatureCelsius:temperature,windSpeedKph:wind,windFromDegrees:from,precipitationMmPerHour:period?.totalMm==null?null:period.totalMm/period.hours,
     precipitationProbabilityPercent:period?.probability??null,snowDepthCm:null,airPressureHpa:pressure,source,
     metadata:{sampledLocation:series.location,sampledElevationMeters:series.elevation,sampleDistanceMeters:meters(query.location,series.location),
+      ...(query.samplingResolution?{samplingResolution:query.samplingResolution}:{}),
       coverageStart:points[0].time,coverageEnd:points.at(-1)!.time,lastValidatedAt:series.validatedAt,intervalStart:a.time,intervalEnd:b.time,
       timeStepSeconds:gap,method:exact?'exact':'linear_temperature_vector_wind',pressureKind:series.pressureKind,
       precipitationPeriod:period?{start:a.time,end:new Date(start+period.hours*3600000).toISOString(),totalMm:period.totalMm,probabilityPercent:period.probability}:null,

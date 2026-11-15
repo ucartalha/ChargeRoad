@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {setImmediate as yieldEventLoop} from 'node:timers/promises';
-import {energyEvaluationRequestSchema,energyEvaluationResultSchema,weatherForecastIsUsable} from '@chargeroad/shared';
+import {energyEvaluationRequestSchema,energyEvaluationResultSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
 import type {EnergyEvaluationResult,EnergyAudit,EnergyModel,EnergySegment,RoadSegment,WeatherForecast} from '@chargeroad/shared';
 import {canonicalJson} from '../vehicles/knowledge/knowledge-package';
 import {ENERGY_ALGORITHM_VERSION,ENERGY_POLICY,EnergyDataMissing} from './energy-policy';
@@ -111,7 +111,8 @@ export class EnergyConsumptionEngine {
         if(weather.metadata&&(Date.parse(weather.validAt)<Date.parse(weather.metadata.coverageStart)||Date.parse(weather.validAt)>Date.parse(weather.metadata.coverageEnd)||
           Date.parse(weather.validAt)<Date.parse(weather.metadata.intervalStart)||Date.parse(weather.validAt)>Date.parse(weather.metadata.intervalEnd)))
           throw new EnergyDataMissing('WEATHER_TIME_PROVENANCE_MISMATCH');
-        if(weather.metadata&&weather.metadata.sampleDistanceMeters>10000)throw new EnergyDataMissing('WEATHER_SAMPLE_TOO_FAR');
+        if(weather.metadata&&weather.metadata.sampleDistanceMeters>weatherSampleDistanceLimit(weather.metadata.samplingResolution)+(weather.metadata.samplingResolution?30:0))throw new EnergyDataMissing('WEATHER_SAMPLE_TOO_FAR');
+        if(weather.metadata?.samplingResolution?.phase==='future')warnings.add('coarse_future_weather_scenario');
         if(weather.temperatureCelsius!<model.ambientRangeC.min||weather.temperatureCelsius!>model.ambientRangeC.max)throw new EnergyDataMissing('AMBIENT_OUTSIDE_CALIBRATION');
         if(batteryTemperature===null&&allowEstimates&&model.unknowns.initialBatteryTemperature==='ambient_equilibrium'){
           batteryTemperature=weather.temperatureCelsius!;assumptions.add('initial_battery_temperature_modelled_at_ambient_equilibrium');

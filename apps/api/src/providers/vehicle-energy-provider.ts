@@ -1,6 +1,7 @@
 import type { VehicleEnergyProfile } from '@chargeroad/shared' with { 'resolution-mode': 'import' };
 import type { ProviderResponse } from './provider-response';
 import type { DataQualityPolicy } from '@chargeroad/shared';
+import type {CatalogueRange} from '../weather/planning-weather-policy';
 
 export abstract class VehicleEnergyProvider {
   // A catalogue record alone is not an energy profile. Do not invent missing references/curves.
@@ -8,4 +9,5 @@ export abstract class VehicleEnergyProvider {
     signal.throwIfAborted(); return vehicleVariantId;
   }
   abstract profile(vehicleVariantId: string, signal: AbortSignal, policy?:DataQualityPolicy): Promise<ProviderResponse<VehicleEnergyProfile | null>>;
+  catalogueRange?(vehicleVariantId:string,signal:AbortSignal):Promise<CatalogueRange|null>;
 }

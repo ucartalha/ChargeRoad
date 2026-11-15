@@ -1,5 +1,5 @@
 import type {StationCandidateSet,RoadRoute} from '@chargeroad/shared';
-export const CATALOGUE_SCENARIO_POLICY={version:'catalogue-scenario/1.0.0',seedAttempts:3,seedProgress:.55,seedReachFraction:.9,seedTargetSoc:100,maxWeatherQueries:30000} as const;
+export const CATALOGUE_SCENARIO_POLICY={version:'catalogue-scenario/1.1.0',seedAttempts:3,seedProgress:.55,seedReachFraction:.9,maxWeatherQueries:30000} as const;
 export function candidateProgress(candidate:StationCandidateSet['candidates'][number],routes:RoadRoute[]){
   const match=[...candidate.routeMatches].sort((a,b)=>a.distanceMeters-b.distanceMeters)[0],route=routes.find(r=>r.id===match?.routeId),segment=route?.segments.find(s=>s.id===match.segmentId);
   return route&&segment?(segment.startDistanceMeters+segment.distanceMeters*match.segmentProgress)/route.distanceMeters:0;

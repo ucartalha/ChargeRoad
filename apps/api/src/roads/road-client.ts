@@ -74,8 +74,8 @@ export class PgRoadClient implements RoadJsonClient {
           VALUES($1,(now() AT TIME ZONE 'UTC')::date,1,now()+$2*interval '1 millisecond') ON CONFLICT(provider_id) DO UPDATE
           SET day=EXCLUDED.day,used=CASE WHEN road_provider_budget.day=EXCLUDED.day THEN road_provider_budget.used+1 ELSE 1 END,
           next_allowed_at=EXCLUDED.next_allowed_at
-          WHERE road_provider_budget.next_allowed_at<=now() AND road_provider_budget.blocked_until<=now()
-          AND ($3::int IS NULL OR road_provider_budget.day<>EXCLUDED.day OR road_provider_budget.used<$3) RETURNING used`,[policy.key,this.config.minIntervalMs,policy.dailyLimit]);
+          WHERE ($2::int=0 OR road_provider_budget.next_allowed_at<=now()) AND road_provider_budget.blocked_until<=now()
+          AND ($3::int IS NULL OR road_provider_budget.day<>EXCLUDED.day OR road_provider_budget.used<$3) RETURNING used`,[policy.key,policy.minIntervalMs,policy.dailyLimit]);
         if(gate.rowCount)break;
         const state=(await this.database.pool.query(`SELECT used,day=(now() AT TIME ZONE 'UTC')::date AS today,blocked_until>now() AS blocked,
           CASE WHEN blocked_until>now() THEN LEAST(86400,ceil(extract(epoch FROM blocked_until-now())))::int ELSE 1 END AS backoff_seconds,
@@ -84,8 +84,8 @@ export class PgRoadClient implements RoadJsonClient {
         if(state?.today&&policy.dailyLimit!==null&&state.used>=policy.dailyLimit)throw new RoadProviderError('Local daily road acquisition safety budget exhausted',429,state.day_seconds,
           policy.kind==='self_hosted_capacity'?'ROAD_SELF_HOSTED_SAFETY_BUDGET':'ROAD_PROVIDER_QUOTA_EXHAUSTED');
         if(state?.blocked)throw new RoadProviderError('Shared road provider backoff active',429,state.backoff_seconds,'ROAD_PROVIDER_BACKOFF');
-        if(wait>=2)throw new RoadProviderError('Shared road pacing capacity busy',429,Math.ceil(this.config.minIntervalMs/1000),'ROAD_PROVIDER_PACING_LIMIT');
-        await delay(this.config.minIntervalMs+30,undefined,{signal});
+        if(wait>=2)throw new RoadProviderError('Shared road pacing capacity busy',429,Math.max(1,Math.ceil(policy.minIntervalMs/1000)),'ROAD_PROVIDER_PACING_LIMIT');
+        await delay(policy.minIntervalMs+30,undefined,{signal});
       }
       signal.throwIfAborted();const data=await this.transport(url,body,signal,method);signal.throwIfAborted();
       const payload:RoadJsonResponse={data,retrievedAt:new Date().toISOString()};

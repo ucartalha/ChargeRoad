@@ -9,6 +9,7 @@ import {ChargingCurveEngine} from '../charging/charging-engine';
 import {batteryThermalStep} from '../energy/battery-thermal';
 import {EnergyDataMissing} from '../energy/energy-policy';
 import {sampleRouteWeather} from '../weather/weather-sampler';
+import {PLANNING_WEATHER_POLICY} from '../weather/planning-weather-policy';
 import {meters} from '../roads/geometry';
 import type {PreparationOptions} from './planning-coordinator';
 import type {PlanningContext,PlanningNode,OptimizerState,DriveLeg,TransitionPort} from './optimizer-types';
@@ -30,6 +31,7 @@ export class PlanningSession implements TransitionPort {
   private readonly roads=new Map<string,RoadRoute[]|null>();private readonly weatherCache=new Map<string,WeatherForecast[]>();
   private readonly climateSamples=new Map<string,WeatherQuery['location']>();
   private hardwareEvaluations=0;
+  private weatherSampleEvaluations=0;
   constructor(readonly context:PlanningContext,private readonly routing:RoutingProvider,private readonly climate:WeatherProvider,
     private readonly energy:EnergyConsumptionEngine,private readonly charging:ChargingCurveEngine,private readonly roadOptions:PreparationOptions['road'],
     private readonly deadline:number,baseRoutes:RoadRoute[]=[]){
@@ -66,12 +68,19 @@ export class PlanningSession implements TransitionPort {
   private async weather(queries:WeatherQuery[],signal:AbortSignal){
     // Reuse already acquired forecast SERIES across charging legs, while evaluating each new passage time.
     // Original target coordinates remain unchanged and the existing 10 km provenance bound still applies.
-    if(this.climateSamples.size)queries=queries.map(q=>{
+    if(this.climateSamples.size&&!queries.some(q=>q.samplingResolution))queries=queries.map(q=>{
       const nearest=[...this.climateSamples.values()].reduce((best,p)=>meters(q.location,p)<meters(q.location,best)?p:best);
       return meters(q.location,nearest)<=WEATHER_POLICY.sampleDistanceMeters?{...q,sampleLocation:nearest}:q;
     });
     const key=checksum(queries);if(this.weatherCache.has(key)){countMetric('weather_session_cache_hits');return this.weatherCache.get(key)!;}
-    if(this.counters.weatherQueries+queries.length>this.context.options.maxWeatherQueries)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
+    // Count sample-series evaluation groups separately from segment projections. Every
+    // segment still receives its own actual-ETA forecast; no time bucketing or result reuse.
+    const units=this.context.weatherSampling?new Set(queries.map(q=>JSON.stringify(q.sampleLocation??q.location))).size:queries.length;
+    const segmentLimit=Math.min(PLANNING_WEATHER_POLICY.maxSegmentEvaluations,Math.max(this.context.options.maxWeatherQueries,
+      (this.context.baseRoutes?.[0]?.segments.length??0)*PLANNING_WEATHER_POLICY.maxSegmentPasses));
+    if(this.weatherSampleEvaluations+units>this.context.options.maxWeatherQueries||
+      this.context.weatherSampling&&this.counters.weatherQueries+queries.length>segmentLimit)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
+    this.weatherSampleEvaluations+=units;countMetric('weather_sample_evaluations',units);
     this.counters.weatherQueries+=queries.length;let response:ProviderResponse<WeatherForecast[]>;
     try{response=await measureAsync('weather_acquisition',()=>this.call(s=>{countMetric('weather_forecast_query_items',queries.length);return this.climate.forecast(queries,s,{budgetScope:this.context});},signal));}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
     let result:WeatherForecast[];try{result=response.data.map(v=>weatherForecastSchema.parse(v));}catch{throw new PlanningProviderFailure('WEATHER_PROVIDER_INVALID_DATA');}
@@ -89,7 +98,9 @@ export class PlanningSession implements TransitionPort {
     const routes=await this.route(state.nodeId,to,state.at,signal),legs:DriveLeg[]=[];
     for(const route of routes??[]){
       let queries:WeatherQuery[];
-      try{queries=measureSync('weather_sampling',()=>sampleRouteWeather({route,departureAt:state.at,stops:[]}).queries);countMetric('weather_sample_queries',queries.length);}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
+      try{queries=measureSync('weather_sampling',()=>sampleRouteWeather({route,departureAt:state.at,stops:[]},this.context.weatherSampling,state.distance).queries);countMetric('weather_sample_queries',queries.length);}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
+      if(this.context.weatherSampling&&this.context.weatherSampling.rangeBasis!=='catalogue')this.issues.add('weather_sampling_range_is_estimated');
+      if(queries.some(q=>q.samplingResolution?.phase==='future'))this.issues.add('coarse_future_weather_scenario');
       const weather=await this.weather(queries,signal);
       countMetric('energy_evaluations');const result=await measureAsync('energy_evaluation',()=>this.energy.evaluate({request:this.context.request,vehicle:this.context.vehicle,route,weather,evaluatedAt:this.context.evaluatedAt,
         ...(state.capacity?{capacitySnapshot:state.capacity}:{}),continuation:{kind:preview?'upper_charge_preview':'modelled_leg',departureAt:state.at,

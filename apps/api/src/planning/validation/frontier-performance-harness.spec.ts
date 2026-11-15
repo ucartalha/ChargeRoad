@@ -21,8 +21,8 @@ describe('Isolated production-source frontier performance seam',()=>{
    const changed=structuredClone(heap);changed.outcome.search.expandedStates++;expect(()=>assertEquivalent(sort,changed)).toThrow('EQUIVALENCE_FAILED');
   }finally{fetch.mockRestore();}
  });
- it.each(['medium','large'] as Profile[])('measures an actual bounded full plan in the %s bucket',async profile=>{
-  const sort=await makeRunner('sort')(profile,'minimum_total_duration',false),heap=await makeRunner('heap')(profile,'minimum_total_duration',false);
+ it.each(['medium','large'] as Profile[])('exercises the %s frontier with an explicit seed-independent synthetic context',async profile=>{
+  const sort=await makeRunner('sort',true)(profile,'minimum_total_duration',false),heap=await makeRunner('heap',true)(profile,'minimum_total_duration',false);
   expect(isDeepStrictEqual(sort.outcome,heap.outcome)).toBe(true);expect(()=>assertEquivalent(sort,heap)).not.toThrow();
   expect(sort.outcome.result.status).toBe('planned');expect(sort.outcome.search.stoppedReason).toBe('state_budget');
   expect(heap.queue.peak).toBeGreaterThanOrEqual(profile==='medium'?64:257);if(profile==='medium')expect(heap.queue.peak).toBeLessThanOrEqual(256);

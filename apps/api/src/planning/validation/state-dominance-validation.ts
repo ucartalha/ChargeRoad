@@ -13,6 +13,7 @@ import {RoadProviderError} from '../../roads/road-client';
 import {eligibilityCases,eligibilityWorld,type EligibilityCase} from './eligibility-fixtures';
 import {normalized,digest,type Objective} from './frontier-performance-harness';
 import {STATE_SHADOW_COUNTERS} from '../state-dominance';
+import {OPTIMIZER_VERSION} from '../optimizer-policy';
 export const stateCases=[...eligibilityCases,'equal_alternatives','transition_budget','frontier_budget','incumbent_state','incumbent_frontier','regen','thermal','temperature_provenance','capacity_observed','seeded_graph_1','seeded_graph_2'] as const;
 export type StateCase=typeof stateCases[number];
 let previous:typeof ChargeStopOptimizer|undefined;
@@ -23,7 +24,12 @@ export function previousStateOptimizer(){
   if(source.split(expression).length!==2)throw new Error('State observation seam changed');source=source.replace(expression,'');
  }
  const baseline=JSON.parse(readFileSync(resolve(__dirname,'../../../../../docs/validation/state-dominance-baseline-2026-11-15.json'),'utf8'));
- if(createHash('sha256').update(source).digest('hex')!==baseline.optimizerBeforeRawSha256)throw new Error('Before optimizer source hash mismatch');
+ const hash=createHash('sha256').update(source).digest('hex');
+ // The old checkpoint stays immutable. Product v1.1 intentionally changes search; compare its
+ // current algorithm with the same algorithm minus shadow, bound to a separate reviewed checkpoint.
+ const checkpoint=OPTIMIZER_VERSION==='chargeroad-optimizer/1.2.0'?'adaptive-weather-shadow-source-2026-11-16.json':'charge-target-shadow-source-2026-11-15.json';
+ const current=JSON.parse(readFileSync(resolve(__dirname,'../../../../../docs/validation/'+checkpoint),'utf8'));
+ if(hash!==baseline.optimizerBeforeRawSha256&&(current.optimizerVersion!==OPTIMIZER_VERSION||hash!==current.optimizerWithoutShadowSha256))throw new Error('Before optimizer source hash mismatch');
  const javascript=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
  const module={exports:{} as {ChargeStopOptimizer:typeof ChargeStopOptimizer}};
  new Function('exports','require','module','__filename','__dirname',javascript)(module.exports,createRequire(filename),module,filename,dirname(filename));

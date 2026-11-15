@@ -1,0 +1,287 @@
+{
+  "date": "2026-11-15",
+  "scope": "Synthetic in-memory quality smoke; no provider HTTP/PG; NOT real Hyundai calibration or full-plan latency acceptance",
+  "baseline": "f5d16c8 optimizer behavior compiled in memory; shared dependencies and metadata are current; old seedTargetSoc=100 supplied explicitly",
+  "rows": [
+    {
+      "objective": "minimum_total_duration",
+      "limited": true,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 80.78409999999985,
+          "scenarioSeconds": 304.41798895945897,
+          "netDrivingKwh": 3.999999999999998,
+          "arrivalSoc": 25.00000000000004,
+          "targets": [
+            100
+          ],
+          "chargingSeconds": 184.417988959459,
+          "roadQueries": 3,
+          "weatherQueries": 8,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 68.39010000000053,
+          "scenarioSeconds": 235.27199999999993,
+          "netDrivingKwh": 3.9999999999999982,
+          "arrivalSoc": 20.049999999999997,
+          "targets": [
+            80,
+            57.55
+          ],
+          "chargingSeconds": 115.27199999999993,
+          "roadQueries": 4,
+          "weatherQueries": 22,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 235.2,
+        "netDrivingKwh": 4,
+        "stops": 2
+      },
+      "afterGapSeconds": 0.07199999999994589
+    },
+    {
+      "objective": "minimum_total_duration",
+      "limited": false,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 171.1225999999997,
+          "scenarioSeconds": 235.2,
+          "netDrivingKwh": 4,
+          "arrivalSoc": 19.99999999999999,
+          "targets": [
+            50,
+            57.5
+          ],
+          "chargingSeconds": 115.2,
+          "roadQueries": 5,
+          "weatherQueries": 77,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 170.7554,
+          "scenarioSeconds": 235.2,
+          "netDrivingKwh": 4,
+          "arrivalSoc": 19.99999999999999,
+          "targets": [
+            50,
+            57.5
+          ],
+          "chargingSeconds": 115.2,
+          "roadQueries": 5,
+          "weatherQueries": 81,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 235.2,
+        "netDrivingKwh": 4,
+        "stops": 2
+      },
+      "afterGapSeconds": 0
+    },
+    {
+      "objective": "minimum_charging_stops",
+      "limited": true,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 5.1469999999999345,
+          "scenarioSeconds": 304.41798895945897,
+          "netDrivingKwh": 3.999999999999998,
+          "arrivalSoc": 25.00000000000004,
+          "targets": [
+            100
+          ],
+          "chargingSeconds": 184.417988959459,
+          "roadQueries": 3,
+          "weatherQueries": 8,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 13.92950000000019,
+          "scenarioSeconds": 251.6410893159384,
+          "netDrivingKwh": 3.9999999999999987,
+          "arrivalSoc": 20.05000000000002,
+          "targets": [
+            95.05
+          ],
+          "chargingSeconds": 131.6410893159384,
+          "roadQueries": 3,
+          "weatherQueries": 18,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 251.38961437878766,
+        "netDrivingKwh": 4,
+        "stops": 1
+      },
+      "afterGapSeconds": 0.2514749371507321
+    },
+    {
+      "objective": "minimum_charging_stops",
+      "limited": false,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 76.72759999999926,
+          "scenarioSeconds": 251.38961439586762,
+          "netDrivingKwh": 3.9999999999999982,
+          "arrivalSoc": 20.000000000000025,
+          "targets": [
+            95
+          ],
+          "chargingSeconds": 131.38961439586762,
+          "roadQueries": 5,
+          "weatherQueries": 83,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 75.64750000000004,
+          "scenarioSeconds": 251.38961439586762,
+          "netDrivingKwh": 3.9999999999999982,
+          "arrivalSoc": 20.000000000000025,
+          "targets": [
+            95
+          ],
+          "chargingSeconds": 131.38961439586762,
+          "roadQueries": 5,
+          "weatherQueries": 85,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 251.38961437878766,
+        "netDrivingKwh": 4,
+        "stops": 1
+      },
+      "afterGapSeconds": 1.7079969438782427e-8
+    },
+    {
+      "objective": "minimum_energy",
+      "limited": true,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 4.965100000000348,
+          "scenarioSeconds": 304.41798895945897,
+          "netDrivingKwh": 3.999999999999998,
+          "arrivalSoc": 25.00000000000004,
+          "targets": [
+            100
+          ],
+          "chargingSeconds": 184.417988959459,
+          "roadQueries": 3,
+          "weatherQueries": 8,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 16.925900000000183,
+          "scenarioSeconds": 235.27199999999993,
+          "netDrivingKwh": 3.9999999999999982,
+          "arrivalSoc": 20.049999999999997,
+          "targets": [
+            80,
+            57.55
+          ],
+          "chargingSeconds": 115.27199999999993,
+          "roadQueries": 4,
+          "weatherQueries": 22,
+          "stoppedReason": "state_budget",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 235.2,
+        "netDrivingKwh": 4,
+        "stops": 2
+      },
+      "afterGapSeconds": 0.07199999999994589
+    },
+    {
+      "objective": "minimum_energy",
+      "limited": false,
+      "pair": [
+        {
+          "strategy": "before",
+          "wallMs": 95.74099999999999,
+          "scenarioSeconds": 235.2,
+          "netDrivingKwh": 4,
+          "arrivalSoc": 19.99999999999999,
+          "targets": [
+            50,
+            57.5
+          ],
+          "chargingSeconds": 115.2,
+          "roadQueries": 5,
+          "weatherQueries": 83,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        },
+        {
+          "strategy": "after",
+          "wallMs": 77.18209999999999,
+          "scenarioSeconds": 235.2,
+          "netDrivingKwh": 4,
+          "arrivalSoc": 19.99999999999999,
+          "targets": [
+            50,
+            57.5
+          ],
+          "chargingSeconds": 115.2,
+          "roadQueries": 5,
+          "weatherQueries": 86,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "contractValid": true
+        }
+      ],
+      "exhaustiveReference": {
+        "seconds": 235.2,
+        "netDrivingKwh": 4,
+        "stops": 2
+      },
+      "afterGapSeconds": 0
+    }
+  ],
+  "sourceHashes": {
+    "src/planning/charge-stop-optimizer.ts": "fd39bc1d06b5c12c78acd809661d508b6401b29e89feae53583ea41fdb860987",
+    "src/planning/charge-target-search.ts": "cc6b65ae2979c57c27f8f7ce1dc33a0138b46391659dd3f1fc80b6f13e1acd80",
+    "src/planning/planning-replay.ts": "d5f6d5dec797d5d00c24838d6983758d1c82a063dd836dd8485fbdbefcaf45ca",
+    "src/planning/optimizer-policy.ts": "3f40e879f63ed21137a72b096bdbdd47f09d3e1abd1dbbba8ca40c64d1345744",
+    "src/energy/energy-engine.ts": "29de564b954c412f278511b5e8304f653df71a6930ed3866540eae4007febdcf",
+    "src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d"
+  },
+  "globalOptimality": "NOT_PROVEN; independent optimum checked only in this small fixture",
+  "enginesUnchangedFromHead": true
+}

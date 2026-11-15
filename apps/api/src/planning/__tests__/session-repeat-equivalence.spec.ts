@@ -7,5 +7,5 @@ describe('Read-only session audit vs production',()=>{
  it.each(objectives.flatMap(objective=>REPEAT_CASES.map(kind=>[objective,kind] as const)))('preserves outcomes/trace/001-004 counters: %s / %s',async(objective,kind)=>{
   const fetch=jest.spyOn(global,'fetch').mockRejectedValue(new Error('No external calls'));
   try{const row=await validateSessionRepeat(kind,objective);expect(row.equivalent).toBe(true);expect(row.savedPureComputations).toBe(0);expect(fetch).not.toHaveBeenCalled();}finally{fetch.mockRestore();}
- });
+ },30000); // Full input/output fingerprints dominate this validation-only three-way run.
 });

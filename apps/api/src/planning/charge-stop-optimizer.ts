@@ -7,6 +7,7 @@ import {compilePlan} from './plan-compiler';
 import {CATALOGUE_SCENARIO_POLICY as seedPolicy,candidateProgress} from './catalogue-station-scenario';
 import {maxMetric} from '../observability/planning-metrics';
 import {createStateShadow} from './state-dominance-shadow';
+import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets} from './charge-target-search';
 
 export function compareStates(a:OptimizerState,b:OptimizerState,objective:PlanningContext['request']['policy']['objective']){
   const key=(s:OptimizerState)=>objective==='minimum_charging_stops'?[s.stops.length,s.seconds,s.distance]:
@@ -38,8 +39,9 @@ export class ChargeStopOptimizer {
     try{
       // Obtain a fully evaluated incumbent before broad branching consumes provider budgets.
       // This is only a search seed, never a geometric shortcut or an optimum claim.
-      if(options.maxStops>0&&context.request.policy.stationDataQuality==='catalogue_power_scenario'&&context.baseRoutes?.length){
-        let fullBatteryProgress=seedPolicy.seedProgress;
+      if(options.maxStops>0&&context.baseRoutes?.length){
+        // A range hint orders candidates only; it never certifies a reachable transition.
+        let fullBatteryProgress=Math.min(1,(context.weatherSampling?.rangeKm?context.weatherSampling.rangeKm*1000:200000)/context.baseRoutes[0].distanceMeters),reachFromDrive=false;
         const append=(state:OptimizerState,leg:import('./optimizer-types').DriveLeg):OptimizerState=>{
           const row=leg.energy.segments.at(-1)!;
           return {...state,nodeId:leg.to,soc:row.endChargePercent,temperature:row.batteryTemperatureAtEndC,capacity:leg.energy.capacitySnapshot!,at:leg.arrivalAt,
@@ -50,8 +52,8 @@ export class ChargeStopOptimizer {
           if(direct.energy.status==='charge_required'){
             const rows=direct.energy.segments,firstUnsafe=rows.findIndex(r=>r.minimumChargePercent<context.request.constraints.minimumReserveChargePercent);
             const last=rows[(firstUnsafe<0?rows.length:firstUnsafe)-1],segment=direct.route.segments.find(s=>s.id===last?.segmentId);
-            if(segment&&initial.soc>context.request.constraints.minimumReserveChargePercent)
-              fullBatteryProgress=segment.endDistanceMeters/direct.route.distanceMeters/((initial.soc-context.request.constraints.minimumReserveChargePercent)/100);
+            if(segment&&initial.soc>context.request.constraints.minimumReserveChargePercent){
+              fullBatteryProgress=segment.endDistanceMeters/direct.route.distanceMeters/((initial.soc-context.request.constraints.minimumReserveChargePercent)/100);reachFromDrive=true;}
           }
           if(direct.energy.status!=='estimated'||direct.energy.partialSegmentId)continue;
           const next=append(initial,direct);if(incumbent.state&&compareStates(next,incumbent.state,objective)>=0)continue;
@@ -69,20 +71,30 @@ export class ChargeStopOptimizer {
           if(state.stops.length>=options.maxStops)return false;
           const target=progress+fullBatteryProgress*(state.soc-context.request.constraints.minimumReserveChargePercent)/100*seedPolicy.seedReachFraction;
           const seeds=context.candidates.candidates.filter(c=>!state.visited.includes(c.station.id)&&candidateProgress(c,context.baseRoutes!)>progress)
-            .sort((a,b)=>Math.abs(candidateProgress(a,context.baseRoutes!)-target)-Math.abs(candidateProgress(b,context.baseRoutes!)-target)||a.station.id.localeCompare(b.station.id))
+            .sort((a,b)=>(reachFromDrive?Math.abs(candidateProgress(a,context.baseRoutes!)-target)-Math.abs(candidateProgress(b,context.baseRoutes!)-target):
+              candidateProgress(a,context.baseRoutes!)-candidateProgress(b,context.baseRoutes!))||a.station.id.localeCompare(b.station.id))
             .slice(0,seedPolicy.seedAttempts);
           for(const candidate of seeds){if(expanded>=options.maxStates){stopped='state_budget';return false;}
           await budget();const node=context.nodes.find(n=>n.id===candidate.station.id)!;expanded++;
           for(const leg of await port.drive(state,node,false,signal)){
             if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
-            const atStation=append(state,leg);await budget();
-            for(const charged of await port.charge(atStation,seedPolicy.seedTargetSoc,signal)){
-              if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
+            const atStation=append(state,leg);
+            for(const targetSoc of seedChargeTargets(context,atStation.soc)){
+              await budget();for(const charged of await port.charge(atStation,targetSoc,signal)){
+                if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
+              }
             }
           }}return false;
         };
         if(!incumbent.outcome)await seed(initial,0);
       }
+      // Improve the known itinerary before broad branching can exhaust road/weather budgets.
+      if(incumbent.state?.stops.length)await improveFixedStopTargets(context,incumbent.state,port,signal,
+        (a,b)=>compareStates(a,b,objective),budget,state=>{
+          const previous=incumbent.state;incumbent.state=state;
+          try{incumbent.outcome=compilePlan(context,state,metadata(),port);return true;}
+          catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');return false;}
+        },this.clock);
       while(frontier.length){
         signal.throwIfAborted();if(expanded>=options.maxStates){stopped='state_budget';break;}
         frontier.sort((a,b)=>compareStates(a,b,objective));const current=frontier.shift()!;expanded++;
@@ -110,17 +122,14 @@ export class ChargeStopOptimizer {
         };
         await advance(current);
         if(current.nodeId==='origin'||current.stops.length>=options.maxStops)continue;
-        const points=new Set<number>();
-        for(const curve of context.vehicle.dcChargingCurves)for(const point of curve.curve.points)points.add(point.socPercent);
-        for(let soc=options.socStepPercent;soc<=100;soc+=options.socStepPercent)points.add(Math.min(100,soc));
-        points.add(100);
+        const anchors:number[]=[];
         // Conservative access/arrival anchors from full-charge previews; every selected transition is re-evaluated at its actual scenario time/SOC.
         for(const target of outgoing){await budget();for(const leg of await port.drive(current,target,true,signal))if(leg.energy.status==='estimated'&&leg.energy.capacityKwh){
           const reserve=100-leg.energy.minimumChargePercent!+context.request.constraints.minimumReserveChargePercent;
           const arrival=100-leg.energy.finalChargePercent!+(target.id==='destination'?context.request.constraints.targetArrivalChargePercent:context.request.constraints.minimumReserveChargePercent);
-          points.add(Math.ceil(Math.max(reserve,arrival)*100-1e-8)/100);
+          anchors.push(Math.ceil(Math.max(reserve,arrival)*100-1e-8)/100);
         }}
-        for(const soc of [...points].filter(v=>v>current.soc+1e-7&&v<=100).sort((a,b)=>a-b)){
+        for(const soc of chargeTargetCandidates(context,current.soc,anchors)){
           await budget();for(const charged of await port.charge(current,soc,signal))await advance(charged);
         }
       }
