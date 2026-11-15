@@ -12,6 +12,7 @@ import {RATE_LIMIT_OPTIONS} from '../../security/rate-limit.config';
 import {httpPlanningWorld} from './planning-http.fixtures';
 import {PlanningJobsStore} from '../http/planning-jobs.store';
 import {PlanningJobsWorker} from '../http/planning-jobs.worker';
+import {Logger} from '@nestjs/common';
 const integration=process.env.TEST_DATABASE_URL?describe:describe.skip;
 integration('Planning jobs: HTTP, PostgreSQL ownership, solver, cancellation and recovery',()=>{
  const schema='planning_jobs_'+randomBytes(8).toString('hex'),secretBefore=process.env.RATE_LIMIT_IP_HASH_SECRET;
@@ -75,6 +76,18 @@ integration('Planning jobs: HTTP, PostgreSQL ownership, solver, cancellation and
   expect((await create(input)).status).toBe(201);await worker.tick();const result=planningApiResponseSchema.parse(await(await get('/result')).json());
   expect(result.status).toBe('planned');if(result.status==='planned')expect(result.plan.assumptions.some(a=>a.code==='starting_soc_model_estimate')).toBe(true);
   expect(planner.plan.mock.calls[0][0].startingChargeSource).toBe('estimated');expect(planner.plan.mock.calls[0][0].startingChargeEstimate).toEqual(input.startingChargeEstimate);
+ });
+ it('measures DB queue age/execute and a separate result encoding record without leaking job ownership',async()=>{
+  const before=process.env.PLANNING_METRICS_ENABLED;process.env.PLANNING_METRICS_ENABLED='true';const logs=jest.spyOn(Logger.prototype,'log').mockImplementation(()=>{});
+  try{await create();await worker.tick();const response=await get('/result');expect(response.status).toBe(200);await response.json();
+   const records=()=>logs.mock.calls.map(c=>{try{return JSON.parse(c[0]);}catch{return null;}}).filter(v=>v?.event==='planning_metrics');
+   const execution=records().find(r=>r.scope==='job_execute'),encoding=records().find(r=>r.scope==='job_result');
+   expect(execution.requestId).toBe(world.body.requestId);expect(execution.stages.job_wait.count).toBe(1);expect(execution.stages.job_wait.totalMs).toBeGreaterThanOrEqual(0);
+   expect(execution.stages.job_execute.count).toBe(1);expect(execution.counters.energy_evaluations).toBeGreaterThan(0);
+   expect(encoding.stages.json_serialize.count).toBe(1);expect(encoding.counters.response_decoded_bytes).toBeGreaterThan(0);expect(encoding.counters.energy_evaluations).toBe(0);
+   const count=records().length;expect((await get('/result',otherToken)).status).toBe(404);expect(records()).toHaveLength(count);
+   expect(JSON.stringify(records())).not.toMatch(/owner_hash|request_payload|lease_token|Authorization|geometry|latitude|startingChargePercent/);
+  }finally{logs.mockRestore();if(before===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=before;}
  });
  it('aborts actual in-flight solver work after cancellation, not just its public status',async()=>{
   let entered!:()=>void,aborted=false;const started=new Promise<void>(r=>entered=r);

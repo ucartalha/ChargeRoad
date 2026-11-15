@@ -1,0 +1,1093 @@
+{
+  "schema": "frontier-performance-gate-summary/1",
+  "generatedAt": "2026-11-15T12:45:36.504Z",
+  "executionClientDate": "2026-11-15",
+  "decision": "NO-GO",
+  "equivalence": "PASS",
+  "policy": "Repeated p95 regression in >=2/3 independent processes forbids permanent speedup acceptance; no production SLA threshold or confidence claim was set.",
+  "processes": 3,
+  "blocksPerProcess": 12,
+  "measuredRuns": 1296,
+  "metricsModeChecks": 108,
+  "nativeAnchors": 27,
+  "sourceChecksums": {
+    "src/planning/charge-stop-optimizer.ts": "3ee1a97d67b174fcf21862f001ed638a05d5449a44f9732d39a4a45a78b3cee7",
+    "src/planning/stable-priority-queue.ts": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200",
+    "src/planning/__tests__/optimizer.fixtures.ts": "70fe99a651153dd97c10463cc895b6e9bf43394dfd4641b4f18926bc68475944",
+    "src/energy/energy-engine.ts": "29de564b954c412f278511b5e8304f653df71a6930ed3866540eae4007febdcf",
+    "src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "src/planning/validation/frontier-performance-harness.ts": "38da572b08218a4ab5f95ceb29145f5adae69e776f0d4bfe59943d834bcfa28a",
+    "scripts/benchmark-frontier-performance-gate.ts": "021ec371d17376e02760b0a3422e264930ad956728e2f61ff1e8a089383e9ca0"
+  },
+  "reference": {
+    "count": 15,
+    "snapshotChecksum": "5b44b4b31b9cd55e35340e6c9fe97d54797d342045eef0d56faf0e6f882a502f",
+    "resultsChecksum": "15af172e9d5bfc6da73e9e8408958e9f2bff1ed3a63e737b91be47af228cc4f3"
+  },
+  "processObservations": [
+    {
+      "worker": 1,
+      "generatedAt": "2026-11-15T12:41:37.672Z",
+      "machine": {
+        "node": "v26.13.0",
+        "platform": "win32",
+        "release": "10.0.26200",
+        "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+        "logicalCpus": 20,
+        "totalMemory": 16869548032,
+        "freeMemory": 850378752
+      },
+      "observedMachineBusyFraction": 0.2035758830388641,
+      "processCpuLifetimeMs": {
+        "user": 121078,
+        "system": 3640,
+        "scope": "whole_child_including_ts_node_startup_and_validation"
+      },
+      "gc": {
+        "observedCount": 2897,
+        "observedDurationMs": 5463.711000323296,
+        "forced": false
+      }
+    },
+    {
+      "worker": 2,
+      "generatedAt": "2026-11-15T12:43:28.840Z",
+      "machine": {
+        "node": "v26.13.0",
+        "platform": "win32",
+        "release": "10.0.26200",
+        "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+        "logicalCpus": 20,
+        "totalMemory": 16869548032,
+        "freeMemory": 1435566080
+      },
+      "observedMachineBusyFraction": 0.13093598474659784,
+      "processCpuLifetimeMs": {
+        "user": 112484,
+        "system": 4703,
+        "scope": "whole_child_including_ts_node_startup_and_validation"
+      },
+      "gc": {
+        "observedCount": 2848,
+        "observedDurationMs": 4503.190799057484,
+        "forced": false
+      }
+    },
+    {
+      "worker": 3,
+      "generatedAt": "2026-11-15T12:45:12.586Z",
+      "machine": {
+        "node": "v26.13.0",
+        "platform": "win32",
+        "release": "10.0.26200",
+        "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+        "logicalCpus": 20,
+        "totalMemory": 16869548032,
+        "freeMemory": 471949312
+      },
+      "observedMachineBusyFraction": 0.1157617097955248,
+      "processCpuLifetimeMs": {
+        "user": 110515,
+        "system": 4031,
+        "scope": "whole_child_including_ts_node_startup_and_validation"
+      },
+      "gc": {
+        "observedCount": 2894,
+        "observedDurationMs": 5149.973098993301,
+        "forced": false
+      }
+    }
+  ],
+  "groups": [
+    {
+      "profile": "small",
+      "objective": "minimum_total_duration",
+      "anchor": {
+        "outputHash": "6d2abdac030eb1904a80bab4943fa9b46e0ae2fd8da6460fc14f70fd5e41a52b",
+        "traceHash": "69b686b426ae7c7bdbc258161a186881a5b182fae9682b9392c6d4a56e33777b",
+        "fixtureHash": "40aed68582b5610dce5efe34987cc42ca77e665edc6d12828fd4fc8a3c174527",
+        "traceCalls": 154
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 77.0619999999999,
+            "p95Ms": 107.94440000000031,
+            "p99Ms": 122.47839999999997,
+            "maxMs": 122.47839999999997
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.04849999999805732,
+            "p95Ms": 0.07600000000002183,
+            "p99Ms": 0.27449999999771535,
+            "maxMs": 0.27449999999771535
+          },
+          "cpuUserMs": 6094,
+          "cpuSystemMs": 109,
+          "gcCount": 144,
+          "gcDurationMs": 174.25780016183853,
+          "heapUsedRange": [
+            414699200,
+            521926136
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 38
+          },
+          "processP95Spread": {
+            "min": 103.05739999999969,
+            "max": 107.94440000000031,
+            "mean": 106.2520333333329,
+            "sampleSd": 2.7682659018477427
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 75.41349999999966,
+            "p95Ms": 110.21669999999995,
+            "p99Ms": 136.753999999999,
+            "maxMs": 136.753999999999
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.07929999999760184,
+            "p95Ms": 0.12199999999938882,
+            "p99Ms": 0.19129999999677239,
+            "maxMs": 0.19129999999677239
+          },
+          "cpuUserMs": 6470,
+          "cpuSystemMs": 220,
+          "gcCount": 145,
+          "gcDurationMs": 194.10230022668839,
+          "heapUsedRange": [
+            413538672,
+            520521104
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 24
+          },
+          "processP95Spread": {
+            "min": 96.65179999999964,
+            "max": 113.44590000000062,
+            "mean": 106.77146666666674,
+            "sampleSd": 8.911378863191764
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 107.94440000000031,
+          "heap": 110.21669999999995,
+          "changePercent": 2.10506520023237
+        },
+        {
+          "process": 2,
+          "sort": 107.7542999999987,
+          "heap": 113.44590000000062,
+          "changePercent": 5.282016587738947
+        },
+        {
+          "process": 3,
+          "sort": 103.05739999999969,
+          "heap": 96.65179999999964,
+          "changePercent": -6.2155653063245
+        }
+      ],
+      "regressingProcesses": 2,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": 0.7908500000003187,
+        "medianChangePercent": 1.0604440362179002
+      }
+    },
+    {
+      "profile": "small",
+      "objective": "minimum_charging_stops",
+      "anchor": {
+        "outputHash": "ab19a6ca832af911ed0e1e721b4bcc771b3a99681764fe5f04e0705e405fea1b",
+        "traceHash": "9e0f042673cf1453f5e3fc267222f3050a6dd362e8758efa78f1f92c499e0ec9",
+        "fixtureHash": "7b3b9d20f7079fb39165edfcd108b8117ff94291a585a1ffb28f2744e867e69e",
+        "traceCalls": 164
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 91.46360000000095,
+            "p95Ms": 118.34850000000006,
+            "p99Ms": 130.77309999999852,
+            "maxMs": 130.77309999999852
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.026700000000346336,
+            "p95Ms": 0.04649999999855936,
+            "p99Ms": 0.1995000000042637,
+            "maxMs": 0.1995000000042637
+          },
+          "cpuUserMs": 7100,
+          "cpuSystemMs": 156,
+          "gcCount": 168,
+          "gcDurationMs": 205.15209978818893,
+          "heapUsedRange": [
+            426187632,
+            602953688
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 38
+          },
+          "processP95Spread": {
+            "min": 102.64450000000033,
+            "max": 122.40559999999823,
+            "mean": 109.68343333333299,
+            "sampleSd": 11.038551723088775
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 91.21450000000004,
+            "p95Ms": 119.55240000000049,
+            "p99Ms": 143.3804,
+            "maxMs": 143.3804
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.04809999999997672,
+            "p95Ms": 0.08840000000418513,
+            "p99Ms": 0.11250000000291038,
+            "maxMs": 0.11250000000291038
+          },
+          "cpuUserMs": 7743,
+          "cpuSystemMs": 79,
+          "gcCount": 169,
+          "gcDurationMs": 217.52120012044907,
+          "heapUsedRange": [
+            425004808,
+            608024784
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 24
+          },
+          "processP95Spread": {
+            "min": 112.96620000000075,
+            "max": 129.85510000000068,
+            "mean": 118.67050000000079,
+            "sampleSd": 9.68679523217035
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 102.64450000000033,
+          "heap": 112.96620000000075,
+          "changePercent": 10.055775029349245
+        },
+        {
+          "process": 2,
+          "sort": 122.40559999999823,
+          "heap": 129.85510000000068,
+          "changePercent": 6.0859143699328655
+        },
+        {
+          "process": 3,
+          "sort": 104.0002000000004,
+          "heap": 113.19020000000091,
+          "changePercent": 8.836521468228398
+        }
+      ],
+      "regressingProcesses": 3,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": 2.6611499999989974,
+        "medianChangePercent": 3.1822156241538613
+      }
+    },
+    {
+      "profile": "small",
+      "objective": "minimum_energy",
+      "anchor": {
+        "outputHash": "a5629da9e7defdc7b156d9fa43e09a9705ee71b6015f9a913197019fc484d330",
+        "traceHash": "62b88cafcb413a709ba7c408b2f8e114997d9a40d0eb948ea82fd64936d2893b",
+        "fixtureHash": "e615747515913b6074e3231de637ff56c3666fd09a34285ee272f8b885546083",
+        "traceCalls": 164
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 77.4493999999977,
+            "p95Ms": 112.17450000000099,
+            "p99Ms": 142.97659999999814,
+            "maxMs": 142.97659999999814
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.025200000000040745,
+            "p95Ms": 0.051200000001699664,
+            "p99Ms": 0.07189999999900465,
+            "maxMs": 0.07189999999900465
+          },
+          "cpuUserMs": 6364,
+          "cpuSystemMs": 249,
+          "gcCount": 168,
+          "gcDurationMs": 210.30239981412888,
+          "heapUsedRange": [
+            429875664,
+            650951688
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 38
+          },
+          "processP95Spread": {
+            "min": 103.76009999999951,
+            "max": 126.98459999999977,
+            "mean": 113.95466666666714,
+            "sampleSd": 11.869028105254843
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 79.7380000000012,
+            "p95Ms": 111.20510000000286,
+            "p99Ms": 137.64630000000034,
+            "maxMs": 137.64630000000034
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.02750000000014552,
+            "p95Ms": 0.06499999998777639,
+            "p99Ms": 0.1151999999929103,
+            "maxMs": 0.1151999999929103
+          },
+          "cpuUserMs": 6090,
+          "cpuSystemMs": 189,
+          "gcCount": 168,
+          "gcDurationMs": 195.21939945220947,
+          "heapUsedRange": [
+            428685536,
+            649755200
+          ],
+          "queue": {
+            "peak": 8,
+            "push": 10,
+            "pop": 10,
+            "comparisons": 24
+          },
+          "processP95Spread": {
+            "min": 105.64700000000084,
+            "max": 115.66589999999997,
+            "mean": 110.62740000000001,
+            "sampleSd": 5.009702686786479
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 103.76009999999951,
+          "heap": 115.66589999999997,
+          "changePercent": 11.474352858180081
+        },
+        {
+          "process": 2,
+          "sort": 111.11930000000211,
+          "heap": 110.5692999999992,
+          "changePercent": -0.4949635211910941
+        },
+        {
+          "process": 3,
+          "sort": 126.98459999999977,
+          "heap": 105.64700000000084,
+          "changePercent": -16.803297407716343
+        }
+      ],
+      "regressingProcesses": 1,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": -1.1239499999992404,
+        "medianChangePercent": -1.6322662861738113
+      }
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "anchor": {
+        "outputHash": "06231124f010e9d8be9585fb15669d45fea48184bba12236e35604161b77efef",
+        "traceHash": "8ea35f01cfda6c3ce0739618717d6741fb0d0008456ee929de57490d8e69c853",
+        "fixtureHash": "970f6e3d0130fe26dfd03f5b64eba2a18f868ea07e74d4f4dbf4ec5f88b9b28e",
+        "traceCalls": 73
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 81.81679999999687,
+            "p95Ms": 122.09599999999773,
+            "p99Ms": 148.94409999999698,
+            "maxMs": 148.94409999999698
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.019899999995686812,
+            "p95Ms": 0.029900000015913974,
+            "p99Ms": 0.05229999998846324,
+            "maxMs": 0.05229999998846324
+          },
+          "cpuUserMs": 6469,
+          "cpuSystemMs": 172,
+          "gcCount": 163,
+          "gcDurationMs": 237.3370000720024,
+          "heapUsedRange": [
+            439400864,
+            676322832
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 2
+          },
+          "processP95Spread": {
+            "min": 110.28089999999793,
+            "max": 122.93470000000161,
+            "mean": 115.65243333333395,
+            "sampleSd": 6.539712532929241
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 76.46149999999761,
+            "p95Ms": 115.27160000000003,
+            "p99Ms": 194.53540000000066,
+            "maxMs": 194.53540000000066
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.08109999999578577,
+            "p95Ms": 0.17059999999037245,
+            "p99Ms": 0.2706000000143831,
+            "maxMs": 0.2706000000143831
+          },
+          "cpuUserMs": 6783,
+          "cpuSystemMs": 172,
+          "gcCount": 164,
+          "gcDurationMs": 266.1694002151489,
+          "heapUsedRange": [
+            429891632,
+            673489888
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 78
+          },
+          "processP95Spread": {
+            "min": 96.81500000000233,
+            "max": 115.50040000000081,
+            "mean": 108.51720000000205,
+            "sampleSd": 10.197439092242355
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 110.28089999999793,
+          "heap": 113.23620000000301,
+          "changePercent": 2.6797931464153324
+        },
+        {
+          "process": 2,
+          "sort": 113.74170000000231,
+          "heap": 96.81500000000233,
+          "changePercent": -14.881701258201375
+        },
+        {
+          "process": 3,
+          "sort": 122.93470000000161,
+          "heap": 115.50040000000081,
+          "changePercent": -6.0473568487991685
+        }
+      ],
+      "regressingProcesses": 1,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": -1.0826500000002852,
+        "medianChangePercent": -1.489622245612976
+      }
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_charging_stops",
+      "anchor": {
+        "outputHash": "f0915c74384cc4f77bb5dfbb776ffffa115a22f7b9a912be0c916f67d40525a6",
+        "traceHash": "ed36376498428a22a8e0ab5c0990c48be41434a518e8ac983a0cf5c706faf823",
+        "fixtureHash": "d27c3d9b5a1c0779897c912d99185ae503581226d390c68588a5fe83ebd57aca",
+        "traceCalls": 73
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 85.53510000000097,
+            "p95Ms": 127.47130000000107,
+            "p99Ms": 189.0981000000029,
+            "maxMs": 189.0981000000029
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.021399999986897456,
+            "p95Ms": 0.03140000000712462,
+            "p99Ms": 0.04700000001321314,
+            "maxMs": 0.04700000001321314
+          },
+          "cpuUserMs": 6703,
+          "cpuSystemMs": 109,
+          "gcCount": 164,
+          "gcDurationMs": 276.3219000697136,
+          "heapUsedRange": [
+            444574016,
+            759554416
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 2
+          },
+          "processP95Spread": {
+            "min": 104.86089999999967,
+            "max": 141.6214,
+            "mean": 124.65120000000024,
+            "sampleSd": 18.541799078568655
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 84.32890000000043,
+            "p95Ms": 119.83580000000075,
+            "p99Ms": 128.41150000000198,
+            "maxMs": 128.41150000000198
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.09259999999630963,
+            "p95Ms": 0.14690000001792214,
+            "p99Ms": 0.17559999999502907,
+            "maxMs": 0.17559999999502907
+          },
+          "cpuUserMs": 7158,
+          "cpuSystemMs": 203,
+          "gcCount": 162,
+          "gcDurationMs": 249.7111999988556,
+          "heapUsedRange": [
+            454222632,
+            762373704
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 78
+          },
+          "processP95Spread": {
+            "min": 110.3715000000011,
+            "max": 120.07990000000063,
+            "mean": 115.70183333333382,
+            "sampleSd": 4.923755324275362
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 104.86089999999967,
+          "heap": 110.3715000000011,
+          "changePercent": 5.255152301764965
+        },
+        {
+          "process": 2,
+          "sort": 127.47130000000107,
+          "heap": 120.07990000000063,
+          "changePercent": -5.798481697449054
+        },
+        {
+          "process": 3,
+          "sort": 141.6214,
+          "heap": 116.65409999999974,
+          "changePercent": -17.629609649389323
+        }
+      ],
+      "regressingProcesses": 1,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": -0.390849999999773,
+        "medianChangePercent": -0.387462800200411
+      }
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "anchor": {
+        "outputHash": "8f8ec35c9d4e4ba96aab4fc15594f69bfe0ce8f932da0e3d5c67427f760ced6e",
+        "traceHash": "a5fa957704118f5580ffeb02d33e0ee7a33886fc9e94a61b18a3235ce020e6c1",
+        "fixtureHash": "33eb445346a99f6dfb54669f42acca29eafe571bba04b3cf8e3a542cbbc09683",
+        "traceCalls": 73
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 80.6169000000009,
+            "p95Ms": 114.83250000000407,
+            "p99Ms": 151.26870000000054,
+            "maxMs": 151.26870000000054
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.019700000000739237,
+            "p95Ms": 0.029900000015913974,
+            "p99Ms": 0.042600000015227124,
+            "maxMs": 0.042600000015227124
+          },
+          "cpuUserMs": 5919,
+          "cpuSystemMs": 281,
+          "gcCount": 163,
+          "gcDurationMs": 255.27250015735626,
+          "heapUsedRange": [
+            606919120,
+            889551664
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 2
+          },
+          "processP95Spread": {
+            "min": 110.27370000000519,
+            "max": 122.34780000000319,
+            "mean": 115.65190000000196,
+            "sampleSd": 6.143958224955369
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 86.21480000000156,
+            "p95Ms": 118.6273000000001,
+            "p99Ms": 139.99369999999908,
+            "maxMs": 139.99369999999908
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.09790000001885346,
+            "p95Ms": 0.2261999999609543,
+            "p99Ms": 0.4341999999960535,
+            "maxMs": 0.4341999999960535
+          },
+          "cpuUserMs": 6389,
+          "cpuSystemMs": 172,
+          "gcCount": 163,
+          "gcDurationMs": 261.4394997358322,
+          "heapUsedRange": [
+            619521896,
+            899303032
+          ],
+          "queue": {
+            "peak": 77,
+            "push": 79,
+            "pop": 2,
+            "comparisons": 88
+          },
+          "processP95Spread": {
+            "min": 108.4452999999994,
+            "max": 139.2430000000022,
+            "mean": 121.60339999999997,
+            "sampleSd": 15.880411298516627
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 114.33419999999751,
+          "heap": 117.12189999999828,
+          "changePercent": 2.4382030923387976
+        },
+        {
+          "process": 2,
+          "sort": 110.27370000000519,
+          "heap": 139.2430000000022,
+          "changePercent": 26.270361836045808
+        },
+        {
+          "process": 3,
+          "sort": 122.34780000000319,
+          "heap": 108.4452999999994,
+          "changePercent": -11.363097660933352
+        }
+      ],
+      "regressingProcesses": 2,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": 2.5227500000000873,
+        "medianChangePercent": 3.054587238721096
+      }
+    },
+    {
+      "profile": "large",
+      "objective": "minimum_total_duration",
+      "anchor": {
+        "outputHash": "c36a630d920d4c98a25d54d78fe495c92f9218d899a7ca561aa1994ae39cfc7a",
+        "traceHash": "0164538419dd59de83f6b04967cfec127879abf9494e04e54a8e3370cd93d2ca",
+        "fixtureHash": "f1b122de9eb305f74bc935359336c5e8ab820f7ac81bf094caf60edb347d45ff",
+        "traceCalls": 169
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 367.3790000000008,
+            "p95Ms": 511.23859999999695,
+            "p99Ms": 550.5191999999952,
+            "maxMs": 550.5191999999952
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.07299999996030238,
+            "p95Ms": 0.12359999992622761,
+            "p99Ms": 0.13960000000224682,
+            "maxMs": 0.13960000000224682
+          },
+          "cpuUserMs": 27830,
+          "cpuSystemMs": 595,
+          "gcCount": 815,
+          "gcDurationMs": 1339.9188995361328,
+          "heapUsedRange": [
+            474213656,
+            1221304728
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 8
+          },
+          "processP95Spread": {
+            "min": 405.9150000000009,
+            "max": 514.9310999999943,
+            "mean": 463.7629666666641,
+            "sampleSd": 54.814164636733935
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 377.02969999999914,
+            "p95Ms": 478.90980000000127,
+            "p99Ms": 540.6634000000049,
+            "maxMs": 540.6634000000049
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.17889999994804384,
+            "p95Ms": 0.5617999999521999,
+            "p99Ms": 2.4821000000592903,
+            "maxMs": 2.4821000000592903
+          },
+          "cpuUserMs": 27833,
+          "cpuSystemMs": 814,
+          "gcCount": 814,
+          "gcDurationMs": 1351.5125004053116,
+          "heapUsedRange": [
+            468300064,
+            1231880880
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 459
+          },
+          "processP95Spread": {
+            "min": 416.36789999999746,
+            "max": 489.8001000000004,
+            "mean": 458.8952333333339,
+            "sampleSd": 38.07076697117487
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 470.4427999999971,
+          "heap": 489.8001000000004,
+          "changePercent": 4.114697897385922
+        },
+        {
+          "process": 2,
+          "sort": 514.9310999999943,
+          "heap": 470.51770000000397,
+          "changePercent": -8.625115088211
+        },
+        {
+          "process": 3,
+          "sort": 405.9150000000009,
+          "heap": 416.36789999999746,
+          "changePercent": 2.5751450426805045
+        }
+      ],
+      "regressingProcesses": 2,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": -9.703949999999168,
+        "medianChangePercent": -2.8994820408563826
+      }
+    },
+    {
+      "profile": "large",
+      "objective": "minimum_charging_stops",
+      "anchor": {
+        "outputHash": "63a503c23e8d6423da3e3e7e7b860ff9b7e9050c2f5d3de9a483ec9b4542b9a6",
+        "traceHash": "c8ac51949206fcbfa9a16efedb948683fe71763bd319e7ee1235bd9e44b22f1d",
+        "fixtureHash": "982a31a5082dbf1fde725923657bf3ad2e325be930ced6e47face53dda253adc",
+        "traceCalls": 169
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 383.48159999999916,
+            "p95Ms": 505.0340000000142,
+            "p99Ms": 675.1312999999936,
+            "maxMs": 675.1312999999936
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.07859999977517873,
+            "p95Ms": 0.11590000010619406,
+            "p99Ms": 0.1400000000721775,
+            "maxMs": 0.1400000000721775
+          },
+          "cpuUserMs": 30266,
+          "cpuSystemMs": 769,
+          "gcCount": 806,
+          "gcDurationMs": 1648.5905001163483,
+          "heapUsedRange": [
+            489072416,
+            1633358288
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 8
+          },
+          "processP95Spread": {
+            "min": 432.9817999999941,
+            "max": 533.6683000000048,
+            "mean": 490.56136666667106,
+            "sampleSd": 51.88001211703873
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 409.0905999999959,
+            "p95Ms": 554.6732999999949,
+            "p99Ms": 620.8206999999966,
+            "maxMs": 620.8206999999966
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.1933999999455409,
+            "p95Ms": 0.4242999998095911,
+            "p99Ms": 2.4786999999923864,
+            "maxMs": 2.4786999999923864
+          },
+          "cpuUserMs": 30353,
+          "cpuSystemMs": 1122,
+          "gcCount": 806,
+          "gcDurationMs": 1832.2944002747536,
+          "heapUsedRange": [
+            492572184,
+            1644047040
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 459
+          },
+          "processP95Spread": {
+            "min": 493.96970000000147,
+            "max": 558.8271999999997,
+            "mean": 525.9243999999986,
+            "sampleSd": 32.43914297218638
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 533.6683000000048,
+          "heap": 524.9762999999948,
+          "changePercent": -1.6287270576142432
+        },
+        {
+          "process": 2,
+          "sort": 505.0340000000142,
+          "heap": 558.8271999999997,
+          "changePercent": 10.651401687803986
+        },
+        {
+          "process": 3,
+          "sort": 432.9817999999941,
+          "heap": 493.96970000000147,
+          "changePercent": 14.085557406802817
+        }
+      ],
+      "regressingProcesses": 2,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": 12.088300000003073,
+        "medianChangePercent": 2.8505126220724097
+      }
+    },
+    {
+      "profile": "large",
+      "objective": "minimum_energy",
+      "anchor": {
+        "outputHash": "43237e87d518fd5ab31e60e9ea0f2bddd6639ebd0cd0a8bc58877dfc09d029b2",
+        "traceHash": "2a062e60468a2b8a35de4be2e76265e1f6b709e964cd3a962acec3e79fe3ee49",
+        "fixtureHash": "95669665c8ba7c19a2c766b46d1d4bb777f67693894a9cc4d1f3469f2195df05",
+        "traceCalls": 169
+      },
+      "strategies": {
+        "sort": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 333.7868999999919,
+            "p95Ms": 465.16059999998834,
+            "p99Ms": 605.894100000005,
+            "maxMs": 605.894100000005
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.06759999996575061,
+            "p95Ms": 0.128999999986263,
+            "p99Ms": 0.17859999983920716,
+            "maxMs": 0.17859999983920716
+          },
+          "cpuUserMs": 25319,
+          "cpuSystemMs": 654,
+          "gcCount": 806,
+          "gcDurationMs": 1494.613300025463,
+          "heapUsedRange": [
+            486701072,
+            1682807336
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 8
+          },
+          "processP95Spread": {
+            "min": 409.19139999999607,
+            "max": 503.5060999999987,
+            "mean": 449.7911666666623,
+            "sampleSd": 48.50588991600428
+          }
+        },
+        "heap": {
+          "wall": {
+            "samples": 72,
+            "p50Ms": 337.9146000000037,
+            "p95Ms": 447.303899999999,
+            "p99Ms": 560.2583000000013,
+            "maxMs": 560.2583000000013
+          },
+          "queueTime": {
+            "samples": 72,
+            "p50Ms": 0.19930000000749715,
+            "p95Ms": 0.3328999999212101,
+            "p99Ms": 0.36820000008447096,
+            "maxMs": 0.36820000008447096
+          },
+          "cpuUserMs": 25937,
+          "cpuSystemMs": 863,
+          "gcCount": 807,
+          "gcDurationMs": 1531.9230000972748,
+          "heapUsedRange": [
+            491400904,
+            1693497384
+          ],
+          "queue": {
+            "peak": 455,
+            "push": 457,
+            "pop": 2,
+            "comparisons": 546
+          },
+          "processP95Spread": {
+            "min": 428.22329999999783,
+            "max": 511.5298000000039,
+            "mean": 459.3665333333338,
+            "sampleSd": 45.45739309027313
+          }
+        }
+      },
+      "p95ByProcess": [
+        {
+          "process": 1,
+          "sort": 503.5060999999987,
+          "heap": 511.5298000000039,
+          "changePercent": 1.5935655993055908
+        },
+        {
+          "process": 2,
+          "sort": 436.6759999999922,
+          "heap": 428.22329999999783,
+          "changePercent": -1.935691450868493
+        },
+        {
+          "process": 3,
+          "sort": 409.19139999999607,
+          "heap": 438.34649999999965,
+          "changePercent": 7.12505199278477
+        }
+      ],
+      "regressingProcesses": 2,
+      "pairedBlocks": {
+        "samples": 36,
+        "medianDeltaMs": 2.8708500000138883,
+        "medianChangePercent": 0.9028229077460592
+      }
+    }
+  ]
+}

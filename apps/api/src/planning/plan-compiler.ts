@@ -4,8 +4,10 @@ import type {PlanningContext,OptimizerState,OptimizerOutcome,TransitionPort} fro
 import type {OptimizerSearch,RoadRoute,EnergySegment,PlannedChargingStop,RoutePlan,WeatherForecast} from '@chargeroad/shared';
 import {canonicalJson} from '../vehicles/knowledge/knowledge-package';
 import {OPTIMIZER_VERSION} from './optimizer-policy';
+import {startStage} from '../observability/planning-metrics';
 export const checksum=(value:unknown)=>createHash('sha256').update(canonicalJson(value)).digest('hex');
 export function compilePlan(context:PlanningContext,state:OptimizerState,search:OptimizerSearch,port:TransitionPort):OptimizerOutcome{
+  const end=startStage('plan_compile');try{
   const {request,vehicle,evaluatedAt}=context,segments:RoadRoute['segments']=[],energy:EnergySegment[]=[],weather:WeatherForecast[]=[],stops:PlannedChargingStop[]=[];
   const segmentTimes:{segmentId:string;departureAt:string;arrivalAt:string}[]=[],stopTimes:{stopId:string;arrivalAt:string;departureAt:string}[]=[];
   let offset=0,unknownTime=false;
@@ -74,4 +76,5 @@ export function compilePlan(context:PlanningContext,state:OptimizerState,search:
     stationSearch:context.candidates.metadata,dataSnapshots:snapshots};
   const evaluated=planningEvaluationSchema.parse({input,result:{status:'planned',plan}});
   return {result:evaluated.result,validationInput:evaluated.input,replay:{context,state}};
+  }finally{end();}
 }

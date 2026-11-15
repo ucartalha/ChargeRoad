@@ -1,0 +1,18 @@
+{
+  "initialFiles": 480,
+  "unchangedFiles": 480,
+  "changedExistingFiles": [],
+  "initialAggregateSha256": "259937352f3726aeaac732a2da060f03ceb4a1a528c4fc82e9bb550137d98f25",
+  "finalAggregateSha256": "259937352f3726aeaac732a2da060f03ceb4a1a528c4fc82e9bb550137d98f25",
+  "historicalArtifacts": {
+    "docs/validation/frontier-queue-after.json": "7da5376e4feb37505a567a6af6cb161a52a1024ffc0c828790a2619b7ef30999",
+    "docs/validation/frontier-queue-before.json": "87f6d7332a7745bb88ab44cf76526d06e30d0d0998a981e27947b96239281683",
+    "docs/validation/frontier-queue-structure.json": "2f96cf4f939a68d2867ff7848ff720ecfad788a7bd34bc19176480d386e967b6"
+  },
+  "productionFiles": {
+    "apps/api/src/planning/stable-priority-queue.ts": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200",
+    "apps/api/src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "apps/api/src/energy/energy-engine.ts": "29de564b954c412f278511b5e8304f653df71a6930ed3866540eae4007febdcf",
+    "apps/api/src/planning/charge-stop-optimizer.ts": "3ee1a97d67b174fcf21862f001ed638a05d5449a44f9732d39a4a45a78b3cee7"
+  }
+}

@@ -5,6 +5,8 @@ import type {PlanningContext,OptimizerState,TransitionPort,OptimizerOutcome} fro
 import {PlanningDataLimit,PlanningProviderFailure} from './optimizer-types';
 import {compilePlan} from './plan-compiler';
 import {CATALOGUE_SCENARIO_POLICY as seedPolicy,candidateProgress} from './catalogue-station-scenario';
+import {maxMetric} from '../observability/planning-metrics';
+import {createStateShadow} from './state-dominance-shadow';
 
 export function compareStates(a:OptimizerState,b:OptimizerState,objective:PlanningContext['request']['policy']['objective']){
   const key=(s:OptimizerState)=>objective==='minimum_charging_stops'?[s.stops.length,s.seconds,s.distance]:
@@ -19,7 +21,10 @@ export class ChargeStopOptimizer {
     const began=this.clock(),deadline=began+context.request.policy.maxComputationMilliseconds,options=context.options,objective=context.request.policy.objective;
     const initial:OptimizerState={nodeId:'origin',soc:context.request.startingChargePercent,temperature:context.request.initialBatteryTemperatureC,capacity:null,
       at:context.request.departureAt,legs:[],stops:[],visited:['origin'],netKwh:0,seconds:0,distance:0};
-    const frontier=[initial],incumbent:{outcome:OptimizerOutcome|null;state:OptimizerState|null}={outcome:null,state:null};let expanded=0,transitions=0;
+    const frontier=[initial];
+    const observeState=createStateShadow();observeState(initial);
+    const incumbent:{outcome:OptimizerOutcome|null;state:OptimizerState|null}={outcome:null,state:null};let expanded=0,transitions=0;
+    maxMetric('frontier_peak',frontier.length);
     let stopped:OptimizerSearch['stoppedReason']='frontier_exhausted';
     const failure=(status:Exclude<PlanningResult['status'],'planned'>,code:string):OptimizerOutcome=>({result:{status,requestId:context.request.requestId,reasons:[{code,explanation:code}]},search:metadata()});
     const metadata=():OptimizerSearch=>({policyId:options.id,policyVersion:options.version,objective,scope:'bounded_corridor_no_repeated_stations_sampled_soc',optimality:'not_proven',
@@ -99,7 +104,7 @@ export class ChargeStopOptimizer {
                   try{const candidate=compilePlan(context,next,metadata(),port);incumbent.outcome=candidate;}
                   catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');}
                 }
-              }else {if(frontier.length>=options.maxFrontier){stopped='frontier_budget';throw new PlanningDataLimit('FRONTIER_BUDGET');}frontier.push(next);}
+              }else {if(frontier.length>=options.maxFrontier){stopped='frontier_budget';throw new PlanningDataLimit('FRONTIER_BUDGET');}frontier.push(next);maxMetric('frontier_peak',frontier.length);observeState(next);}
             }
           }
         };

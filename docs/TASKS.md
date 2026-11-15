@@ -4,6 +4,16 @@
 
 Durumlar: TODO, IN_PROGRESS, BLOCKED, DONE. Bir göreve başlanırken durum ve sorumlu; bitirirken doğrulama kanıtı eklenir. DEC kayıtları görev değildir, ilgili teknik işin karar kapılarıdır.
 
+## Performans iyileştirme görevleri — 2026-11-13
+
+- [Ana plan ve bağımlılıklar](tasks/performance/00-ANA-PLAN.md): CR-PERF-001–014; ürün görevlerinin kimlikleriyle karıştırılmamalıdır.
+- CR-PERF-001: **DONE**, sorumlu Codex. İstek kapsamlı opt-in ölçümler ve tekrarlanabilir baseline; [kanıt/ölçüm sınırları/rollback](validation/perf-baseline-2026-11-13.md). API/DB 646, shared 41, mobil 21 test; tüm typecheck ve API build PASS.
+- CR-PERF-002: **DONE (eşdeğerlik)**, sorumlu Codex. [Tarihsel teslim](validation/frontier-queue-benchmark.md) korunur. [Ek performans kapısı](validation/frontier-queue-performance-gate-2026-11-13.md): kalıcı heap hızlandırması **NO-GO**. 2026-11-15 kullanıcı kararıyla production frontier dar diff ile stabil array sort+shift'e döndü; 53 kapanış testi PASS. [Kapanış kanıtı](validation/candidate-eligibility-shadow-2026-11-15.md).
+- CR-PERF-003: **DONE (yalnız shadow/analiz)**, sorumlu Codex. 129 vaka/amaçta önce/yeni/ölçüm kapalı plan, replay, trace ve bütçe eşdeğer. API DB'siz 707, shared 41, mobil 21 test; typecheck ve API build PASS. Aktif filtreleme NO-GO ve uygulanmadı; gerçekleşen tasarruf 0. DB bağlantısı ECONNREFUSED: 150 DB testinin kabulü açık. [Teslim ve sınırlar](validation/candidate-eligibility-shadow-2026-11-15.md).
+- CR-PERF-004: **DONE (yalnız shadow/analiz)**, sorumlu Codex. 162 vaka/amaçta plan/input/replay/trace/bütçe ve 003 sayaçları eşdeğer; 924 state, 1881 pair, 0 gerçek budama/tasarruf. API DB'siz 896, shared 41, mobil 21; typecheck/build PASS. 150 DB testi bağlantı nedeniyle açık; aktif pruning/rollout NO-GO. [Envanter, sınırlar ve kanıt](validation/state-dominance-shadow-2026-11-15.md).
+- CR-PERF-005: **BLOCKED (Aşama A DONE / Aşama B kanıt bekliyor)**, sorumlu Codex. 69 vaka/amaçta native/gözlenen/ölçüm kapalı eşdeğerlik PASS; aktif reuse ve gerçek tasarruf 0. Son DB kapısı PASS: 1121 API/DB testi; shared 41, mobil 21, typecheck/build PASS. Güvenli çıktı sahipliği, tam semantik key/deadline ve net kazanım kanıtı kapanmadı; production değişmedi. [Analiz ve kanıtlar](validation/session-repeat-analysis-2026-11-15.md).
+- CR-PERF-006–014: **TODO**. Başlanmadı. Kapsamlı kümülatif performans kabulü ayrı görevdir; önceki ürün/saha ve lisans açıkları devam eder.
+
 ## Önerilen teslim sırası
 
 1. CR-001–005: Kapsam, sözleşmeler, veri modeli ve doğrulama zemini.

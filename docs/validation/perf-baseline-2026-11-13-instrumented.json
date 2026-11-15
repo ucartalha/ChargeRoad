@@ -1,0 +1,339 @@
+{
+  "schemaVersion": "perf-baseline/1",
+  "generatedAt": "2026-11-13T13:48:21.109Z",
+  "phase": "instrumented",
+  "machine": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpuModel": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpuCount": 20,
+    "totalMemoryBytes": 16869548032,
+    "node": "v26.13.0"
+  },
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "dirty": true,
+  "sourceChecksums": {
+    "src/planning/ev-planning.service.ts": "d1ebf37bb86a4ea06639d95bfd179f836c67db6eafc0d436b93626db4e2f23fc",
+    "src/planning/planning-session.ts": "a3fe5798a160976ddcf334f2a71a455ee5c52a6cf6cc97f9def53483f7530821",
+    "src/planning/charge-stop-optimizer.ts": "746800091407eee067c763f0df4b9c9e3bd20a05bdf81a4f4591d67ca50b5a3f",
+    "src/planning/plan-compiler.ts": "dc4ed22f2b1fad3f4d6331c64a7c89aa655ec7fd2bb551b277f453de13c176a8",
+    "src/planning/http/planning-http.service.ts": "97b1cb6ca17c77bf7990979124174343870888ae2372e26710e1233cf082747c",
+    "src/planning/http/planning-response.ts": "c77b99fe62e64ecc868486567726dfe5b1cbcd2b864c93c87045b6bf6b37fc34",
+    "src/roads/road-client.ts": "7118b4ca2fd62794979932e7516d7b3ceb8826f4e8ea6f50dd00e7bd95a3e34c",
+    "src/weather/weather-cache.ts": "d16a5a37481be928759e5613f17e13e2770acf037f78fccfe571802b0ea959b6"
+  },
+  "instrumentationSourceChecksum": "bccae301a27c8dff2c4dd5f1723f621601b58f460cdca5740bcf2b3e8c07deec",
+  "fixtureFactoryChecksum": "73d7769661fedc1de9b29c03f27af4c8de38370476798d73c44ab9ca3385453c",
+  "clock": "Frozen synthetic wall clock 2026-11-13T09:00Z; real monotonic latency and process CPU. No real-world trip or SLA.",
+  "providerMode": "synthetic_in_memory_no_external_HTTP_or_database",
+  "quantile": "nearest_rank_concurrency_1_JIT_warmup_excluded_from_latency",
+  "groups": [
+    {
+      "scenario": "no_charge",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "156383abf6d55765603ec0e6e32041651ce88664194baafd597fac350664a784",
+      "resultChecksum": "6a93e46fd9010b87d5088fbbcb3186fe44406f48a29c2bc9ac09dd3379c22d44",
+      "representationChecksum": "c65844b79450fdd9c643ab78431127efae8cd569f40e4db44f2d988a569cdd35",
+      "latencyMs": {
+        "n": 100,
+        "p50": 31.70640000000003,
+        "p95": 40.607800000000225,
+        "p99": 60.76279999999997,
+        "min": 26.718399999999747,
+        "max": 99.24019999999973
+      },
+      "groupCpuMs": {
+        "user": 4844,
+        "system": 250,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 556105728,
+        "sampledPeakBytes": 670388224,
+        "endBytes": 670461952
+      },
+      "response": {
+        "decodedBytes": 11751,
+        "wireBytes": 11751
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": {
+        "samples": 100,
+        "incomplete": 0,
+        "stagesMs": {
+          "vehicle_profile": {
+            "n": 100,
+            "p50": 0.01510000000052969,
+            "p95": 0.026600000000144064,
+            "p99": 0.03679999999985739,
+            "min": 0.011800000000221189,
+            "max": 0.047700000000077125
+          },
+          "base_road": {
+            "n": 100,
+            "p50": 0.028000000000247383,
+            "p95": 0.05889999999999418,
+            "p99": 0.09150000000045111,
+            "min": 0.019400000000132422,
+            "max": 0.1301000000003114
+          },
+          "station_corridor": {
+            "n": 100,
+            "p50": 0.0039999999999054126,
+            "p95": 0.00860000000011496,
+            "p99": 0.011700000000018917,
+            "min": 0.002800000000206637,
+            "max": 0.014299999999821011
+          },
+          "optimizer_search": {
+            "n": 100,
+            "p50": 30.6904999999997,
+            "p95": 39.15549999999985,
+            "p99": 58.93359999999984,
+            "min": 25.898400000000038,
+            "max": 97.21810000000005
+          },
+          "weather_sampling": {
+            "n": 100,
+            "p50": 0.3767000000025291,
+            "p95": 0.5549000000000888,
+            "p99": 0.6310999999996056,
+            "min": 0.3305000000009386,
+            "max": 0.6996999999987565
+          },
+          "weather_acquisition": {
+            "n": 100,
+            "p50": 0.7830000000021755,
+            "p95": 1.319299999994655,
+            "p99": 2.186899999999696,
+            "min": 0.6413999999977023,
+            "max": 2.5557999999982712
+          },
+          "energy_evaluation": {
+            "n": 100,
+            "p50": 15.769700000001649,
+            "p95": 18.422200000003613,
+            "p99": 30.215200000000095,
+            "min": 13.341199999998935,
+            "max": 39.636099999998805
+          },
+          "plan_compile": {
+            "n": 100,
+            "p50": 1.7162000000007538,
+            "p95": 2.3613000000000284,
+            "p99": 2.875699999999597,
+            "min": 1.3185999999986961,
+            "max": 4.216800000000603
+          },
+          "road_leg_acquisition": {
+            "n": 100,
+            "p50": 0.23409999999876163,
+            "p95": 0.3455999999987398,
+            "p99": 0.4291000000002896,
+            "min": 0.15980000000035943,
+            "max": 0.577900000000227
+          },
+          "charge_integration": {
+            "n": 100,
+            "p50": 8.574499999998807,
+            "p95": 12.20580000000109,
+            "p99": 17.030000000002474,
+            "min": 6.363699999998062,
+            "max": 18.22050000000081
+          },
+          "json_serialize": {
+            "n": 100,
+            "p50": 0.06760000000031141,
+            "p95": 0.10470000000077562,
+            "p99": 0.12820000000010623,
+            "min": 0.05580000000009022,
+            "max": 0.1621000000004642
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 62,
+          "weather_session_cache_hits": 56,
+          "weather_sample_queries": 88,
+          "weather_forecast_query_items": 69,
+          "energy_evaluations": 68,
+          "charge_integrations": 39,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 107,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 69,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11751,
+          "response_wire_bytes": 11751,
+          "cancelled": 0,
+          "timeout": 0
+        }
+      }
+    },
+    {
+      "scenario": "two_partial_charges",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "b323ad1a38a2ba3a984f4a222b965eb79f706bc1d268cb1782238216d7c508a9",
+      "resultChecksum": "bab6af3e25ac2806edf48023e5cf6afba8248c32f11fab070307424b8a6a8197",
+      "representationChecksum": "d37d9be4edba440ba369e2a63893872dd04855d64ea20ca662207602ece203f2",
+      "latencyMs": {
+        "n": 100,
+        "p50": 35.91159999999945,
+        "p95": 39.40940000000046,
+        "p99": 44.34650000000147,
+        "min": 33.01460000000043,
+        "max": 47.22619999999915
+      },
+      "groupCpuMs": {
+        "user": 4563,
+        "system": 125,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 670461952,
+        "sampledPeakBytes": 808873984,
+        "endBytes": 808873984
+      },
+      "response": {
+        "decodedBytes": 16283,
+        "wireBytes": 16283
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": {
+        "samples": 100,
+        "incomplete": 0,
+        "stagesMs": {
+          "vehicle_profile": {
+            "n": 100,
+            "p50": 0.013300000002345769,
+            "p95": 0.01720000000022992,
+            "p99": 0.02750000000014552,
+            "min": 0.010999999998603016,
+            "max": 0.03719999999884749
+          },
+          "base_road": {
+            "n": 100,
+            "p50": 0.023199999999633292,
+            "p95": 0.036399999999048305,
+            "p99": 0.0522000000000844,
+            "min": 0.019099999999525608,
+            "max": 0.06959999999889988
+          },
+          "station_corridor": {
+            "n": 100,
+            "p50": 0.0033999999996012775,
+            "p95": 0.004999999999199645,
+            "p99": 0.006100000000515138,
+            "min": 0.0023999999993975507,
+            "max": 0.009200000000419095
+          },
+          "optimizer_search": {
+            "n": 100,
+            "p50": 34.96589999999924,
+            "p95": 38.437300000001414,
+            "p99": 43.47580000000016,
+            "min": 32.006899999998495,
+            "max": 46.203300000001036
+          },
+          "weather_sampling": {
+            "n": 100,
+            "p50": 0.41150000000561704,
+            "p95": 0.643499999989217,
+            "p99": 0.7219999999997526,
+            "min": 0.3633000000008906,
+            "max": 0.7988999999997759
+          },
+          "weather_acquisition": {
+            "n": 100,
+            "p50": 0.8335000000042783,
+            "p95": 0.9921000000031199,
+            "p99": 1.3378000000011525,
+            "min": 0.6953999999896041,
+            "max": 1.3410000000130822
+          },
+          "energy_evaluation": {
+            "n": 100,
+            "p50": 17.73750000000291,
+            "p95": 19.935899999999492,
+            "p99": 22.48830000000453,
+            "min": 16.00399999999354,
+            "max": 23.82720000001609
+          },
+          "road_leg_acquisition": {
+            "n": 100,
+            "p50": 0.14490000000023429,
+            "p95": 0.20139999999992142,
+            "p99": 0.3125999999992928,
+            "min": 0.11070000000108848,
+            "max": 0.3526000000019849
+          },
+          "charge_integration": {
+            "n": 100,
+            "p50": 10.02979999999934,
+            "p95": 11.212099999997008,
+            "p99": 12.473099999995611,
+            "min": 9.227700000017649,
+            "max": 14.163000000000466
+          },
+          "plan_compile": {
+            "n": 100,
+            "p50": 1.3233000000000175,
+            "p95": 1.7114000000019587,
+            "p99": 1.9299999999993815,
+            "min": 1.1193999999995867,
+            "max": 2.0284999999985303
+          },
+          "json_serialize": {
+            "n": 100,
+            "p50": 0.0750000000007276,
+            "p95": 0.12620000000060827,
+            "p99": 0.1742000000012922,
+            "min": 0.06450000000040745,
+            "max": 0.29900000000088767
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 83,
+          "weather_session_cache_hits": 91,
+          "weather_sample_queries": 103,
+          "weather_forecast_query_items": 77,
+          "energy_evaluations": 88,
+          "charge_integrations": 56,
+          "frontier_peak": 8,
+          "expanded_states": 10,
+          "transitions": 154,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 77,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 16283,
+          "response_wire_bytes": 16283,
+          "cancelled": 0,
+          "timeout": 0
+        }
+      }
+    }
+  ],
+  "realProviderMeasurement": {
+    "status": "NOT_RUN",
+    "reason": "Explicit opt-in local smoke is separate; public provider load tests prohibited"
+  }
+}

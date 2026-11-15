@@ -1,0 +1,95 @@
+import {readFileSync} from 'node:fs';
+import {resolve,dirname} from 'node:path';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
+import * as ts from 'typescript';
+import {ChargeStopOptimizer} from '../charge-stop-optimizer';
+import {EvPlanningService} from '../ev-planning.service';
+import {EnergyConsumptionEngine} from '../../energy/energy-engine';
+import {ChargingCurveEngine} from '../../charging/charging-engine';
+import {withPlanningMetrics,type PlanningMetricSnapshot} from '../../observability/planning-metrics';
+import {RoadProviderError} from '../../roads/road-client';
+import {eligibilityCases,eligibilityWorld,type EligibilityCase} from './eligibility-fixtures';
+import {normalized,digest,type Objective} from './frontier-performance-harness';
+import {STATE_SHADOW_COUNTERS} from '../state-dominance';
+export const stateCases=[...eligibilityCases,'equal_alternatives','transition_budget','frontier_budget','incumbent_state','incumbent_frontier','regen','thermal','temperature_provenance','capacity_observed','seeded_graph_1','seeded_graph_2'] as const;
+export type StateCase=typeof stateCases[number];
+let previous:typeof ChargeStopOptimizer|undefined;
+export function previousStateOptimizer(){
+ if(previous)return previous;
+ const filename=resolve(__dirname,'../charge-stop-optimizer.ts');let source=readFileSync(filename,'utf8');
+ for(const expression of ["import {createStateShadow} from './state-dominance-shadow';\n",'    const observeState=createStateShadow();observeState(initial);\n','observeState(next);']){
+  if(source.split(expression).length!==2)throw new Error('State observation seam changed');source=source.replace(expression,'');
+ }
+ const baseline=JSON.parse(readFileSync(resolve(__dirname,'../../../../../docs/validation/state-dominance-baseline-2026-11-15.json'),'utf8'));
+ if(createHash('sha256').update(source).digest('hex')!==baseline.optimizerBeforeRawSha256)throw new Error('Before optimizer source hash mismatch');
+ const javascript=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+ const module={exports:{} as {ChargeStopOptimizer:typeof ChargeStopOptimizer}};
+ new Function('exports','require','module','__filename','__dirname',javascript)(module.exports,createRequire(filename),module,filename,dirname(filename));
+ previous=module.exports.ChargeStopOptimizer;return previous;
+}
+function world(kind:StateCase){
+ const w=eligibilityWorld(eligibilityCases.includes(kind as EligibilityCase)?kind as EligibilityCase:'normal');
+ let roads:(...args:Parameters<typeof w.roads.routes>)=>ReturnType<typeof w.roads.routes>=w.roads.routes;
+ if(kind==='equal_alternatives'){w.preparation.road.alternatives=2;const fn=roads;roads=async(...args)=>{const r=await fn(...args);return {...r,data:{...r.data,routes:r.data.routes.flatMap(route=>[route,{...structuredClone(route),id:route.id+'-twin'}])}};};}
+ if(kind==='transition_budget')w.options.maxTransitions=1;
+ if(kind==='frontier_budget')w.options.maxFrontier=1;
+ if(kind==='incumbent_state'||kind==='incumbent_frontier'){
+  w.request.startingChargePercent=100;w.request.constraints={minimumReserveChargePercent:0,targetArrivalChargePercent:0};
+  if(kind==='incumbent_state')w.options.maxStates=1;else w.options.maxFrontier=1;
+ }
+ if(kind==='thermal'){w.request.initialBatteryTemperatureC.value=20;w.vehicle.energyModel!.capacityTemperatureCurve=[{temperatureC:0,factor:.8},{temperatureC:30,factor:1}];}
+ if(kind==='temperature_provenance')w.request.initialBatteryTemperatureC={origin:'estimated',value:30,estimatedAt:w.now,validAt:w.request.departureAt,modelVersion:'synthetic-estimate/1'};
+ if(kind==='capacity_observed')w.request.stateOfHealthPercent={origin:'user_input',value:80,observedAt:w.now};
+ if(kind==='regen'){
+  const fn=roads;roads=async(...args)=>{const r=await fn(...args);for(const route of r.data.routes)for(const s of route.segments){
+   const start=100*(1-s.startDistanceMeters/route.distanceMeters),end=100*(1-s.endDistanceMeters/route.distanceMeters);
+   s.elevationProfile=[{distanceFromStartMeters:0,elevationMeters:start},{distanceFromStartMeters:s.distanceMeters,elevationMeters:end}];s.elevationGainMeters=0;s.elevationLossMeters=start-end;
+  }return r;};
+ }
+ let graphHash:string|null=null;
+ if(kind.startsWith('seeded_graph')){
+  let seed=kind==='seeded_graph_1'?20261115:42;const factors:Record<string,number>={};
+  const nodes=Object.keys(w.locations);for(const a of nodes)for(const b of nodes)if(a!==b){seed=(Math.imul(seed,1664525)+1013904223)>>>0;factors[a+'>'+b]=.9+(seed%200)/1000;}
+  graphHash=digest(factors);const fn=roads;
+  roads=async(...args)=>{const r=await fn(...args),loc=(p:{latitude:number;longitude:number})=>nodes.find(k=>Math.abs(w.locations[k].latitude-p.latitude)<1e-9&&Math.abs(w.locations[k].longitude-p.longitude)<1e-9)!;
+   const factor=factors[loc(args[0].origin)+'>'+loc(args[0].destination)];
+   for(const route of r.data.routes){route.drivingDurationSeconds*=factor;for(const s of route.segments){s.drivingDurationSeconds*=factor;s.expectedSpeedKph=s.distanceMeters/s.drivingDurationSeconds*3.6;}}
+   return r;
+  };
+ }
+ return {...w,roads:{routes:roads},graphHash};
+}
+async function run(kind:StateCase,objective:Objective,after:boolean,enabled=true){
+ const w=world(kind),trace:[string,string][]=[],counts:Record<string,number>={},cancel=new AbortController();
+ const wrap=<T extends(...args:any[])=>any>(role:string,operation:T)=>(...args:Parameters<T>):ReturnType<T>=>{counts[role]=(counts[role]??0)+1;trace.push([role,digest(normalized(args))]);return operation(...args);};
+ const vehicles={resolveId:wrap('vehicle_id',w.vehicles.resolveId),profile:wrap('vehicle_profile',w.vehicles.profile)};
+ let road=w.roads.routes;
+ if(kind==='quota')road=async()=>{throw new RoadProviderError('synthetic',429,60,'ROAD_PROVIDER_RATE_LIMITED');};
+ if(kind==='timeout')road=async()=>{throw new RoadProviderError('synthetic',503,60,'ROAD_PROVIDER_TIMEOUT');};
+ const routing={routes:wrap('road',road)},stations={findAlongRoutes:wrap('stations',w.stations.findAlongRoutes)},weather={forecast:wrap('weather',w.weather.forecast)};
+ const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=wrap('energy',energy.evaluate.bind(energy));charging.evaluate=wrap('charging',charging.evaluate.bind(charging));
+ const Optimizer=after?ChargeStopOptimizer:previousStateOptimizer();let ticks=0;
+ const optimizer=kind==='deadline'?new Optimizer(()=>++ticks>3?1e9:0):new Optimizer();
+ const service=new EvPlanningService(vehicles as never,routing as never,stations as never,weather as never,energy,charging,optimizer);
+ const inputHash=digest(normalized({kind,graphHash:w.graphHash,request:w.request,options:w.options,preparation:w.preparation,candidates:w.candidates,vehicle:w.vehicle}));
+ if(kind==='cancel')cancel.abort(new Error('synthetic_cancel'));let metrics:PlanningMetricSnapshot|undefined;
+ const operation=async()=>{try{return await service.plan(w.request,w.preparation,w.options,cancel.signal);}catch(error){if(error!==cancel.signal.reason)throw error;return {cancelled:true};}};
+ const outcome=normalized(await withPlanningMetrics(w.request.requestId,operation,{enabled,scope:'benchmark',sink:s=>{metrics=s;}}));
+ return {outcome,inputHash,trace,counts,metrics};
+}
+export async function validateStateCase(kind:StateCase,objective:Objective){
+ const before=await run(kind,objective,false),after=await run(kind,objective,true),off=await run(kind,objective,true,false);
+ for(const value of [after,off])if(!isDeepStrictEqual(before.outcome,value.outcome)||!isDeepStrictEqual(before.trace,value.trace)||!isDeepStrictEqual(before.counts,value.counts)||before.inputHash!==value.inputHash)throw new Error('STATE_SHADOW_BEHAVIOR_CHANGED/'+kind+'/'+objective);
+ if(off.metrics!==undefined)throw new Error('DISABLED_STATE_METRICS');
+ const original=before.metrics!.counters,current=after.metrics!.counters,newKeys=new Set<string>(STATE_SHADOW_COUNTERS);
+ for(const key of Object.keys(original))if(!newKeys.has(key)&&original[key as keyof typeof original]!==current[key as keyof typeof current])throw new Error('ORIGINAL_OR_ELIGIBILITY_COUNTER_CHANGED');
+ if(current.actual_pruned_states!==0)throw new Error('ACTIVE_PRUNING_FORBIDDEN');
+ if(['incumbent_state','incumbent_frontier','direct','sole_station','normal','many_stations','long_route'].includes(kind)&&before.outcome.result?.status!=='planned')throw new Error('EXPECTED_VALIDATED_PLAN/'+kind);
+ return {kind,objective,inputHash:before.inputHash,outcomeHash:digest(before.outcome),traceHash:digest(before.trace),equivalent:true,status:before.outcome.result?.status??'cancelled',
+  stoppedReason:before.outcome.search?.stoppedReason??null,reasonCodes:before.outcome.result?.reasons?.map((r:{code:string})=>r.code)??[],calls:before.counts,
+  previousEligibilityCounters:Object.fromEntries(Object.entries(current).filter(([key])=>key.startsWith('candidate_'))),
+  shadow:Object.fromEntries(STATE_SHADOW_COUNTERS.map(key=>[key,current[key]])),shadowEvaluationMs:after.metrics!.stages.state_shadow?.totalMs??null,
+  actualSavedProviderCalls:0,actualSavedEngineCalls:0};
+}

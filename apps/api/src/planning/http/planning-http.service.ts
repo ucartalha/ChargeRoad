@@ -8,11 +8,15 @@ import {ENERGY_ALGORITHM_VERSION} from '../../energy/energy-policy';
 import {CHARGING_ALGORITHM_VERSION} from '../../charging/charging-engine';
 import {PlanningExecution} from './planning-execution';
 import {PLANNING_HTTP_POLICY,toInternalRequest,planningPreparation} from './planning-http-policy';
+import {withPlanningMetrics,measureAsync,measureSync} from '../../observability/planning-metrics';
 @Injectable()
 export class PlanningHttpService {
   private readonly logger=new Logger(PlanningHttpService.name);
   constructor(private readonly planner:EvPlanningService,private readonly execution:PlanningExecution){}
   async plan(request:PlanningApiRequest,signal:AbortSignal,serverBudgetMs?:number):Promise<PlanningApiResponse>{
+    return withPlanningMetrics(request?.requestId,()=>measureAsync('http_plan',()=>this.executePlan(request,signal,serverBudgetMs)),{scope:'http_plan'});
+  }
+  private async executePlan(request:PlanningApiRequest,signal:AbortSignal,serverBudgetMs?:number):Promise<PlanningApiResponse>{
     const began=performance.now();
     let expected:RoutePlanRequest|undefined;
     const outcome=await this.execution.run((bounded,budget)=>{expected=toInternalRequest(request,budget);const preparation=planningPreparation(request),options=structuredClone(DEFAULT_OPTIMIZER_OPTIONS);
@@ -59,7 +63,7 @@ export class PlanningHttpService {
       models:{energy:vehicle?.energyModel?{id:vehicle.energyModel.id,version:vehicle.energyModel.version}:null,
         charging:vehicle?.chargingModel?{id:vehicle.chargingModel.id,version:vehicle.chargingModel.version}:null}}});
     if(!parsed.success)throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);
-    if(Buffer.byteLength(JSON.stringify(parsed.data))>PLANNING_HTTP_POLICY.maxResponseBytes)throw new HttpException({code:'PLANNING_RESPONSE_LIMIT'},503);
+    if(measureSync('response_preflight_serialize',()=>Buffer.byteLength(JSON.stringify(parsed.data)))>PLANNING_HTTP_POLICY.maxResponseBytes)throw new HttpException({code:'PLANNING_RESPONSE_LIMIT'},503);
     return parsed.data;
   }
 }

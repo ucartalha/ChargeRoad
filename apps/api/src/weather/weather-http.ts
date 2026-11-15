@@ -2,10 +2,13 @@ import {WEATHER_POLICY} from './weather-policy';
 import type {WeatherConfig} from './weather-policy';
 import type {WeatherTransport} from './weather-ports';
 import {WeatherUnavailable} from './weather-ports';
+import {startStage,countMetric} from '../observability/planning-metrics';
 
 export function weatherTransport(config:WeatherConfig):WeatherTransport{return async(url,lastModified,signal)=>{
   const warnings:string[]=[];
+  const end=startStage('weather_http');
   try{
+    countMetric('weather_http_acquisitions');
     const response=await fetch(url,{method:'GET',redirect:'error',signal,
       headers:{'User-Agent':config.userAgent,Accept:'application/json',...(lastModified?{'If-Modified-Since':lastModified}:{})}});
     const now=Date.now(),retry=response.headers.get('retry-after');
@@ -30,4 +33,5 @@ export function weatherTransport(config:WeatherConfig):WeatherTransport{return a
     return {status:response.status,body,expiresAt:new Date(Number.isFinite(expiry)&&expiry>now?expiry:now+WEATHER_POLICY.fallbackCacheSeconds*1000).toISOString(),
       lastModified:validModified,validatedAt:new Date(now).toISOString(),warnings};
   }catch(error){if(error instanceof WeatherUnavailable)throw error;throw new WeatherUnavailable('provider_unavailable','Weather transport failed');}
+  finally{end();}
 };}

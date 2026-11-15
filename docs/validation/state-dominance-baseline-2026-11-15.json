@@ -1,0 +1,5 @@
+{
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "optimizerBeforeRawSha256": "07566ed5ebcd4c1df250f8db46be0da750295c50052afc9444a21b1ab06b9b61",
+  "scope": "Original dirty production optimizer source; only new state shadow lines removed in memory"
+}

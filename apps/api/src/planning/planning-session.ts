@@ -19,6 +19,8 @@ import {WEATHER_POLICY} from '../weather/weather-policy';
 import {Logger} from '@nestjs/common';
 import {energyInputUsage} from '../energy/energy-input-budget';
 import {RoadProviderError} from '../roads/road-client';
+import {measureAsync,measureSync,countMetric} from '../observability/planning-metrics';
+import {observeCandidateCall} from './candidate-eligibility-shadow';
 
 export interface SessionReplay {roads:{from:string;to:string;at:string;response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>}[];
   weather:{queries:WeatherQuery[];response:ProviderResponse<WeatherForecast[]>}[];}
@@ -45,12 +47,12 @@ export class PlanningSession implements TransitionPort {
   }
   private async route(from:string,to:PlanningNode,at:string,signal:AbortSignal){
     const key=from+'>'+to.id+'@'+at,staticKey=from+'>'+to.id+'@static';
-    if(this.roads.has(key))return this.roads.get(key)!;
-    if(this.roads.has(staticKey)){this.issues.add('traffic_not_modelled_static_road_time');return this.roads.get(staticKey)!;}
+    if(this.roads.has(key)){countMetric('road_session_cache_hits');return this.roads.get(key)!;}
+    if(this.roads.has(staticKey)){countMetric('road_session_cache_hits');this.issues.add('traffic_not_modelled_static_road_time');return this.roads.get(staticKey)!;}
     if(this.counters.roadQueries>=this.context.options.maxRoadQueries)throw new PlanningDataLimit('ROAD_QUERY_BUDGET');this.counters.roadQueries++;
     const node=this.context.nodes.find(n=>n.id===from)!;
     let response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>;
-    try{response=await this.call(s=>this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at},s),signal);}
+    try{response=await measureAsync('road_leg_acquisition',()=>this.call(s=>{countMetric('road_leg_acquisitions');return this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at},s);},signal));}
     catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;
       if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure('ROAD_PROVIDER_FAILED');}
     const parsed=roadRoutingResultSchema.nullable().safeParse(response.data);if(!parsed.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
@@ -68,10 +70,10 @@ export class PlanningSession implements TransitionPort {
       const nearest=[...this.climateSamples.values()].reduce((best,p)=>meters(q.location,p)<meters(q.location,best)?p:best);
       return meters(q.location,nearest)<=WEATHER_POLICY.sampleDistanceMeters?{...q,sampleLocation:nearest}:q;
     });
-    const key=checksum(queries);if(this.weatherCache.has(key))return this.weatherCache.get(key)!;
+    const key=checksum(queries);if(this.weatherCache.has(key)){countMetric('weather_session_cache_hits');return this.weatherCache.get(key)!;}
     if(this.counters.weatherQueries+queries.length>this.context.options.maxWeatherQueries)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
     this.counters.weatherQueries+=queries.length;let response:ProviderResponse<WeatherForecast[]>;
-    try{response=await this.call(s=>this.climate.forecast(queries,s,{budgetScope:this.context}),signal);}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
+    try{response=await measureAsync('weather_acquisition',()=>this.call(s=>{countMetric('weather_forecast_query_items',queries.length);return this.climate.forecast(queries,s,{budgetScope:this.context});},signal));}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
     let result:WeatherForecast[];try{result=response.data.map(v=>weatherForecastSchema.parse(v));}catch{throw new PlanningProviderFailure('WEATHER_PROVIDER_INVALID_DATA');}
     const requested=new Map(queries.map(q=>[q.id,q]));
     if(result.length!==queries.length||new Set(result.map(r=>r.queryId)).size!==queries.length||result.some(f=>{const q=requested.get(f.queryId);
@@ -83,15 +85,16 @@ export class PlanningSession implements TransitionPort {
     this.replay.weather.push({queries,response});this.weatherCache.set(key,result);return result;
   }
   async drive(state:OptimizerState,to:PlanningNode,preview:boolean,signal:AbortSignal):Promise<DriveLeg[]>{
+    observeCandidateCall(this.context,to.id,'drive');
     const routes=await this.route(state.nodeId,to,state.at,signal),legs:DriveLeg[]=[];
     for(const route of routes??[]){
       let queries:WeatherQuery[];
-      try{queries=sampleRouteWeather({route,departureAt:state.at,stops:[]}).queries;}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
+      try{queries=measureSync('weather_sampling',()=>sampleRouteWeather({route,departureAt:state.at,stops:[]}).queries);countMetric('weather_sample_queries',queries.length);}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
       const weather=await this.weather(queries,signal);
-      const result=await this.energy.evaluate({request:this.context.request,vehicle:this.context.vehicle,route,weather,evaluatedAt:this.context.evaluatedAt,
+      countMetric('energy_evaluations');const result=await measureAsync('energy_evaluation',()=>this.energy.evaluate({request:this.context.request,vehicle:this.context.vehicle,route,weather,evaluatedAt:this.context.evaluatedAt,
         ...(state.capacity?{capacitySnapshot:state.capacity}:{}),continuation:{kind:preview?'upper_charge_preview':'modelled_leg',departureAt:state.at,
           startingChargePercent:preview?100:state.soc,batteryTemperatureC:state.temperature,targetArrivalChargePercent:preview?0:to.id==='destination'?
-            this.context.request.constraints.targetArrivalChargePercent:this.context.request.constraints.minimumReserveChargePercent}},signal);
+            this.context.request.constraints.targetArrivalChargePercent:this.context.request.constraints.minimumReserveChargePercent}},signal));
       if(result.status==='computation_limit'){
         if(result.reasons.some(r=>r.code==='ENERGY_INPUT_BUDGET'))new Logger('PlanningSession').warn(JSON.stringify({event:'energy_input_limit',requestId:this.context.request.requestId,...energyInputUsage(route)}));
         for(const reason of result.reasons)this.issues.add(reason.code);throw new PlanningDataLimit('ENERGY_COMPUTATION_BUDGET');}
@@ -101,6 +104,7 @@ export class PlanningSession implements TransitionPort {
     }return legs;
   }
   async charge(state:OptimizerState,target:number,signal:AbortSignal):Promise<OptimizerState[]>{
+    observeCandidateCall(this.context,state.nodeId,'charge');
     const c=this.context,station=c.candidates.candidates.find(s=>s.station.id===state.nodeId)?.station,model=c.vehicle.chargingModel;
     if(!station||!state.capacity)return [];
     if(!model||!c.vehicle.dcChargingCurves.length){this.issues.add('VEHICLE_CHARGING_PROFILE_MISSING');return [];}
@@ -136,11 +140,11 @@ export class PlanningSession implements TransitionPort {
           signal.throwIfAborted();if(this.remainingMilliseconds()<=0)throw new PlanningDataLimit('PLANNING_DEADLINE');
           if(++this.hardwareEvaluations>c.options.maxTransitions)throw new PlanningDataLimit('CHARGING_HARDWARE_BUDGET');
           if(this.hardwareEvaluations%16===0){await yieldLoop();signal.throwIfAborted();}
-          const result=await this.charging.evaluate({vehicle:c.vehicle,station,capacity:state.capacity,evseId:evse.id,connectorId:connector.id,curveId:curve.id,
+          countMetric('charge_integrations');const result=await measureAsync('charge_integration',()=>this.charging.evaluate({vehicle:c.vehicle,station,capacity:state.capacity!,evseId:evse.id,connectorId:connector.id,curveId:curve.id,
             hardwarePolicy:c.request.policy.stationDataQuality,
             arrivalSocPercent:startSoc,targetSocPercent:target,qualityPolicy:c.request.policy.vehicleDataQuality??'verified_only',evaluatedAt:c.evaluatedAt,
             batteryTemperatureAtStartC:temperature,ambientTemperatureC:weather.temperatureCelsius,preconditioning:'unknown',sharedPowerAllocation:null,
-            timing:{arrivalAt:state.at,connectionSeconds:connection,waitingSeconds:0,blockingPreconditioningSeconds:0}},signal);
+            timing:{arrivalAt:state.at,connectionSeconds:connection,waitingSeconds:0,blockingPreconditioningSeconds:0}},signal));
           if(result.status==='computation_limit')throw new PlanningDataLimit('CHARGING_COMPUTATION_BUDGET');
           if(result.status!=='estimated'){result.reasons.forEach(r=>this.issues.add(r));continue;}
           try{if(!openThroughout(station,state.at,result.departureAt!)){this.issues.add('STATION_CLOSED_IN_SCENARIO');continue;}}

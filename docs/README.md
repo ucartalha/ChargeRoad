@@ -1,10 +1,12 @@
 # ChargeRoad planlama belgeleri
 
-Son güncelleme: 2026-11-12
+Son güncelleme: 2026-11-13
 
 Bu belgeler üzerinde uzlaşılan ürün davranışını, önerilen uygulama sırasını ve henüz kararlaştırılmamış mimari tercihleri ayırır. Buradaki görevler uygulamanın geliştirilmiş olduğu anlamına gelmez.
 
 ## Okuma sırası
+
+Performans çalışmaları: [14 görevlik ana plan](tasks/performance/00-ANA-PLAN.md), [CR-PERF-001 baseline raporu](validation/perf-baseline-2026-11-13.md), [CR-PERF-002 stabil frontier ve benchmark](validation/frontier-queue-benchmark.md). İlk iki görev teknik kapsamlarıyla tamamlandı; ölçüm altyapısı varsayılan kapalıdır. Genel rota hızlanması veya üretim/saha kabulü anlamına gelmez.
 
 Yeni yerel altyapı dilimi: [Valhalla/DEM kararı](adr/009-in-app-navigation-and-self-hosted-routing.md), [dar görev](tasks/valhalla-dem-integration-hardening.md), [tekrarlanabilir kurulum](../infra/valhalla/README.md), [audit ve test raporu](validation/valhalla-dem-hardening-2026-11-12.md). Bu belgeler üretim/saha kabulü anlamına gelmez.
 

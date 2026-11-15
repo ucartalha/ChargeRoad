@@ -1,0 +1,2598 @@
+{
+  "date": "2026-11-15",
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "initialFileCount": 515,
+  "unchanged": 513,
+  "allowedDocumentationChanges": [
+    {
+      "path": "docs/tasks/performance/CR-PERF-005-planningsession-ici-hesaplama-tekrarini-azaltma.md",
+      "before": "451ed2a38100ff86e3d626a1695b31d81edf1948ae81831e249df5842d2d04b5",
+      "after": "956c08c627a33d8457c994e5b21d38ec752a95efdec64144f9a73bf50f416c66"
+    },
+    {
+      "path": "docs/TASKS.md",
+      "before": "a258a73791c0acf202d44d0b90085022bf6a25055b4463d2126a64eff0b4a9a7",
+      "after": "00f5e786ef209e6f0148143ddbfa8627cfea48ab95a970a94a6357926d0cdf90"
+    }
+  ],
+  "unexpectedChanges": [],
+  "productionAndPriorEvidence": "UNCHANGED_FROM_TASK005_START",
+  "closureSourceHashes": "MATCH",
+  "files": [
+    {
+      "path": "apps/api/scripts/benchmark-frontier-performance-gate.ts",
+      "before": "021ec371d17376e02760b0a3422e264930ad956728e2f61ff1e8a089383e9ca0",
+      "after": "021ec371d17376e02760b0a3422e264930ad956728e2f61ff1e8a089383e9ca0"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-frontier-queue.ts",
+      "before": "f74abf476f049a5e46c1d683099da97169f7627bf2ee744a4e4c1bab45e2daff",
+      "after": "f74abf476f049a5e46c1d683099da97169f7627bf2ee744a4e4c1bab45e2daff"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-frontier-structure.ts",
+      "before": "bc7a4a6798bd284daea6e330e01dae95114b881728e8a5dd16f960c7c4ba8178",
+      "after": "bc7a4a6798bd284daea6e330e01dae95114b881728e8a5dd16f960c7c4ba8178"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-planning-perf.ts",
+      "before": "f6886ae959dddacbe4d064d3c5d36465b5edc546618d14bdbd59adb720468195",
+      "after": "f6886ae959dddacbe4d064d3c5d36465b5edc546618d14bdbd59adb720468195"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-provider-cache-perf.ts",
+      "before": "f290bbffe53de8270e7135297f94cee33632360e549a5446d3e6e9801afd94e4",
+      "after": "f290bbffe53de8270e7135297f94cee33632360e549a5446d3e6e9801afd94e4"
+    },
+    {
+      "path": "apps/api/scripts/summarize-frontier-performance-gate.ts",
+      "before": "927a00cacef3764fbad541330566d609db0b48f1d9ea24534ac22985cd009561",
+      "after": "927a00cacef3764fbad541330566d609db0b48f1d9ea24534ac22985cd009561"
+    },
+    {
+      "path": "apps/api/scripts/validate-candidate-eligibility.ts",
+      "before": "5dc3cac06cf883d410e96478e46b1708ac12bd608ced47ad95e0d1cdfb6e2e59",
+      "after": "5dc3cac06cf883d410e96478e46b1708ac12bd608ced47ad95e0d1cdfb6e2e59"
+    },
+    {
+      "path": "apps/api/scripts/validate-state-dominance.ts",
+      "before": "7c7c148485ff3a280363dccc85907adfffb13e44a8a9324f248274e3c900f93d",
+      "after": "7c7c148485ff3a280363dccc85907adfffb13e44a8a9324f248274e3c900f93d"
+    },
+    {
+      "path": "apps/api/src/observability/planning-equivalence.spec.ts",
+      "before": "7b1b033ed20d2a95053c4607f75e8afb94360790ea1a4420c6eae14384795142",
+      "after": "7b1b033ed20d2a95053c4607f75e8afb94360790ea1a4420c6eae14384795142"
+    },
+    {
+      "path": "apps/api/src/observability/planning-metrics.spec.ts",
+      "before": "497d8ab8c52474d20896c8a743f986407b099ef3d84bf5ea303784c4e5dc8034",
+      "after": "497d8ab8c52474d20896c8a743f986407b099ef3d84bf5ea303784c4e5dc8034"
+    },
+    {
+      "path": "apps/api/src/observability/planning-metrics.ts",
+      "before": "9e5393c5e002c8cc75754504e203166fec22dce978d9e8a0131803f718967887",
+      "after": "9e5393c5e002c8cc75754504e203166fec22dce978d9e8a0131803f718967887"
+    },
+    {
+      "path": "apps/api/src/observability/provider-metrics.integration.spec.ts",
+      "before": "3137993ae3b109cbb1568b717e09175695ccdd27296d7ccbfe55483cbaccadaf",
+      "after": "3137993ae3b109cbb1568b717e09175695ccdd27296d7ccbfe55483cbaccadaf"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/candidate-eligibility.spec.ts",
+      "before": "c04d477e6ce04fa8f5aba3bba01a93218a303675c5d42c6635471f459de5bfd6",
+      "after": "c04d477e6ce04fa8f5aba3bba01a93218a303675c5d42c6635471f459de5bfd6"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/candidate-shadow.spec.ts",
+      "before": "76b7fc0eca0e272ff863b99cf05166ad16527a09ad2a0af8c38eb2cb306c0ff4",
+      "after": "76b7fc0eca0e272ff863b99cf05166ad16527a09ad2a0af8c38eb2cb306c0ff4"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/eligibility-equivalence.spec.ts",
+      "before": "7bb0796bc6d7014a3e5e89c84209e84b9d89022f418027900de0701cad381832",
+      "after": "7bb0796bc6d7014a3e5e89c84209e84b9d89022f418027900de0701cad381832"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/frontier-equivalence.spec.ts",
+      "before": "87cf61ffd946e1ca4b370ecf4d4c90c18b01f85bb2327bbc23f6d0826f4ca125",
+      "after": "87cf61ffd946e1ca4b370ecf4d4c90c18b01f85bb2327bbc23f6d0826f4ca125"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/stable-priority-queue.spec.ts",
+      "before": "2d5a16e6ed3a384316a8c4c00421cce2e25a8265dfe7e0e1b8bb1929481606ca",
+      "after": "2d5a16e6ed3a384316a8c4c00421cce2e25a8265dfe7e0e1b8bb1929481606ca"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/state-dominance.spec.ts",
+      "before": "c66472a9d469bf32d3ac8b94dde50022b4bf020cbb0bafecc263972738dfb762",
+      "after": "c66472a9d469bf32d3ac8b94dde50022b4bf020cbb0bafecc263972738dfb762"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/state-shadow-equivalence.spec.ts",
+      "before": "4d6cd4fcdd4c080b6651e53ddd82ac694120bd7778eccb377370876b86cd5526",
+      "after": "4d6cd4fcdd4c080b6651e53ddd82ac694120bd7778eccb377370876b86cd5526"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/state-shadow.spec.ts",
+      "before": "aef1dda5433b9b9ee495e604d2b1fed04ef9477d04d475513cd677fb4d829b4b",
+      "after": "aef1dda5433b9b9ee495e604d2b1fed04ef9477d04d475513cd677fb4d829b4b"
+    },
+    {
+      "path": "apps/api/src/planning/candidate-eligibility-shadow.ts",
+      "before": "69bcf2c0c26d2baf84dad670831085eae240f4d6a34e9721f929965263f5a738",
+      "after": "69bcf2c0c26d2baf84dad670831085eae240f4d6a34e9721f929965263f5a738"
+    },
+    {
+      "path": "apps/api/src/planning/candidate-eligibility.ts",
+      "before": "109e6adb90bc671b384fa6f9a06c9e62546f3516938f179418d477d566c3bcf1",
+      "after": "109e6adb90bc671b384fa6f9a06c9e62546f3516938f179418d477d566c3bcf1"
+    },
+    {
+      "path": "apps/api/src/planning/stable-priority-queue.ts",
+      "before": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200",
+      "after": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200"
+    },
+    {
+      "path": "apps/api/src/planning/state-dominance-shadow.ts",
+      "before": "3c94a33659baa3e40264694b1d20e86751b0f4c8bf2582bfa6e491d20c50435a",
+      "after": "3c94a33659baa3e40264694b1d20e86751b0f4c8bf2582bfa6e491d20c50435a"
+    },
+    {
+      "path": "apps/api/src/planning/state-dominance.ts",
+      "before": "4fa777b02e6f537c14a0793fc1602cec837aa8e73f5fc34feaf2342e0d9d5070",
+      "after": "4fa777b02e6f537c14a0793fc1602cec837aa8e73f5fc34feaf2342e0d9d5070"
+    },
+    {
+      "path": "apps/api/src/planning/validation/eligibility-fixtures.ts",
+      "before": "ce7e4fbc906cd696827e400a120d746e135b850d1f4ba84ecedf163df9f4e8cb",
+      "after": "ce7e4fbc906cd696827e400a120d746e135b850d1f4ba84ecedf163df9f4e8cb"
+    },
+    {
+      "path": "apps/api/src/planning/validation/eligibility-validation.ts",
+      "before": "c5397d818f42b45095f5b2de4310c6fdd2688543326cacc3c55be27e8f90b4ff",
+      "after": "c5397d818f42b45095f5b2de4310c6fdd2688543326cacc3c55be27e8f90b4ff"
+    },
+    {
+      "path": "apps/api/src/planning/validation/frontier-performance-harness.spec.ts",
+      "before": "d1456269608c92171025a0d1a5deb628165c51885149b5e848c9e1af09b00146",
+      "after": "d1456269608c92171025a0d1a5deb628165c51885149b5e848c9e1af09b00146"
+    },
+    {
+      "path": "apps/api/src/planning/validation/frontier-performance-harness.ts",
+      "before": "29acfda02619dd98788d9aaf0b67d4c756bb4aa86c3b09b3199e03e9a849c741",
+      "after": "29acfda02619dd98788d9aaf0b67d4c756bb4aa86c3b09b3199e03e9a849c741"
+    },
+    {
+      "path": "apps/api/src/planning/validation/frontier-scenarios.ts",
+      "before": "5fe91770f4f2d7930b9a55dca8f9af945d4be6d783179216b2d16be843a148dc",
+      "after": "5fe91770f4f2d7930b9a55dca8f9af945d4be6d783179216b2d16be843a148dc"
+    },
+    {
+      "path": "apps/api/src/planning/validation/state-dominance-validation.ts",
+      "before": "ba09ea3d9bc56d28d357e94253d5c9f451bd0a01de38cc29de74edb6be8d0671",
+      "after": "ba09ea3d9bc56d28d357e94253d5c9f451bd0a01de38cc29de74edb6be8d0671"
+    },
+    {
+      "path": "docs/tasks/performance/00-ANA-PLAN.md",
+      "before": "5dbd7ec207b6737050e27babfa1baa360d774346ff06b9b97a6d1c6b10d6ee5a",
+      "after": "5dbd7ec207b6737050e27babfa1baa360d774346ff06b9b97a6d1c6b10d6ee5a"
+    },
+    {
+      "path": "docs/tasks/performance/99-TUM-GOREVLER.md",
+      "before": "64c951a368f78547f511274eed5d8f16b009cf884b5989e63505817682500b8b",
+      "after": "64c951a368f78547f511274eed5d8f16b009cf884b5989e63505817682500b8b"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-001-performans-gozlemlenebilirligi-ve-tekrarlanabilir-baseline.md",
+      "before": "e2fbcba0df31e7627bebce94b88562bb004ef5927ecffa4c5e3d77c8cd89c633",
+      "after": "e2fbcba0df31e7627bebce94b88562bb004ef5927ecffa4c5e3d77c8cd89c633"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-002-optimizer-frontier-icin-stabil-priority-queue.md",
+      "before": "bc1c6a388dd4bd1a0271535edfc84deb14f7cf6160b528f3424b8a19022aba46",
+      "after": "bc1c6a388dd4bd1a0271535edfc84deb14f7cf6160b528f3424b8a19022aba46"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-003-sarj-istasyonu-adaylarini-guvenli-ve-ucuz-on-degerlendirme.md",
+      "before": "468f8428d91799af4ec2f33fda65f2e30d1ee1f720af11732986f65e2e76a5a0",
+      "after": "468f8428d91799af4ec2f33fda65f2e30d1ee1f720af11732986f65e2e76a5a0"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-004-optimizer-state-dominance-icin-konservatif-budama.md",
+      "before": "ea51d82ac1d29597905813c4f7fed1e4c0d96e84f5f50d253b9c290bc7e5d6a5",
+      "after": "ea51d82ac1d29597905813c4f7fed1e4c0d96e84f5f50d253b9c290bc7e5d6a5"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-005-planningsession-ici-hesaplama-tekrarini-azaltma.md",
+      "before": "451ed2a38100ff86e3d626a1695b31d81edf1948ae81831e249df5842d2d04b5",
+      "after": "956c08c627a33d8457c994e5b21d38ec752a95efdec64144f9a73bf50f416c66"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-006-mobil-gps-rota-esleme-ve-ekran-render-yuku.md",
+      "before": "3be140d1be8724e525d699adbcffe2540fcf147c69827c20e743017b47ed8159",
+      "after": "3be140d1be8724e525d699adbcffe2540fcf147c69827c20e743017b47ed8159"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-007-geri-uyumlu-kompakt-mobil-plan-yaniti.md",
+      "before": "c8533e0eaeb567daf1bb7f20ec54549b0ac46760a7b1d2661ab6b8e255d10505",
+      "after": "c8533e0eaeb567daf1bb7f20ec54549b0ac46760a7b1d2661ab6b8e255d10505"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-008-navigasyon-olayi-siniflandiricisi-ve-replan-policy.md",
+      "before": "718a7e7fae3daa3d8a50a40340c1257dc42e6211604ec6591f2dc9dafa8e2110",
+      "after": "718a7e7fae3daa3d8a50a40340c1257dc42e6211604ec6591f2dc9dafa8e2110"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-009-backend-charging-only-continuation-cekirdegi.md",
+      "before": "5e599716b89c14a942679a43093f8ff19c75d7286361d7315deb744b96f2d3cb",
+      "after": "5e599716b89c14a942679a43093f8ff19c75d7286361d7315deb744b96f2d3cb"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-010-kismi-rota-onarimi-ve-guvenli-full-fallback.md",
+      "before": "4c23bc6f32edc41451d40e9379d5f9a89e502195659b83617415a32c32954ffa",
+      "after": "4c23bc6f32edc41451d40e9379d5f9a89e502195659b83617415a32c32954ffa"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-011-geriye-uyumlu-asenkron-replan-api-ve-plan-revision.md",
+      "before": "712f2137029058bd793b6ad237acccff8c149bea41d29ff9ca550068f884fc3e",
+      "after": "712f2137029058bd793b6ad237acccff8c149bea41d29ff9ca550068f884fc3e"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-012-mobilde-kontrollu-dinamik-replan-entegrasyonu.md",
+      "before": "0eebe55edf87e98cd05181067bcceb3a3ecc5e0ea662b2b8c72b9c4ee67330c2",
+      "after": "0eebe55edf87e98cd05181067bcceb3a3ecc5e0ea662b2b8c72b9c4ee67330c2"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-013-planning-worker-izolasyonu-ve-kapasite-kontrolu.md",
+      "before": "a3a846bad244f3211ea69dfbc76824a744a22e150f6d436cded8e18bb24c6147",
+      "after": "a3a846bad244f3211ea69dfbc76824a744a22e150f6d436cded8e18bb24c6147"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-014-uctan-uca-regresyon,-yuk-kaniti-ve-rollout-kapilari.md",
+      "before": "b0fdc83bc395cf0b8b709fb65b148f9d9bbfa973ad48411d90f26154c2e4d6ae",
+      "after": "b0fdc83bc395cf0b8b709fb65b148f9d9bbfa973ad48411d90f26154c2e4d6ae"
+    },
+    {
+      "path": "docs/validation/candidate-eligibility-preservation-2026-11-15.json",
+      "before": "8a3c69ec101f14e3b7555b3c2cf4f02bc65edb40ae263904babc423b398e80fc",
+      "after": "8a3c69ec101f14e3b7555b3c2cf4f02bc65edb40ae263904babc423b398e80fc"
+    },
+    {
+      "path": "docs/validation/candidate-eligibility-shadow-2026-11-15.md",
+      "before": "81e05102b60820fd1d1ad3d04ac9dad60ecbb984a89abc7f53f8b53d7886240a",
+      "after": "81e05102b60820fd1d1ad3d04ac9dad60ecbb984a89abc7f53f8b53d7886240a"
+    },
+    {
+      "path": "docs/validation/candidate-eligibility-smoke-2026-11-15-final.json",
+      "before": "a6ca060a53fafbdf367746ef9fb1c2bb1f9050e26c2d8652ffbf3a0bdf96b368",
+      "after": "a6ca060a53fafbdf367746ef9fb1c2bb1f9050e26c2d8652ffbf3a0bdf96b368"
+    },
+    {
+      "path": "docs/validation/candidate-eligibility-smoke-2026-11-15.json",
+      "before": "e952dfc4799bc8f4a2730bd0413632b5f6e9b42ada8d4193c3604c74011e6283",
+      "after": "e952dfc4799bc8f4a2730bd0413632b5f6e9b42ada8d4193c3604c74011e6283"
+    },
+    {
+      "path": "docs/validation/frontier-queue-after.json",
+      "before": "7da5376e4feb37505a567a6af6cb161a52a1024ffc0c828790a2619b7ef30999",
+      "after": "7da5376e4feb37505a567a6af6cb161a52a1024ffc0c828790a2619b7ef30999"
+    },
+    {
+      "path": "docs/validation/frontier-queue-before.json",
+      "before": "87f6d7332a7745bb88ab44cf76526d06e30d0d0998a981e27947b96239281683",
+      "after": "87f6d7332a7745bb88ab44cf76526d06e30d0d0998a981e27947b96239281683"
+    },
+    {
+      "path": "docs/validation/frontier-queue-benchmark.md",
+      "before": "8b3dc87b6fa789830e7e4ea065592a240483f9b080c1c02568c8c6004812401e",
+      "after": "8b3dc87b6fa789830e7e4ea065592a240483f9b080c1c02568c8c6004812401e"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/preservation.json",
+      "before": "6fa0f935237e56908616dc51297106c51c6072d24ecd163a6f38ea9b84647a89",
+      "after": "6fa0f935237e56908616dc51297106c51c6072d24ecd163a6f38ea9b84647a89"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/probe.json",
+      "before": "082cd183b2bccd2e8eae95c22c5d9649e0c7c02f8e0c160cded347947aec0b93",
+      "after": "082cd183b2bccd2e8eae95c22c5d9649e0c7c02f8e0c160cded347947aec0b93"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/process-1.json",
+      "before": "3a1e8654ac8756b0b5f22e418155415f6a392711007ec6e1822a4e25a4783155",
+      "after": "3a1e8654ac8756b0b5f22e418155415f6a392711007ec6e1822a4e25a4783155"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/process-2.json",
+      "before": "35f0279de5858b5a2957e2fa42a35d5f15b610fb17d6cc8676ecc439cf177ff9",
+      "after": "35f0279de5858b5a2957e2fa42a35d5f15b610fb17d6cc8676ecc439cf177ff9"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/process-3.json",
+      "before": "acdbbae4b5cc431c0f32be10cbfd4a0318ec57f651b1a0437819bed011f8f00b",
+      "after": "acdbbae4b5cc431c0f32be10cbfd4a0318ec57f651b1a0437819bed011f8f00b"
+    },
+    {
+      "path": "docs/validation/frontier-queue-gate-2026-11-13/summary.json",
+      "before": "e51ea4ab23767df3f0c4692b5895e368e618e84e6c1543c54b978bd82162720f",
+      "after": "e51ea4ab23767df3f0c4692b5895e368e618e84e6c1543c54b978bd82162720f"
+    },
+    {
+      "path": "docs/validation/frontier-queue-performance-gate-2026-11-13.md",
+      "before": "1b67595ad2853734f7832e80924400d9c2540a46893ad0ccec016ba40b48e89b",
+      "after": "1b67595ad2853734f7832e80924400d9c2540a46893ad0ccec016ba40b48e89b"
+    },
+    {
+      "path": "docs/validation/frontier-queue-structure.json",
+      "before": "2f96cf4f939a68d2867ff7848ff720ecfad788a7bd34bc19176480d386e967b6",
+      "after": "2f96cf4f939a68d2867ff7848ff720ecfad788a7bd34bc19176480d386e967b6"
+    },
+    {
+      "path": "docs/validation/perf-baseline-2026-11-13-after.json",
+      "before": "5b36962259a9b7f01d41ad50bbc88cd399373920d5e9521b0401d4900e1a80b8",
+      "after": "5b36962259a9b7f01d41ad50bbc88cd399373920d5e9521b0401d4900e1a80b8"
+    },
+    {
+      "path": "docs/validation/perf-baseline-2026-11-13-before.json",
+      "before": "cbff35f2112eea7f66fe84d97cbc5c6581774934dc01d103393ce90c78319430",
+      "after": "cbff35f2112eea7f66fe84d97cbc5c6581774934dc01d103393ce90c78319430"
+    },
+    {
+      "path": "docs/validation/perf-baseline-2026-11-13-instrumented.json",
+      "before": "63d87ed5bf43746e5f029ea475133a1cd648726f98737940ad3856c9c32d6b90",
+      "after": "63d87ed5bf43746e5f029ea475133a1cd648726f98737940ad3856c9c32d6b90"
+    },
+    {
+      "path": "docs/validation/perf-baseline-2026-11-13-local-provider.json",
+      "before": "9b60fea6586e47f524177c70349f10e4a995b84d1d1efdebbf97297925498c36",
+      "after": "9b60fea6586e47f524177c70349f10e4a995b84d1d1efdebbf97297925498c36"
+    },
+    {
+      "path": "docs/validation/perf-baseline-2026-11-13.md",
+      "before": "ae69488d6645a5048af4e39ae5f038d42061f4507c3a45746b495efbb0a1c57a",
+      "after": "ae69488d6645a5048af4e39ae5f038d42061f4507c3a45746b495efbb0a1c57a"
+    },
+    {
+      "path": "docs/validation/state-dominance-baseline-2026-11-15.json",
+      "before": "5dd2ec0fb7355bfa2659a84f565e7b7211167bf187ad13a77cc09e7637e0dc5c",
+      "after": "5dd2ec0fb7355bfa2659a84f565e7b7211167bf187ad13a77cc09e7637e0dc5c"
+    },
+    {
+      "path": "docs/validation/state-dominance-preservation-2026-11-15.json",
+      "before": "4473adfca862d5e7ed266243006b6c3087a583836869b87d9ef722142e913327",
+      "after": "4473adfca862d5e7ed266243006b6c3087a583836869b87d9ef722142e913327"
+    },
+    {
+      "path": "docs/validation/state-dominance-shadow-2026-11-15.md",
+      "before": "ee7a3662a1a2c44b390dbde92580a0cd6f115190dd226f56f25deaf0caa0819d",
+      "after": "ee7a3662a1a2c44b390dbde92580a0cd6f115190dd226f56f25deaf0caa0819d"
+    },
+    {
+      "path": "docs/validation/state-dominance-smoke-2026-11-15-final.json",
+      "before": "5aa620189d583b09775f9d14984ad5e2a25deaffccf36be4308aaac11990625c",
+      "after": "5aa620189d583b09775f9d14984ad5e2a25deaffccf36be4308aaac11990625c"
+    },
+    {
+      "path": "docs/validation/state-dominance-smoke-2026-11-15.json",
+      "before": "a11b9aee9bcf2e6bdb636d7dcc9fd2838e6a9a77eaface6cede85a6f0d651e08",
+      "after": "a11b9aee9bcf2e6bdb636d7dcc9fd2838e6a9a77eaface6cede85a6f0d651e08"
+    },
+    {
+      "path": ".env.example",
+      "before": "640cdd4cd694e515140c20589d51250ddfd7b13574a154d17567804ffaa7182b",
+      "after": "640cdd4cd694e515140c20589d51250ddfd7b13574a154d17567804ffaa7182b"
+    },
+    {
+      "path": ".gitattributes",
+      "before": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c",
+      "after": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
+    },
+    {
+      "path": ".gitignore",
+      "before": "07e3b0915b29e21bbed63fefc9188f6ae1780107003b51f2e68ef5dc980a6d53",
+      "after": "07e3b0915b29e21bbed63fefc9188f6ae1780107003b51f2e68ef5dc980a6d53"
+    },
+    {
+      "path": "README.md",
+      "before": "d6b147df3bbff6e0a114a51fe664733a56bdc1e02b14f2501037a2e101e1d35d",
+      "after": "d6b147df3bbff6e0a114a51fe664733a56bdc1e02b14f2501037a2e101e1d35d"
+    },
+    {
+      "path": "apps/api/migrations/001_vehicle_catalogue.sql",
+      "before": "be08b92e1f7419847428d58ad459ad028f79daf4e54a94610074bfd38428506f",
+      "after": "be08b92e1f7419847428d58ad459ad028f79daf4e54a94610074bfd38428506f"
+    },
+    {
+      "path": "apps/api/migrations/002_rate_limiting.sql",
+      "before": "1cd465c995baef176a798d60b94b0c5e5de82d42a8c76617765af8ef058ec6ba",
+      "after": "1cd465c995baef176a798d60b94b0c5e5de82d42a8c76617765af8ef058ec6ba"
+    },
+    {
+      "path": "apps/api/migrations/003_vehicle_knowledge.sql",
+      "before": "6d9075ebc79886f8dca1efc86181deb893dc2077710f2755882d880bc2191fd2",
+      "after": "6d9075ebc79886f8dca1efc86181deb893dc2077710f2755882d880bc2191fd2"
+    },
+    {
+      "path": "apps/api/migrations/004_vehicle_knowledge_integrity.sql",
+      "before": "c0bf8a6f8804484b27b09f7f03cca9b6341aeb0066d454590d3d33428c917e14",
+      "after": "c0bf8a6f8804484b27b09f7f03cca9b6341aeb0066d454590d3d33428c917e14"
+    },
+    {
+      "path": "apps/api/migrations/005_vehicle_source_candidates.sql",
+      "before": "ba9bf9680a59a30a8c72511126bd12057cce3e1b9c6b5f628db0acf8ee8ff05c",
+      "after": "ba9bf9680a59a30a8c72511126bd12057cce3e1b9c6b5f628db0acf8ee8ff05c"
+    },
+    {
+      "path": "apps/api/migrations/006_station_catalogue.sql",
+      "before": "d43302b4a885d0c163661884e674a517db8ca256c0570b2fbd1161b542df573c",
+      "after": "d43302b4a885d0c163661884e674a517db8ca256c0570b2fbd1161b542df573c"
+    },
+    {
+      "path": "apps/api/migrations/007_station_revision_integrity.sql",
+      "before": "6f11caa514e35003f948e208880fb37b48a70cc7b974810ee50be25a0e9412b9",
+      "after": "6f11caa514e35003f948e208880fb37b48a70cc7b974810ee50be25a0e9412b9"
+    },
+    {
+      "path": "apps/api/migrations/008_station_provider_execution.sql",
+      "before": "df8ef484dc000a3d92434e0fdce2808288f3727fdd29a0902a66a57fe7708bc0",
+      "after": "df8ef484dc000a3d92434e0fdce2808288f3727fdd29a0902a66a57fe7708bc0"
+    },
+    {
+      "path": "apps/api/migrations/009_road_provider_cache.sql",
+      "before": "3fd640002d8fba4f6f226bfd1ef3af1289c8e3d1654b14dcdb47ee0bb09bb5f2",
+      "after": "3fd640002d8fba4f6f226bfd1ef3af1289c8e3d1654b14dcdb47ee0bb09bb5f2"
+    },
+    {
+      "path": "apps/api/migrations/010_weather_provider_cache.sql",
+      "before": "bd8bfd56ce9c688f52f6b6baf2717ef1bb57a360be5f67042abc763b9ea1ac8b",
+      "after": "bd8bfd56ce9c688f52f6b6baf2717ef1bb57a360be5f67042abc763b9ea1ac8b"
+    },
+    {
+      "path": "apps/api/migrations/011_planning_admission.sql",
+      "before": "1d043f41fa69b3e5450ff6b13b727253f24ec3c543193be6365edcd2efdb5e8b",
+      "after": "1d043f41fa69b3e5450ff6b13b727253f24ec3c543193be6365edcd2efdb5e8b"
+    },
+    {
+      "path": "apps/api/migrations/012_geocoding_budget.sql",
+      "before": "33e7de204c3b655be938940eacd12bf9f8cbbb283415f54bf052cbb25923638f",
+      "after": "33e7de204c3b655be938940eacd12bf9f8cbbb283415f54bf052cbb25923638f"
+    },
+    {
+      "path": "apps/api/migrations/013_planning_jobs.sql",
+      "before": "313407990d28d69fb838f3d841b606df63cf4dc76f2a754f2aafdfd362eb003f",
+      "after": "313407990d28d69fb838f3d841b606df63cf4dc76f2a754f2aafdfd362eb003f"
+    },
+    {
+      "path": "apps/api/nest-cli.json",
+      "before": "a98a90107f66100fabc3681162ea0f0623977caa94110a4998ab66142e93c1d3",
+      "after": "a98a90107f66100fabc3681162ea0f0623977caa94110a4998ab66142e93c1d3"
+    },
+    {
+      "path": "apps/api/package.json",
+      "before": "5a5719d92dddd15eeb06767268ada2fc255b75c5203129206088835c965650a1",
+      "after": "5a5719d92dddd15eeb06767268ada2fc255b75c5203129206088835c965650a1"
+    },
+    {
+      "path": "apps/api/scripts/audit-epdk.cjs",
+      "before": "8719b33915bd129f12967ad0f207946d82540ed11edf81b5cfc10fbf7b18abd1",
+      "after": "8719b33915bd129f12967ad0f207946d82540ed11edf81b5cfc10fbf7b18abd1"
+    },
+    {
+      "path": "apps/api/scripts/audit-ocm.cjs",
+      "before": "9c17694418030be853757ccfb111321f3093235bc89cd9fb2befd02f6a718622",
+      "after": "9c17694418030be853757ccfb111321f3093235bc89cd9fb2befd02f6a718622"
+    },
+    {
+      "path": "apps/api/scripts/audit-runtime.ts",
+      "before": "9165976869d35f3b54ce93bfbdaeb04c237d7665b35b68b687aae8552fa9fda3",
+      "after": "9165976869d35f3b54ce93bfbdaeb04c237d7665b35b68b687aae8552fa9fda3"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-charging.ts",
+      "before": "9cdab356b73b35d24f291c4d5f8c430b39b6505833f889fef6e221306bf227a7",
+      "after": "9cdab356b73b35d24f291c4d5f8c430b39b6505833f889fef6e221306bf227a7"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-energy.ts",
+      "before": "576fb35e2f576c604e7e7f2d95bb1778bbd56bef18669bafd433c6d07a939ca8",
+      "after": "576fb35e2f576c604e7e7f2d95bb1778bbd56bef18669bafd433c6d07a939ca8"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-knowledge.ts",
+      "before": "a05efa41097ea2521d617f81a9114178d584a7bd2ae215ac3f1e49ae98236efa",
+      "after": "a05efa41097ea2521d617f81a9114178d584a7bd2ae215ac3f1e49ae98236efa"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-optimizer.ts",
+      "before": "1bb70a82ce127d3b4a01afef51ace12570b870b07e60eaf7d60ae2b4a2db2fa2",
+      "after": "1bb70a82ce127d3b4a01afef51ace12570b870b07e60eaf7d60ae2b4a2db2fa2"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-roads.ts",
+      "before": "2e104d1f20634b19a674ca6eec11abfe3fc0d5d830b9276e5d595e1681c0cce5",
+      "after": "2e104d1f20634b19a674ca6eec11abfe3fc0d5d830b9276e5d595e1681c0cce5"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-stations.ts",
+      "before": "e9cd77f66a1387abc93d3d12355855d772b267e46b7d1f76b55d86dfcf93e23b",
+      "after": "e9cd77f66a1387abc93d3d12355855d772b267e46b7d1f76b55d86dfcf93e23b"
+    },
+    {
+      "path": "apps/api/scripts/benchmark-weather.ts",
+      "before": "0030fa4e2753fb3c03a689c9cf5030b6355a8384426de35dffef8def7ead297d",
+      "after": "0030fa4e2753fb3c03a689c9cf5030b6355a8384426de35dffef8def7ead297d"
+    },
+    {
+      "path": "apps/api/scripts/cleanup-roads.ts",
+      "before": "53f39a90bff5467b4701d83572a88df2ed29751ef1f93eeaaa64071a15bc756c",
+      "after": "53f39a90bff5467b4701d83572a88df2ed29751ef1f93eeaaa64071a15bc756c"
+    },
+    {
+      "path": "apps/api/scripts/cleanup-weather.ts",
+      "before": "438f4a4bee4e717c02a5948c84b6b25ffd08cd86279fe2ed14b69c5de17f5a2c",
+      "after": "438f4a4bee4e717c02a5948c84b6b25ffd08cd86279fe2ed14b69c5de17f5a2c"
+    },
+    {
+      "path": "apps/api/scripts/diagnose-long-plan.ts",
+      "before": "97430f333746987863d7bcf75504995759c4168fc944f394f413f063e8dcefa7",
+      "after": "97430f333746987863d7bcf75504995759c4168fc944f394f413f063e8dcefa7"
+    },
+    {
+      "path": "apps/api/scripts/diagnose-station-road.ts",
+      "before": "77d3d5f6ac196f2da47b77cc29f0f95affc62d2ad4521bb2bba284af645040e4",
+      "after": "77d3d5f6ac196f2da47b77cc29f0f95affc62d2ad4521bb2bba284af645040e4"
+    },
+    {
+      "path": "apps/api/scripts/evaluate-charging.ts",
+      "before": "220b9df0415132d58d4ee280030de377b989eee1fb42889584b0656c25696c73",
+      "after": "220b9df0415132d58d4ee280030de377b989eee1fb42889584b0656c25696c73"
+    },
+    {
+      "path": "apps/api/scripts/evaluate-energy.ts",
+      "before": "d57d65dd624151204e1851dea5247ab3713f7f8aad21dd84da23cd63de8053d2",
+      "after": "d57d65dd624151204e1851dea5247ab3713f7f8aad21dd84da23cd63de8053d2"
+    },
+    {
+      "path": "apps/api/scripts/export-planning-contracts.ts",
+      "before": "d5cd8eb1c6aad45d30e786763af325278fc898214982c0599e4a26e7cf2694d3",
+      "after": "d5cd8eb1c6aad45d30e786763af325278fc898214982c0599e4a26e7cf2694d3"
+    },
+    {
+      "path": "apps/api/scripts/inspect-cached-road.ts",
+      "before": "ff917d521e450cefb6d95f68ac6ef9580d5dab691ec26621c4a5428d45046d5d",
+      "after": "ff917d521e450cefb6d95f68ac6ef9580d5dab691ec26621c4a5428d45046d5d"
+    },
+    {
+      "path": "apps/api/scripts/probe-valhalla.cjs",
+      "before": "89649dc5d867cabacf22311f689f7f01847437447e1b39e0a81d09bb50c269cf",
+      "after": "89649dc5d867cabacf22311f689f7f01847437447e1b39e0a81d09bb50c269cf"
+    },
+    {
+      "path": "apps/api/scripts/publish-hyundai-profiles.ts",
+      "before": "00ed3d60f051abcfe8cbd104e983d45fe8403318d8edf911ec98587a833d6576",
+      "after": "00ed3d60f051abcfe8cbd104e983d45fe8403318d8edf911ec98587a833d6576"
+    },
+    {
+      "path": "apps/api/scripts/read-validation-workbooks.ps1",
+      "before": "3ac3d194ffe8a8e5880b62f4941a65a2c975c71e1aee3e1c279256449ebd85bd",
+      "after": "3ac3d194ffe8a8e5880b62f4941a65a2c975c71e1aee3e1c279256449ebd85bd"
+    },
+    {
+      "path": "apps/api/scripts/replay-optimizer.ts",
+      "before": "e1417a91df27253f2e5b096c7ee603b06196be6f2bfa83a62c271039288d0bbb",
+      "after": "e1417a91df27253f2e5b096c7ee603b06196be6f2bfa83a62c271039288d0bbb"
+    },
+    {
+      "path": "apps/api/scripts/report-knowledge.ts",
+      "before": "088364a8001097dc3e4af68cd91bef969be0ba59269822959fd5bd907eaf5cc5",
+      "after": "088364a8001097dc3e4af68cd91bef969be0ba59269822959fd5bd907eaf5cc5"
+    },
+    {
+      "path": "apps/api/scripts/report-station-sources.ts",
+      "before": "b67caeccc2f5ca682b82712f65d3b97a63cc830e300ce6a1933d8897c2de276c",
+      "after": "b67caeccc2f5ca682b82712f65d3b97a63cc830e300ce6a1933d8897c2de276c"
+    },
+    {
+      "path": "apps/api/scripts/reprocess-station-snapshots.ts",
+      "before": "ef8ccf4dac96e96ad72b1718b0819e66df16997a828c1a6986fc85b9863274c3",
+      "after": "ef8ccf4dac96e96ad72b1718b0819e66df16997a828c1a6986fc85b9863274c3"
+    },
+    {
+      "path": "apps/api/scripts/research-hyundai.ts",
+      "before": "6cb956ba3de5c3b31d03ddbd2d4c92fffd0b812ffecaef83fb199988d4b22ef9",
+      "after": "6cb956ba3de5c3b31d03ddbd2d4c92fffd0b812ffecaef83fb199988d4b22ef9"
+    },
+    {
+      "path": "apps/api/scripts/review-ocm.ts",
+      "before": "a9cb94d171a4cac7107c2f52331803ac1fd3091e342c72a980fc9eb02de0e5f6",
+      "after": "a9cb94d171a4cac7107c2f52331803ac1fd3091e342c72a980fc9eb02de0e5f6"
+    },
+    {
+      "path": "apps/api/scripts/smoke-valhalla-dem.ts",
+      "before": "1b5ae79ef9ab9888feedec1d0d2be95c872968526fd248faa7980215adb64fe5",
+      "after": "1b5ae79ef9ab9888feedec1d0d2be95c872968526fd248faa7980215adb64fe5"
+    },
+    {
+      "path": "apps/api/scripts/test-db.cjs",
+      "before": "856fa3f994032a7798f19e26e9eb5686898343e4a0d27e7e3d000b5aafddb7b4",
+      "after": "856fa3f994032a7798f19e26e9eb5686898343e4a0d27e7e3d000b5aafddb7b4"
+    },
+    {
+      "path": "apps/api/scripts/validate-async-planning.ts",
+      "before": "ab64e4bca426ead72f8ecbe3be1cd5a4a6df995d59cf2e8e1916b2ffc131681c",
+      "after": "ab64e4bca426ead72f8ecbe3be1cd5a4a6df995d59cf2e8e1916b2ffc131681c"
+    },
+    {
+      "path": "apps/api/scripts/validate-charging.ts",
+      "before": "95f004b5a468229fa6d35e52fe5056c053b2380163cfaaa4ac6622af1cd37659",
+      "after": "95f004b5a468229fa6d35e52fe5056c053b2380163cfaaa4ac6622af1cd37659"
+    },
+    {
+      "path": "apps/api/scripts/validate-energy.ts",
+      "before": "d587c75cbfd931c369446af8984b1273882b835ed6cd08aac2f14c3e5f64528d",
+      "after": "d587c75cbfd931c369446af8984b1273882b835ed6cd08aac2f14c3e5f64528d"
+    },
+    {
+      "path": "apps/api/scripts/validate-geoapify.ts",
+      "before": "83c9167696c8a3efbaf9b8faf48a0760bb9ce507e2839f7933f1565ca267d4a2",
+      "after": "83c9167696c8a3efbaf9b8faf48a0760bb9ce507e2839f7933f1565ca267d4a2"
+    },
+    {
+      "path": "apps/api/scripts/validate-hyundai-live.ts",
+      "before": "e72b02a193397440bd3accca90469ab2ebadbee18ddac2952242c56c7957e637",
+      "after": "e72b02a193397440bd3accca90469ab2ebadbee18ddac2952242c56c7957e637"
+    },
+    {
+      "path": "apps/api/scripts/validate-mobile-planning.ts",
+      "before": "01673df4c410dd2771e1c0391282dbacbe190800306893bf2634a5aba2f41653",
+      "after": "01673df4c410dd2771e1c0391282dbacbe190800306893bf2634a5aba2f41653"
+    },
+    {
+      "path": "apps/api/scripts/validate-optimizer.ts",
+      "before": "c3385aa2aebb1b594160da56eeb9f0b7436640631bea7f54153dc9e25da1d010",
+      "after": "c3385aa2aebb1b594160da56eeb9f0b7436640631bea7f54153dc9e25da1d010"
+    },
+    {
+      "path": "apps/api/scripts/validate-planning-http.ts",
+      "before": "0c9d4e98eec75f8eb75e5519f8595ab44fff1185131596f137428d15cb2e6b28",
+      "after": "0c9d4e98eec75f8eb75e5519f8595ab44fff1185131596f137428d15cb2e6b28"
+    },
+    {
+      "path": "apps/api/scripts/validate-roads.ts",
+      "before": "f6ebaaf60922f5b8d273bd447f9518afa0c6471cbf7a781e38d58e863591d59b",
+      "after": "f6ebaaf60922f5b8d273bd447f9518afa0c6471cbf7a781e38d58e863591d59b"
+    },
+    {
+      "path": "apps/api/scripts/validate-weather.ts",
+      "before": "3afa7c81961618f8c412b9eec62b1771b2025740948fad43e142be5372f6e200",
+      "after": "3afa7c81961618f8c412b9eec62b1771b2025740948fad43e142be5372f6e200"
+    },
+    {
+      "path": "apps/api/scripts/validate-workbooks.ts",
+      "before": "0e1342a6aeae8f82d870b12a7257e69521247ec30ec51410efaffcaca8893e13",
+      "after": "0e1342a6aeae8f82d870b12a7257e69521247ec30ec51410efaffcaca8893e13"
+    },
+    {
+      "path": "apps/api/src/app.controller.spec.ts",
+      "before": "b757de5e2b53bd144b1fbf3e8628e3f03e058812dd5f144ec20d211a51493bc5",
+      "after": "b757de5e2b53bd144b1fbf3e8628e3f03e058812dd5f144ec20d211a51493bc5"
+    },
+    {
+      "path": "apps/api/src/app.controller.ts",
+      "before": "78ab0a0053ff5a2b75ec3030db6d9be699811f96a86be9020f3a73a7715820ee",
+      "after": "78ab0a0053ff5a2b75ec3030db6d9be699811f96a86be9020f3a73a7715820ee"
+    },
+    {
+      "path": "apps/api/src/app.module.ts",
+      "before": "de6d8c7d8d669889f0f507b97f57271a1913e760a5b59838a9e9f559ad748e3d",
+      "after": "de6d8c7d8d669889f0f507b97f57271a1913e760a5b59838a9e9f559ad748e3d"
+    },
+    {
+      "path": "apps/api/src/charging/__tests__/catalogue-scenario.spec.ts",
+      "before": "18f6318660982081a658add9f4fc9d5908c3b87b99985b659e84ab7347d1dda3",
+      "after": "18f6318660982081a658add9f4fc9d5908c3b87b99985b659e84ab7347d1dda3"
+    },
+    {
+      "path": "apps/api/src/charging/__tests__/charging-engine.spec.ts",
+      "before": "385e087fee0422fc23f424ee99a5ba3fb61c850d9a8b6bd70bc1cfe51ef93391",
+      "after": "385e087fee0422fc23f424ee99a5ba3fb61c850d9a8b6bd70bc1cfe51ef93391"
+    },
+    {
+      "path": "apps/api/src/charging/__tests__/charging-profile.integration.spec.ts",
+      "before": "474337a52f34c11708a7acff7ce6de1f632803b3d199e6408306c29d4e3ed28d",
+      "after": "474337a52f34c11708a7acff7ce6de1f632803b3d199e6408306c29d4e3ed28d"
+    },
+    {
+      "path": "apps/api/src/charging/__tests__/charging-service.spec.ts",
+      "before": "7c7940a65f837eb6551d07c9164ab56e618945b113446233668067299af0a7d6",
+      "after": "7c7940a65f837eb6551d07c9164ab56e618945b113446233668067299af0a7d6"
+    },
+    {
+      "path": "apps/api/src/charging/__tests__/fixtures.ts",
+      "before": "8cf7251dcde58d767c1ccfa677483fd10aafc4a4160acdd1ccbba489435d6a50",
+      "after": "8cf7251dcde58d767c1ccfa677483fd10aafc4a4160acdd1ccbba489435d6a50"
+    },
+    {
+      "path": "apps/api/src/charging/charging-engine.ts",
+      "before": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+      "after": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d"
+    },
+    {
+      "path": "apps/api/src/charging/charging-math.ts",
+      "before": "87359e38df870b8d65b6f384aa5900133b7a0e9583465698dd8ad0816929142e",
+      "after": "87359e38df870b8d65b6f384aa5900133b7a0e9583465698dd8ad0816929142e"
+    },
+    {
+      "path": "apps/api/src/charging/charging.module.ts",
+      "before": "e2133eedd2423f7191c38ae79d24f9b0f2a8e8de5adb5fcf1c20c1d7d030b156",
+      "after": "e2133eedd2423f7191c38ae79d24f9b0f2a8e8de5adb5fcf1c20c1d7d030b156"
+    },
+    {
+      "path": "apps/api/src/charging/charging.service.ts",
+      "before": "8a4f00146eed7c875ece871246cc3a5633c15b28d42c3fd92fadc3a316a73883",
+      "after": "8a4f00146eed7c875ece871246cc3a5633c15b28d42c3fd92fadc3a316a73883"
+    },
+    {
+      "path": "apps/api/src/charging/validation/charging-cases.ts",
+      "before": "a9caeced3d6046e5aaee9209f2d8a5e6bb799c306ccbc37dbed5534da0baecff",
+      "after": "a9caeced3d6046e5aaee9209f2d8a5e6bb799c306ccbc37dbed5534da0baecff"
+    },
+    {
+      "path": "apps/api/src/cli.ts",
+      "before": "70ac90fca3ba681ba197bbaa78e5d41937dcc52554a86675af8d5483191dcf5d",
+      "after": "70ac90fca3ba681ba197bbaa78e5d41937dcc52554a86675af8d5483191dcf5d"
+    },
+    {
+      "path": "apps/api/src/config/environment.ts",
+      "before": "44db4ee45be9aad82cf018410c2f9dd829d28dc9ee483bc327c426bdc12eaf84",
+      "after": "44db4ee45be9aad82cf018410c2f9dd829d28dc9ee483bc327c426bdc12eaf84"
+    },
+    {
+      "path": "apps/api/src/config/http-api.ts",
+      "before": "4de0c10e59c47dc7e29720f0c288daeed890e475cd8ed5754565cd1c7fec8aab",
+      "after": "4de0c10e59c47dc7e29720f0c288daeed890e475cd8ed5754565cd1c7fec8aab"
+    },
+    {
+      "path": "apps/api/src/database/database.module.ts",
+      "before": "985916151c4daaf995d0b833306ae0767f7d9ddbb45831c475add5bbf812855b",
+      "after": "985916151c4daaf995d0b833306ae0767f7d9ddbb45831c475add5bbf812855b"
+    },
+    {
+      "path": "apps/api/src/database/database.service.ts",
+      "before": "5ca40fb1fcd92a38a1f6751be32e6b8de8f3d6647a3bdfa0e0ee741a6d5a58d7",
+      "after": "5ca40fb1fcd92a38a1f6751be32e6b8de8f3d6647a3bdfa0e0ee741a6d5a58d7"
+    },
+    {
+      "path": "apps/api/src/database/migrate.ts",
+      "before": "de3a6baea78bbc8fd41387573435d3a81edf23346e669359e2668c446693ff84",
+      "after": "de3a6baea78bbc8fd41387573435d3a81edf23346e669359e2668c446693ff84"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/battery-thermal.spec.ts",
+      "before": "cf7f592247f5ed91018c54a021a086064bca3a8a0c95568e76cfafd8bbf331c3",
+      "after": "cf7f592247f5ed91018c54a021a086064bca3a8a0c95568e76cfafd8bbf331c3"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/energy-engine.spec.ts",
+      "before": "259937d3da05c15aa82c0a23c52725a81bee63e0fb1468e8c7ce56bf6f98781d",
+      "after": "259937d3da05c15aa82c0a23c52725a81bee63e0fb1468e8c7ce56bf6f98781d"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/energy-profile.integration.spec.ts",
+      "before": "4534d41333a5197558e629ce885a0e419a5a9027554ed8e3aa1e9a4fb21d3b79",
+      "after": "4534d41333a5197558e629ce885a0e419a5a9027554ed8e3aa1e9a4fb21d3b79"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/energy-service.spec.ts",
+      "before": "5bb6bda4897f0963060e778caa93d8e9afdc7a6af5af14b09bc7a00702c17fb2",
+      "after": "5bb6bda4897f0963060e778caa93d8e9afdc7a6af5af14b09bc7a00702c17fb2"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/feedback-learner.spec.ts",
+      "before": "9c82837d7cda996c16972a73d90d3f7b001e0907b49f2acaff764a56c1f0daea",
+      "after": "9c82837d7cda996c16972a73d90d3f7b001e0907b49f2acaff764a56c1f0daea"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/fixtures.ts",
+      "before": "f9c6d152dc04450ee6025da28462cd262d5c466a9fe019911928def69d18170e",
+      "after": "f9c6d152dc04450ee6025da28462cd262d5c466a9fe019911928def69d18170e"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/hyundai-baselines.spec.ts",
+      "before": "8ed928205950a17b1c4fff3832432e5314b0b5afa408c130c04bc0a4df618dac",
+      "after": "8ed928205950a17b1c4fff3832432e5314b0b5afa408c130c04bc0a4df618dac"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/long-route-budget.spec.ts",
+      "before": "adc10efbe47166989bb6787d27e457cd82e8191641d1d048f0149d70bb63b93d",
+      "after": "adc10efbe47166989bb6787d27e457cd82e8191641d1d048f0149d70bb63b93d"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/observation-review.spec.ts",
+      "before": "63dc143eb9a6687217fc4c0fbf0717b4c1f7bf04ca9d08d7d2d0934a2fd8d118",
+      "after": "63dc143eb9a6687217fc4c0fbf0717b4c1f7bf04ca9d08d7d2d0934a2fd8d118"
+    },
+    {
+      "path": "apps/api/src/energy/__tests__/reference-resolution.spec.ts",
+      "before": "f0d254466f01b5fb580c94029399316b97c4d6526c636b64a995a79c7fa61b13",
+      "after": "f0d254466f01b5fb580c94029399316b97c4d6526c636b64a995a79c7fa61b13"
+    },
+    {
+      "path": "apps/api/src/energy/battery-thermal.ts",
+      "before": "fb607a73252e590d42d834a371c5d1b9f3c4d204beab6680862fccc472a1625a",
+      "after": "fb607a73252e590d42d834a371c5d1b9f3c4d204beab6680862fccc472a1625a"
+    },
+    {
+      "path": "apps/api/src/energy/energy-engine.ts",
+      "before": "29de564b954c412f278511b5e8304f653df71a6930ed3866540eae4007febdcf",
+      "after": "29de564b954c412f278511b5e8304f653df71a6930ed3866540eae4007febdcf"
+    },
+    {
+      "path": "apps/api/src/energy/energy-input-budget.ts",
+      "before": "40b69f40f76c101de9d2eae1674b3ab1306725b35593f867c9b1fdd598c84edb",
+      "after": "40b69f40f76c101de9d2eae1674b3ab1306725b35593f867c9b1fdd598c84edb"
+    },
+    {
+      "path": "apps/api/src/energy/energy-physics.ts",
+      "before": "44b00ea5b8b2db08834ea48c54ee6bdb58739982902754e20b2a1bf2481b89db",
+      "after": "44b00ea5b8b2db08834ea48c54ee6bdb58739982902754e20b2a1bf2481b89db"
+    },
+    {
+      "path": "apps/api/src/energy/energy-policy.ts",
+      "before": "67ea7dda945df1954159983278eeaebbc4a05114b543dcde5fdce1b8237ae96f",
+      "after": "67ea7dda945df1954159983278eeaebbc4a05114b543dcde5fdce1b8237ae96f"
+    },
+    {
+      "path": "apps/api/src/energy/energy.module.ts",
+      "before": "c76d1e41f1db6aea2e151794c40a20e21000c1b14ea102001e8710c962c39a35",
+      "after": "c76d1e41f1db6aea2e151794c40a20e21000c1b14ea102001e8710c962c39a35"
+    },
+    {
+      "path": "apps/api/src/energy/energy.service.ts",
+      "before": "f27d957609330ca6fc33fc17f62b5ad924553d57838c3e6f7e61d7d11f235f8e",
+      "after": "f27d957609330ca6fc33fc17f62b5ad924553d57838c3e6f7e61d7d11f235f8e"
+    },
+    {
+      "path": "apps/api/src/energy/feedback/feedback-learner.ts",
+      "before": "99d92675a820304ff267ef6e6071fefb2768917b881b6a16433060d83dd8c8e4",
+      "after": "99d92675a820304ff267ef6e6071fefb2768917b881b6a16433060d83dd8c8e4"
+    },
+    {
+      "path": "apps/api/src/energy/observation-review.ts",
+      "before": "2f343c4a63aa356e5718916577b4d8f4cf918bd2dd75773d07f30d2c673af401",
+      "after": "2f343c4a63aa356e5718916577b4d8f4cf918bd2dd75773d07f30d2c673af401"
+    },
+    {
+      "path": "apps/api/src/energy/reference-selector.ts",
+      "before": "176d0d5f33814827929b391bdcd80ff42ecebee61eec0a702430a6f95d53e5a5",
+      "after": "176d0d5f33814827929b391bdcd80ff42ecebee61eec0a702430a6f95d53e5a5"
+    },
+    {
+      "path": "apps/api/src/energy/validation/energy-cases.ts",
+      "before": "b355cf8e3bb19f1649699ec4705300ebb8c3dfa9141c3c28728e2eb757882300",
+      "after": "b355cf8e3bb19f1649699ec4705300ebb8c3dfa9141c3c28728e2eb757882300"
+    },
+    {
+      "path": "apps/api/src/locations/__tests__/locations.integration.spec.ts",
+      "before": "22134a8c539a935efa9b702d2ebb8bc3228a025f05bed4f42d77a441b40070cc",
+      "after": "22134a8c539a935efa9b702d2ebb8bc3228a025f05bed4f42d77a441b40070cc"
+    },
+    {
+      "path": "apps/api/src/locations/__tests__/photon.spec.ts",
+      "before": "ac5b4f83fc615db6a8e788c52b532f5f850c1cfb31c852f8c8b7b0c87715d002",
+      "after": "ac5b4f83fc615db6a8e788c52b532f5f850c1cfb31c852f8c8b7b0c87715d002"
+    },
+    {
+      "path": "apps/api/src/locations/geocoding-provider.ts",
+      "before": "5adcf94e00ae12fe779eb018198675029145654a16f3281459a65d73fcbaf921",
+      "after": "5adcf94e00ae12fe779eb018198675029145654a16f3281459a65d73fcbaf921"
+    },
+    {
+      "path": "apps/api/src/locations/location-search.service.ts",
+      "before": "64597e12a2f1d61af95da143a939436f5059f3aa26b1d5bbd4af184a7be53738",
+      "after": "64597e12a2f1d61af95da143a939436f5059f3aa26b1d5bbd4af184a7be53738"
+    },
+    {
+      "path": "apps/api/src/locations/locations.module.ts",
+      "before": "6bb1eab5ce6d08d70ff67a44db7123b973e403c7aee3de6f1d11a5a52702bc68",
+      "after": "6bb1eab5ce6d08d70ff67a44db7123b973e403c7aee3de6f1d11a5a52702bc68"
+    },
+    {
+      "path": "apps/api/src/locations/photon-provider.ts",
+      "before": "3be8f627381bea88c48958315d6915cbf3d7d2ca14b16e322613de2af88ac2c5",
+      "after": "3be8f627381bea88c48958315d6915cbf3d7d2ca14b16e322613de2af88ac2c5"
+    },
+    {
+      "path": "apps/api/src/main.ts",
+      "before": "831f998f107b283ae76f0355e176e04c0541b3f25cf517613b535490ef1cdb0d",
+      "after": "831f998f107b283ae76f0355e176e04c0541b3f25cf517613b535490ef1cdb0d"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/catalogue-plan.spec.ts",
+      "before": "951a425efb129867d49e01d7fac0df32e1d0ce0590c649fc9fb8bfb1dddaf3c7",
+      "after": "951a425efb129867d49e01d7fac0df32e1d0ce0590c649fc9fb8bfb1dddaf3c7"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/continuation.spec.ts",
+      "before": "909596bb8622aa98dfa0866c5a8e1b3f7fcfd997ff37e7a2cd3b146bba9aa448",
+      "after": "909596bb8622aa98dfa0866c5a8e1b3f7fcfd997ff37e7a2cd3b146bba9aa448"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/fixtures.ts",
+      "before": "5d18928ab53d7722220195e470ce71a732217e7e4d1870c68e6612d2e4505c24",
+      "after": "5d18928ab53d7722220195e470ce71a732217e7e4d1870c68e6612d2e4505c24"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/optimizer-reference.spec.ts",
+      "before": "cd005d3a8ea6379d02c341648e72a951b746efe10685724a21b11343024be92d",
+      "after": "cd005d3a8ea6379d02c341648e72a951b746efe10685724a21b11343024be92d"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/optimizer.fixtures.ts",
+      "before": "70fe99a651153dd97c10463cc895b6e9bf43394dfd4641b4f18926bc68475944",
+      "after": "70fe99a651153dd97c10463cc895b6e9bf43394dfd4641b4f18926bc68475944"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/optimizer.spec.ts",
+      "before": "0a822e64bcf23b757bed016632fe4aa6567df8b8b1aeb58770e1187b0fb778b2",
+      "after": "0a822e64bcf23b757bed016632fe4aa6567df8b8b1aeb58770e1187b0fb778b2"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-admission.integration.spec.ts",
+      "before": "94f7ac1457d6e7b6b97800b5a3f63a52918c483c4f8418cc665d7e7459b91030",
+      "after": "94f7ac1457d6e7b6b97800b5a3f63a52918c483c4f8418cc665d7e7459b91030"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-coordinator.spec.ts",
+      "before": "3bf5d58b16eb962f67420dd0117f31b0251177a6e792072dde0ad5b29d1c7239",
+      "after": "3bf5d58b16eb962f67420dd0117f31b0251177a6e792072dde0ad5b29d1c7239"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-execution.spec.ts",
+      "before": "d1eed5b6eb3a95a5625320fdd24fbf6f783da34548467cf436b6fccb566f68cd",
+      "after": "d1eed5b6eb3a95a5625320fdd24fbf6f783da34548467cf436b6fccb566f68cd"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-http.fixtures.ts",
+      "before": "4c20c031271e04b7dd13c57fe75a27f395655f2adfbb27af987bca26694f3f84",
+      "after": "4c20c031271e04b7dd13c57fe75a27f395655f2adfbb27af987bca26694f3f84"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-http.integration.spec.ts",
+      "before": "6c3d295c17596eff26752fb0c251c145fcd62e3c3d0202de7b760c2e00d6771d",
+      "after": "6c3d295c17596eff26752fb0c251c145fcd62e3c3d0202de7b760c2e00d6771d"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-jobs.integration.spec.ts",
+      "before": "b97d79f45b3adbb8333f384df1048858c53d8c3b693305422348c92b8e4b9f1b",
+      "after": "b97d79f45b3adbb8333f384df1048858c53d8c3b693305422348c92b8e4b9f1b"
+    },
+    {
+      "path": "apps/api/src/planning/__tests__/planning-response.spec.ts",
+      "before": "042104ecb873c1f8acf828a728be046062754eb3b8e2ac9785a22281f0641138",
+      "after": "042104ecb873c1f8acf828a728be046062754eb3b8e2ac9785a22281f0641138"
+    },
+    {
+      "path": "apps/api/src/planning/catalogue-station-scenario.ts",
+      "before": "d1b057ec9cb9c4b518f57a796189835407d3f5c035fb7673316f12f2794278ea",
+      "after": "d1b057ec9cb9c4b518f57a796189835407d3f5c035fb7673316f12f2794278ea"
+    },
+    {
+      "path": "apps/api/src/planning/charge-stop-optimizer.ts",
+      "before": "58459933e37b5e761706fd09dc42fc891700aaa07ea79838788dd82b067283d3",
+      "after": "58459933e37b5e761706fd09dc42fc891700aaa07ea79838788dd82b067283d3"
+    },
+    {
+      "path": "apps/api/src/planning/ev-planning.module.ts",
+      "before": "3324748d0e547b099d1c5e85575dd22b2a18145716718316fc76db2cea9e4905",
+      "after": "3324748d0e547b099d1c5e85575dd22b2a18145716718316fc76db2cea9e4905"
+    },
+    {
+      "path": "apps/api/src/planning/ev-planning.service.ts",
+      "before": "6cbfd41dc1ce60dd3997b35c7d4bd726ef84d062ac4175e634917af0dcb09d16",
+      "after": "6cbfd41dc1ce60dd3997b35c7d4bd726ef84d062ac4175e634917af0dcb09d16"
+    },
+    {
+      "path": "apps/api/src/planning/http/pg-planning-admission.ts",
+      "before": "e7d0fa569281e8475c47e73d81e2edb349a22d04f41380cfb66757aa8560e4b6",
+      "after": "e7d0fa569281e8475c47e73d81e2edb349a22d04f41380cfb66757aa8560e4b6"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-admission.store.ts",
+      "before": "0897d5acd504f52012ebbfb34140b0c686b61c40be58a8bbd7b8fb93da11d465",
+      "after": "0897d5acd504f52012ebbfb34140b0c686b61c40be58a8bbd7b8fb93da11d465"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-execution.ts",
+      "before": "15791cb24d45cce831b80239d962fce1a598a3f0fc77d83ffc12f8b480589e9e",
+      "after": "15791cb24d45cce831b80239d962fce1a598a3f0fc77d83ffc12f8b480589e9e"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-http-errors.ts",
+      "before": "f3c113c91237c186c929e4a801edbaa95af1439df108c3d95d211ad41b6b684b",
+      "after": "f3c113c91237c186c929e4a801edbaa95af1439df108c3d95d211ad41b6b684b"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-http-policy.ts",
+      "before": "26c22244c0a62e059a72d901ce73ac4957de870eeae8da44dd9d49bb7d7899d9",
+      "after": "26c22244c0a62e059a72d901ce73ac4957de870eeae8da44dd9d49bb7d7899d9"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-http.module.ts",
+      "before": "b0be4f724f48e6e5520869686e306dd84b92d96415b50fefdaaa060f4d7640b0",
+      "after": "b0be4f724f48e6e5520869686e306dd84b92d96415b50fefdaaa060f4d7640b0"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-http.service.ts",
+      "before": "edd393dd705af05153ce843d366d5a712f476cbd528d5364d1e8e49ff539ba9e",
+      "after": "edd393dd705af05153ce843d366d5a712f476cbd528d5364d1e8e49ff539ba9e"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-jobs.controller.ts",
+      "before": "e78cb6947d79238abbdb7ed80e77b3b187231675ccd7c3b504642301bcddbbf8",
+      "after": "e78cb6947d79238abbdb7ed80e77b3b187231675ccd7c3b504642301bcddbbf8"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-jobs.store.ts",
+      "before": "7c7b70c191758b07e3e70b4f21c5d02063721df50099beda3c7229c62ebd96ae",
+      "after": "7c7b70c191758b07e3e70b4f21c5d02063721df50099beda3c7229c62ebd96ae"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-jobs.worker.ts",
+      "before": "517c61a540c75581d8d6b01eec3449d4a2973cc571c2d52981d799b452c6108d",
+      "after": "517c61a540c75581d8d6b01eec3449d4a2973cc571c2d52981d799b452c6108d"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-request.ts",
+      "before": "28f5a9556f363e907724e87c70940469f21b99cf1bfd5195a00217d692560b1a",
+      "after": "28f5a9556f363e907724e87c70940469f21b99cf1bfd5195a00217d692560b1a"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning-response.ts",
+      "before": "d0be32323d9b61b34f310e2beeea62183ec7618418e5779599a906246bec1106",
+      "after": "d0be32323d9b61b34f310e2beeea62183ec7618418e5779599a906246bec1106"
+    },
+    {
+      "path": "apps/api/src/planning/http/planning.controller.ts",
+      "before": "d0ec1e25bbe34a64640a2a8102dcd9f1193109482517e9378f566ce9bbc7046f",
+      "after": "d0ec1e25bbe34a64640a2a8102dcd9f1193109482517e9378f566ce9bbc7046f"
+    },
+    {
+      "path": "apps/api/src/planning/optimizer-policy.ts",
+      "before": "e3f866626adcf470b1f379045ed992dd7a68d7cd2a63156ada93012bc9987a5a",
+      "after": "e3f866626adcf470b1f379045ed992dd7a68d7cd2a63156ada93012bc9987a5a"
+    },
+    {
+      "path": "apps/api/src/planning/optimizer-types.ts",
+      "before": "ba10786fab470235dec54b2fb8129e4ba7b1aa23664e1e66c115f7e45ac2d379",
+      "after": "ba10786fab470235dec54b2fb8129e4ba7b1aa23664e1e66c115f7e45ac2d379"
+    },
+    {
+      "path": "apps/api/src/planning/plan-compiler.ts",
+      "before": "7d3a2046cdb720126e3d3d168931ce5f462652446f3753ecb32fd0c99d5a6851",
+      "after": "7d3a2046cdb720126e3d3d168931ce5f462652446f3753ecb32fd0c99d5a6851"
+    },
+    {
+      "path": "apps/api/src/planning/planning-coordinator.ts",
+      "before": "98250c206a0e1b374eaac98fe290a1a8d28468fedb8af44f0675ee96d8a90dc1",
+      "after": "98250c206a0e1b374eaac98fe290a1a8d28468fedb8af44f0675ee96d8a90dc1"
+    },
+    {
+      "path": "apps/api/src/planning/planning-engine.ts",
+      "before": "c8c0d090c98e9e345afb7e9594e58e9b733152311d865e1252f4bf1a3d299449",
+      "after": "c8c0d090c98e9e345afb7e9594e58e9b733152311d865e1252f4bf1a3d299449"
+    },
+    {
+      "path": "apps/api/src/planning/planning-replay.ts",
+      "before": "2e53101b8832982d6b29e6511153406f3d6baa6099d82ca36e3bda407ecfb3b0",
+      "after": "2e53101b8832982d6b29e6511153406f3d6baa6099d82ca36e3bda407ecfb3b0"
+    },
+    {
+      "path": "apps/api/src/planning/planning-session.ts",
+      "before": "7946635c534a65b50a1cdc7866700d541e644118765be4458bf390cc29bdd7d0",
+      "after": "7946635c534a65b50a1cdc7866700d541e644118765be4458bf390cc29bdd7d0"
+    },
+    {
+      "path": "apps/api/src/planning/planning.module.ts",
+      "before": "6ed5a6f8a2366402a6ec9e2e4d20bdc017d587830ab188f5b7cf03cb1f2d0af2",
+      "after": "6ed5a6f8a2366402a6ec9e2e4d20bdc017d587830ab188f5b7cf03cb1f2d0af2"
+    },
+    {
+      "path": "apps/api/src/planning/validation/compare-candidate.ts",
+      "before": "ccae8d11bb0c5637c5dd1e2202ca6187449b200ec83a6adf2fd1cb9e8e47c06d",
+      "after": "ccae8d11bb0c5637c5dd1e2202ca6187449b200ec83a6adf2fd1cb9e8e47c06d"
+    },
+    {
+      "path": "apps/api/src/planning/validation/fixtures/manifest.json",
+      "before": "0a9cfc071f7b9c54365a031e1b815e4ee6183df6967e102dbad6aa8582f76fe1",
+      "after": "0a9cfc071f7b9c54365a031e1b815e4ee6183df6967e102dbad6aa8582f76fe1"
+    },
+    {
+      "path": "apps/api/src/planning/validation/fixtures/pilot-observation-template.json",
+      "before": "84334411767baf6a09adf345eba2a527ddecbeb838719d112be2abf3cfe4aaea",
+      "after": "84334411767baf6a09adf345eba2a527ddecbeb838719d112be2abf3cfe4aaea"
+    },
+    {
+      "path": "apps/api/src/planning/validation/fixtures/pilot-observations-v1.json",
+      "before": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "after": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "apps/api/src/planning/validation/fixtures/reference-v1.json",
+      "before": "5b44b4b31b9cd55e35340e6c9fe97d54797d342045eef0d56faf0e6f882a502f",
+      "after": "5b44b4b31b9cd55e35340e6c9fe97d54797d342045eef0d56faf0e6f882a502f"
+    },
+    {
+      "path": "apps/api/src/planning/validation/metrics.ts",
+      "before": "ad564e6558f9dfdb6d71dbc0d654cf9d3ccfcd6ef0a90f0bbe7a5252913d7c9a",
+      "after": "ad564e6558f9dfdb6d71dbc0d654cf9d3ccfcd6ef0a90f0bbe7a5252913d7c9a"
+    },
+    {
+      "path": "apps/api/src/planning/validation/optimizer-reference.ts",
+      "before": "6d02c6ef9e22934ba37a096752a2954758d34d864de5608b8c9613ed3fbecdb0",
+      "after": "6d02c6ef9e22934ba37a096752a2954758d34d864de5608b8c9613ed3fbecdb0"
+    },
+    {
+      "path": "apps/api/src/planning/validation/reference-solver.ts",
+      "before": "b2c48280d3d001158b8a8bdc3de9d417647ecfee8bdb3fdfe40227321c41b5ab",
+      "after": "b2c48280d3d001158b8a8bdc3de9d417647ecfee8bdb3fdfe40227321c41b5ab"
+    },
+    {
+      "path": "apps/api/src/planning/validation/reference-validation.spec.ts",
+      "before": "a6b8152357bb64db6657820d0d5c33f05ebced45babc2083b42a2ae8576e3f31",
+      "after": "a6b8152357bb64db6657820d0d5c33f05ebced45babc2083b42a2ae8576e3f31"
+    },
+    {
+      "path": "apps/api/src/planning/validation/replay.ts",
+      "before": "f6f999e79e6bfa2651a05fa7d3906f914ea64d59aa874e007fbd76da652dd0a5",
+      "after": "f6f999e79e6bfa2651a05fa7d3906f914ea64d59aa874e007fbd76da652dd0a5"
+    },
+    {
+      "path": "apps/api/src/planning/validation/run-validation.ts",
+      "before": "c4d3bd335689e41d120cc2958965f446cf4d40e01c08065352cca92d8dd835f6",
+      "after": "c4d3bd335689e41d120cc2958965f446cf4d40e01c08065352cca92d8dd835f6"
+    },
+    {
+      "path": "apps/api/src/providers/provider-response.ts",
+      "before": "bdb5d8f56175c1fb348ed1d110e286316704ff9c21dc00924bafd9abfab66f31",
+      "after": "bdb5d8f56175c1fb348ed1d110e286316704ff9c21dc00924bafd9abfab66f31"
+    },
+    {
+      "path": "apps/api/src/providers/routing-provider.ts",
+      "before": "a050736c2a7fdb03b0ddf861e5df1cffbd86fb9f9f149777d7cb7f3870d2b73e",
+      "after": "a050736c2a7fdb03b0ddf861e5df1cffbd86fb9f9f149777d7cb7f3870d2b73e"
+    },
+    {
+      "path": "apps/api/src/providers/station-availability-provider.ts",
+      "before": "429ef4221f0ebdf2862f195ffb6d625e5d3800aca2a1f711e9c8475d0cdd76ba",
+      "after": "429ef4221f0ebdf2862f195ffb6d625e5d3800aca2a1f711e9c8475d0cdd76ba"
+    },
+    {
+      "path": "apps/api/src/providers/station-data-provider.ts",
+      "before": "c6e1470cc71c112edfcd7093eb508f1c77f8a8637b7e49976eba335ac975f522",
+      "after": "c6e1470cc71c112edfcd7093eb508f1c77f8a8637b7e49976eba335ac975f522"
+    },
+    {
+      "path": "apps/api/src/providers/vehicle-energy-provider.ts",
+      "before": "28ed3cd3224fe5eaee1f4858064a21219a705a8bf542515d65204b391b23d5b7",
+      "after": "28ed3cd3224fe5eaee1f4858064a21219a705a8bf542515d65204b391b23d5b7"
+    },
+    {
+      "path": "apps/api/src/providers/weather-provider.ts",
+      "before": "ad6e3926f20eef8b23dcb422936b9fef541f44c89f019d013932d423e7e68800",
+      "after": "ad6e3926f20eef8b23dcb422936b9fef541f44c89f019d013932d423e7e68800"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/elevation-hardening.spec.ts",
+      "before": "ada8588f769eff75e7c6b5166a578ce2e564b39afba4ad51599c832835ea84e0",
+      "after": "ada8588f769eff75e7c6b5166a578ce2e564b39afba4ad51599c832835ea84e0"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/elevation-test-fixture.ts",
+      "before": "e78d1717efdbc2468f3e66d70fecdc21732234e7334efa21833ae48ac632ec06",
+      "after": "e78d1717efdbc2468f3e66d70fecdc21732234e7334efa21833ae48ac632ec06"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/fixtures.ts",
+      "before": "bb2879debcc93cadec3167f3bd5292aec7c673c42a59ae10dd35d39f319948ad",
+      "after": "bb2879debcc93cadec3167f3bd5292aec7c673c42a59ae10dd35d39f319948ad"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/fixtures/NOTICE.md",
+      "before": "0f659bb1d6829636f848e01558679c6d7e307ad1cf23844a5bfa6804a48e9060",
+      "after": "0f659bb1d6829636f848e01558679c6d7e307ad1cf23844a5bfa6804a48e9060"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/fixtures/ankara-route.json",
+      "before": "a0a65b4692b7f305cb977cc79883cb1727b5fe9bea506c8bdb44650a7fc15102",
+      "after": "a0a65b4692b7f305cb977cc79883cb1727b5fe9bea506c8bdb44650a7fc15102"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/fixtures/ankara-trace.json",
+      "before": "e5c38520d5e5e9b91ae2948a95de1e5db97a405a1ec7f8e23b3011e77c54b7a2",
+      "after": "e5c38520d5e5e9b91ae2948a95de1e5db97a405a1ec7f8e23b3011e77c54b7a2"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/geoapify.spec.ts",
+      "before": "2cdcaf9db2c7d58785a5cf4cc0503d505cc41966d1957a5e36087a175a79c10e",
+      "after": "2cdcaf9db2c7d58785a5cf4cc0503d505cc41966d1957a5e36087a175a79c10e"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/road-cache.integration.spec.ts",
+      "before": "e8b4e94565951360137bc00133c78341246c89e596bdffb15dd8e9d37d4c1daa",
+      "after": "e8b4e94565951360137bc00133c78341246c89e596bdffb15dd8e9d37d4c1daa"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/road-coalescing.spec.ts",
+      "before": "86a8def0b3d5a7724bf4291e1925abf56c46d29ee682331b64276e07294a009a",
+      "after": "86a8def0b3d5a7724bf4291e1925abf56c46d29ee682331b64276e07294a009a"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/road-preview.spec.ts",
+      "before": "f886c94c0644bdc43fd89203d583f824ffb715ce20747e319f7ece4a5189e0d0",
+      "after": "f886c94c0644bdc43fd89203d583f824ffb715ce20747e319f7ece4a5189e0d0"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/road-source-policy.spec.ts",
+      "before": "2ede369962895171cd344bdbc3ca9e8a4604f3ae9a3318ff1d183b333e8ccdb2",
+      "after": "2ede369962895171cd344bdbc3ca9e8a4604f3ae9a3318ff1d183b333e8ccdb2"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/roads.spec.ts",
+      "before": "8b95276f1cd46bbdb721dc3bdb15bcaad56ee910bea724c09e7c2f3fb888698b",
+      "after": "8b95276f1cd46bbdb721dc3bdb15bcaad56ee910bea724c09e7c2f3fb888698b"
+    },
+    {
+      "path": "apps/api/src/roads/__tests__/valhalla-artifacts.spec.ts",
+      "before": "68421aa473e39cc5673a2db3951b18f71545170b086bec5e86c9356576ba4922",
+      "after": "68421aa473e39cc5673a2db3951b18f71545170b086bec5e86c9356576ba4922"
+    },
+    {
+      "path": "apps/api/src/roads/elevation-qa.ts",
+      "before": "4898e7754938f26c84e158982d62a1b2292a6d91ea9a894173f8c1ac64d3d406",
+      "after": "4898e7754938f26c84e158982d62a1b2292a6d91ea9a894173f8c1ac64d3d406"
+    },
+    {
+      "path": "apps/api/src/roads/geoapify-adapter.ts",
+      "before": "1d98aaf5694ec51cdba334df4b82557041d896b5709db1c63dc8b22a4d3e531a",
+      "after": "1d98aaf5694ec51cdba334df4b82557041d896b5709db1c63dc8b22a4d3e531a"
+    },
+    {
+      "path": "apps/api/src/roads/geometry.ts",
+      "before": "60351f2e8afe88b4fe87b68232bff16827fea93cf23a0f6714e563824c30f090",
+      "after": "60351f2e8afe88b4fe87b68232bff16827fea93cf23a0f6714e563824c30f090"
+    },
+    {
+      "path": "apps/api/src/roads/normalize-road.ts",
+      "before": "785a03faa1d59b6bed3d05b3de6f5420d7cede8019b359f161370d3af2fae8a3",
+      "after": "785a03faa1d59b6bed3d05b3de6f5420d7cede8019b359f161370d3af2fae8a3"
+    },
+    {
+      "path": "apps/api/src/roads/osm-attributes.ts",
+      "before": "a86e6d6e7165c172b366e501302804cc7354e5f35de4f58be6c37b60dcb5cefa",
+      "after": "a86e6d6e7165c172b366e501302804cc7354e5f35de4f58be6c37b60dcb5cefa"
+    },
+    {
+      "path": "apps/api/src/roads/provider-ports.ts",
+      "before": "065fdeb8968121ad8a399dbb845f373440d48c6a2d2be8819844f315e9a75963",
+      "after": "065fdeb8968121ad8a399dbb845f373440d48c6a2d2be8819844f315e9a75963"
+    },
+    {
+      "path": "apps/api/src/roads/road-client.ts",
+      "before": "dde76a67691c06444d0a46046d6c635cc9e927e5b0605172000a96d28873ee87",
+      "after": "dde76a67691c06444d0a46046d6c635cc9e927e5b0605172000a96d28873ee87"
+    },
+    {
+      "path": "apps/api/src/roads/road-policy.ts",
+      "before": "6f66a048d75d92ff4766b678658a22a13e195d394c7af374c224e79f8bd71f6d",
+      "after": "6f66a048d75d92ff4766b678658a22a13e195d394c7af374c224e79f8bd71f6d"
+    },
+    {
+      "path": "apps/api/src/roads/road-service.ts",
+      "before": "12a8051342126ffbe327a0b52d823d31a376895889524b95109637d7d1a11306",
+      "after": "12a8051342126ffbe327a0b52d823d31a376895889524b95109637d7d1a11306"
+    },
+    {
+      "path": "apps/api/src/roads/road-source-policy.ts",
+      "before": "0cc21854104c81a90052711a97c33454ebd0e75ec25b70aed80343dcb0baa0b6",
+      "after": "0cc21854104c81a90052711a97c33454ebd0e75ec25b70aed80343dcb0baa0b6"
+    },
+    {
+      "path": "apps/api/src/roads/roads.controller.ts",
+      "before": "3e789ec568d9db62245956684c24c32e3569cc342a1e1bdccc5711f8916b323c",
+      "after": "3e789ec568d9db62245956684c24c32e3569cc342a1e1bdccc5711f8916b323c"
+    },
+    {
+      "path": "apps/api/src/roads/roads.module.ts",
+      "before": "f92900bd70bce5ecb747fa9bc98bf4413341bc880f89d0b1795bc624ef2b8d07",
+      "after": "f92900bd70bce5ecb747fa9bc98bf4413341bc880f89d0b1795bc624ef2b8d07"
+    },
+    {
+      "path": "apps/api/src/roads/valhalla-adapter.ts",
+      "before": "8bf664c0f8fa161c75fa7dc4ea1dd2d031609946f47a2d860337537decca97c0",
+      "after": "8bf664c0f8fa161c75fa7dc4ea1dd2d031609946f47a2d860337537decca97c0"
+    },
+    {
+      "path": "apps/api/src/security/__tests__/rate-limit.config.spec.ts",
+      "before": "55dc45c4b69b1af69d79e955a615e0040fec662d5c4f94b55cf28bfb9bbd18b3",
+      "after": "55dc45c4b69b1af69d79e955a615e0040fec662d5c4f94b55cf28bfb9bbd18b3"
+    },
+    {
+      "path": "apps/api/src/security/__tests__/rate-limit.guard.spec.ts",
+      "before": "32afa5930bc20f119cd745930e369be552d695283ed28f869428bf71c35d94ac",
+      "after": "32afa5930bc20f119cd745930e369be552d695283ed28f869428bf71c35d94ac"
+    },
+    {
+      "path": "apps/api/src/security/__tests__/rate-limit.integration.spec.ts",
+      "before": "5329a37fe8324a83d79f6b39d8c70cf6670a2ba56f34f6c95a21e937510fa7b7",
+      "after": "5329a37fe8324a83d79f6b39d8c70cf6670a2ba56f34f6c95a21e937510fa7b7"
+    },
+    {
+      "path": "apps/api/src/security/postgres-rate-limit.store.ts",
+      "before": "a43dbc0345e3ecedc49670b04ac5819f3b8bac5690e0bd1b61495c2f62d9bf2b",
+      "after": "a43dbc0345e3ecedc49670b04ac5819f3b8bac5690e0bd1b61495c2f62d9bf2b"
+    },
+    {
+      "path": "apps/api/src/security/rate-limit.config.ts",
+      "before": "30381d565e95b41eae7cbdea9f1fe8155c8cd13aee8d082997c7ba18b5c05a7b",
+      "after": "30381d565e95b41eae7cbdea9f1fe8155c8cd13aee8d082997c7ba18b5c05a7b"
+    },
+    {
+      "path": "apps/api/src/security/rate-limit.guard.ts",
+      "before": "d162bdb25574271321039b877a945bc0f059777d81ed9b9e2601dd432d9cabec",
+      "after": "d162bdb25574271321039b877a945bc0f059777d81ed9b9e2601dd432d9cabec"
+    },
+    {
+      "path": "apps/api/src/security/rate-limit.store.ts",
+      "before": "90a31b875e29db29deffa6fa3cfa2731a00c27f9bdde7071d2bb850f645d880a",
+      "after": "90a31b875e29db29deffa6fa3cfa2731a00c27f9bdde7071d2bb850f645d880a"
+    },
+    {
+      "path": "apps/api/src/security/security.module.ts",
+      "before": "4a859a0ccf7abe5c3b80a15995d5cb801b67dd5926e3720e1e712058b5049d2d",
+      "after": "4a859a0ccf7abe5c3b80a15995d5cb801b67dd5926e3720e1e712058b5049d2d"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/epdk-transport.spec.ts",
+      "before": "df841d017b5207428d1a28308880e629a7d4af2a7a3a2a8e05fd8b41ea2de043",
+      "after": "df841d017b5207428d1a28308880e629a7d4af2a7a3a2a8e05fd8b41ea2de043"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/fixtures.ts",
+      "before": "61a015ec9aab7c77bdc31a1b3c4de126c7dd705adba22115064b0960e21bf30c",
+      "after": "61a015ec9aab7c77bdc31a1b3c4de126c7dd705adba22115064b0960e21bf30c"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/ocm-source.spec.ts",
+      "before": "a94ea66e1cf00569ba0e3c8a8b330724c0c21ef3d3af7722c72e6ca52e6da483",
+      "after": "a94ea66e1cf00569ba0e3c8a8b330724c0c21ef3d3af7722c72e6ca52e6da483"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/ocm.fixtures.ts",
+      "before": "22e95228841d39195aeb2e3c540dff331439b8f92ea9b3b941bf9ecc43d75bc5",
+      "after": "22e95228841d39195aeb2e3c540dff331439b8f92ea9b3b941bf9ecc43d75bc5"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/source-service.integration.spec.ts",
+      "before": "78037d4280d92ae7a5a3346f2cfd99914f705d5968984a3e08b28b1136dab5b7",
+      "after": "78037d4280d92ae7a5a3346f2cfd99914f705d5968984a3e08b28b1136dab5b7"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/stations.integration.spec.ts",
+      "before": "e5d4fc0de2fde4638e3f78cd9f5e1d205fcd2ab1a1de4a15895e9cb80dc50b07",
+      "after": "e5d4fc0de2fde4638e3f78cd9f5e1d205fcd2ab1a1de4a15895e9cb80dc50b07"
+    },
+    {
+      "path": "apps/api/src/stations/__tests__/stations.spec.ts",
+      "before": "1a9ba12456cd0b44b70eddb88f73c9b989b2b13ccb9e42be993d445afa2f9b07",
+      "after": "1a9ba12456cd0b44b70eddb88f73c9b989b2b13ccb9e42be993d445afa2f9b07"
+    },
+    {
+      "path": "apps/api/src/stations/db-station.provider.ts",
+      "before": "867de607bdf4e94195c7902152a96e3b81ffdbeff910b9887f22b3d18a92d440",
+      "after": "867de607bdf4e94195c7902152a96e3b81ffdbeff910b9887f22b3d18a92d440"
+    },
+    {
+      "path": "apps/api/src/stations/epdk-normalizer.ts",
+      "before": "10d3d4fdf564a1e9809eedf9324294eff7d29e12b282e226c62ebe7766c414b9",
+      "after": "10d3d4fdf564a1e9809eedf9324294eff7d29e12b282e226c62ebe7766c414b9"
+    },
+    {
+      "path": "apps/api/src/stations/epdk-transport.ts",
+      "before": "83fa5c9e103e8e64cc5d71829485840cb69486536dfde7320fcfc2382d06852f",
+      "after": "83fa5c9e103e8e64cc5d71829485840cb69486536dfde7320fcfc2382d06852f"
+    },
+    {
+      "path": "apps/api/src/stations/epdk.service.ts",
+      "before": "e276fa7b1f523deb48bd32cacdd561785c38b10bf7d4ed949252c1a7d052cca7",
+      "after": "e276fa7b1f523deb48bd32cacdd561785c38b10bf7d4ed949252c1a7d052cca7"
+    },
+    {
+      "path": "apps/api/src/stations/merge-evidence.ts",
+      "before": "be5470d37d644778982ba0009e80bc422e7ff53ce040fe197669cc90b934ec89",
+      "after": "be5470d37d644778982ba0009e80bc422e7ff53ce040fe197669cc90b934ec89"
+    },
+    {
+      "path": "apps/api/src/stations/sources/catalogue-source.ts",
+      "before": "2150ce74cbfa31f38eb445221bcda37eed4f3e5020d2f7106ae95c735f0ce929",
+      "after": "2150ce74cbfa31f38eb445221bcda37eed4f3e5020d2f7106ae95c735f0ce929"
+    },
+    {
+      "path": "apps/api/src/stations/sources/create-source-service.ts",
+      "before": "31cfd47a43a6350f47c48373213a62269aee3720a5d33231b3243b9b1d53b210",
+      "after": "31cfd47a43a6350f47c48373213a62269aee3720a5d33231b3243b9b1d53b210"
+    },
+    {
+      "path": "apps/api/src/stations/sources/epdk-source.ts",
+      "before": "9f67e072830381877384daf839029b97f5c1b1d6ce735747dc5e44193db8150e",
+      "after": "9f67e072830381877384daf839029b97f5c1b1d6ce735747dc5e44193db8150e"
+    },
+    {
+      "path": "apps/api/src/stations/sources/ocm-source.ts",
+      "before": "e5de922c7cd24a3570d2a8c4507e75165a8ccad8ed7c28064d5a7e688b799f1e",
+      "after": "e5de922c7cd24a3570d2a8c4507e75165a8ccad8ed7c28064d5a7e688b799f1e"
+    },
+    {
+      "path": "apps/api/src/stations/sources/source-policy.ts",
+      "before": "33155777dccab7f4b92e11d513bcda6bf69d4d6d10ec499cf6d31be1b568ec16",
+      "after": "33155777dccab7f4b92e11d513bcda6bf69d4d6d10ec499cf6d31be1b568ec16"
+    },
+    {
+      "path": "apps/api/src/stations/sources/source-service.ts",
+      "before": "f2a4e9155bbf6cd735a87d4708308a276dc7353ece42e1b985679fd0d3e5ad00",
+      "after": "f2a4e9155bbf6cd735a87d4708308a276dc7353ece42e1b985679fd0d3e5ad00"
+    },
+    {
+      "path": "apps/api/src/stations/station-import.repository.ts",
+      "before": "1c35df96be39f9121227591b8242a4b7275acdc79d602b142a9aa01106b20122",
+      "after": "1c35df96be39f9121227591b8242a4b7275acdc79d602b142a9aa01106b20122"
+    },
+    {
+      "path": "apps/api/src/stations/station-materialization.ts",
+      "before": "50bce424756adc3c65486e11f4cc113164a7d7af9eba561b154f609014e4a638",
+      "after": "50bce424756adc3c65486e11f4cc113164a7d7af9eba561b154f609014e4a638"
+    },
+    {
+      "path": "apps/api/src/stations/station-policy.ts",
+      "before": "08ca8da531abc903fddb8fd360221ef62f4e2684ea1a69d7363a5ec83d226efe",
+      "after": "08ca8da531abc903fddb8fd360221ef62f4e2684ea1a69d7363a5ec83d226efe"
+    },
+    {
+      "path": "apps/api/src/stations/stations.controller.ts",
+      "before": "9daf3c870675a87cda46a2ee79e551836551da34c037f2106ab182883106f5d8",
+      "after": "9daf3c870675a87cda46a2ee79e551836551da34c037f2106ab182883106f5d8"
+    },
+    {
+      "path": "apps/api/src/stations/stations.module.ts",
+      "before": "a90171024d9447986a242180ca3881aa52d04f7c5c9d55255fdc521d954d02b9",
+      "after": "a90171024d9447986a242180ca3881aa52d04f7c5c9d55255fdc521d954d02b9"
+    },
+    {
+      "path": "apps/api/src/stations/stations.repository.ts",
+      "before": "1019396ffe2aba670149310e6f2b2317f89da0b3b3d7a392101fa21e97e14e82",
+      "after": "1019396ffe2aba670149310e6f2b2317f89da0b3b3d7a392101fa21e97e14e82"
+    },
+    {
+      "path": "apps/api/src/validation/workbook-evidence.spec.ts",
+      "before": "d00b8264adcb2bca3ee9292e42e719dc4fc8bcde503e97a8f33e08428d8c018d",
+      "after": "d00b8264adcb2bca3ee9292e42e719dc4fc8bcde503e97a8f33e08428d8c018d"
+    },
+    {
+      "path": "apps/api/src/validation/workbook-evidence.ts",
+      "before": "91a36a6c28059ac7ac1cd9a02d21fd3cf84af79e80d8ce63849aae0a2de46c26",
+      "after": "91a36a6c28059ac7ac1cd9a02d21fd3cf84af79e80d8ce63849aae0a2de46c26"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/fixtures.ts",
+      "before": "b4e7e20d67ca5551f24c7af9a6a71a665b60bbc457a726bab0e2f8c33327e423",
+      "after": "b4e7e20d67ca5551f24c7af9a6a71a665b60bbc457a726bab0e2f8c33327e423"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/kilowatt.spec.ts",
+      "before": "cc3eeb377378d507d2ed238a22bd0da45716833b5038ce93232a9df88f7aac87",
+      "after": "cc3eeb377378d507d2ed238a22bd0da45716833b5038ce93232a9df88f7aac87"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/knowledge.fixtures.ts",
+      "before": "a30539d8addc71ffd4504511c73b92beb1b3461282b1d24797ed6b55d5ab3bd8",
+      "after": "a30539d8addc71ffd4504511c73b92beb1b3461282b1d24797ed6b55d5ab3bd8"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/knowledge.integration.spec.ts",
+      "before": "9c71fbe29c7b1563141263a15c456798ddf1d674c903973f532a4ed5e7ecdada",
+      "after": "9c71fbe29c7b1563141263a15c456798ddf1d674c903973f532a4ed5e7ecdada"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/knowledge.spec.ts",
+      "before": "3bff8bef941f065e5db9cf9b00f5234f5fabca4f5816fd13339afd5c3441a6ea",
+      "after": "3bff8bef941f065e5db9cf9b00f5234f5fabca4f5816fd13339afd5c3441a6ea"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/open-ev.provider.spec.ts",
+      "before": "4beaeb8afafbc41ad9aa309040da6be5a6b4d6fd613edaf98c6afc328307f93d",
+      "after": "4beaeb8afafbc41ad9aa309040da6be5a6b4d6fd613edaf98c6afc328307f93d"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/vehicle-catalogue.integration.spec.ts",
+      "before": "98052d134520f604b3f2c40efc80434453b68c6acb4416caeaef00f2bff06574",
+      "after": "98052d134520f604b3f2c40efc80434453b68c6acb4416caeaef00f2bff06574"
+    },
+    {
+      "path": "apps/api/src/vehicles/__tests__/vehicle-snapshot.spec.ts",
+      "before": "ff7b73fc21422df3a9e045d351af259aa3618cf5dae029f5bd9c9c8d414d2170",
+      "after": "ff7b73fc21422df3a9e045d351af259aa3618cf5dae029f5bd9c9c8d414d2170"
+    },
+    {
+      "path": "apps/api/src/vehicles/import/open-ev.provider.ts",
+      "before": "dd188aa5642a35d75937e6cebaa3ec7fe8c365e7847604c4c323b13ca61a4e33",
+      "after": "dd188aa5642a35d75937e6cebaa3ec7fe8c365e7847604c4c323b13ca61a4e33"
+    },
+    {
+      "path": "apps/api/src/vehicles/import/open-ev.schema.ts",
+      "before": "73cc33895fc45b33864793b09a7d5bc0fc201365a35f92a10f5737df1401ba20",
+      "after": "73cc33895fc45b33864793b09a7d5bc0fc201365a35f92a10f5737df1401ba20"
+    },
+    {
+      "path": "apps/api/src/vehicles/import/vehicle-import.repository.ts",
+      "before": "ca90b06fb1e2bd0449b9fa023cbbdca5fa056984f2fa1064c3b0f6a8d365a14a",
+      "after": "ca90b06fb1e2bd0449b9fa023cbbdca5fa056984f2fa1064c3b0f6a8d365a14a"
+    },
+    {
+      "path": "apps/api/src/vehicles/import/vehicle-import.service.ts",
+      "before": "169709e8332b70c11a0b5b2fe35d80b61ef51b9a3aae00259e2594595628d283",
+      "after": "169709e8332b70c11a0b5b2fe35d80b61ef51b9a3aae00259e2594595628d283"
+    },
+    {
+      "path": "apps/api/src/vehicles/import/vehicle-snapshot.ts",
+      "before": "b407667a1c8effe7fd80ea91266c9bbc589efec4cbc03b9836a759449dadeeae",
+      "after": "b407667a1c8effe7fd80ea91266c9bbc589efec4cbc03b9836a759449dadeeae"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/build-pilot-package.ts",
+      "before": "3b04933319836bc740e8d01a70012d8235119eded7ad2c4c7a7ddb5ea30365ea",
+      "after": "3b04933319836bc740e8d01a70012d8235119eded7ad2c4c7a7ddb5ea30365ea"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/db-vehicle-energy.provider.ts",
+      "before": "5bc28210fabc57ecaf3befb6247b0324f0e1ec6cf5fcd2e7b397cae283bc93cf",
+      "after": "5bc28210fabc57ecaf3befb6247b0324f0e1ec6cf5fcd2e7b397cae283bc93cf"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/kilowatt-staging.ts",
+      "before": "0cfb38f8e5972866f045ee8775ff2bae4c1ffe0c3aba6ea15052ff1fb44c625f",
+      "after": "0cfb38f8e5972866f045ee8775ff2bae4c1ffe0c3aba6ea15052ff1fb44c625f"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/kilowatt.provider.ts",
+      "before": "9cc39f17fe665aa3eb8133360e729f30b793c3a13a0eefc698b36e2681018267",
+      "after": "9cc39f17fe665aa3eb8133360e729f30b793c3a13a0eefc698b36e2681018267"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/knowledge-package.ts",
+      "before": "ce00079facff63d0444b35d718ef51c85340ba7497616322b8f7ea16ca5fd6e0",
+      "after": "ce00079facff63d0444b35d718ef51c85340ba7497616322b8f7ea16ca5fd6e0"
+    },
+    {
+      "path": "apps/api/src/vehicles/knowledge/knowledge.repository.ts",
+      "before": "148c14eae7daf903379a55bad1305d1514434e3aa46f1eb5d8bee4c921638eda",
+      "after": "148c14eae7daf903379a55bad1305d1514434e3aa46f1eb5d8bee4c921638eda"
+    },
+    {
+      "path": "apps/api/src/vehicles/vehicles.controller.ts",
+      "before": "a35ea51e327d820f135d154ba78772d789851927d25c1746961a6e07aa622dd9",
+      "after": "a35ea51e327d820f135d154ba78772d789851927d25c1746961a6e07aa622dd9"
+    },
+    {
+      "path": "apps/api/src/vehicles/vehicles.module.ts",
+      "before": "c972b2da1d4f0d51499a271eb6ee6363d3f35875e0ea932ab6f98bf5fb375f73",
+      "after": "c972b2da1d4f0d51499a271eb6ee6363d3f35875e0ea932ab6f98bf5fb375f73"
+    },
+    {
+      "path": "apps/api/src/vehicles/vehicles.repository.ts",
+      "before": "ba9ebe8ca893102e990b8dff616be5394c643ba5cf836fb5254c84e2337678d0",
+      "after": "ba9ebe8ca893102e990b8dff616be5394c643ba5cf836fb5254c84e2337678d0"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/fixtures.ts",
+      "before": "92864808202862d4565a0c854c40964915e0a76ed6ea2c6ba519f1603458118e",
+      "after": "92864808202862d4565a0c854c40964915e0a76ed6ea2c6ba519f1603458118e"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/fixtures/NOTICE.md",
+      "before": "ce39e560efefdec493c3b6d3c63825c168b33be8b1de645f0a2f7f8fdf97c8a1",
+      "after": "ce39e560efefdec493c3b6d3c63825c168b33be8b1de645f0a2f7f8fdf97c8a1"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/fixtures/met-ankara-document.json",
+      "before": "cd19a54beddf02c430690b495625726c838a944e8257fdfa37fcf2112f660fb6",
+      "after": "cd19a54beddf02c430690b495625726c838a944e8257fdfa37fcf2112f660fb6"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/weather-cache.integration.spec.ts",
+      "before": "eba8c3340d6e3ef4bda60769185f8bcd3887164ffd57c496ab4fd3277a7d2a5d",
+      "after": "eba8c3340d6e3ef4bda60769185f8bcd3887164ffd57c496ab4fd3277a7d2a5d"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/weather-window.spec.ts",
+      "before": "fbeab78e2cd27490362888eff8fc5c094a36e8c5635a4c6f547730f0834550f9",
+      "after": "fbeab78e2cd27490362888eff8fc5c094a36e8c5635a4c6f547730f0834550f9"
+    },
+    {
+      "path": "apps/api/src/weather/__tests__/weather.spec.ts",
+      "before": "16112d2bfffd38e63ccaf0f4bafeb92c0b040a4f2f51b424fefe6179766deb4f",
+      "after": "16112d2bfffd38e63ccaf0f4bafeb92c0b040a4f2f51b424fefe6179766deb4f"
+    },
+    {
+      "path": "apps/api/src/weather/met-norway.adapter.ts",
+      "before": "59e52354d4b7c373d68fd287c093381b7bbfec1d98911a691533bae2f6e4addf",
+      "after": "59e52354d4b7c373d68fd287c093381b7bbfec1d98911a691533bae2f6e4addf"
+    },
+    {
+      "path": "apps/api/src/weather/weather-cache.ts",
+      "before": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+      "after": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868"
+    },
+    {
+      "path": "apps/api/src/weather/weather-http.ts",
+      "before": "e729bcd5396b54c0c5a6b19696995fee56996cac747d05f88e1f5267efe51bd6",
+      "after": "e729bcd5396b54c0c5a6b19696995fee56996cac747d05f88e1f5267efe51bd6"
+    },
+    {
+      "path": "apps/api/src/weather/weather-maintenance.ts",
+      "before": "110f753c4dbfc12db3f7dca982d166c2c6769df261a587309709bc87964dbf37",
+      "after": "110f753c4dbfc12db3f7dca982d166c2c6769df261a587309709bc87964dbf37"
+    },
+    {
+      "path": "apps/api/src/weather/weather-normalize.ts",
+      "before": "6751bfea927d5d1307f8ffda91b377352862e3dafea2ff163032af991fa4d0b8",
+      "after": "6751bfea927d5d1307f8ffda91b377352862e3dafea2ff163032af991fa4d0b8"
+    },
+    {
+      "path": "apps/api/src/weather/weather-policy.ts",
+      "before": "7addf05587dd3518742f1aece7656b4f3d78f94561a6e5802ced2f08e12b3d0f",
+      "after": "7addf05587dd3518742f1aece7656b4f3d78f94561a6e5802ced2f08e12b3d0f"
+    },
+    {
+      "path": "apps/api/src/weather/weather-ports.ts",
+      "before": "0dee2c1b93c78a04b608bbba436c62f6752f9da676c2cf80eef9ff5bb87c46c3",
+      "after": "0dee2c1b93c78a04b608bbba436c62f6752f9da676c2cf80eef9ff5bb87c46c3"
+    },
+    {
+      "path": "apps/api/src/weather/weather-sampler.ts",
+      "before": "7352f9813c810dae2147b4507fddb1ad16ee7b0963313b6bba4a91920694ba13",
+      "after": "7352f9813c810dae2147b4507fddb1ad16ee7b0963313b6bba4a91920694ba13"
+    },
+    {
+      "path": "apps/api/src/weather/weather-spatial.ts",
+      "before": "520cf793a9fd3011ef3d54c823f2d137e128d4805be426985591935eef42bd2e",
+      "after": "520cf793a9fd3011ef3d54c823f2d137e128d4805be426985591935eef42bd2e"
+    },
+    {
+      "path": "apps/api/src/weather/weather.controller.ts",
+      "before": "959535f3b1fc28969d11c1f0b3fbd81483b73d93d469da635a52675d4aa4b439",
+      "after": "959535f3b1fc28969d11c1f0b3fbd81483b73d93d469da635a52675d4aa4b439"
+    },
+    {
+      "path": "apps/api/src/weather/weather.module.ts",
+      "before": "826a0d4b493c541c9e2545b6925cb8429ce6bbbb8a03ab72f747393d263a5206",
+      "after": "826a0d4b493c541c9e2545b6925cb8429ce6bbbb8a03ab72f747393d263a5206"
+    },
+    {
+      "path": "apps/api/src/weather/weather.service.ts",
+      "before": "7e3f730dc967622956e0d9fa31c4d65b30f41a9c38ee2f98e7d953ad239122e2",
+      "after": "7e3f730dc967622956e0d9fa31c4d65b30f41a9c38ee2f98e7d953ad239122e2"
+    },
+    {
+      "path": "apps/api/tsconfig.build.json",
+      "before": "5e4d564295dff25c182d0a146ac1d696d21c43c81b21286e547f627f056fe9fd",
+      "after": "5e4d564295dff25c182d0a146ac1d696d21c43c81b21286e547f627f056fe9fd"
+    },
+    {
+      "path": "apps/api/tsconfig.json",
+      "before": "06b881983c09c55339a5827afd163f6d531a216a838600247669ee59e6551585",
+      "after": "06b881983c09c55339a5827afd163f6d531a216a838600247669ee59e6551585"
+    },
+    {
+      "path": "apps/mobile/.env.example",
+      "before": "86bb2e93ed6f182982ed93474e1862fa34521e697a14a022dd31095248233877",
+      "after": "86bb2e93ed6f182982ed93474e1862fa34521e697a14a022dd31095248233877"
+    },
+    {
+      "path": "apps/mobile/App.tsx",
+      "before": "35e4fa51ad9b7a6745223f943871319302b3e5d811d98e13c136d45e983e195a",
+      "after": "35e4fa51ad9b7a6745223f943871319302b3e5d811d98e13c136d45e983e195a"
+    },
+    {
+      "path": "apps/mobile/app.json",
+      "before": "5fa3b5a5adf388e55e36aa1e605f2e0e824eba37bf5d5732d12b21817510d569",
+      "after": "5fa3b5a5adf388e55e36aa1e605f2e0e824eba37bf5d5732d12b21817510d569"
+    },
+    {
+      "path": "apps/mobile/index.ts",
+      "before": "ca1fd25790b69d2ba5ccdf1239dd70d1a3abf9df8a59083688cb095af8554286",
+      "after": "ca1fd25790b69d2ba5ccdf1239dd70d1a3abf9df8a59083688cb095af8554286"
+    },
+    {
+      "path": "apps/mobile/package.json",
+      "before": "d94224376aff223ed6dcc6422f3d97220b33b759412e070ee759b5ff6c65f672",
+      "after": "d94224376aff223ed6dcc6422f3d97220b33b759412e070ee759b5ff6c65f672"
+    },
+    {
+      "path": "apps/mobile/scripts/test.cjs",
+      "before": "325c446192d064ea0cadbd75d6fe728f5d07832f82814d9f38fd02f03522495c",
+      "after": "325c446192d064ea0cadbd75d6fe728f5d07832f82814d9f38fd02f03522495c"
+    },
+    {
+      "path": "apps/mobile/src/api/catalogue.ts",
+      "before": "7733fe9e2b8414a6bef564e6ccfc4b9417ea0029c8cf54662f01bf5ff3dc76b7",
+      "after": "7733fe9e2b8414a6bef564e6ccfc4b9417ea0029c8cf54662f01bf5ff3dc76b7"
+    },
+    {
+      "path": "apps/mobile/src/api/planning.ts",
+      "before": "95ea03aeb5bdb635df020b30d7579143cf4ef9c284e35e6d6868f1a1a2b81cff",
+      "after": "95ea03aeb5bdb635df020b30d7579143cf4ef9c284e35e6d6868f1a1a2b81cff"
+    },
+    {
+      "path": "apps/mobile/src/features/map/MapCanvas.tsx",
+      "before": "4c959b97795a8f2f71f3913ebc9276818d26e215aca568ff1506a470fc2ad9de",
+      "after": "4c959b97795a8f2f71f3913ebc9276818d26e215aca568ff1506a470fc2ad9de"
+    },
+    {
+      "path": "apps/mobile/src/features/map/RouteSheet.tsx",
+      "before": "752f99a9c1b9ec5f24e3e04dbd8d8b33a02a715c8148018db3d0f02b1310bb49",
+      "after": "752f99a9c1b9ec5f24e3e04dbd8d8b33a02a715c8148018db3d0f02b1310bb49"
+    },
+    {
+      "path": "apps/mobile/src/features/map/station-presentation.ts",
+      "before": "8f33a12d637e4117fa9e1412b9e6f8cad48f0d59ec0349ab7b536c03c0ffbc41",
+      "after": "8f33a12d637e4117fa9e1412b9e6f8cad48f0d59ec0349ab7b536c03c0ffbc41"
+    },
+    {
+      "path": "apps/mobile/src/features/navigation/NavigationPanel.tsx",
+      "before": "f901a1cae0512f12a0dd1795d937a588348b671a1c12d07d69926eb1ec60aa91",
+      "after": "f901a1cae0512f12a0dd1795d937a588348b671a1c12d07d69926eb1ec60aa91"
+    },
+    {
+      "path": "apps/mobile/src/features/navigation/navigation-core.ts",
+      "before": "97d292effe4c71369774ddd6f66b6997a3858230b6ce6790c978070d11fbea2c",
+      "after": "97d292effe4c71369774ddd6f66b6997a3858230b6ce6790c978070d11fbea2c"
+    },
+    {
+      "path": "apps/mobile/src/features/navigation/trip-storage.ts",
+      "before": "c050ffb8796be6467b553305d844567870d65ee428f97463347eb5fc994c04fc",
+      "after": "c050ffb8796be6467b553305d844567870d65ee428f97463347eb5fc994c04fc"
+    },
+    {
+      "path": "apps/mobile/src/features/planning/ChargeSlider.tsx",
+      "before": "a1a117a7a730f442e1ed9298215b1e8c0f8db7c0267cd52f9c92757ac9ae11ff",
+      "after": "a1a117a7a730f442e1ed9298215b1e8c0f8db7c0267cd52f9c92757ac9ae11ff"
+    },
+    {
+      "path": "apps/mobile/src/features/planning/LocationPicker.tsx",
+      "before": "3aeffbf32721150ae0c7df69d623aa54e0e2fa54d4e5171d60d1b384134daa3a",
+      "after": "3aeffbf32721150ae0c7df69d623aa54e0e2fa54d4e5171d60d1b384134daa3a"
+    },
+    {
+      "path": "apps/mobile/src/features/planning/PlanningForm.tsx",
+      "before": "a5f900b5cbd3781b7be44ffaa8cde9e479ff6c586d8c32d2a35972c530400ce8",
+      "after": "a5f900b5cbd3781b7be44ffaa8cde9e479ff6c586d8c32d2a35972c530400ce8"
+    },
+    {
+      "path": "apps/mobile/src/features/planning/planning-flow.ts",
+      "before": "8ce30aa6d6cbbdea0e9fc4bc7ccc9381964b43a2d19ef5c28b757c44a404f9dc",
+      "after": "8ce30aa6d6cbbdea0e9fc4bc7ccc9381964b43a2d19ef5c28b757c44a404f9dc"
+    },
+    {
+      "path": "apps/mobile/src/features/vehicles/VehiclesScreen.tsx",
+      "before": "3fc3eb9d608bc3d840b30c7d647e2ebc44aa3954ed345ac0a4ec26cee43625e7",
+      "after": "3fc3eb9d608bc3d840b30c7d647e2ebc44aa3954ed345ac0a4ec26cee43625e7"
+    },
+    {
+      "path": "apps/mobile/src/features/vehicles/format.ts",
+      "before": "73f1ddfe9f150bb11ed945fc3dccc7e6a84b172000e5d5e003f06bc72e15626b",
+      "after": "73f1ddfe9f150bb11ed945fc3dccc7e6a84b172000e5d5e003f06bc72e15626b"
+    },
+    {
+      "path": "apps/mobile/src/features/vehicles/useActiveVehicle.ts",
+      "before": "6a10fc80d118e6e291c12bb5e6d8fdae4c2b5677327ad1e7f06cfd5360500c97",
+      "after": "6a10fc80d118e6e291c12bb5e6d8fdae4c2b5677327ad1e7f06cfd5360500c97"
+    },
+    {
+      "path": "apps/mobile/src/features/vehicles/useCatalogueQuery.ts",
+      "before": "226b08252fcc1e35750f7a6198a4551e938b4fb89a289dd43a8f99211779291d",
+      "after": "226b08252fcc1e35750f7a6198a4551e938b4fb89a289dd43a8f99211779291d"
+    },
+    {
+      "path": "apps/mobile/src/theme.ts",
+      "before": "3fa6cf0d98b4b923f423f8237d8be1373d8eb756170cd062f61ba8c29ac3a62c",
+      "after": "3fa6cf0d98b4b923f423f8237d8be1373d8eb756170cd062f61ba8c29ac3a62c"
+    },
+    {
+      "path": "apps/mobile/tests/navigation.test.cjs",
+      "before": "cf21d7cef08599cf419969e3b9b7eef6ebc91e29613a95329b1ff188060da8d9",
+      "after": "cf21d7cef08599cf419969e3b9b7eef6ebc91e29613a95329b1ff188060da8d9"
+    },
+    {
+      "path": "apps/mobile/tests/planning-flow.test.cjs",
+      "before": "191c6490b5b7b0e43cb97dba45dcf51ccf9d6382b363e4a6a18dfc83e72b1794",
+      "after": "191c6490b5b7b0e43cb97dba45dcf51ccf9d6382b363e4a6a18dfc83e72b1794"
+    },
+    {
+      "path": "apps/mobile/tsconfig.json",
+      "before": "e679e8d8b2877601073022dde2487480edccd04ffaf49e2c821cf0fd3bea88d0",
+      "after": "e679e8d8b2877601073022dde2487480edccd04ffaf49e2c821cf0fd3bea88d0"
+    },
+    {
+      "path": "data/station-sources/policy.example.json",
+      "before": "7497788f5c658314ccb8821026e01614914c3ca0049f5a77d21fd7d7a3f22054",
+      "after": "7497788f5c658314ccb8821026e01614914c3ca0049f5a77d21fd7d7a3f22054"
+    },
+    {
+      "path": "data/station-sources/policy.json",
+      "before": "da7046390795a4ca5d8fad56de12a3ee9915eff3780813f66347a2e2f5f5a4ca",
+      "after": "da7046390795a4ca5d8fad56de12a3ee9915eff3780813f66347a2e2f5f5a4ca"
+    },
+    {
+      "path": "data/validation/independent-13ev-benchmarks.json",
+      "before": "9e3d285fa7a7a68f6a38ccda4d1f011ebad49a8b268870b3efb920b6dcabefa3",
+      "after": "9e3d285fa7a7a68f6a38ccda4d1f011ebad49a8b268870b3efb920b6dcabefa3"
+    },
+    {
+      "path": "data/validation/valhalla-dem-manual-observation.json",
+      "before": "a65791a7915d0db07392ef3b4da5703d2feb5e725c6fd82da86e2b2945aa80c7",
+      "after": "a65791a7915d0db07392ef3b4da5703d2feb5e725c6fd82da86e2b2945aa80c7"
+    },
+    {
+      "path": "data/vehicle-knowledge/hyundai/LICENSE-kilowatt.txt",
+      "before": "09dff130fd847b55f28ca2b9914460445215145fdc4b9dd084eff2952113f18a",
+      "after": "09dff130fd847b55f28ca2b9914460445215145fdc4b9dd084eff2952113f18a"
+    },
+    {
+      "path": "data/vehicle-knowledge/hyundai/engineering-v1.json",
+      "before": "3e2ccffcdc1c2855dc5290ea54f2ff3599ea4550371586807e1da6d1914ba834",
+      "after": "3e2ccffcdc1c2855dc5290ea54f2ff3599ea4550371586807e1da6d1914ba834"
+    },
+    {
+      "path": "data/vehicle-knowledge/hyundai/licensed-inputs.json",
+      "before": "1e19b203d2b9654d4aad13e917f5cd6ff40029764a705b1e4aee2b5552c54bfc",
+      "after": "1e19b203d2b9654d4aad13e917f5cd6ff40029764a705b1e4aee2b5552c54bfc"
+    },
+    {
+      "path": "data/vehicle-knowledge/kilowatt-manifest.json",
+      "before": "f1e3bfb87d63512982f8567a1775a95effbf820e1326163df26953620a58f301",
+      "after": "f1e3bfb87d63512982f8567a1775a95effbf820e1326163df26953620a58f301"
+    },
+    {
+      "path": "data/vehicle-knowledge/pilots-v1.json",
+      "before": "93fab1f696ed0e1eeba5c66e9f32723bac2ae5e8ef64a06b368825a4bcf5390a",
+      "after": "93fab1f696ed0e1eeba5c66e9f32723bac2ae5e8ef64a06b368825a4bcf5390a"
+    },
+    {
+      "path": "data/vehicle-knowledge/pilots-v2-user-observations.json",
+      "before": "42e3abba9806b23d92bb161972cd77b6c7d11cdd1e6c70f3017c97a962294016",
+      "after": "42e3abba9806b23d92bb161972cd77b6c7d11cdd1e6c70f3017c97a962294016"
+    },
+    {
+      "path": "data/vehicle-knowledge/pilots-v4-istanbul-ankara-observation.json",
+      "before": "1700eb3658edb55ac56816a0ca87a49116f43511807b28f5a7603fb320d04a77",
+      "after": "1700eb3658edb55ac56816a0ca87a49116f43511807b28f5a7603fb320d04a77"
+    },
+    {
+      "path": "docker-compose.yml",
+      "before": "aa4747c754a93feeeddb930cb878fe71285fee829baa0f2dbe3e4f89c36055b4",
+      "after": "aa4747c754a93feeeddb930cb878fe71285fee829baa0f2dbe3e4f89c36055b4"
+    },
+    {
+      "path": "docs/ARCHITECTURE_DECISIONS.md",
+      "before": "75a8141bb3285f123951134270dde4b4a340966523712100f9efe6f48080c7f7",
+      "after": "75a8141bb3285f123951134270dde4b4a340966523712100f9efe6f48080c7f7"
+    },
+    {
+      "path": "docs/CHARGING_ENGINE.md",
+      "before": "dae1b2446ce7ddda53d0aecbd71773bd86a762ede5d0b8cd44f50f6b102e1978",
+      "after": "dae1b2446ce7ddda53d0aecbd71773bd86a762ede5d0b8cd44f50f6b102e1978"
+    },
+    {
+      "path": "docs/DATA_ARCHITECTURE.md",
+      "before": "3758ba4e73ccd085f4ee11cb6480a1c813936538d410ca56ed881a98136746a5",
+      "after": "3758ba4e73ccd085f4ee11cb6480a1c813936538d410ca56ed881a98136746a5"
+    },
+    {
+      "path": "docs/DOMAIN_CONTRACTS.md",
+      "before": "4620100b3c56ada7bfb0cdec2aaf3acbda9653abd9cf1c59add17d0a2cbb1aaa",
+      "after": "4620100b3c56ada7bfb0cdec2aaf3acbda9653abd9cf1c59add17d0a2cbb1aaa"
+    },
+    {
+      "path": "docs/ENERGY_ENGINE.md",
+      "before": "46cefa9a46fe17c0e083644563822b44cb4dcf3634098b30ff919e6f091124a2",
+      "after": "46cefa9a46fe17c0e083644563822b44cb4dcf3634098b30ff919e6f091124a2"
+    },
+    {
+      "path": "docs/HYUNDAI_AND_MAP_FEEDBACK.md",
+      "before": "3e4a4715e23ca2ad7bbe0d14c7a22a25b6f32a40226978ebbd1427e0d118e497",
+      "after": "3e4a4715e23ca2ad7bbe0d14c7a22a25b6f32a40226978ebbd1427e0d118e497"
+    },
+    {
+      "path": "docs/INDEPENDENT_DATASET_VALIDATION.md",
+      "before": "bf2189f762848d57b8b07e999e58fae249cdb5356514f72d1caafb90a02fd368",
+      "after": "bf2189f762848d57b8b07e999e58fae249cdb5356514f72d1caafb90a02fd368"
+    },
+    {
+      "path": "docs/MOBILE_PLANNING.md",
+      "before": "bdd66fc67329ec938ba16c3881a8fd0b87762e6f68fa9d78f07735c804d79e90",
+      "after": "bdd66fc67329ec938ba16c3881a8fd0b87762e6f68fa9d78f07735c804d79e90"
+    },
+    {
+      "path": "docs/OCM_VALIDATION.md",
+      "before": "95e571f1059cbd4354068c6722bd72b167cced649921480919b091af765ac7be",
+      "after": "95e571f1059cbd4354068c6722bd72b167cced649921480919b091af765ac7be"
+    },
+    {
+      "path": "docs/OPEN_CHARGE_MAP_RESEARCH.md",
+      "before": "af4dee08ab511d501e7b449058ce97b668bd96a1ee446ed891fb793f516eaa57",
+      "after": "af4dee08ab511d501e7b449058ce97b668bd96a1ee446ed891fb793f516eaa57"
+    },
+    {
+      "path": "docs/PERSONALIZED_ENERGY_DATA.md",
+      "before": "96f9c48d43d9c1c5d7239642509e765384dd87f70f2e32cf5657997580c22118",
+      "after": "96f9c48d43d9c1c5d7239642509e765384dd87f70f2e32cf5657997580c22118"
+    },
+    {
+      "path": "docs/PILOT_VALIDATION.md",
+      "before": "ec8094dd0a9b192e4993ec8aa627f37c2dd4b1e8e20e791ca10798e8faf3043a",
+      "after": "ec8094dd0a9b192e4993ec8aa627f37c2dd4b1e8e20e791ca10798e8faf3043a"
+    },
+    {
+      "path": "docs/PLANNING_API.md",
+      "before": "12df4391bf4c03a528e55bc146c4486d125468c4e2b1b3896adae1183e47a431",
+      "after": "12df4391bf4c03a528e55bc146c4486d125468c4e2b1b3896adae1183e47a431"
+    },
+    {
+      "path": "docs/PRODUCT_SCOPE.md",
+      "before": "4d822102b8e8ffeb35596bb3bec42df69ca3291bc7018e9bfcc888b2790aae07",
+      "after": "4d822102b8e8ffeb35596bb3bec42df69ca3291bc7018e9bfcc888b2790aae07"
+    },
+    {
+      "path": "docs/PROJECT_STATUS.md",
+      "before": "b37a0b28b4b0534dc1d0e51d35967e03e109a8a26a50f37204d9c3110edad172",
+      "after": "b37a0b28b4b0534dc1d0e51d35967e03e109a8a26a50f37204d9c3110edad172"
+    },
+    {
+      "path": "docs/PROVIDER_BOUNDARIES.md",
+      "before": "3e48dc8cba08180fe555a34c85fe556d448c96d149207681a48da1e31289e8db",
+      "after": "3e48dc8cba08180fe555a34c85fe556d448c96d149207681a48da1e31289e8db"
+    },
+    {
+      "path": "docs/RATE_LIMITING.md",
+      "before": "4428ec32da8c06814ccef78676793528bcb247f909ff3bf10e3fc37e770116f9",
+      "after": "4428ec32da8c06814ccef78676793528bcb247f909ff3bf10e3fc37e770116f9"
+    },
+    {
+      "path": "docs/README.md",
+      "before": "e194ebc223a08ed766e26811b80d996eb42f95c585339136ad46e9adbce5886b",
+      "after": "e194ebc223a08ed766e26811b80d996eb42f95c585339136ad46e9adbce5886b"
+    },
+    {
+      "path": "docs/REFERENCE_VALIDATION.md",
+      "before": "296754d1ace8be32510219f35e16ba9bdc059fd3759680bfb219b3fbfeae57b5",
+      "after": "296754d1ace8be32510219f35e16ba9bdc059fd3759680bfb219b3fbfeae57b5"
+    },
+    {
+      "path": "docs/ROAD_PROVIDERS.md",
+      "before": "33e239ffe23a7a902778896c7a6db0de3f77f3338b2a398cdcbd40daceee224f",
+      "after": "33e239ffe23a7a902778896c7a6db0de3f77f3338b2a398cdcbd40daceee224f"
+    },
+    {
+      "path": "docs/ROUTING_ENGINE.md",
+      "before": "5262fe6979f9d69f0af3c2bf065c9d0228e31757476c620c548a2fea535ebd59",
+      "after": "5262fe6979f9d69f0af3c2bf065c9d0228e31757476c620c548a2fea535ebd59"
+    },
+    {
+      "path": "docs/STATION_CATALOGUE.md",
+      "before": "7636a41fc681bf13b7d5bd102c0e8176945672a230503bcd7297722ddae7828a",
+      "after": "7636a41fc681bf13b7d5bd102c0e8176945672a230503bcd7297722ddae7828a"
+    },
+    {
+      "path": "docs/STATION_PROVIDERS.md",
+      "before": "92477f7be6aebdc28507b065c22f638ed5bbc2765e8eb45fa8a1a8c745cbf019",
+      "after": "92477f7be6aebdc28507b065c22f638ed5bbc2765e8eb45fa8a1a8c745cbf019"
+    },
+    {
+      "path": "docs/STATION_SOURCE_RESEARCH.md",
+      "before": "472155472ac6cae42f0f915eabdd408d04c7e0f2da2807328d713e970659a6ce",
+      "after": "472155472ac6cae42f0f915eabdd408d04c7e0f2da2807328d713e970659a6ce"
+    },
+    {
+      "path": "docs/STOP_OPTIMIZER.md",
+      "before": "49614f19d4f312caddd4682c93122aa8166dda09df7139efc9441b1f865cc629",
+      "after": "49614f19d4f312caddd4682c93122aa8166dda09df7139efc9441b1f865cc629"
+    },
+    {
+      "path": "docs/TASKS.md",
+      "before": "a258a73791c0acf202d44d0b90085022bf6a25055b4463d2126a64eff0b4a9a7",
+      "after": "00f5e786ef209e6f0148143ddbfa8627cfea48ab95a970a94a6357926d0cdf90"
+    },
+    {
+      "path": "docs/TASK_006_PREPARATION.md",
+      "before": "977d03eccc8c0beb5719e37f9784431167b590e02f4fde59bbe28fda00529212",
+      "after": "977d03eccc8c0beb5719e37f9784431167b590e02f4fde59bbe28fda00529212"
+    },
+    {
+      "path": "docs/TASK_007_PREPARATION.md",
+      "before": "58d3c8f6dbb8e48d371e1cbf2c86e67bf4602754ceec7ac2add23d6539fd50b0",
+      "after": "58d3c8f6dbb8e48d371e1cbf2c86e67bf4602754ceec7ac2add23d6539fd50b0"
+    },
+    {
+      "path": "docs/TASK_008_PREPARATION.md",
+      "before": "f0185b2d07937e136605186fa755679967868be79f61f4c5a96c8086f03a8d7a",
+      "after": "f0185b2d07937e136605186fa755679967868be79f61f4c5a96c8086f03a8d7a"
+    },
+    {
+      "path": "docs/TASK_009_PREPARATION.md",
+      "before": "1e7b6a6afae8e42d968f65f08071f36453a8a37ab86694facc586c0b23ec5472",
+      "after": "1e7b6a6afae8e42d968f65f08071f36453a8a37ab86694facc586c0b23ec5472"
+    },
+    {
+      "path": "docs/TASK_010_PREPARATION.md",
+      "before": "e613544f246b14c904b3a03d13fd1794d82a53ee4dccde754a80f1a86e8e3f23",
+      "after": "e613544f246b14c904b3a03d13fd1794d82a53ee4dccde754a80f1a86e8e3f23"
+    },
+    {
+      "path": "docs/TASK_013_PREPARATION.md",
+      "before": "e5ce333e376aadd0b3a60a550dc2e3c92d9df40d128e8aae28b408f6af4b980c",
+      "after": "e5ce333e376aadd0b3a60a550dc2e3c92d9df40d128e8aae28b408f6af4b980c"
+    },
+    {
+      "path": "docs/V1_RELEASE_BACKLOG.md",
+      "before": "dd3e40920bd6687eba3c5ab10b2ae415a4c688b48cea10004dc09b223eb4ad7d",
+      "after": "dd3e40920bd6687eba3c5ab10b2ae415a4c688b48cea10004dc09b223eb4ad7d"
+    },
+    {
+      "path": "docs/VEHICLE_CATALOGUE.md",
+      "before": "26d7ce95c90fc170d813e54ccea44b8a167c25f8d6e919f82dd80b3f697fb7b1",
+      "after": "26d7ce95c90fc170d813e54ccea44b8a167c25f8d6e919f82dd80b3f697fb7b1"
+    },
+    {
+      "path": "docs/VEHICLE_KNOWLEDGE.md",
+      "before": "ca84fcaae3a657871af351b3fb2a1b3aa64fc25ee8f68f933c055ac48bdd5c1c",
+      "after": "ca84fcaae3a657871af351b3fb2a1b3aa64fc25ee8f68f933c055ac48bdd5c1c"
+    },
+    {
+      "path": "docs/WEATHER_PROVIDERS.md",
+      "before": "f62a84c13ea7f3f31f03f6da21d4145cb119d3767f5a7b39268c926ef81cd8e2",
+      "after": "f62a84c13ea7f3f31f03f6da21d4145cb119d3767f5a7b39268c926ef81cd8e2"
+    },
+    {
+      "path": "docs/WEATHER_REVIEW_2026_11.md",
+      "before": "743f890a6b87f4a0fcaad9d247da42ceb78d7e21cf394a4473a05856e3931672",
+      "after": "743f890a6b87f4a0fcaad9d247da42ceb78d7e21cf394a4473a05856e3931672"
+    },
+    {
+      "path": "docs/adr/000-template.md",
+      "before": "f57b0169ff8ebd72a763887c9482af9b8ef97dec6fddbb63473096b63edd51d9",
+      "after": "f57b0169ff8ebd72a763887c9482af9b8ef97dec6fddbb63473096b63edd51d9"
+    },
+    {
+      "path": "docs/adr/001-vehicle-catalogue.md",
+      "before": "d973fcbc67efeee4819fe887653c5003039e38e4df4c8087ff2442a70ad1bfc3",
+      "after": "d973fcbc67efeee4819fe887653c5003039e38e4df4c8087ff2442a70ad1bfc3"
+    },
+    {
+      "path": "docs/adr/002-account-garage-history.md",
+      "before": "94c269658c076572b3699e3ab85500d06f94a3a6dfe0742738bc76bf6be54a9f",
+      "after": "94c269658c076572b3699e3ab85500d06f94a3a6dfe0742738bc76bf6be54a9f"
+    },
+    {
+      "path": "docs/adr/003-shared-security-state.md",
+      "before": "1a9a18d61e23c0af3a0fc75f909d2be92b1722845ad74bd831bb817b34c7c747",
+      "after": "1a9a18d61e23c0af3a0fc75f909d2be92b1722845ad74bd831bb817b34c7c747"
+    },
+    {
+      "path": "docs/adr/004-vehicle-identity-and-data-quality.md",
+      "before": "cc5a5ad24680072757fa656d0ab795d0fa202baf139e29d797b408070c9fecbe",
+      "after": "cc5a5ad24680072757fa656d0ab795d0fa202baf139e29d797b408070c9fecbe"
+    },
+    {
+      "path": "docs/adr/005-station-catalogue-policy.md",
+      "before": "1526d58b120035f41910033b3e77859284ee9143fb206bf3037109992ce7013b",
+      "after": "1526d58b120035f41910033b3e77859284ee9143fb206bf3037109992ce7013b"
+    },
+    {
+      "path": "docs/adr/006-live-availability-provider-boundary.md",
+      "before": "0136e516d062596b45ace5bad61199866550686223f77b53ed1c281c077e4a6a",
+      "after": "0136e516d062596b45ace5bad61199866550686223f77b53ed1c281c077e4a6a"
+    },
+    {
+      "path": "docs/adr/007-road-provider-pilot.md",
+      "before": "f70bf915181ac84b804b5143584f69fa89f661eee8ddd71eedbba28b6c31d0a1",
+      "after": "f70bf915181ac84b804b5143584f69fa89f661eee8ddd71eedbba28b6c31d0a1"
+    },
+    {
+      "path": "docs/adr/008-weather-provider-and-planning-policy.md",
+      "before": "332aa247ac65dafeb51366c9c6e40f85451991dba788870cf03a9a952ea503ef",
+      "after": "332aa247ac65dafeb51366c9c6e40f85451991dba788870cf03a9a952ea503ef"
+    },
+    {
+      "path": "docs/adr/009-energy-evaluation-and-calibration.md",
+      "before": "9a17d902ff26699a6bfe3eb481e745bf9bf3dcefa65b260534a85c34febf34b3",
+      "after": "9a17d902ff26699a6bfe3eb481e745bf9bf3dcefa65b260534a85c34febf34b3"
+    },
+    {
+      "path": "docs/adr/009-in-app-navigation-and-self-hosted-routing.md",
+      "before": "cdbf0be89b6576ad5c43fd384a6bf996a3ed9d82eefc3bcca5db734688eb2249",
+      "after": "cdbf0be89b6576ad5c43fd384a6bf996a3ed9d82eefc3bcca5db734688eb2249"
+    },
+    {
+      "path": "docs/adr/010-dc-charging-curve-integration.md",
+      "before": "c8aaabbd44a8e0ef87aa4b55701ded5b5c5e720d25e51c5ae8457a4fe0f5d2bf",
+      "after": "c8aaabbd44a8e0ef87aa4b55701ded5b5c5e720d25e51c5ae8457a4fe0f5d2bf"
+    },
+    {
+      "path": "docs/adr/011-planning-objectives-and-conditional-time.md",
+      "before": "32699b063adbdefc7499fb23a81ae1266414402cfdeed0da7ae6bcbafc519d41",
+      "after": "32699b063adbdefc7499fb23a81ae1266414402cfdeed0da7ae6bcbafc519d41"
+    },
+    {
+      "path": "docs/adr/012-public-planning-api-and-admission.md",
+      "before": "85818329c6de0e6a996de11d14847e4d15c119bf380a5b9d00b47ad2999fae76",
+      "after": "85818329c6de0e6a996de11d14847e4d15c119bf380a5b9d00b47ad2999fae76"
+    },
+    {
+      "path": "docs/adr/013-mobile-planning-and-road-preview.md",
+      "before": "d9cb943ada996c1cf447d1a3073a37b44fc76919905798b4fe7d9b51c5083087",
+      "after": "d9cb943ada996c1cf447d1a3073a37b44fc76919905798b4fe7d9b51c5083087"
+    },
+    {
+      "path": "docs/adr/014-managed-road-jobs-and-foreground-navigation.md",
+      "before": "33affec91648a51310cd2022b543ca8c3a3f0ded9ffdf0f77b02b8a00bce476a",
+      "after": "33affec91648a51310cd2022b543ca8c3a3f0ded9ffdf0f77b02b8a00bce476a"
+    },
+    {
+      "path": "docs/api/planning-error.schema.json",
+      "before": "01328bc8a60154046e526a3215aa8751fc32769d79a96d68dae343925d554e00",
+      "after": "01328bc8a60154046e526a3215aa8751fc32769d79a96d68dae343925d554e00"
+    },
+    {
+      "path": "docs/api/planning-request.schema.json",
+      "before": "fa180bd35bd65d6f970c87fea0392edf80d28bf7e9b3d049f65143434dbbfbaf",
+      "after": "fa180bd35bd65d6f970c87fea0392edf80d28bf7e9b3d049f65143434dbbfbaf"
+    },
+    {
+      "path": "docs/api/planning-response.schema.json",
+      "before": "dd8bc689cbf52448c8605a7619b7e123c926e0a1ec9c3a71aaa25c1fee2dfc1d",
+      "after": "dd8bc689cbf52448c8605a7619b7e123c926e0a1ec9c3a71aaa25c1fee2dfc1d"
+    },
+    {
+      "path": "docs/schema/personal-energy.draft.sql",
+      "before": "5c007e68ccbbd66281959b2e1d460a082cfa99905afce772bddebbb70b731671",
+      "after": "5c007e68ccbbd66281959b2e1d460a082cfa99905afce772bddebbb70b731671"
+    },
+    {
+      "path": "docs/tasks/valhalla-dem-integration-hardening.md",
+      "before": "ff05fc3c344e745176c4098b5d926a173f3199d92b5f717120c6ee1668f80519",
+      "after": "ff05fc3c344e745176c4098b5d926a173f3199d92b5f717120c6ee1668f80519"
+    },
+    {
+      "path": "docs/validation/async-planning-live-warm.json",
+      "before": "a0e35e27fd484dae50ca1ed656deb41919b52710340b28b8e0d1851a8b0e79c3",
+      "after": "a0e35e27fd484dae50ca1ed656deb41919b52710340b28b8e0d1851a8b0e79c3"
+    },
+    {
+      "path": "docs/validation/async-planning-live.json",
+      "before": "62db5e9a4a30597be91d049550ad9f57f1d7dd362ab8053a491f698b34ad177f",
+      "after": "62db5e9a4a30597be91d049550ad9f57f1d7dd362ab8053a491f698b34ad177f"
+    },
+    {
+      "path": "docs/validation/energy-input-budget-2026-11-12.md",
+      "before": "2ac29a765b5d53898d69d25103edcfa5d94981d20a20d7bd8cb431a98c532a56",
+      "after": "2ac29a765b5d53898d69d25103edcfa5d94981d20a20d7bd8cb431a98c532a56"
+    },
+    {
+      "path": "docs/validation/geoapify-pilot.json",
+      "before": "9a79c438a0aec65d79436e773266fae0c865fee68e8abff87e5fa519551fe38a",
+      "after": "9a79c438a0aec65d79436e773266fae0c865fee68e8abff87e5fa519551fe38a"
+    },
+    {
+      "path": "docs/validation/hyundai-live-planning.json",
+      "before": "52d66db16b5d70c60952dc678ce1ac857ad50a1acd6cd7aab879911769e39d26",
+      "after": "52d66db16b5d70c60952dc678ce1ac857ad50a1acd6cd7aab879911769e39d26"
+    },
+    {
+      "path": "docs/validation/hyundai-profile-coverage.json",
+      "before": "27d7e9872a7082590e4566e46f8eb40e002f58e799bc1682068e322cb6ce0358",
+      "after": "27d7e9872a7082590e4566e46f8eb40e002f58e799bc1682068e322cb6ce0358"
+    },
+    {
+      "path": "docs/validation/independent-13ev-validation.json",
+      "before": "36cbdd4951ddd9e7918514b51e512c5f93893523f87637dd0a54cf98ac312341",
+      "after": "36cbdd4951ddd9e7918514b51e512c5f93893523f87637dd0a54cf98ac312341"
+    },
+    {
+      "path": "docs/validation/istanbul-ankara-diagnostic-2026-11-12.md",
+      "before": "3ee53ca5aafb85a5065b3d8e49cd5e874e0c471ad56f4d38a245e3ac324c2319",
+      "after": "3ee53ca5aafb85a5065b3d8e49cd5e874e0c471ad56f4d38a245e3ac324c2319"
+    },
+    {
+      "path": "docs/validation/managed-routing-navigation-2026-11-12.md",
+      "before": "b991ca0fe85df0fe5c12105b54809afbe3413d8af29cb2b9a81467dab92069f3",
+      "after": "b991ca0fe85df0fe5c12105b54809afbe3413d8af29cb2b9a81467dab92069f3"
+    },
+    {
+      "path": "docs/validation/reference-run-2026-11-10.json",
+      "before": "e89bfda777b3d049db5831342c94ef763a75d82c72206d48ea8f3d4af64b1756",
+      "after": "e89bfda777b3d049db5831342c94ef763a75d82c72206d48ea8f3d4af64b1756"
+    },
+    {
+      "path": "docs/validation/task10-weather-benchmark.json",
+      "before": "1306690eacbd507bf530db72f757302820c4f545322e66c3f4180e71507b35aa",
+      "after": "1306690eacbd507bf530db72f757302820c4f545322e66c3f4180e71507b35aa"
+    },
+    {
+      "path": "docs/validation/task10-weather-validation.json",
+      "before": "6763babf18cc1dd7fd5584be694184e1c2a07530a4da1d3d91d6bf806082f55a",
+      "after": "6763babf18cc1dd7fd5584be694184e1c2a07530a4da1d3d91d6bf806082f55a"
+    },
+    {
+      "path": "docs/validation/task11-energy-benchmark.json",
+      "before": "0d7519c7a8694de53fccd824656760a23ed4ed6f472bd21321f6205a1a53f7e6",
+      "after": "0d7519c7a8694de53fccd824656760a23ed4ed6f472bd21321f6205a1a53f7e6"
+    },
+    {
+      "path": "docs/validation/task11-energy-validation.json",
+      "before": "6cb4e74af4e5259b05cebb011a5553d8ed547a1d8bdd8dd972c9f2a8ce94a3ec",
+      "after": "6cb4e74af4e5259b05cebb011a5553d8ed547a1d8bdd8dd972c9f2a8ce94a3ec"
+    },
+    {
+      "path": "docs/validation/task12-charging-benchmark.json",
+      "before": "020fdf5264a352b369e2276199cf416ccc39e31476b024ec4e08c8dc4e7e58c7",
+      "after": "020fdf5264a352b369e2276199cf416ccc39e31476b024ec4e08c8dc4e7e58c7"
+    },
+    {
+      "path": "docs/validation/task12-charging-validation.json",
+      "before": "e2227d09fb5cba95483db974072b545668646f7b3b5a65debbd0b78d0d388c07",
+      "after": "e2227d09fb5cba95483db974072b545668646f7b3b5a65debbd0b78d0d388c07"
+    },
+    {
+      "path": "docs/validation/task13-optimizer-benchmark.json",
+      "before": "6326a8bdb13df12ad69f4122566aa4672fcde810b6225021b208b13b996e6577",
+      "after": "6326a8bdb13df12ad69f4122566aa4672fcde810b6225021b208b13b996e6577"
+    },
+    {
+      "path": "docs/validation/task13-optimizer-validation.json",
+      "before": "fc32ff568fd51e4ada91b6c9e1cb8ada3d6c625077a9373ba7fdc758ebd0f454",
+      "after": "fc32ff568fd51e4ada91b6c9e1cb8ada3d6c625077a9373ba7fdc758ebd0f454"
+    },
+    {
+      "path": "docs/validation/task14-planning-http-validation.json",
+      "before": "dd2e1be3fe84352408d8022a7c370db3caa2e09d42e4631f22c52efeb9709aa6",
+      "after": "dd2e1be3fe84352408d8022a7c370db3caa2e09d42e4631f22c52efeb9709aa6"
+    },
+    {
+      "path": "docs/validation/task15-mobile-http-validation.json",
+      "before": "a0ead548ad7d7147f396c910ad133d2500d4f4684687f2301084ce0cee80d965",
+      "after": "a0ead548ad7d7147f396c910ad133d2500d4f4684687f2301084ce0cee80d965"
+    },
+    {
+      "path": "docs/validation/task6-data-coverage.json",
+      "before": "f1f939ef64cffb6b0626bd22dcea4081cc6da4fc287224b78f9e5c52c45d6b07",
+      "after": "f1f939ef64cffb6b0626bd22dcea4081cc6da4fc287224b78f9e5c52c45d6b07"
+    },
+    {
+      "path": "docs/validation/task6-db-benchmark.json",
+      "before": "a2761dd4b7c2423670053886cddc153fb7ee1c78f8bb3d0cae499eb9a5e0a57a",
+      "after": "a2761dd4b7c2423670053886cddc153fb7ee1c78f8bb3d0cae499eb9a5e0a57a"
+    },
+    {
+      "path": "docs/validation/task6-http-check.json",
+      "before": "10b356f875a93147cfb7cc8fabf2021c4414b63ac144d45cf9be1c6d3c839321",
+      "after": "10b356f875a93147cfb7cc8fabf2021c4414b63ac144d45cf9be1c6d3c839321"
+    },
+    {
+      "path": "docs/validation/task7-http-check.json",
+      "before": "9b947f16a518fefdd266cb7406a4e37d7e4c38e6c7baf4d1310ab6e62c418cdb",
+      "after": "9b947f16a518fefdd266cb7406a4e37d7e4c38e6c7baf4d1310ab6e62c418cdb"
+    },
+    {
+      "path": "docs/validation/task7-stations-benchmark.json",
+      "before": "27fbcb7134973d575a40a5032dd31e8cbe70b259a6b62a368366fc766e6594d2",
+      "after": "27fbcb7134973d575a40a5032dd31e8cbe70b259a6b62a368366fc766e6594d2"
+    },
+    {
+      "path": "docs/validation/task8-before-import.json",
+      "before": "21f2a7795be55a5058e756d57bab67646ba85f7dd020f2c7d1525c67d03c092c",
+      "after": "21f2a7795be55a5058e756d57bab67646ba85f7dd020f2c7d1525c67d03c092c"
+    },
+    {
+      "path": "docs/validation/task8-epdk-audit.json",
+      "before": "6f999e1d985ee3be97e75342f94c586a3307a83adbbd18b79fd02b7d5f9067a3",
+      "after": "6f999e1d985ee3be97e75342f94c586a3307a83adbbd18b79fd02b7d5f9067a3"
+    },
+    {
+      "path": "docs/validation/task8-epdk-filtered-audit.json",
+      "before": "daf7b6d4bf1572abb85b212bd55e8836d650a9711a57e6bea71e6e33b7b77ac2",
+      "after": "daf7b6d4bf1572abb85b212bd55e8836d650a9711a57e6bea71e6e33b7b77ac2"
+    },
+    {
+      "path": "docs/validation/task8-epdk-station-audit.json",
+      "before": "f38f01553ad213cae407c24b7a7e085a190ffd7e07350c9d6ee205f7da98ade6",
+      "after": "f38f01553ad213cae407c24b7a7e085a190ffd7e07350c9d6ee205f7da98ade6"
+    },
+    {
+      "path": "docs/validation/task8-ocm-audit.json",
+      "before": "9933b12c86bf66e9c61b045e1863e2b10f6824379ba50a8fc340ea123ab76590",
+      "after": "9933b12c86bf66e9c61b045e1863e2b10f6824379ba50a8fc340ea123ab76590"
+    },
+    {
+      "path": "docs/validation/task8-ocm-comparison.json",
+      "before": "c683f11f2655ab74c093fe476a0c58691fdc75b5ed21e448afdf193ccdadb654",
+      "after": "c683f11f2655ab74c093fe476a0c58691fdc75b5ed21e448afdf193ccdadb654"
+    },
+    {
+      "path": "docs/validation/task8-provider-delivery.json",
+      "before": "a270ff6e530557ec85ada832b9d9d44bcc7caf368f3818e01e3045cd16adb318",
+      "after": "a270ff6e530557ec85ada832b9d9d44bcc7caf368f3818e01e3045cd16adb318"
+    },
+    {
+      "path": "docs/validation/task8-station-sample.json",
+      "before": "cd6458187e7785b4053ad5d27a5ce040291ffeb5f93b634e7dc5fa4f0a96850d",
+      "after": "cd6458187e7785b4053ad5d27a5ce040291ffeb5f93b634e7dc5fa4f0a96850d"
+    },
+    {
+      "path": "docs/validation/task8-stations-benchmark.json",
+      "before": "73e118954f43620e49f5598d4704a04e2dbed768f9ec7896ff878ad6acdd0012",
+      "after": "73e118954f43620e49f5598d4704a04e2dbed768f9ec7896ff878ad6acdd0012"
+    },
+    {
+      "path": "docs/validation/task9-road-benchmark.json",
+      "before": "de85a5df786100d9c322abbec89fffb1df81a3db36171443fe4421605bfc57e0",
+      "after": "de85a5df786100d9c322abbec89fffb1df81a3db36171443fe4421605bfc57e0"
+    },
+    {
+      "path": "docs/validation/task9-road-validation.json",
+      "before": "4a2078edc9a0b11a233cc059917d57c9837aff0406b2b3c0314215e9db85958d",
+      "after": "4a2078edc9a0b11a233cc059917d57c9837aff0406b2b3c0314215e9db85958d"
+    },
+    {
+      "path": "docs/validation/valhalla-dem-hardening-2026-11-12.md",
+      "before": "17ea09c78ba9876bdcdaee78414e2e45f841ac2fb8014b1fdd512435ab782e8c",
+      "after": "17ea09c78ba9876bdcdaee78414e2e45f841ac2fb8014b1fdd512435ab782e8c"
+    },
+    {
+      "path": "docs/validation/valhalla-dem-hardening-audit-2026-11-12.md",
+      "before": "9d79f7fc0e706a2bd1ca5728cfbcc23fad33b10ceb7ee7c701814bf155d3b39f",
+      "after": "9d79f7fc0e706a2bd1ca5728cfbcc23fad33b10ceb7ee7c701814bf155d3b39f"
+    },
+    {
+      "path": "docs/validation/valhalla-dem-live-smoke.json",
+      "before": "3ead1e20ace244a2345d021c744c08896347ecfedc97a9421f5d074a9bfc15bd",
+      "after": "3ead1e20ace244a2345d021c744c08896347ecfedc97a9421f5d074a9bfc15bd"
+    },
+    {
+      "path": "docs/validation/valhalla-dem-runtime-preserved.json",
+      "before": "6d76cea2beacb11742ceccb943b939c7686ef18d2b0224bab27df1efb435b7fd",
+      "after": "6d76cea2beacb11742ceccb943b939c7686ef18d2b0224bab27df1efb435b7fd"
+    },
+    {
+      "path": "infra/valhalla/.env.example",
+      "before": "68cb4fa3e27f04602c31c05ac81f9887be916f819286082877e152130190134e",
+      "after": "68cb4fa3e27f04602c31c05ac81f9887be916f819286082877e152130190134e"
+    },
+    {
+      "path": "infra/valhalla/README.md",
+      "before": "77e0300645f4c1aad079cdfc679a5d45e70e179039f70cf52491bd298e1a99af",
+      "after": "77e0300645f4c1aad079cdfc679a5d45e70e179039f70cf52491bd298e1a99af"
+    },
+    {
+      "path": "infra/valhalla/compose.dem.yaml",
+      "before": "166d49c4d2fcdf9e17950822d656fb28741bb2d50d69dfb25da09c4183bec04b",
+      "after": "166d49c4d2fcdf9e17950822d656fb28741bb2d50d69dfb25da09c4183bec04b"
+    },
+    {
+      "path": "infra/valhalla/compose.yaml",
+      "before": "02d25c008e28c3c1610e32552b80aa4231262f6e209a918d2f59d605d118c416",
+      "after": "02d25c008e28c3c1610e32552b80aa4231262f6e209a918d2f59d605d118c416"
+    },
+    {
+      "path": "infra/valhalla/manifest.example.json",
+      "before": "9fd83d12c085743a08c3baf6fb88430ef203d824a90b5bd0ff7d8eb727717c50",
+      "after": "9fd83d12c085743a08c3baf6fb88430ef203d824a90b5bd0ff7d8eb727717c50"
+    },
+    {
+      "path": "infra/valhalla/smoke.ps1",
+      "before": "ace22643866c94ff0b535625d0523206586acf16d4f16f26baad7d5b3daf48e1",
+      "after": "ace22643866c94ff0b535625d0523206586acf16d4f16f26baad7d5b3daf48e1"
+    },
+    {
+      "path": "package.json",
+      "before": "1aeaf0afa49a9a862e16acb7cd2a34b634bc2604471d8ed9a2954c25ce2f407c",
+      "after": "1aeaf0afa49a9a862e16acb7cd2a34b634bc2604471d8ed9a2954c25ce2f407c"
+    },
+    {
+      "path": "packages/shared/examples/planning.mjs",
+      "before": "bda32d1d8029fbd2fe96aec249e510beeb825c420456e40e2c0d578c68e51ead",
+      "after": "bda32d1d8029fbd2fe96aec249e510beeb825c420456e40e2c0d578c68e51ead"
+    },
+    {
+      "path": "packages/shared/package.json",
+      "before": "96b64e86864a0d42646edefc2ab587cd3a65e4f048a252676130141a4ad0ccd2",
+      "after": "96b64e86864a0d42646edefc2ab587cd3a65e4f048a252676130141a4ad0ccd2"
+    },
+    {
+      "path": "packages/shared/scripts/build.mjs",
+      "before": "63eaf861f281276ca1772c1c1d2f8a05dd3bdae22c1fb8e2eae429a85506ed38",
+      "after": "63eaf861f281276ca1772c1c1d2f8a05dd3bdae22c1fb8e2eae429a85506ed38"
+    },
+    {
+      "path": "packages/shared/src/contracts/capacity.ts",
+      "before": "7bdfa3bef6f3e2e16844224ca108c35eaf42803e3d961171b040facc962fe2eb",
+      "after": "7bdfa3bef6f3e2e16844224ca108c35eaf42803e3d961171b040facc962fe2eb"
+    },
+    {
+      "path": "packages/shared/src/contracts/charging-evaluation.ts",
+      "before": "cc2d6798773021fc407e32409b3d24f42295a63a5037df3e622c92dcc26b6b14",
+      "after": "cc2d6798773021fc407e32409b3d24f42295a63a5037df3e622c92dcc26b6b14"
+    },
+    {
+      "path": "packages/shared/src/contracts/charging-model.ts",
+      "before": "a4de0b6bf0b2e47376d5cf82c7d8ecf09131996077d692db44dff4472dc31fed",
+      "after": "a4de0b6bf0b2e47376d5cf82c7d8ecf09131996077d692db44dff4472dc31fed"
+    },
+    {
+      "path": "packages/shared/src/contracts/charging-stop.ts",
+      "before": "d7f5b3ce747e2f62358ca7549d4b1d8bdc3a469ef10468fae17ad8ffb16b6897",
+      "after": "d7f5b3ce747e2f62358ca7549d4b1d8bdc3a469ef10468fae17ad8ffb16b6897"
+    },
+    {
+      "path": "packages/shared/src/contracts/common.ts",
+      "before": "b06ae74670035173bd4ee51e7c1c7fe30bd404788640a6468d0b3a25bd4dac68",
+      "after": "b06ae74670035173bd4ee51e7c1c7fe30bd404788640a6468d0b3a25bd4dac68"
+    },
+    {
+      "path": "packages/shared/src/contracts/energy-evaluation.ts",
+      "before": "440b357758bd0a41bdacc0e7947005c3509f95e8f7b7e5ffd4e938ad8816f7ed",
+      "after": "440b357758bd0a41bdacc0e7947005c3509f95e8f7b7e5ffd4e938ad8816f7ed"
+    },
+    {
+      "path": "packages/shared/src/contracts/energy-feedback.ts",
+      "before": "98de7337336c7c2ca267e771e161e6c1a6e7d4ed73db6c155a1a4c5ac278752e",
+      "after": "98de7337336c7c2ca267e771e161e6c1a6e7d4ed73db6c155a1a4c5ac278752e"
+    },
+    {
+      "path": "packages/shared/src/contracts/energy-model.ts",
+      "before": "28bd708378e9eba6dbb2803a07bf32fcf028a79250f87dea993385f101742435",
+      "after": "28bd708378e9eba6dbb2803a07bf32fcf028a79250f87dea993385f101742435"
+    },
+    {
+      "path": "packages/shared/src/contracts/evaluation.ts",
+      "before": "5c276d36331b9cd0eefbc06e3b989fb7de56a867af7e44414467c88e595f539f",
+      "after": "5c276d36331b9cd0eefbc06e3b989fb7de56a867af7e44414467c88e595f539f"
+    },
+    {
+      "path": "packages/shared/src/contracts/location-search.ts",
+      "before": "a00b4225c0c06f4b6227441efc1df51796c18357bfd73278c976f639bd7ad75a",
+      "after": "a00b4225c0c06f4b6227441efc1df51796c18357bfd73278c976f639bd7ad75a"
+    },
+    {
+      "path": "packages/shared/src/contracts/optimizer.ts",
+      "before": "c765e476c8c6f8fff705559b4b6d6356bd33dd7f3aed63e2bd02ddf390b04404",
+      "after": "c765e476c8c6f8fff705559b4b6d6356bd33dd7f3aed63e2bd02ddf390b04404"
+    },
+    {
+      "path": "packages/shared/src/contracts/planning-http.ts",
+      "before": "f2726ce20052aff3f2dad51c11732a1066f7c6aa08105ddb766b1d2b967cead4",
+      "after": "f2726ce20052aff3f2dad51c11732a1066f7c6aa08105ddb766b1d2b967cead4"
+    },
+    {
+      "path": "packages/shared/src/contracts/planning-job.ts",
+      "before": "9087965a56d924740ba2d838e5582fee03662eab72dc89fe8608f372bb65678d",
+      "after": "9087965a56d924740ba2d838e5582fee03662eab72dc89fe8608f372bb65678d"
+    },
+    {
+      "path": "packages/shared/src/contracts/planning.ts",
+      "before": "05af01e3caf69dfae074b253de2d00d75c8ae3939911e8a966a3c89a720c4162",
+      "after": "05af01e3caf69dfae074b253de2d00d75c8ae3939911e8a966a3c89a720c4162"
+    },
+    {
+      "path": "packages/shared/src/contracts/request.ts",
+      "before": "7e371002481c145a09708c3621c1b6805a95f06c5f4aa2206508d6349995959d",
+      "after": "7e371002481c145a09708c3621c1b6805a95f06c5f4aa2206508d6349995959d"
+    },
+    {
+      "path": "packages/shared/src/contracts/road-access.ts",
+      "before": "b243dc8c03c14b21ed42722e67b3b85be19569bb354f4af30fcc5d04df0c7ec2",
+      "after": "b243dc8c03c14b21ed42722e67b3b85be19569bb354f4af30fcc5d04df0c7ec2"
+    },
+    {
+      "path": "packages/shared/src/contracts/road-weather.ts",
+      "before": "4b3cf425364acbd6e25bd0c8740062c3459bce658e582385910be9b3ac869b6d",
+      "after": "4b3cf425364acbd6e25bd0c8740062c3459bce658e582385910be9b3ac869b6d"
+    },
+    {
+      "path": "packages/shared/src/contracts/station-catalogue.ts",
+      "before": "685028c3e978e04fd48e1d8a10dc365d258bbfd380798884a24c2b949af0b301",
+      "after": "685028c3e978e04fd48e1d8a10dc365d258bbfd380798884a24c2b949af0b301"
+    },
+    {
+      "path": "packages/shared/src/contracts/stations.ts",
+      "before": "deb5529fd4b388763992ac2af046e32ce8ca2edfc67a3bf6ec03c4eeeb1b839b",
+      "after": "deb5529fd4b388763992ac2af046e32ce8ca2edfc67a3bf6ec03c4eeeb1b839b"
+    },
+    {
+      "path": "packages/shared/src/contracts/vehicle-energy.ts",
+      "before": "748211e9698bb09503fe652d86a725fcace994c47b6c668232f6e1acffcfcc6b",
+      "after": "748211e9698bb09503fe652d86a725fcace994c47b6c668232f6e1acffcfcc6b"
+    },
+    {
+      "path": "packages/shared/src/contracts/vehicle-knowledge.ts",
+      "before": "148d99545bbda7b49632653575c43a2c328f29f10e34af50897ad407b9556ab4",
+      "after": "148d99545bbda7b49632653575c43a2c328f29f10e34af50897ad407b9556ab4"
+    },
+    {
+      "path": "packages/shared/src/contracts/weather-route.ts",
+      "before": "1830a0649ce2e22ab2bcd055f7c1e56b0deb3bfd26fed1ee9f702ef46136e18f",
+      "after": "1830a0649ce2e22ab2bcd055f7c1e56b0deb3bfd26fed1ee9f702ef46136e18f"
+    },
+    {
+      "path": "packages/shared/src/index.ts",
+      "before": "f822dd6e7b454e0e4a0d10d83b4e1dbfea2c7776a38183b19e7332922dcb9d33",
+      "after": "f822dd6e7b454e0e4a0d10d83b4e1dbfea2c7776a38183b19e7332922dcb9d33"
+    },
+    {
+      "path": "packages/shared/src/vehicle-catalogue.ts",
+      "before": "b2d820bb43f124baa1b035c150c0b8ff72aeffe25f14fb9fe4aa294a63e06cc5",
+      "after": "b2d820bb43f124baa1b035c150c0b8ff72aeffe25f14fb9fe4aa294a63e06cc5"
+    },
+    {
+      "path": "packages/shared/tests/contracts.test.mjs",
+      "before": "12817e40e0c729e01da1a7a4b5fb1a51d0d82dbec81cff2b6d264ace085b43c4",
+      "after": "12817e40e0c729e01da1a7a4b5fb1a51d0d82dbec81cff2b6d264ace085b43c4"
+    },
+    {
+      "path": "packages/shared/tsconfig.build.json",
+      "before": "7d023b5bd4528e4d5595eded49d10c3070ba19f30d52bd5580e94a37282e6402",
+      "after": "7d023b5bd4528e4d5595eded49d10c3070ba19f30d52bd5580e94a37282e6402"
+    },
+    {
+      "path": "packages/shared/tsconfig.cjs.json",
+      "before": "991dd2bfa7fd5ead36c7ec67e34b2f1a561b7546093c1b29fedb1dfef133dfa9",
+      "after": "991dd2bfa7fd5ead36c7ec67e34b2f1a561b7546093c1b29fedb1dfef133dfa9"
+    },
+    {
+      "path": "packages/shared/tsconfig.json",
+      "before": "a3fdf3cffe19cd4be97e22233107f3b5fee8cdb136e05b1b35f49f2d679e34d6",
+      "after": "a3fdf3cffe19cd4be97e22233107f3b5fee8cdb136e05b1b35f49f2d679e34d6"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "before": "30700f404acd470c3db11c5feff5610cb02d9e1f3020d01c37bdf31716c50c3d",
+      "after": "30700f404acd470c3db11c5feff5610cb02d9e1f3020d01c37bdf31716c50c3d"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "before": "4047d12d2d1fd2e78e096cfcc2ce9f6fba81c7a43a2bdd7c12a9c3f1d96982f1",
+      "after": "4047d12d2d1fd2e78e096cfcc2ce9f6fba81c7a43a2bdd7c12a9c3f1d96982f1"
+    },
+    {
+      "path": "third_party/kilowatt-open-ev-data.LICENSE.md",
+      "before": "09dff130fd847b55f28ca2b9914460445215145fdc4b9dd084eff2952113f18a",
+      "after": "09dff130fd847b55f28ca2b9914460445215145fdc4b9dd084eff2952113f18a"
+    },
+    {
+      "path": "third_party/open-ev-data.LICENSE.md",
+      "before": "a951f9708028f03044ed67405797915672bfbd3fb636887f837baea5204de170",
+      "after": "a951f9708028f03044ed67405797915672bfbd3fb636887f837baea5204de170"
+    },
+    {
+      "path": "tsconfig.base.json",
+      "before": "e850b2ff95b6eb974d8ee47254efba063d7968b30b30f1b8f250c59755b115ee",
+      "after": "e850b2ff95b6eb974d8ee47254efba063d7968b30b30f1b8f250c59755b115ee"
+    },
+    {
+      "path": "turbo.json",
+      "before": "bf35916a9e4372419ceeb9a4ba3b810c8d5784b0bc6a4a9865af63372ed78fb9",
+      "after": "bf35916a9e4372419ceeb9a4ba3b810c8d5784b0bc6a4a9865af63372ed78fb9"
+    }
+  ]
+}

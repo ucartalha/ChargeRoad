@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-15",
+  "phaseA": "DONE",
+  "phaseB": "BLOCKED_EVIDENCE",
+  "decision": "SHADOW_ONLY",
+  "db": {
+    "initialSelect1": "ECONNREFUSED",
+    "initialDbTests": {
+      "pass": 896,
+      "connectionFailures": 150
+    },
+    "finalSelect1": "PASS",
+    "finalIsolation": "Existing test-specific schema/search_path harness; no user schema reset",
+    "servicesStartedByAgent": false
+  },
+  "final": {
+    "api": {
+      "pass": 971,
+      "skipped": 150,
+      "suitesPassed": 53,
+      "suitesSkipped": 14
+    },
+    "db": {
+      "pass": 1121,
+      "fail": 0,
+      "suitesPassed": 67
+    },
+    "shared": {
+      "pass": 41
+    },
+    "mobile": {
+      "pass": 21
+    },
+    "typecheck": "PASS",
+    "build": "PASS",
+    "targeted": {
+      "pass": 75
+    }
+  },
+  "logs": [
+    {
+      "path": "artifacts/perf005-final-api.log",
+      "sha256": "70b1ab27958d15a65fa2a84be3957867f69e6cb2ef3b70a849cd5a6817bb0e27"
+    },
+    {
+      "path": "artifacts/perf005-final-db.log",
+      "sha256": "1f211e29b234fad1100daf77742bfdebecd8ff49a61da95425aae5e5af064ca7"
+    },
+    {
+      "path": "artifacts/perf005-final-shared.log",
+      "sha256": "08524ba95ba86e345c69f32774cb2aa6a7b0c66d2af8677fa60c77d37ec28ca7"
+    },
+    {
+      "path": "artifacts/perf005-final-mobile.log",
+      "sha256": "739ba1565873ed89d780e104b0747d751f91e4d3bc154658c77ffc5b2d8fcf14"
+    },
+    {
+      "path": "artifacts/perf005-final-types.log",
+      "sha256": "2ca89b521c48b8a8bc927be951e85c803d5adb149f6ae53c5d43db85dfd33358"
+    },
+    {
+      "path": "artifacts/perf005-final-build.log",
+      "sha256": "d1dac96fca076b4764cbd63526846c619f806fa62718fe7de2971ed95c9fd39f"
+    }
+  ],
+  "smoke": {
+    "path": "docs/validation/session-repeat-smoke-2026-11-15-closure.json",
+    "sha256": "1a17c79238ff4a323b8d504012d4c4191612aed451d6d6ecc6bea5008447ed6d",
+    "comparisons": 69,
+    "equivalent": true
+  },
+  "activeReuse": false,
+  "savedProviderHttp": 0,
+  "savedEnergyEvaluations": 0,
+  "savedChargingEvaluations": 0,
+  "savedPureComputations": 0,
+  "diffCheck": "PASS",
+  "task006Started": false
+}

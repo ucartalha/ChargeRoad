@@ -11,6 +11,7 @@ import {preparationOptionsSchema} from './planning-coordinator';
 import type {PreparationOptions} from './planning-coordinator';
 import {ChargeStopOptimizer} from './charge-stop-optimizer';
 import {PlanningSession} from './planning-session';
+import {observeCandidateEligibility} from './candidate-eligibility-shadow';
 import {PlanningProviderFailure,PlanningDataLimit} from './optimizer-types';
 import {meters} from '../roads/geometry';
 import {OPTIMIZER_VERSION} from './optimizer-policy';
@@ -20,12 +21,16 @@ import {CHARGING_ALGORITHM_VERSION} from '../charging/charging-engine';
 import {catalogueStationScenario,selectCatalogueCandidates} from './catalogue-station-scenario';
 import {RoadProviderError} from '../roads/road-client';
 import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
+import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
 
 @Injectable()
 export class EvPlanningService {
   constructor(private readonly vehicles:VehicleEnergyProvider,private readonly roads:RoutingProvider,private readonly stations:StationDataProvider,
     private readonly weather:WeatherProvider,private readonly energy:EnergyConsumptionEngine,private readonly charging:ChargingCurveEngine,private readonly optimizer:ChargeStopOptimizer){}
   async plan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal=new AbortController().signal):Promise<OptimizerOutcome>{
+    return withPlanningMetrics(raw?.requestId,async()=>{try{return await this.executePlan(raw,rawPreparation,rawOptions,caller);}finally{markAbort(caller);}});
+  }
+  private async executePlan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal):Promise<OptimizerOutcome>{
     caller.throwIfAborted();let request=routePlanRequestSchema.parse(raw);const preparation=preparationOptionsSchema.parse(rawPreparation),options=optimizerOptionsSchema.parse(rawOptions);
     options.maxWeatherQueries=Math.min(options.maxWeatherQueries,preparation.maxWeatherQueries);
     const began=performance.now(),deadline=began+request.policy.maxComputationMilliseconds,evaluatedAt=new Date().toISOString();
@@ -33,10 +38,12 @@ export class EvPlanningService {
     const read=async<T>(role:string,operation:(s:AbortSignal)=>Promise<T>):Promise<T>=>{
       caller.throwIfAborted();const remaining=deadline-performance.now();if(remaining<=0)throw new PlanningDataLimit('PLANNING_PREPARATION_DEADLINE');
       const timeout=AbortSignal.timeout(Math.max(1,Math.ceil(remaining))),signal=AbortSignal.any([caller,timeout]);
+      const end=startStage(role==='VEHICLE'?'vehicle_profile':role==='ROAD'?'base_road':'station_corridor');
       try{return await new Promise<T>((resolve,reject)=>{const cancel=()=>reject(signal.reason);signal.addEventListener('abort',cancel,{once:true});
         Promise.resolve().then(()=>{signal.throwIfAborted();return operation(signal);}).then(resolve,reject).finally(()=>signal.removeEventListener('abort',cancel));});}
       catch(error){if(caller.aborted)throw caller.reason;if(timeout.aborted)throw new PlanningDataLimit('PLANNING_PREPARATION_DEADLINE');
         if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure(role+'_PROVIDER_FAILED');}
+      finally{end();}
     };
     try{
       const departureDelta=Date.parse(request.departureAt)-Date.parse(evaluatedAt);
@@ -51,7 +58,7 @@ export class EvPlanningService {
       if(request.policy.vehicleDataQuality!=='allow_engineering_estimates'&&(vehicle.dataQuality?.quality==='engineering_estimate'||vehicle.energyModel.quality==='engineering_estimate'))
         return failure('insufficient_data','ENGINEERING_ESTIMATE_NOT_ALLOWED');
       if(request.startingChargePercent<request.constraints.minimumReserveChargePercent)return failure('insufficient_data','INITIAL_RESERVE_NOT_MET');
-      const response=await read('ROAD',s=>this.roads.routes({...preparation.road,schemaVersion:'1.0.0',origin:request.origin,destination:request.destination,departureAt:request.departureAt},s));
+      const response=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,schemaVersion:'1.0.0',origin:request.origin,destination:request.destination,departureAt:request.departureAt},s);});
       const baseResult=roadRoutingResultSchema.nullable().safeParse(response.data);if(!baseResult.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
       let base=baseResult.data;if(!base)return failure('infeasible','ROAD_ROUTE_NOT_FOUND');
       if(base.routes.length>preparation.road.alternatives||base.routes.some(r=>!r.source.license))throw new PlanningProviderFailure('ROAD_PROVIDER_ENDPOINT_OR_SOURCE_INVALID');
@@ -79,12 +86,13 @@ export class EvPlanningService {
         context.candidates={candidates:request.policy.stationDataQuality==='catalogue_power_scenario'?selectCatalogueCandidates(physical,base.routes,limit):physical.slice(0,limit),metadata:structuredClone(set.metadata)};
         if(physical.length<all.length)context.candidates.metadata.coverage.completeForQuery=false;
         if(limited){context.candidates.metadata.search.truncated=true;context.candidates.metadata.coverage.completeForQuery=false;session.issues.add('STATION_CANDIDATE_LIMIT');}
+        observeCandidateEligibility(all,context);
         context.nodes=[{id:'origin',location:request.origin,stationId:null},{id:'destination',location:request.destination,stationId:null},
           ...context.candidates.candidates.map(c=>({id:c.station.id,location:c.station.location,stationId:c.station.id}))];
         const statesRemaining=options.maxStates-previousStates,transitionsRemaining=options.maxTransitions-previousTransitions;
         if(statesRemaining<=0||transitionsRemaining<=0)break;
         context.options={...options,maxStates:statesRemaining,maxTransitions:transitionsRemaining};
-        last=await this.optimizer.solve(context,session,caller);
+        last=await measureAsync('optimizer_search',()=>this.optimizer.solve(context,session,caller));
         const stageStates=last.search?.expandedStates??0,stageTransitions=last.search?.evaluatedTransitions??0;
         if(last.search){last.search.expandedStates+=previousStates;last.search.evaluatedTransitions+=previousTransitions;last.search.elapsedMilliseconds=performance.now()-began;}
         previousStates+=stageStates;previousTransitions+=stageTransitions;

@@ -4,6 +4,7 @@ import { DatabaseService } from '../database/database.service';
 import type { RoadConfig } from './road-policy';
 import type { RoadJsonClient,RoadJsonResponse } from './provider-ports';
 import {roadBudgetPolicy,roadCacheRevision} from './road-source-policy';
+import {startStage,countMetric} from '../observability/planning-metrics';
 
 export class RoadProviderError extends Error {constructor(message:string,readonly status=503,readonly retryAfterSeconds=60,
   readonly code='ROAD_PROVIDER_UNAVAILABLE'){super(message);}}
@@ -20,6 +21,7 @@ export function roadTransport(config:RoadConfig):RoadTransport{return async(url,
     address.searchParams.set('apiKey',key);target=address.toString();
   }
   const form=url===config.overpassUrl&&body!==null&&typeof body==='object'&&'data'in body&&typeof body.data==='string';
+  const end=startStage('road_http');try{countMetric('road_http_acquisitions');
   try{response=await fetch(target,{method,redirect:'error',signal:AbortSignal.any([signal,AbortSignal.timeout(form?Math.min(8000,config.timeoutMs):config.timeoutMs)]),
     headers:{'Content-Type':form?'application/x-www-form-urlencoded':'application/json','User-Agent':'ChargeRoad-local-pilot/1.0','X-Client-Id':config.clientId},
     body:method==='GET'?undefined:form?new URLSearchParams({data:(body as {data:string}).data}).toString():JSON.stringify(body)});
@@ -35,6 +37,7 @@ export function roadTransport(config:RoadConfig):RoadTransport{return async(url,
     throw new RoadProviderError('Road provider HTTP '+response.status,response.status,Math.min(3600,Math.max(1,seconds)),response.status===429?'ROAD_PROVIDER_RATE_LIMITED':'ROAD_PROVIDER_UNAVAILABLE');
   }
   return parsed;
+  }finally{end();}
 };}
 
 export class PgRoadClient implements RoadJsonClient {
@@ -53,7 +56,7 @@ export class PgRoadClient implements RoadJsonClient {
     const revision=roadCacheRevision(this.config,providerId,url);
     const key=createHmac('sha256',this.secret).update((revision?'road-cache/v2\0'+revision+'\0':'road-cache/v1\0')+providerId+'\0'+(method==='GET'?'GET\0':'')+url+'\0'+JSON.stringify(body)).digest('hex');
     const read=async()=>{const r=await this.database.pool.query('SELECT payload FROM road_response_cache WHERE request_key=$1 AND expires_at>now()',[key]);return r.rows[0];};
-    const cached=await read();if(cached)return cached.payload;
+    const cached=await read();if(cached){countMetric('road_pg_cache_hits');return cached.payload;}countMetric('road_pg_cache_misses');
     const token=randomUUID();let generation:string|undefined;
     for(let wait=0;wait<100;wait++){
       signal.throwIfAborted();
@@ -62,7 +65,7 @@ export class PgRoadClient implements RoadJsonClient {
         SET token=EXCLUDED.token,generation=road_response_cache.generation+1,lease_until=EXCLUDED.lease_until
         WHERE road_response_cache.expires_at<=now() AND (road_response_cache.token IS NULL OR road_response_cache.lease_until<=now()) RETURNING generation`,[key,providerId,token]);
       if(lease.rowCount){generation=lease.rows[0].generation;break;}
-      const ready=await read();if(ready)return ready.payload;await delay(250,undefined,{signal});
+      const ready=await read();if(ready){countMetric('road_cache_coalesced_hits');return ready.payload;}await delay(250,undefined,{signal});
     }
     if(!generation)throw new RoadProviderError('Identical road request is still in progress');
     try{

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "perf-baseline/1",
+  "generatedAt": "2026-11-13T13:48:09.525Z",
+  "phase": "after",
+  "machine": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpuModel": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpuCount": 20,
+    "totalMemoryBytes": 16869548032,
+    "node": "v26.13.0"
+  },
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "dirty": true,
+  "sourceChecksums": {
+    "src/planning/ev-planning.service.ts": "d1ebf37bb86a4ea06639d95bfd179f836c67db6eafc0d436b93626db4e2f23fc",
+    "src/planning/planning-session.ts": "a3fe5798a160976ddcf334f2a71a455ee5c52a6cf6cc97f9def53483f7530821",
+    "src/planning/charge-stop-optimizer.ts": "746800091407eee067c763f0df4b9c9e3bd20a05bdf81a4f4591d67ca50b5a3f",
+    "src/planning/plan-compiler.ts": "dc4ed22f2b1fad3f4d6331c64a7c89aa655ec7fd2bb551b277f453de13c176a8",
+    "src/planning/http/planning-http.service.ts": "97b1cb6ca17c77bf7990979124174343870888ae2372e26710e1233cf082747c",
+    "src/planning/http/planning-response.ts": "c77b99fe62e64ecc868486567726dfe5b1cbcd2b864c93c87045b6bf6b37fc34",
+    "src/roads/road-client.ts": "7118b4ca2fd62794979932e7516d7b3ceb8826f4e8ea6f50dd00e7bd95a3e34c",
+    "src/weather/weather-cache.ts": "d16a5a37481be928759e5613f17e13e2770acf037f78fccfe571802b0ea959b6"
+  },
+  "instrumentationSourceChecksum": "bccae301a27c8dff2c4dd5f1723f621601b58f460cdca5740bcf2b3e8c07deec",
+  "fixtureFactoryChecksum": "73d7769661fedc1de9b29c03f27af4c8de38370476798d73c44ab9ca3385453c",
+  "clock": "Frozen synthetic wall clock 2026-11-13T09:00Z; real monotonic latency and process CPU. No real-world trip or SLA.",
+  "providerMode": "synthetic_in_memory_no_external_HTTP_or_database",
+  "quantile": "nearest_rank_concurrency_1_JIT_warmup_excluded_from_latency",
+  "groups": [
+    {
+      "scenario": "no_charge",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "156383abf6d55765603ec0e6e32041651ce88664194baafd597fac350664a784",
+      "resultChecksum": "6a93e46fd9010b87d5088fbbcb3186fe44406f48a29c2bc9ac09dd3379c22d44",
+      "representationChecksum": "c65844b79450fdd9c643ab78431127efae8cd569f40e4db44f2d988a569cdd35",
+      "latencyMs": {
+        "n": 100,
+        "p50": 28.781199999999444,
+        "p95": 37.03620000000046,
+        "p99": 41.28139999999985,
+        "min": 25.347600000000057,
+        "max": 81.84159999999974
+      },
+      "groupCpuMs": {
+        "user": 4187,
+        "system": 313,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 553259008,
+        "sampledPeakBytes": 663601152,
+        "endBytes": 663601152
+      },
+      "response": {
+        "decodedBytes": 11751,
+        "wireBytes": 11751
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": null
+    },
+    {
+      "scenario": "two_partial_charges",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "b323ad1a38a2ba3a984f4a222b965eb79f706bc1d268cb1782238216d7c508a9",
+      "resultChecksum": "bab6af3e25ac2806edf48023e5cf6afba8248c32f11fab070307424b8a6a8197",
+      "representationChecksum": "d37d9be4edba440ba369e2a63893872dd04855d64ea20ca662207602ece203f2",
+      "latencyMs": {
+        "n": 100,
+        "p50": 34.342499999998836,
+        "p95": 37.844600000000355,
+        "p99": 43.85350000000017,
+        "min": 31.411599999999453,
+        "max": 44.16479999999956
+      },
+      "groupCpuMs": {
+        "user": 4125,
+        "system": 109,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 663601152,
+        "sampledPeakBytes": 801345536,
+        "endBytes": 801345536
+      },
+      "response": {
+        "decodedBytes": 16283,
+        "wireBytes": 16283
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": null
+    }
+  ],
+  "realProviderMeasurement": {
+    "status": "NOT_RUN",
+    "reason": "Explicit opt-in local smoke is separate; public provider load tests prohibited"
+  }
+}

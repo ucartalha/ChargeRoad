@@ -14,6 +14,7 @@ import {PLANNING_HTTP_OPTIONS} from '../http/planning-http-policy';
 import {httpPlanningWorld} from './planning-http.fixtures';
 import type {OptimizerOutcome} from '../optimizer-types';
 import {RoadProviderError} from '../../roads/road-client';
+import {Logger} from '@nestjs/common';
 const integration=process.env.TEST_DATABASE_URL?describe:describe.skip;
 integration('Public planning HTTP with real shared security/admission',()=>{
   const schema='planning_http_'+randomBytes(8).toString('hex');let admin:Pool,pool:Pool,app:NestExpressApplication,otherApp:NestExpressApplication,url:string,otherUrl:string;
@@ -50,6 +51,16 @@ integration('Public planning HTTP with real shared security/admission',()=>{
   it('keeps insufficient data as a domain result without calling external providers',async()=>{
     delete world.vehicle.energyModel;const response=await post(world.body),body=await response.json();expect(response.status).toBe(200);expect(body.status).toBe('insufficient_data');
     expect(world.roads.routes).not.toHaveBeenCalled();expect(world.weather.forecast).not.toHaveBeenCalled();await released();
+  });
+  it('collects one opt-in HTTP stage record including the encoder without changing the public DTO',async()=>{
+    const before=process.env.PLANNING_METRICS_ENABLED;process.env.PLANNING_METRICS_ENABLED='true';const logs=jest.spyOn(Logger.prototype,'log').mockImplementation(()=>{});
+    try{const response=await post(world.body),body=await response.json();expect(response.status).toBe(200);expect(planningApiResponseSchema.safeParse(body).success).toBe(true);
+      expect(body).not.toHaveProperty('metrics');const records=logs.mock.calls.map(c=>{try{return JSON.parse(c[0]);}catch{return null;}}).filter(v=>v?.event==='planning_metrics');
+      expect(records).toHaveLength(1);expect(records[0].scope).toBe('http_plan');expect(records[0].requestId).toBe(world.body.requestId);
+      expect(records[0].stages.json_serialize.count).toBe(1);expect(records[0].stages.response_preflight_serialize.count).toBe(1);
+      expect(records[0].counters.energy_evaluations).toBeGreaterThan(0);expect(records[0].counters.response_wire_bytes).toBe(Number(response.headers.get('content-length')));
+      expect(JSON.stringify(records[0])).not.toMatch(/geometry|latitude|startingChargePercent|Authorization|request_payload/);await released();
+    }finally{logs.mockRestore();if(before===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=before;}
   });
   it('preserves quota exhaustion and its real retry interval through the full HTTP domain result',async()=>{
     world.roads.routes.mockRejectedValueOnce(new RoadProviderError('Synthetic daily budget exhausted',429,7200,'ROAD_PROVIDER_QUOTA_EXHAUSTED'));

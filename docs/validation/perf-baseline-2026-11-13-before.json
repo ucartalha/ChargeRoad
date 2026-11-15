@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "perf-baseline/1",
+  "generatedAt": "2026-11-13T13:27:57.921Z",
+  "phase": "before",
+  "machine": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpuModel": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpuCount": 20,
+    "totalMemoryBytes": 16869548032,
+    "node": "v26.13.0"
+  },
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "dirty": true,
+  "sourceChecksums": {
+    "src/planning/ev-planning.service.ts": "664ecb39efdecfbdb3dc9526fa39063c7ebc124034d243bd5cde73ebaf09358e",
+    "src/planning/planning-session.ts": "890465acfcc7d8553313361c939a1e1ee93b19c896391b9e7166d3f5aa228755",
+    "src/planning/charge-stop-optimizer.ts": "1274894ac4cf489af5c32379220517d6f00fa7d364f2bf895efedd3cd9ea8a20",
+    "src/planning/plan-compiler.ts": "7430db6b50a7f7f9836567c7a72e3c11ddc48c72b4836a469b1ac85bef5f727e",
+    "src/planning/http/planning-http.service.ts": "52b3ab79490492a758ca376b67edb65ef8b1bd2cdb620e093bd20ad3bd08c37f",
+    "src/planning/http/planning-response.ts": "d678bb950b4a732cf845b295231db641973a60ccd09ee4ef0da46dab4c97c1c8",
+    "src/roads/road-client.ts": "29ac468a252a80a353cd5660eaab5aa86713ebcb4156c387b999a2f5a1d55f30",
+    "src/weather/weather-cache.ts": "93cd99f5e39c6bf9304db43be82043f3fc030cd54d44906923bbd40589a6794e"
+  },
+  "fixtureFactoryChecksum": "73d7769661fedc1de9b29c03f27af4c8de38370476798d73c44ab9ca3385453c",
+  "clock": "Frozen synthetic wall clock 2026-11-13T09:00Z; real monotonic latency and process CPU. No real-world trip or SLA.",
+  "providerMode": "synthetic_in_memory_no_external_HTTP_or_database",
+  "quantile": "nearest_rank_concurrency_1_JIT_warmup_excluded_from_latency",
+  "groups": [
+    {
+      "scenario": "no_charge",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "156383abf6d55765603ec0e6e32041651ce88664194baafd597fac350664a784",
+      "resultChecksum": "6a93e46fd9010b87d5088fbbcb3186fe44406f48a29c2bc9ac09dd3379c22d44",
+      "representationChecksum": "c65844b79450fdd9c643ab78431127efae8cd569f40e4db44f2d988a569cdd35",
+      "latencyMs": {
+        "n": 100,
+        "p50": 27.589200000000346,
+        "p95": 33.941499999999905,
+        "p99": 43.63160000000016,
+        "min": 24.128700000000208,
+        "max": 95.53839999999991
+      },
+      "groupCpuMs": {
+        "user": 3937,
+        "system": 187,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 557338624,
+        "sampledPeakBytes": 663863296,
+        "endBytes": 663863296
+      },
+      "response": {
+        "decodedBytes": 11751,
+        "wireBytes": 11751
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": null
+    },
+    {
+      "scenario": "two_partial_charges",
+      "samples": 100,
+      "warmup": 5,
+      "fixtureChecksum": "b323ad1a38a2ba3a984f4a222b965eb79f706bc1d268cb1782238216d7c508a9",
+      "resultChecksum": "bab6af3e25ac2806edf48023e5cf6afba8248c32f11fab070307424b8a6a8197",
+      "representationChecksum": "d37d9be4edba440ba369e2a63893872dd04855d64ea20ca662207602ece203f2",
+      "latencyMs": {
+        "n": 100,
+        "p50": 33.14220000000023,
+        "p95": 37.60350000000017,
+        "p99": 42.49649999999929,
+        "min": 29.522399999999834,
+        "max": 43.69449999999961
+      },
+      "groupCpuMs": {
+        "user": 4141,
+        "system": 156,
+        "scope": "whole_group_including_fixture_setup_and_warmup"
+      },
+      "rss": {
+        "startBytes": 663863296,
+        "sampledPeakBytes": 800190464,
+        "endBytes": 800190464
+      },
+      "response": {
+        "decodedBytes": 16284,
+        "wireBytes": 16284
+      },
+      "cacheState": "fresh_per_plan_session_in_memory_fixture_providers_no_PG_no_HTTP",
+      "metrics": null
+    }
+  ],
+  "realProviderMeasurement": {
+    "status": "NOT_RUN",
+    "reason": "Explicit opt-in local smoke is separate; public provider load tests prohibited"
+  }
+}

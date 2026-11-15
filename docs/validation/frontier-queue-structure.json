@@ -1,0 +1,264 @@
+{
+  "generatedAt": "2026-11-13T14:05:41.559Z",
+  "scope": "structure_only_seeded_in_memory_mixed_push_pop_no_HTTP_no_PG; no real plan SLA; sampled process heap not isolated allocation",
+  "queueSourceSha256": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200",
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "win32",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H"
+  },
+  "groups": [
+    {
+      "size": 64,
+      "objective": "minimum_total_duration",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "fa725021177e8734cf9697bf96e50170ce82addd6817d338d9d3043dd9d9f260",
+      "popOrderChecksum": "79ecd0f1394be035443fe980cf81b5d47496783759aa6addbca54b36e4773e50",
+      "comparisonCounts": {
+        "sort": 3007,
+        "heap": 767
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.2116000000000895,
+          "p95Ms": 0.40459999999984575,
+          "p99Ms": 2.9472999999998137,
+          "maxMs": 2.9472999999998137
+        },
+        "cpuTotalMs": 0,
+        "sampledHeapUsedRangeBytes": [
+          405631736,
+          430888824
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.03490000000010696,
+          "p95Ms": 0.07029999999986103,
+          "p99Ms": 0.07210000000031869,
+          "maxMs": 0.07210000000031869
+        },
+        "cpuTotalMs": 0,
+        "sampledHeapUsedRangeBytes": [
+          406590048,
+          431303864
+        ]
+      }
+    },
+    {
+      "size": 64,
+      "objective": "minimum_charging_stops",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "fa725021177e8734cf9697bf96e50170ce82addd6817d338d9d3043dd9d9f260",
+      "popOrderChecksum": "cf21eb1d4df1c00c0415d8af966017924fe212cb8ee3c32c532fef93820b0ee8",
+      "comparisonCounts": {
+        "sort": 3013,
+        "heap": 770
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.2519999999999527,
+          "p95Ms": 0.6531999999997424,
+          "p99Ms": 1.6314000000002125,
+          "maxMs": 1.6314000000002125
+        },
+        "cpuTotalMs": 16,
+        "sampledHeapUsedRangeBytes": [
+          405467312,
+          438400560
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.03830000000016298,
+          "p95Ms": 0.053999999999632564,
+          "p99Ms": 0.15610000000015134,
+          "maxMs": 0.15610000000015134
+        },
+        "cpuTotalMs": 0,
+        "sampledHeapUsedRangeBytes": [
+          405673336,
+          437395160
+        ]
+      }
+    },
+    {
+      "size": 64,
+      "objective": "minimum_energy",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "fa725021177e8734cf9697bf96e50170ce82addd6817d338d9d3043dd9d9f260",
+      "popOrderChecksum": "38359b590f37e296a7dcbecaf397af6b6dd832e71a3b387ee332d4eaf28dc95c",
+      "comparisonCounts": {
+        "sort": 3005,
+        "heap": 766
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.1560999999996966,
+          "p95Ms": 0.2784999999998945,
+          "p99Ms": 0.32130000000006476,
+          "maxMs": 0.32130000000006476
+        },
+        "cpuTotalMs": 62,
+        "sampledHeapUsedRangeBytes": [
+          411326104,
+          437584664
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 0.04150000000026921,
+          "p95Ms": 0.05860000000029686,
+          "p99Ms": 0.07360000000016953,
+          "maxMs": 0.07360000000016953
+        },
+        "cpuTotalMs": 0,
+        "sampledHeapUsedRangeBytes": [
+          410412144,
+          437750024
+        ]
+      }
+    },
+    {
+      "size": 2048,
+      "objective": "minimum_total_duration",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "6a7b6870d77425b3917e9516d9f1ff97e68219febf13194154f1249f87365577",
+      "popOrderChecksum": "04cba0765dc603af954eac658b4a5012edd17ee39f444e58bd578b1c4ed60e07",
+      "comparisonCounts": {
+        "sort": 2774754,
+        "heap": 51378
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 280.6847999999991,
+          "p95Ms": 296.4934999999996,
+          "p99Ms": 300.46799999999985,
+          "maxMs": 300.46799999999985
+        },
+        "cpuTotalMs": 8455,
+        "sampledHeapUsedRangeBytes": [
+          408461352,
+          436188264
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 3.0031999999991967,
+          "p95Ms": 3.541000000001077,
+          "p99Ms": 4.0932999999995445,
+          "maxMs": 4.0932999999995445
+        },
+        "cpuTotalMs": 77,
+        "sampledHeapUsedRangeBytes": [
+          408853640,
+          435916352
+        ]
+      }
+    },
+    {
+      "size": 2048,
+      "objective": "minimum_charging_stops",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "6a7b6870d77425b3917e9516d9f1ff97e68219febf13194154f1249f87365577",
+      "popOrderChecksum": "985f4e28299bb2bb9547ebf70d7dc1c9cbad001444f51e1bf35da61019bbaead",
+      "comparisonCounts": {
+        "sort": 2775069,
+        "heap": 51333
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 287.375799999998,
+          "p95Ms": 348.2066999999988,
+          "p99Ms": 364.50870000000214,
+          "maxMs": 364.50870000000214
+        },
+        "cpuTotalMs": 8799,
+        "sampledHeapUsedRangeBytes": [
+          412977816,
+          443963728
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 2.986300000000483,
+          "p95Ms": 3.6199000000015076,
+          "p99Ms": 3.7247999999999593,
+          "maxMs": 3.7247999999999593
+        },
+        "cpuTotalMs": 139,
+        "sampledHeapUsedRangeBytes": [
+          413135024,
+          445226896
+        ]
+      }
+    },
+    {
+      "size": 2048,
+      "objective": "minimum_energy",
+      "seed": 20261113,
+      "samples": 30,
+      "warmup": 3,
+      "order": "alternating_sort_heap",
+      "workloadChecksum": "6a7b6870d77425b3917e9516d9f1ff97e68219febf13194154f1249f87365577",
+      "popOrderChecksum": "f3e4e16ae372ced0f8de170b6e8b81b07abb0660bc8b9dec9e167964caea751f",
+      "comparisonCounts": {
+        "sort": 2776011,
+        "heap": 51292
+      },
+      "sort": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 305.8166999999994,
+          "p95Ms": 323.71960000000036,
+          "p99Ms": 344.4238000000005,
+          "maxMs": 344.4238000000005
+        },
+        "cpuTotalMs": 9078,
+        "sampledHeapUsedRangeBytes": [
+          414834648,
+          448734696
+        ]
+      },
+      "heap": {
+        "latency": {
+          "samples": 30,
+          "p50Ms": 2.684500000003027,
+          "p95Ms": 3.5059000000001106,
+          "p99Ms": 3.825300000004063,
+          "maxMs": 3.825300000004063
+        },
+        "cpuTotalMs": 79,
+        "sampledHeapUsedRangeBytes": [
+          415905816,
+          449634200
+        ]
+      }
+    }
+  ]
+}

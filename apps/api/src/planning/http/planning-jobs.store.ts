@@ -54,7 +54,7 @@ export class PlanningJobsStore {
   ORDER BY created_at FOR UPDATE SKIP LOCKED LIMIT 1)
   UPDATE planning_jobs j SET status='running',lease_token=$1,generation=j.generation+1,lease_until=now()+interval '30 seconds',
    started_at=COALESCE(j.started_at,now()) FROM next WHERE j.id=next.id
-  RETURNING j.id,j.request_payload,j.lease_token,j.generation`,[token])).rows[0]??null;}
+  RETURNING j.id,j.request_payload,j.lease_token,j.generation,j.created_at,clock_timestamp() AS claimed_at`,[token])).rows[0]??null;}
  async renew(job:any){return !!(await this.db.pool.query(`UPDATE planning_jobs SET lease_until=now()+interval '30 seconds'
   WHERE id=$1 AND lease_token=$2 AND generation=$3 AND status='running' AND lease_until>now() AND expires_at>now() RETURNING 1`,[job.id,job.lease_token,job.generation])).rowCount;}
  async finish(job:any,result:PlanningApiResponse|null,error:string|null){await this.db.pool.query(`UPDATE planning_jobs

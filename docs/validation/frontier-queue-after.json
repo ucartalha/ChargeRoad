@@ -1,0 +1,773 @@
+{
+  "phase": "after",
+  "generatedAt": "2026-11-13T14:03:53.907Z",
+  "head": "c24cab249dc3cbebb29f11104fee95c04ca8d7fd",
+  "dirty": true,
+  "optimizerSourceSha256": "3ee1a97d67b174fcf21862f001ed638a05d5449a44f9732d39a4a45a78b3cee7",
+  "queueSourceSha256": "98245aa81e87e169328eff96c6a2a10e7d76b5524d04ecd880ec5b5a8c44f200",
+  "machine": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "node": "v26.13.0",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpus": 20,
+    "totalMemoryBytes": 16869548032
+  },
+  "scope": "offline_synthetic_actual_engines_no_HTTP_no_PG_no_logger_IO; frozen Date; real monotonic timers; sampled process heap not allocation/GC proof",
+  "reference": {
+    "count": 15,
+    "snapshotChecksum": "5b44b4b31b9cd55e35340e6c9fe97d54797d342045eef0d56faf0e6f882a502f",
+    "resultsChecksum": "15af172e9d5bfc6da73e9e8408958e9f2bff1ed3a63e737b91be47af228cc4f3"
+  },
+  "validation": [
+    {
+      "id": "minimum_total_duration/complete",
+      "fixtureChecksum": "adcc1b063a6988a885c94214d1caec27cf22a84f83daa2d9aeb98ad140812239",
+      "resultChecksum": "6d2abdac030eb1904a80bab4943fa9b46e0ae2fd8da6460fc14f70fd5e41a52b",
+      "traceChecksum": "012afd9149e4eb8ed20acc806324e98b47babcadc1e4364d1d4f8da44dec2578",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 154,
+        "roadQueries": 6,
+        "weatherQueries": 77,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    },
+    {
+      "id": "minimum_total_duration/equal_priority",
+      "fixtureChecksum": "fa8e480efb8193d9e6a9dd81468dba70c6af4cbc944b84f005e65dce6b85072c",
+      "resultChecksum": "b1b241dc498e4b5cebd659038e3e7c00626b216e133a837cc5365730f48250b7",
+      "traceChecksum": "fee1db2da0b81bdaefc434f77e85b36ae239d947a30c4bb1a36ac21f4b1aaf1d",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 35,
+        "evaluatedTransitions": 533,
+        "roadQueries": 6,
+        "weatherQueries": 146,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    },
+    {
+      "id": "minimum_total_duration/frontier_limit",
+      "fixtureChecksum": "99dffaaa54a9c4665ea996ab80a3488101d9a1d71a5821e29be9b86596d7c41b",
+      "resultChecksum": "dc5ee3230f218c8a390c3637285bfc7eb469843c1c0ab9329a11f7f1b267ce5b",
+      "traceChecksum": "c812fa221d7ff71307a9d79f4fc04d9a79c9bf70b7c997844d15601f03c08caa",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_budget",
+        "expandedStates": 2,
+        "evaluatedTransitions": 22,
+        "roadQueries": 5,
+        "weatherQueries": 24,
+        "skippedData": [
+          "FRONTIER_BUDGET",
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/state_limit",
+      "fixtureChecksum": "62d42dd167afbe5d6ab9831cf2e246be89172e1e74aefb4c9b1818fe8603a13b",
+      "resultChecksum": "769f3f2b587890ff46595549f7ba3ccbc573145481e03056d43a1e28be38fed8",
+      "traceChecksum": "6b9b0a2fea6f5bccfe2584a9a727c5f7297940c08caf2ece2cfe901ff79b0e1d",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "state_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 3,
+        "roadQueries": 3,
+        "weatherQueries": 5,
+        "skippedData": [],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/transition_limit",
+      "fixtureChecksum": "54e0d922acb64af661ec012df611eee4839b552d7cf1dc18273fe5bd3b804af2",
+      "resultChecksum": "00c71db8542c405d81a713db619ca086206b8141088037339bc1c56f85a00e77",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "transition_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "transition_budget"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/road_limit",
+      "fixtureChecksum": "ae1725a020c2079dd6463810e26984dede7b75ecaab41e6105d1f8c144647737",
+      "resultChecksum": "5e535c7b3d96b5c9d941eca3c67445ae201201ffc8873bec299f22c5a00ae6d0",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "ROAD_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/weather_limit",
+      "fixtureChecksum": "b9d051a8d1d516bb6dda52c56880471c16c66bb043efcbd99a7062c42ef107ab",
+      "resultChecksum": "4ea9e55fc402509850bfd4127fc031aef9e87bb4e8640e91092a68da456debcf",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 0,
+        "skippedData": [
+          "WEATHER_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/deadline",
+      "fixtureChecksum": "adcc1b063a6988a885c94214d1caec27cf22a84f83daa2d9aeb98ad140812239",
+      "resultChecksum": "4b5454cd0683d0f44a404d8720df6a0e18300f4172c7525461241de6d04f3e3b",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_total_duration",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "deadline",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 2,
+        "weatherQueries": 3,
+        "skippedData": [
+          "deadline"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_total_duration/cancel_before",
+      "fixtureChecksum": "adcc1b063a6988a885c94214d1caec27cf22a84f83daa2d9aeb98ad140812239",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "status": "cancelled",
+      "search": null
+    },
+    {
+      "id": "minimum_total_duration/cancel_during",
+      "fixtureChecksum": "adcc1b063a6988a885c94214d1caec27cf22a84f83daa2d9aeb98ad140812239",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "cancelled",
+      "search": null
+    },
+    {
+      "id": "minimum_charging_stops/complete",
+      "fixtureChecksum": "61fd3203d9db76d034f65b85c6a717e17df6ec5ffacad689e6d2e8d5ba594c2c",
+      "resultChecksum": "ab19a6ca832af911ed0e1e721b4bcc771b3a99681764fe5f04e0705e405fea1b",
+      "traceChecksum": "bc80bad9379456ad079930107f815e9ae112637d951a6ba8ef42b5faba95c936",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 164,
+        "roadQueries": 6,
+        "weatherQueries": 83,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 3.9999999999999982,
+        "scenarioDurationSeconds": 251.389
+      }
+    },
+    {
+      "id": "minimum_charging_stops/equal_priority",
+      "fixtureChecksum": "bb61dc5c30839ce70e1e367060bd37e44344c9e75236272577fc196adbe6415b",
+      "resultChecksum": "e4a10318161236c7f10455e63f4e03f9ac71629e157ea244daf570bd4e07d41e",
+      "traceChecksum": "23354782b790369b1e2aae51c3eca0f280fcc2cd551ecc4989bbab7624aad615",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 35,
+        "evaluatedTransitions": 573,
+        "roadQueries": 6,
+        "weatherQueries": 157,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 3.9999999999999982,
+        "scenarioDurationSeconds": 251.389
+      }
+    },
+    {
+      "id": "minimum_charging_stops/frontier_limit",
+      "fixtureChecksum": "3032a7ae51a614579d072005500e95869333e6c1cb8aa1387e529490b1dffb90",
+      "resultChecksum": "18ac44cbf770b2bb8449325687dc65d91d2ed6710725705e2bbaf776d6592d95",
+      "traceChecksum": "e43b9ca67182b91c868d73686c6bc8433596d8de3a8f6470861e7cb13fa162c7",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_budget",
+        "expandedStates": 2,
+        "evaluatedTransitions": 22,
+        "roadQueries": 5,
+        "weatherQueries": 24,
+        "skippedData": [
+          "FRONTIER_BUDGET",
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/state_limit",
+      "fixtureChecksum": "3933e0c65ae4221b3debb96ba8351bd9a93a150f5ff179018678487dfd5ad8da",
+      "resultChecksum": "9776ac5c1ce31f601293c6ea574f1554b356e3effd50369966db70f3ebff7d88",
+      "traceChecksum": "6b9b0a2fea6f5bccfe2584a9a727c5f7297940c08caf2ece2cfe901ff79b0e1d",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "state_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 3,
+        "roadQueries": 3,
+        "weatherQueries": 5,
+        "skippedData": [],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/transition_limit",
+      "fixtureChecksum": "2ba24bcffe329d86e22046dc47c4da7434bc6d940f03ad3f9a408c22080830d7",
+      "resultChecksum": "9c7cc7e70b38f4ef54ddf1932792db8cbe30f48aa95a66b1ee4ebb06810902e7",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "transition_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "transition_budget"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/road_limit",
+      "fixtureChecksum": "3904d48ea8b2713fb46d0b0c6850ed162ad794beb4849466bf064a2ab74c84e8",
+      "resultChecksum": "f30b51519a8c0db1b8009e627ca1f373c1bb22fb8d6b950a5eabde09acc1f69d",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "ROAD_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/weather_limit",
+      "fixtureChecksum": "0fca1da3177d318f61eb7bc5ff60f54145715f191bf79677783ec3f2265f989a",
+      "resultChecksum": "5e9f6b8159ad4b76f99c15995a38a642633e6e33f15f9608b7b9a5f1cfd52498",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 0,
+        "skippedData": [
+          "WEATHER_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/deadline",
+      "fixtureChecksum": "61fd3203d9db76d034f65b85c6a717e17df6ec5ffacad689e6d2e8d5ba594c2c",
+      "resultChecksum": "6d5c8f837194eec2679b617d4747517a1b55bb218f0b6a9c80bac06b167db3b9",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_charging_stops",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "deadline",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 2,
+        "weatherQueries": 3,
+        "skippedData": [
+          "deadline"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_charging_stops/cancel_before",
+      "fixtureChecksum": "61fd3203d9db76d034f65b85c6a717e17df6ec5ffacad689e6d2e8d5ba594c2c",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "status": "cancelled",
+      "search": null
+    },
+    {
+      "id": "minimum_charging_stops/cancel_during",
+      "fixtureChecksum": "61fd3203d9db76d034f65b85c6a717e17df6ec5ffacad689e6d2e8d5ba594c2c",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "cancelled",
+      "search": null
+    },
+    {
+      "id": "minimum_energy/complete",
+      "fixtureChecksum": "5f6d23d7bd0dfd171dc031accd99a9689660bf15330f9a7aada484d04919e162",
+      "resultChecksum": "a5629da9e7defdc7b156d9fa43e09a9705ee71b6015f9a913197019fc484d330",
+      "traceChecksum": "d5e24e87c55d29e103fc1383fa587f21ab25c497dba479099dc67a914bcf4851",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 10,
+        "evaluatedTransitions": 164,
+        "roadQueries": 6,
+        "weatherQueries": 83,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    },
+    {
+      "id": "minimum_energy/equal_priority",
+      "fixtureChecksum": "e0b76d074ce8bf04a00b5c1c841e8cc944cbc10650db1060727bf6931b27ee20",
+      "resultChecksum": "4de8c1f1dcc8199f6774fdefa9fef7799768f545ec5a72ebffc0c0aaaa18cc67",
+      "traceChecksum": "5bc03a2225e0cb3679a96dd449adfcf98e2eb058c01c0998b97f24077012ca3a",
+      "status": "planned",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_exhausted",
+        "expandedStates": 35,
+        "evaluatedTransitions": 573,
+        "roadQueries": 6,
+        "weatherQueries": 157,
+        "skippedData": [
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 4,
+        "scenarioDurationSeconds": 235.2
+      }
+    },
+    {
+      "id": "minimum_energy/frontier_limit",
+      "fixtureChecksum": "2dedf323eb85906a6d8d5ac73ae483cea808f744621fd54c8a048776bac3f01f",
+      "resultChecksum": "6498ad465f8af13768019b9fccbdec880d431bbcb8fc9e43febda01444cc3a5d",
+      "traceChecksum": "b624ffaaaebb063b739439c1bbe171bb3a5da917f565856624612c3e53f4bfe9",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "frontier_budget",
+        "expandedStates": 2,
+        "evaluatedTransitions": 22,
+        "roadQueries": 5,
+        "weatherQueries": 24,
+        "skippedData": [
+          "FRONTIER_BUDGET",
+          "station_access_hours_unverified",
+          "traffic_not_modelled_static_road_time"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/state_limit",
+      "fixtureChecksum": "b1ede0eeaa4cbf63fed8ae34041cc02094eb81e29fd2e2371eb891b995803c32",
+      "resultChecksum": "69657eadb8e72c8751ad7b3583f4ca8e39704bd63d57e0daeaf24d59671c2c0f",
+      "traceChecksum": "6b9b0a2fea6f5bccfe2584a9a727c5f7297940c08caf2ece2cfe901ff79b0e1d",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "state_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 3,
+        "roadQueries": 3,
+        "weatherQueries": 5,
+        "skippedData": [],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/transition_limit",
+      "fixtureChecksum": "5bd20c9318cb0c8650697fe4de3219916685abf0bde9b550d01bfa30917dcb88",
+      "resultChecksum": "b780efafb0220c435406085c058bb037e8940c04fc74219015f2f2b7737cbd48",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "transition_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "transition_budget"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/road_limit",
+      "fixtureChecksum": "0f7dfc5420bfcad2ed0e82e2e2a15f434b4d3bcfdd706b5304c2358d0da6f746",
+      "resultChecksum": "d9eec98f2fe6b694f21d69dcfc13b1d1ada0da78098b260e9d067de21a6c9a98",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 1,
+        "weatherQueries": 2,
+        "skippedData": [
+          "ROAD_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/weather_limit",
+      "fixtureChecksum": "4d1877efeac49cfc0e46a694c9009014bd9b02547a7deff1ec79b45444b9da26",
+      "resultChecksum": "641b09e0ba0018e0f40a2479720eb02e841ca29ab18fc5401cf48b565ecd737e",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "data_budget",
+        "expandedStates": 1,
+        "evaluatedTransitions": 1,
+        "roadQueries": 1,
+        "weatherQueries": 0,
+        "skippedData": [
+          "WEATHER_QUERY_BUDGET"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/deadline",
+      "fixtureChecksum": "5f6d23d7bd0dfd171dc031accd99a9689660bf15330f9a7aada484d04919e162",
+      "resultChecksum": "62fb1a41566931a1b7e92e5117ec98cb5a6f9ba106ef1fdaaa0f406ba00ca491",
+      "traceChecksum": "d7e98313f4c3d2cf3d6db8c9683fe72d68f9a4260438dc56c3d0cbb18ad4f67e",
+      "status": "computation_limit",
+      "search": {
+        "policyId": "bounded-ev-search",
+        "policyVersion": "1.1.0",
+        "objective": "minimum_energy",
+        "scope": "bounded_corridor_no_repeated_stations_sampled_soc",
+        "optimality": "not_proven",
+        "searchComplete": false,
+        "stoppedReason": "deadline",
+        "expandedStates": 1,
+        "evaluatedTransitions": 2,
+        "roadQueries": 2,
+        "weatherQueries": 3,
+        "skippedData": [
+          "deadline"
+        ],
+        "socStepPercent": 10,
+        "drivingNetBatteryKwh": 0,
+        "scenarioDurationSeconds": 1
+      }
+    },
+    {
+      "id": "minimum_energy/cancel_before",
+      "fixtureChecksum": "5f6d23d7bd0dfd171dc031accd99a9689660bf15330f9a7aada484d04919e162",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "status": "cancelled",
+      "search": null
+    },
+    {
+      "id": "minimum_energy/cancel_during",
+      "fixtureChecksum": "5f6d23d7bd0dfd171dc031accd99a9689660bf15330f9a7aada484d04919e162",
+      "resultChecksum": "f18af04b7cb84e103275d57876dae9f120f92a60548b438141ab1326571f9ecd",
+      "traceChecksum": "5144ff4c251b834468bbdecd58164aaddc11ca3bd83f53b76e4f37ac9e77be7b",
+      "status": "cancelled",
+      "search": null
+    }
+  ],
+  "groups": [
+    {
+      "objective": "minimum_total_duration",
+      "resultChecksum": "6d2abdac030eb1904a80bab4943fa9b46e0ae2fd8da6460fc14f70fd5e41a52b",
+      "latency": {
+        "samples": 100,
+        "p50Ms": 48.73959999999897,
+        "p95Ms": 76.79440000000068,
+        "p99Ms": 77.90399999999863,
+        "maxMs": 87.33240000000114
+      },
+      "warmup": 5,
+      "concurrency": 1,
+      "cpuMs": {
+        "user": 5937,
+        "system": 188,
+        "scope": "group_including_setup_hashing_warmup"
+      },
+      "heap": {
+        "startBytes": 423768784,
+        "sampledPeakBytes": 530865928,
+        "endBytes": 530994256
+      }
+    },
+    {
+      "objective": "minimum_charging_stops",
+      "resultChecksum": "ab19a6ca832af911ed0e1e721b4bcc771b3a99681764fe5f04e0705e405fea1b",
+      "latency": {
+        "samples": 100,
+        "p50Ms": 51.67660000000069,
+        "p95Ms": 86.80949999999939,
+        "p99Ms": 95.72309999999925,
+        "maxMs": 96.8530000000028
+      },
+      "warmup": 5,
+      "concurrency": 1,
+      "cpuMs": {
+        "user": 6000,
+        "system": 312,
+        "scope": "group_including_setup_hashing_warmup"
+      },
+      "heap": {
+        "startBytes": 530995136,
+        "sampledPeakBytes": 653164408,
+        "endBytes": 653276856
+      }
+    },
+    {
+      "objective": "minimum_energy",
+      "resultChecksum": "a5629da9e7defdc7b156d9fa43e09a9705ee71b6015f9a913197019fc484d330",
+      "latency": {
+        "samples": 100,
+        "p50Ms": 50.634799999999814,
+        "p95Ms": 87.36089999999967,
+        "p99Ms": 97.91690000000017,
+        "maxMs": 155.8100000000013
+      },
+      "warmup": 5,
+      "concurrency": 1,
+      "cpuMs": {
+        "user": 6859,
+        "system": 110,
+        "scope": "group_including_setup_hashing_warmup"
+      },
+      "heap": {
+        "startBytes": 653277304,
+        "sampledPeakBytes": 685658336,
+        "endBytes": 514923408
+      }
+    }
+  ]
+}

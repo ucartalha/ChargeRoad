@@ -4,6 +4,7 @@ import {DatabaseService} from '../database/database.service';
 import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY} from './weather-policy';
 import {WeatherUnavailable} from './weather-ports';
 import type {WeatherDocument,WeatherTransport} from './weather-ports';
+import {countMetric,startStage} from '../observability/planning-metrics';
 
 export interface WeatherCallBudget {used:number;limit:number;}
 function waitFor<T>(work:Promise<T>,signal:AbortSignal):Promise<T>{
@@ -21,11 +22,11 @@ export class WeatherCacheStore {
     this.counters.lookups++;
     const key=createHmac('sha256',this.secret).update('weather-cache/v1\0'+provider+'\0'+version+'\0'+url).digest('hex');
     let work=this.pending.get(key);
-    if(work)this.counters.coalesced++;
+    if(work){this.counters.coalesced++;countMetric('weather_cache_coalesced');}
     if(!work){
       if(this.pending.size>=WEATHER_SAMPLING_POLICY.maxPendingKeys)throw new WeatherUnavailable('budget_exhausted','Weather pending key budget');
-      work=this.acquire(key,provider,url,AbortSignal.timeout(WEATHER_POLICY.deadlineMs),budget,validate);
-      this.pending.set(key,work);const remove=()=>{if(this.pending.get(key)===work)this.pending.delete(key);};
+      const end=startStage('weather_cache_acquisition');work=this.acquire(key,provider,url,AbortSignal.timeout(WEATHER_POLICY.deadlineMs),budget,validate);
+      this.pending.set(key,work);const remove=()=>{if(this.pending.get(key)===work)this.pending.delete(key);end();};
       void work.then(remove,remove);
     }
     return waitFor(work,signal);
@@ -36,8 +37,8 @@ export class WeatherCacheStore {
       signal.throwIfAborted();
       const row=(await this.database.pool.query(`SELECT c.document,c.expires_at>now() AS fresh,c.retry_at>now() AS retry,s.blocked_kind
         FROM weather_forecast_cache c LEFT JOIN weather_provider_state s USING(provider_id) WHERE c.request_key=$1`,[key])).rows[0];
-      if(row?.fresh&&row.document){this.counters.hits++;return row.document;}
-      if(attempt===0)this.counters.misses++;
+      if(row?.fresh&&row.document){this.counters.hits++;countMetric('weather_pg_cache_hits');return row.document;}
+      if(attempt===0){this.counters.misses++;countMetric('weather_pg_cache_misses');}
       if(row?.retry)throw new WeatherUnavailable(row.blocked_kind??'provider_unavailable','Weather key backoff');
       const lease=await this.claim(key,provider,budget);
       if(lease){

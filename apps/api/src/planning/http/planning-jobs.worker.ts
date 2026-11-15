@@ -2,6 +2,7 @@ import {Injectable,Logger,OnModuleDestroy,HttpException} from '@nestjs/common';
 import {planningApiRequestSchema} from '@chargeroad/shared';
 import {PlanningJobsStore} from './planning-jobs.store';
 import {PlanningHttpService} from './planning-http.service';
+import {withPlanningMetrics,startStage,observeStage,markMetricOutcome,markAbort,setMetric} from '../../observability/planning-metrics';
 @Injectable()
 export class PlanningJobsWorker implements OnModuleDestroy {
  private readonly logger=new Logger(PlanningJobsWorker.name);
@@ -13,6 +14,8 @@ export class PlanningJobsWorker implements OnModuleDestroy {
   try{if(++this.ticks%120===0)await this.store.cleanup();const job=await this.store.claim();if(!job)return;
    const controller=new AbortController();this.active=controller;
    const heartbeat=setInterval(()=>{void this.store.renew(job).then(ok=>{if(!ok)controller.abort(new Error('Job ownership lost'));},()=>controller.abort(new Error('Job lease unavailable')));},5000);heartbeat.unref();
+   await withPlanningMetrics(job.id,async()=>{const end=startStage('job_execute');
+   if(job.created_at instanceof Date&&job.claimed_at instanceof Date)observeStage('job_wait',job.claimed_at.getTime()-job.created_at.getTime());
    try{
     const budget=Number(process.env.PLANNING_JOB_BUDGET_MS??120000);if(!Number.isSafeInteger(budget)||budget<1000||budget>300000)throw new Error('Invalid job budget');
     const requested=planningApiRequestSchema.parse(job.request_payload),request={...requested};
@@ -21,10 +24,13 @@ export class PlanningJobsWorker implements OnModuleDestroy {
     if(request.departureAt!==requested.departureAt)result.metadata.requestedDepartureAt=requested.departureAt;
     controller.signal.throwIfAborted();await this.store.finish(job,result,null);
    }catch(error){
+    markMetricOutcome(controller.signal.aborted?'cancelled':'error');markAbort(controller.signal);
     if(!controller.signal.aborted){const payload=error instanceof HttpException?error.getResponse():null;
      const code=payload&&typeof payload==='object'&&'code'in payload&&typeof payload.code==='string'?payload.code:'PLANNING_JOB_FAILED';
+     if(code==='PLANNING_REQUEST_DEADLINE')setMetric('timeout',1);
      await this.store.finish(job,null,code);}
-   }finally{clearInterval(heartbeat);this.active=null;}
+   }finally{end();clearInterval(heartbeat);this.active=null;}
+   },{scope:'job_execute'});
   }catch{if(Date.now()-this.lastErrorAt>10000){this.lastErrorAt=Date.now();this.logger.error('Planning job infrastructure unavailable');}}
   finally{this.busy=false;}
  }
