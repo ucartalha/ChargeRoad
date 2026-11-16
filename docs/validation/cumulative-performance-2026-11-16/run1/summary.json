@@ -1,0 +1,6071 @@
+{
+  "generatedAt": "2026-11-15T23:48:09.808Z",
+  "sourceHashes": {
+    "src/planning/ev-planning.service.ts": "9a8c6c45887291a147cffd97801e0e99d9b0ea7803f7db966f29f3e570df1332",
+    "src/planning/planning-session.ts": "e8edf05756e862490007e1d18321893d985684576b65124343ef079e8182b67a",
+    "src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "src/planning/plan-compiler.ts": "7d3a2046cdb720126e3d3d168931ce5f462652446f3753ecb32fd0c99d5a6851",
+    "src/planning/optimizer-policy.ts": "158d29fb0cc6a423e0e901ef4241c4130775491bd86a01570e1bb12b14aa2082",
+    "src/planning/candidate-eligibility-shadow.ts": "69bcf2c0c26d2baf84dad670831085eae240f4d6a34e9721f929965263f5a738",
+    "src/planning/state-dominance-shadow.ts": "3c94a33659baa3e40264694b1d20e86751b0f4c8bf2582bfa6e491d20c50435a",
+    "src/planning/state-dominance.ts": "4fa777b02e6f537c14a0793fc1602cec837aa8e73f5fc34feaf2342e0d9d5070",
+    "src/observability/planning-metrics.ts": "c56bc1d9bd192f34bd669c6a5ef116f3ccb8a6d0f3094c2dc92531800958686d",
+    "src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "src/energy/energy-policy.ts": "35c92bc6e04a63292ebb813ff6ce4f5197db6b778087f463b4aec834a5bfeb57",
+    "src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "src/weather/weather-sampler.ts": "511570cc180ebd47f6ff79a508a76c9a7b439f740791d2154f71977a608de88a",
+    "src/weather/planning-weather-policy.ts": "8b9f989a910af24f06604441d144378205ffc374097b25dda16fd749aecba330",
+    "src/roads/road-client.ts": "e7017108a7b5f35371513c3af5609f31fd7a8e47f17c9b86deb9bc501403bb9d",
+    "src/weather/weather-cache.ts": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+    "src/planning/http/planning-response.ts": "d0be32323d9b61b34f310e2beeea62183ec7618418e5779599a906246bec1106",
+    "src/planning/__tests__/optimizer.fixtures.ts": "70fe99a651153dd97c10463cc895b6e9bf43394dfd4641b4f18926bc68475944",
+    "scripts/benchmark-cumulative-performance.ts": "ea3852031b7b22b9196ecf11c7cd46bc203417b1db700741ec3b7794e42079fe"
+  },
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "win32",
+    "release": "10.0.26200",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpus": 20,
+    "memoryBytes": 16869548032
+  },
+  "config": {
+    "processes": 3,
+    "warmupsPerArm": 5,
+    "blocks": 10,
+    "samplesPerArmPerProcess": 20,
+    "concurrency": 1,
+    "clock": "2026-11-13T09:00:00Z",
+    "shadow": "follows existing metrics flag; no independent toggle"
+  },
+  "groups": [
+    {
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 43.08930000000055,
+          "p95": 58.1288999999997,
+          "p99": 74.67079999999987,
+          "min": 37.44250000000011,
+          "max": 74.67079999999987
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 42.54480000000058,
+          "p95": 57.4362000000001,
+          "p99": 73.94970000000012,
+          "min": 36.88920000000053,
+          "max": 73.94970000000012
+        },
+        "cpuUserMs": 4999,
+        "cpuSystemMs": 96,
+        "heapDelta": {
+          "n": 60,
+          "p50": -5453176,
+          "p95": 25134136,
+          "p99": 25601824,
+          "min": -12135120,
+          "max": 25601824
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11907,
+          "p95": 11908,
+          "p99": 11908,
+          "min": 11906,
+          "max": 11908
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11907,
+          "p95": 11908,
+          "p99": 11908,
+          "min": 11906,
+          "max": 11908
+        },
+        "gcOverlapMs": 105.32050007581711,
+        "gcOverlapCount": 90,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 108,
+          "roadQueries": 7,
+          "weatherQueries": 69,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 3060,
+          "energy_physical": 4140,
+          "charging_physical": 2340
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 42.35729999999967,
+              "p95": 53.048899999999776,
+              "p99": 57.464100000000144,
+              "min": 38.50839999999971,
+              "max": 57.464100000000144
+            },
+            "cpuUserMs": 1545,
+            "cpuSystemMs": 32
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 42.72729999999956,
+              "p95": 58.1288999999997,
+              "p99": 74.67079999999987,
+              "min": 37.44250000000011,
+              "max": 74.67079999999987
+            },
+            "cpuUserMs": 1641,
+            "cpuSystemMs": 48
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 43.56410000000051,
+              "p95": 58.998500000000604,
+              "p99": 71.07660000000033,
+              "min": 38.10980000000018,
+              "max": 71.07660000000033
+            },
+            "cpuUserMs": 1813,
+            "cpuSystemMs": 16
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 43.76060000000052,
+          "p95": 55.92690000000039,
+          "p99": 69.75720000000001,
+          "min": 37.887399999999616,
+          "max": 69.75720000000001
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 43.089100000000144,
+          "p95": 55.23109999999997,
+          "p99": 68.85630000000037,
+          "min": 37.232199999999466,
+          "max": 68.85630000000037
+        },
+        "cpuUserMs": 4673,
+        "cpuSystemMs": 63,
+        "heapDelta": {
+          "n": 60,
+          "p50": -5382760,
+          "p95": 25424184,
+          "p99": 25772232,
+          "min": -12149544,
+          "max": 25772232
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11907,
+          "p95": 11908,
+          "p99": 11908,
+          "min": 11897,
+          "max": 11908
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11907,
+          "p95": 11908,
+          "p99": 11908,
+          "min": 11897,
+          "max": 11908
+        },
+        "gcOverlapMs": 104.03159999847412,
+        "gcOverlapCount": 90,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 108,
+          "roadQueries": 7,
+          "weatherQueries": 69,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.025599999999940337,
+              "p95": 0.07879999999931897,
+              "p99": 0.09579999999914435,
+              "min": 0.02019999999902211,
+              "max": 0.09579999999914435
+            },
+            "count": 120,
+            "totalMs": 2.23979999999392
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.03300000000035652,
+              "p95": 0.07519999999931315,
+              "p99": 0.10019999999985885,
+              "min": 0.0261000000000422,
+              "max": 0.10019999999985885
+            },
+            "count": 60,
+            "totalMs": 2.463999999996304
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.00709999999980937,
+              "p95": 0.017299999999522697,
+              "p99": 0.036199999999553256,
+              "min": 0.005300000000715954,
+              "max": 0.036199999999553256
+            },
+            "count": 60,
+            "totalMs": 0.5688000000027387
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.011199999999917054,
+              "p95": 0.021799999999529973,
+              "p99": 0.039399999999659485,
+              "min": 0.006600000000617001,
+              "max": 0.039399999999659485
+            },
+            "count": 60,
+            "totalMs": 0.788300000001982
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 42.23750000000018,
+              "p95": 53.59599999999955,
+              "p99": 66.69970000000012,
+              "min": 36.476300000000265,
+              "max": 66.69970000000012
+            },
+            "count": 60,
+            "totalMs": 2681.8528000000033
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.15470000000004802,
+              "p95": 0.2714000000005399,
+              "p99": 0.34940000000005966,
+              "min": 0.13180000000011205,
+              "max": 0.34940000000005966
+            },
+            "count": 900,
+            "totalMs": 10.517800000005991
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.759699999996883,
+              "p95": 0.9375999999974738,
+              "p99": 1.2650999999996202,
+              "min": 0.48919999999998254,
+              "max": 1.2650999999996202
+            },
+            "count": 4140,
+            "totalMs": 45.771900000029746
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.4424999999973807,
+              "p95": 1.7755000000024665,
+              "p99": 2.52049999999781,
+              "min": 1.2664000000022497,
+              "max": 2.52049999999781
+            },
+            "count": 3060,
+            "totalMs": 89.95199999996657
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 21.306499999998778,
+              "p95": 27.081400000007307,
+              "p99": 34.01059999999961,
+              "min": 18.595499999999447,
+              "max": 34.01059999999961
+            },
+            "count": 4140,
+            "totalMs": 1350.1822000000357
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.928899999999885,
+              "p95": 3.689100000000508,
+              "p99": 4.826400000000831,
+              "min": 1.6474000000007436,
+              "max": 4.826400000000831
+            },
+            "count": 180,
+            "totalMs": 137.8137999999999
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.19359999999960564,
+              "p95": 0.23769999999876745,
+              "p99": 0.26300000000082946,
+              "min": 0.13420000000314758,
+              "max": 0.26300000000082946
+            },
+            "count": 3300,
+            "totalMs": 11.318100000044069
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.30370000000039,
+              "p95": 0.611599999999271,
+              "p99": 0.83140000000094,
+              "min": 0.2521000000006097,
+              "max": 0.83140000000094
+            },
+            "count": 360,
+            "totalMs": 21.395100000006096
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 11.626600000000508,
+              "p95": 13.820300000002135,
+              "p99": 16.591400000005706,
+              "min": 8.99619999999959,
+              "max": 16.591400000005706
+            },
+            "count": 2340,
+            "totalMs": 705.4887000000326
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.06790000000000873,
+              "p95": 0.1069999999999709,
+              "p99": 0.13059999999950378,
+              "min": 0.05489999999917927,
+              "max": 0.13059999999950378
+            },
+            "count": 60,
+            "totalMs": 4.319200000002638
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 3060,
+          "energy_physical": 4140,
+          "charging_physical": 2340
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 63,
+          "weather_session_cache_hits": 57,
+          "weather_sample_queries": 90,
+          "weather_forecast_query_items": 69,
+          "weather_sample_evaluations": 68,
+          "energy_evaluations": 69,
+          "charge_integrations": 39,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 108,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 69,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11907,
+          "response_wire_bytes": 11907,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 15,
+          "state_shadow_observations": 15,
+          "state_shadow_pairs": 36,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 36,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 15,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 43.51729999999952,
+              "p95": 56.64980000000014,
+              "p99": 66.74459999999999,
+              "min": 37.887399999999616,
+              "max": 66.74459999999999
+            },
+            "cpuUserMs": 1531,
+            "cpuSystemMs": 16
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 43.783400000000256,
+              "p95": 55.39099999999962,
+              "p99": 69.75720000000001,
+              "min": 38.952399999999216,
+              "max": 69.75720000000001
+            },
+            "cpuUserMs": 1562,
+            "cpuSystemMs": 47
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 43.76060000000052,
+              "p95": 55.919599999999264,
+              "p99": 55.92690000000039,
+              "min": 39.38209999999981,
+              "max": 55.92690000000039
+            },
+            "cpuUserMs": 1580,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 1.5579273740811879
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 33.695300000000316,
+          "p95": 47.51519999999982,
+          "p99": 50.61989999999969,
+          "min": 30.982100000001083,
+          "max": 50.61989999999969
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 33.15849999999955,
+          "p95": 46.68379999999979,
+          "p99": 50.01120000000083,
+          "min": 30.487600000000384,
+          "max": 50.01120000000083
+        },
+        "cpuUserMs": 4060,
+        "cpuSystemMs": 77,
+        "heapDelta": {
+          "n": 60,
+          "p50": 6862776,
+          "p95": 14981624,
+          "p99": 15246776,
+          "min": -24201864,
+          "max": 15246776
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11906,
+          "p95": 11907,
+          "p99": 11907,
+          "min": 11905,
+          "max": 11907
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11906,
+          "p95": 11907,
+          "p99": 11907,
+          "min": 11905,
+          "max": 11907
+        },
+        "gcOverlapMs": 82.48670011758804,
+        "gcOverlapCount": 74,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 82,
+          "roadQueries": 7,
+          "weatherQueries": 60,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 2520,
+          "energy_physical": 3240,
+          "charging_physical": 1680
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 33.22240000000056,
+              "p95": 45.64729999999963,
+              "p99": 49.108000000000175,
+              "min": 30.982100000001083,
+              "max": 49.108000000000175
+            },
+            "cpuUserMs": 1343,
+            "cpuSystemMs": 16
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 33.95400000000154,
+              "p95": 46.32289999999921,
+              "p99": 50.61989999999969,
+              "min": 31.44430000000102,
+              "max": 50.61989999999969
+            },
+            "cpuUserMs": 1404,
+            "cpuSystemMs": 31
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 33.60660000000007,
+              "p95": 47.51519999999982,
+              "p99": 50.152900000000955,
+              "min": 31.268800000001647,
+              "max": 50.152900000000955
+            },
+            "cpuUserMs": 1313,
+            "cpuSystemMs": 30
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 34.74109999999928,
+          "p95": 49.86319999999978,
+          "p99": 56.17280000000028,
+          "min": 31.540799999998853,
+          "max": 56.17280000000028
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 34.18359999999848,
+          "p95": 49.17519999999968,
+          "p99": 55.44599999999991,
+          "min": 31.00749999999971,
+          "max": 55.44599999999991
+        },
+        "cpuUserMs": 4327,
+        "cpuSystemMs": 30,
+        "heapDelta": {
+          "n": 60,
+          "p50": 6890424,
+          "p95": 14761912,
+          "p99": 15455760,
+          "min": -24634248,
+          "max": 15455760
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11906,
+          "p95": 11907,
+          "p99": 11907,
+          "min": 11905,
+          "max": 11907
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11906,
+          "p95": 11907,
+          "p99": 11907,
+          "min": 11905,
+          "max": 11907
+        },
+        "gcOverlapMs": 84.40149974822998,
+        "gcOverlapCount": 76,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 82,
+          "roadQueries": 7,
+          "weatherQueries": 60,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.023900000001958688,
+              "p95": 0.07620000000133587,
+              "p99": 0.0989000000008673,
+              "min": 0.01900000000023283,
+              "max": 0.0989000000008673
+            },
+            "count": 120,
+            "totalMs": 2.160500000006323
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.0305000000007567,
+              "p95": 0.07760000000052969,
+              "p99": 0.19579999999950815,
+              "min": 0.025600000000849832,
+              "max": 0.19579999999950815
+            },
+            "count": 60,
+            "totalMs": 2.575100000002749
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.006999999999607098,
+              "p95": 0.01720000000022992,
+              "p99": 0.039700000001175795,
+              "min": 0.005100000000311411,
+              "max": 0.039700000001175795
+            },
+            "count": 60,
+            "totalMs": 0.5389000000050146
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009399999999914144,
+              "p95": 0.017300000001341687,
+              "p99": 0.020300000000133878,
+              "min": 0.0059000000001105946,
+              "max": 0.020300000000133878
+            },
+            "count": 60,
+            "totalMs": 0.6385999999974956
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 33.27469999999994,
+              "p95": 47.49399999999969,
+              "p99": 53.37049999999999,
+              "min": 30.164300000000367,
+              "max": 53.37049999999999
+            },
+            "count": 60,
+            "totalMs": 2142.894199999996
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.14940000000387954,
+              "p95": 0.25599999999940337,
+              "p99": 0.2867000000042026,
+              "min": 0.11869999999908032,
+              "max": 0.2867000000042026
+            },
+            "count": 900,
+            "totalMs": 9.912400000026537
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.6077999999924941,
+              "p95": 0.8202000000073895,
+              "p99": 0.9726000000046042,
+              "min": 0.5559000000002925,
+              "max": 0.9726000000046042
+            },
+            "count": 3240,
+            "totalMs": 38.68189999997321
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.1700999999993655,
+              "p95": 1.7009999999991123,
+              "p99": 2.030800000005911,
+              "min": 1.0370999999995547,
+              "max": 2.030800000005911
+            },
+            "count": 2520,
+            "totalMs": 74.8368999999775
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 16.932000000004336,
+              "p95": 24.082399999998415,
+              "p99": 26.46309999999812,
+              "min": 15.476499999993393,
+              "max": 26.46309999999812
+            },
+            "count": 3240,
+            "totalMs": 1084.1393999999327
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.8448000000007596,
+              "p95": 4.213200000001962,
+              "p99": 5.394000000000233,
+              "min": 1.6273999999993976,
+              "max": 5.394000000000233
+            },
+            "count": 180,
+            "totalMs": 137.74440000000595
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.1146000000044296,
+              "p95": 0.18549999999595457,
+              "p99": 0.30719999999746506,
+              "min": 0.10089999999763677,
+              "max": 0.30719999999746506
+            },
+            "count": 2640,
+            "totalMs": 7.559099999971295
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.3003000000026077,
+              "p95": 0.5828000000001339,
+              "p99": 0.8009000000001834,
+              "min": 0.2584000000006199,
+              "max": 0.8009000000001834
+            },
+            "count": 360,
+            "totalMs": 21.418799999998555
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 7.9715999999971245,
+              "p95": 9.737199999997756,
+              "p99": 10.619200000001001,
+              "min": 6.473099999999249,
+              "max": 10.619200000001001
+            },
+            "count": 1680,
+            "totalMs": 488.7794999999451
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.0639999999984866,
+              "p95": 0.08609999999953288,
+              "p99": 0.13840000000163855,
+              "min": 0.058100000000194996,
+              "max": 0.13840000000163855
+            },
+            "count": 60,
+            "totalMs": 4.101199999988239
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 2520,
+          "energy_physical": 3240,
+          "charging_physical": 1680
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 48,
+          "weather_session_cache_hits": 40,
+          "weather_sample_queries": 75,
+          "weather_forecast_query_items": 60,
+          "weather_sample_evaluations": 59,
+          "energy_evaluations": 54,
+          "charge_integrations": 28,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 82,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 60,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11906,
+          "response_wire_bytes": 11906,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 15,
+          "state_shadow_observations": 15,
+          "state_shadow_pairs": 36,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 36,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 15,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 34.39110000000073,
+              "p95": 47.938200000000506,
+              "p99": 56.17280000000028,
+              "min": 31.540799999998853,
+              "max": 56.17280000000028
+            },
+            "cpuUserMs": 1500,
+            "cpuSystemMs": 15
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 33.84870000000046,
+              "p95": 54.294299999999566,
+              "p99": 54.3158999999996,
+              "min": 31.982200000000375,
+              "max": 54.3158999999996
+            },
+            "cpuUserMs": 1421,
+            "cpuSystemMs": 15
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 34.91330000000016,
+              "p95": 47.558899999999994,
+              "p99": 49.31880000000001,
+              "min": 33.18050000000039,
+              "max": 49.31880000000001
+            },
+            "cpuUserMs": 1406,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 3.103696954765064
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 84.76929999999993,
+          "p95": 111.17100000000028,
+          "p99": 146.58560000000034,
+          "min": 77.71039999999994,
+          "max": 146.58560000000034
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 84.21889999999985,
+          "p95": 110.39429999999993,
+          "p99": 145.91529999999875,
+          "min": 77.17450000000099,
+          "max": 145.91529999999875
+        },
+        "cpuUserMs": 7453,
+        "cpuSystemMs": 62,
+        "heapDelta": {
+          "n": 60,
+          "p50": 9203000,
+          "p95": 24386512,
+          "p99": 24425720,
+          "min": -15355032,
+          "max": 24425720
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11900,
+          "p95": 11901,
+          "p99": 11901,
+          "min": 11890,
+          "max": 11901
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11900,
+          "p95": 11901,
+          "p99": 11901,
+          "min": 11890,
+          "max": 11901
+        },
+        "gcOverlapMs": 192.39720010757446,
+        "gcOverlapCount": 209,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 244,
+          "roadQueries": 7,
+          "weatherQueries": 118,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 4920,
+          "energy_physical": 8700,
+          "charging_physical": 5940
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 83.15050000000156,
+              "p95": 111.17100000000028,
+              "p99": 113.05060000000049,
+              "min": 79.16139999999905,
+              "max": 113.05060000000049
+            },
+            "cpuUserMs": 2437,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 86.45329999999922,
+              "p95": 119.39480000000003,
+              "p99": 146.58560000000034,
+              "min": 77.71039999999994,
+              "max": 146.58560000000034
+            },
+            "cpuUserMs": 2594,
+            "cpuSystemMs": 31
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 84.76929999999993,
+              "p95": 100.80030000000079,
+              "p99": 102.61319999999978,
+              "min": 79.54510000000118,
+              "max": 102.61319999999978
+            },
+            "cpuUserMs": 2422,
+            "cpuSystemMs": 31
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 86.68119999999908,
+          "p95": 104.07049999999981,
+          "p99": 137.59420000000136,
+          "min": 79.64350000000013,
+          "max": 137.59420000000136
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 86.06520000000091,
+          "p95": 103.3132999999998,
+          "p99": 136.90670000000136,
+          "min": 79.08910000000105,
+          "max": 136.90670000000136
+        },
+        "cpuUserMs": 7564,
+        "cpuSystemMs": 252,
+        "heapDelta": {
+          "n": 60,
+          "p50": 10402280,
+          "p95": 24436832,
+          "p99": 24542960,
+          "min": -15151256,
+          "max": 24542960
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 11900,
+          "p95": 11901,
+          "p99": 11901,
+          "min": 11899,
+          "max": 11901
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 11900,
+          "p95": 11901,
+          "p99": 11901,
+          "min": 11899,
+          "max": 11901
+        },
+        "gcOverlapMs": 193.4633006453514,
+        "gcOverlapCount": 209,
+        "searchSummary": {
+          "expandedStates": 15,
+          "evaluatedTransitions": 244,
+          "roadQueries": 7,
+          "weatherQueries": 118,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.025299999999333522,
+              "p95": 0.07010000000082073,
+              "p99": 0.09529999999904248,
+              "min": 0.018899999999121064,
+              "max": 0.09529999999904248
+            },
+            "count": 120,
+            "totalMs": 2.0876999999982218
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.030899999999746797,
+              "p95": 0.07470000000103028,
+              "p99": 0.08799999999973807,
+              "min": 0.02509999999892898,
+              "max": 0.08799999999973807
+            },
+            "count": 60,
+            "totalMs": 2.4100000000071304
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.006699999999909778,
+              "p95": 0.014300000000730506,
+              "p99": 0.01809999999932188,
+              "min": 0.005000000001018634,
+              "max": 0.01809999999932188
+            },
+            "count": 60,
+            "totalMs": 0.48760000000038417
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009000000000014552,
+              "p95": 0.01660000000083528,
+              "p99": 0.018500000000130967,
+              "min": 0.006400000000212458,
+              "max": 0.018500000000130967
+            },
+            "count": 60,
+            "totalMs": 0.6224999999958527
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 85.20390000000043,
+              "p95": 102.09499999999935,
+              "p99": 135.0697,
+              "min": 78.36570000000029,
+              "max": 135.0697
+            },
+            "count": 60,
+            "totalMs": 5369.741599999998
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.14640000000144937,
+              "p95": 0.2617000000009284,
+              "p99": 0.37229999999726715,
+              "min": 0.12750000000050932,
+              "max": 0.37229999999726715
+            },
+            "count": 900,
+            "totalMs": 10.152699999985998
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.6463000000076136,
+              "p95": 1.9532999999883032,
+              "p99": 2.5599999999885767,
+              "min": 1.1347999999888998,
+              "max": 2.5599999999885767
+            },
+            "count": 8700,
+            "totalMs": 97.29599999994753
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 2.2079000000067026,
+              "p95": 2.8403999999991356,
+              "p99": 3.755799999993542,
+              "min": 1.903599999990547,
+              "max": 3.755799999993542
+            },
+            "count": 4920,
+            "totalMs": 139.610299999973
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 44.00420000001941,
+              "p95": 52.533100000009654,
+              "p99": 68.07840000000397,
+              "min": 38.825400000003356,
+              "max": 68.07840000000397
+            },
+            "count": 8700,
+            "totalMs": 2760.303700000093
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.8747000000003027,
+              "p95": 4.114500000001499,
+              "p99": 4.485100000001694,
+              "min": 1.5446999999985565,
+              "max": 4.485100000001694
+            },
+            "count": 180,
+            "totalMs": 133.28010000000359
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.30730000001312874,
+              "p95": 0.3866000000089116,
+              "p99": 0.5190999999886117,
+              "min": 0.2628000000040629,
+              "max": 0.5190999999886117
+            },
+            "count": 6900,
+            "totalMs": 18.957600000039747
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.28409999999712454,
+              "p95": 0.5226999999977124,
+              "p99": 0.5982999999996537,
+              "min": 0.23890000000028522,
+              "max": 0.5982999999996537
+            },
+            "count": 360,
+            "totalMs": 20.257399999998597
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 24.57230000000345,
+              "p95": 28.8505999999943,
+              "p99": 38.2274000000034,
+              "min": 21.87189999999282,
+              "max": 38.2274000000034
+            },
+            "count": 5940,
+            "totalMs": 1539.0046000000602
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.06869999999980791,
+              "p95": 0.1169000000008964,
+              "p99": 0.18260000000009313,
+              "min": 0.058399999999892316,
+              "max": 0.18260000000009313
+            },
+            "count": 60,
+            "totalMs": 4.620999999997366
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 420,
+          "station_port": 60,
+          "weather_port": 4920,
+          "energy_physical": 8700,
+          "charging_physical": 5940
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 139,
+          "weather_session_cache_hits": 162,
+          "weather_sample_queries": 236,
+          "weather_forecast_query_items": 118,
+          "weather_sample_evaluations": 117,
+          "energy_evaluations": 145,
+          "charge_integrations": 99,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 244,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 118,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11900,
+          "response_wire_bytes": 11900,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 15,
+          "state_shadow_observations": 15,
+          "state_shadow_pairs": 36,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 36,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 15,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 86.27169999999933,
+              "p95": 104.07049999999981,
+              "p99": 106.57140000000072,
+              "min": 79.64350000000013,
+              "max": 106.57140000000072
+            },
+            "cpuUserMs": 2548,
+            "cpuSystemMs": 32
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 85.21819999999934,
+              "p95": 103.76360000000022,
+              "p99": 115.8122000000003,
+              "min": 80.13600000000042,
+              "max": 115.8122000000003
+            },
+            "cpuUserMs": 2531,
+            "cpuSystemMs": 32
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 91.45420000000013,
+              "p95": 103.60000000000036,
+              "p99": 137.59420000000136,
+              "min": 81.1319999999996,
+              "max": 137.59420000000136
+            },
+            "cpuUserMs": 2485,
+            "cpuSystemMs": 188
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 2.2554155808755665
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 63.61959999999817,
+          "p95": 87.66210000000137,
+          "p99": 107.60800000000017,
+          "min": 58.3817999999992,
+          "max": 107.60800000000017
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 62.86439999999857,
+          "p95": 86.69830000000002,
+          "p99": 106.53449999999793,
+          "min": 57.639500000001135,
+          "max": 106.53449999999793
+        },
+        "cpuUserMs": 6262,
+        "cpuSystemMs": 156,
+        "heapDelta": {
+          "n": 60,
+          "p50": -10812744,
+          "p95": 25142184,
+          "p99": 25204240,
+          "min": -16283040,
+          "max": 25204240
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 16439,
+          "p95": 16440,
+          "p99": 16440,
+          "min": 16426,
+          "max": 16440
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 16439,
+          "p95": 16440,
+          "p99": 16440,
+          "min": 16426,
+          "max": 16440
+        },
+        "gcOverlapMs": 154.29369980096817,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 12,
+          "evaluatedTransitions": 193,
+          "roadQueries": 6,
+          "weatherQueries": 81,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4020,
+          "energy_physical": 6540,
+          "charging_physical": 4440
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 61.923399999999674,
+              "p95": 87.27419999999984,
+              "p99": 97.23289999999906,
+              "min": 58.3817999999992,
+              "max": 97.23289999999906
+            },
+            "cpuUserMs": 2094,
+            "cpuSystemMs": 46
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 63.61959999999817,
+              "p95": 84.59729999999763,
+              "p99": 85.09540000000015,
+              "min": 59.12589999999909,
+              "max": 85.09540000000015
+            },
+            "cpuUserMs": 2062,
+            "cpuSystemMs": 31
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 63.998499999997875,
+              "p95": 98.81499999999869,
+              "p99": 107.60800000000017,
+              "min": 59.130300000000716,
+              "max": 107.60800000000017
+            },
+            "cpuUserMs": 2106,
+            "cpuSystemMs": 79
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 65.62349999999788,
+          "p95": 81.46059999999852,
+          "p99": 105.74560000000201,
+          "min": 59.9445999999989,
+          "max": 105.74560000000201
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 64.87049999999726,
+          "p95": 80.58789999999863,
+          "p99": 104.78510000000097,
+          "min": 59.1830000000009,
+          "max": 104.78510000000097
+        },
+        "cpuUserMs": 6108,
+        "cpuSystemMs": 78,
+        "heapDelta": {
+          "n": 60,
+          "p50": -10723776,
+          "p95": 25114088,
+          "p99": 25308224,
+          "min": -14967288,
+          "max": 25308224
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 16439,
+          "p95": 16440,
+          "p99": 16440,
+          "min": 16438,
+          "max": 16440
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 16439,
+          "p95": 16440,
+          "p99": 16440,
+          "min": 16438,
+          "max": 16440
+        },
+        "gcOverlapMs": 147.54709911346436,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 12,
+          "evaluatedTransitions": 193,
+          "roadQueries": 6,
+          "weatherQueries": 81,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.02500000000145519,
+              "p95": 0.06860000000233413,
+              "p99": 0.11380000000281143,
+              "min": 0.01870000000053551,
+              "max": 0.11380000000281143
+            },
+            "count": 120,
+            "totalMs": 2.136000000016793
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.03200000000288128,
+              "p95": 0.08120000000053551,
+              "p99": 0.1713000000017928,
+              "min": 0.02509999999892898,
+              "max": 0.1713000000017928
+            },
+            "count": 60,
+            "totalMs": 2.6260999999940395
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.006900000000314321,
+              "p95": 0.020099999997910345,
+              "p99": 0.07999999999810825,
+              "min": 0.004600000000209548,
+              "max": 0.07999999999810825
+            },
+            "count": 60,
+            "totalMs": 0.6127999999953317
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009900000000925502,
+              "p95": 0.015899999998509884,
+              "p99": 0.026200000000244472,
+              "min": 0.006400000002031447,
+              "max": 0.026200000000244472
+            },
+            "count": 60,
+            "totalMs": 0.6498000000083266
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 64.04509999999937,
+              "p95": 79.03770000000077,
+              "p99": 102.18349999999919,
+              "min": 58.00829999999769,
+              "max": 102.18349999999919
+            },
+            "count": 60,
+            "totalMs": 4021.3571000000065
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.10839999999734573,
+              "p95": 0.16630000000077416,
+              "p99": 0.25150000000576256,
+              "min": 0.08720000000175787,
+              "max": 0.25150000000576256
+            },
+            "count": 600,
+            "totalMs": 7.116900000002715
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.1234999999796855,
+              "p95": 1.4650999999794294,
+              "p99": 1.731999999999971,
+              "min": 0.7628999999942607,
+              "max": 1.731999999999971
+            },
+            "count": 6540,
+            "totalMs": 68.23699999987002
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.7279000000125961,
+              "p95": 2.3282000000144762,
+              "p99": 3.1643999999760126,
+              "min": 1.4952999999950407,
+              "max": 3.1643999999760126
+            },
+            "count": 4020,
+            "totalMs": 108.6251999999804
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 31.533599999987928,
+              "p95": 38.10869999994975,
+              "p99": 43.92059999999037,
+              "min": 27.58269999996992,
+              "max": 43.92059999999037
+            },
+            "count": 6540,
+            "totalMs": 1966.682599999891
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.27099999998608837,
+              "p95": 0.3558999999986554,
+              "p99": 0.48489999995581456,
+              "min": 0.23339999999734573,
+              "max": 0.48489999995581456
+            },
+            "count": 6420,
+            "totalMs": 16.979599999804122
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.2497999999941385,
+              "p95": 0.3852999999980966,
+              "p99": 0.6834999999991851,
+              "min": 0.20080000000234577,
+              "max": 0.6834999999991851
+            },
+            "count": 300,
+            "totalMs": 16.6153999999824
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 17.616199999996752,
+              "p95": 22.675099999982194,
+              "p99": 28.170800000007148,
+              "min": 15.06460000000152,
+              "max": 28.170800000007148
+            },
+            "count": 4440,
+            "totalMs": 1111.1627999999619
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 2.428799999994226,
+              "p95": 3.852600000001985,
+              "p99": 9.488799999999173,
+              "min": 2.0695999999989,
+              "max": 9.488799999999173
+            },
+            "count": 180,
+            "totalMs": 167.30559999999787
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.08420000000114669,
+              "p95": 0.11779999999998836,
+              "p99": 0.13849999999729334,
+              "min": 0.07010000000082073,
+              "max": 0.13849999999729334
+            },
+            "count": 60,
+            "totalMs": 5.24109999999564
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4020,
+          "energy_physical": 6540,
+          "charging_physical": 4440
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 104,
+          "weather_session_cache_hits": 126,
+          "weather_sample_queries": 126,
+          "weather_forecast_query_items": 81,
+          "weather_sample_evaluations": 80,
+          "energy_evaluations": 109,
+          "charge_integrations": 74,
+          "frontier_peak": 8,
+          "expanded_states": 12,
+          "transitions": 193,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 81,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 16439,
+          "response_wire_bytes": 16439,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 10,
+          "state_shadow_observations": 10,
+          "state_shadow_pairs": 22,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 22,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 10,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 64.37930000000051,
+              "p95": 79.81650000000081,
+              "p99": 81.32949999999983,
+              "min": 60.115200000000186,
+              "max": 81.32949999999983
+            },
+            "cpuUserMs": 2060,
+            "cpuSystemMs": 31
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 64.2474000000002,
+              "p95": 78.89400000000023,
+              "p99": 80.87169999999969,
+              "min": 59.9445999999989,
+              "max": 80.87169999999969
+            },
+            "cpuUserMs": 1984,
+            "cpuSystemMs": 47
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 66.84660000000076,
+              "p95": 87.89319999999861,
+              "p99": 105.74560000000201,
+              "min": 62.46309999999721,
+              "max": 105.74560000000201
+            },
+            "cpuUserMs": 2064,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 3.1498154656737243
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 64.05010000000038,
+          "p95": 80.14579999999842,
+          "p99": 96.93079999999827,
+          "min": 58.27170000000115,
+          "max": 96.93079999999827
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 63.415100000001985,
+          "p95": 79.36990000000151,
+          "p99": 96.20049999999901,
+          "min": 57.63500000000204,
+          "max": 96.20049999999901
+        },
+        "cpuUserMs": 6082,
+        "cpuSystemMs": 47,
+        "heapDelta": {
+          "n": 60,
+          "p50": -7201696,
+          "p95": 19057920,
+          "p99": 19206504,
+          "min": -12454688,
+          "max": 19206504
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 14414,
+          "p95": 14415,
+          "p99": 14415,
+          "min": 14412,
+          "max": 14415
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 14414,
+          "p95": 14415,
+          "p99": 14415,
+          "min": 14412,
+          "max": 14415
+        },
+        "gcOverlapMs": 151.2095001935959,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 11,
+          "evaluatedTransitions": 188,
+          "roadQueries": 6,
+          "weatherQueries": 85,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4200,
+          "energy_physical": 6420,
+          "charging_physical": 4260
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 62.54950000000099,
+              "p95": 76.75509999999849,
+              "p99": 81.50929999999789,
+              "min": 58.876799999998184,
+              "max": 81.50929999999789
+            },
+            "cpuUserMs": 1984,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 65.38750000000073,
+              "p95": 80.58269999999902,
+              "p99": 96.93079999999827,
+              "min": 61.09619999999995,
+              "max": 96.93079999999827
+            },
+            "cpuUserMs": 2126,
+            "cpuSystemMs": 16
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 63.28240000000005,
+              "p95": 77.4256000000023,
+              "p99": 80.14579999999842,
+              "min": 58.27170000000115,
+              "max": 80.14579999999842
+            },
+            "cpuUserMs": 1972,
+            "cpuSystemMs": 31
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 64.60390000000189,
+          "p95": 81.12870000000112,
+          "p99": 91.55999999999767,
+          "min": 60.09660000000076,
+          "max": 91.55999999999767
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 63.907500000001164,
+          "p95": 80.1898000000001,
+          "p99": 90.55639999999767,
+          "min": 59.3637000000017,
+          "max": 90.55639999999767
+        },
+        "cpuUserMs": 5994,
+        "cpuSystemMs": 93,
+        "heapDelta": {
+          "n": 60,
+          "p50": -7103904,
+          "p95": 19196448,
+          "p99": 19302400,
+          "min": -12022960,
+          "max": 19302400
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 14414,
+          "p95": 14415,
+          "p99": 14415,
+          "min": 14413,
+          "max": 14415
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 14414,
+          "p95": 14415,
+          "p99": 14415,
+          "min": 14413,
+          "max": 14415
+        },
+        "gcOverlapMs": 153.4698005914688,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 11,
+          "evaluatedTransitions": 188,
+          "roadQueries": 6,
+          "weatherQueries": 85,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.023000000001047738,
+              "p95": 0.06499999999869033,
+              "p99": 0.08840000000054715,
+              "min": 0.017599999999220017,
+              "max": 0.08840000000054715
+            },
+            "count": 120,
+            "totalMs": 1.9118999999845983
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.03240000000005239,
+              "p95": 0.06350000000020373,
+              "p99": 0.0720999999975902,
+              "min": 0.02479999999923166,
+              "max": 0.0720999999975902
+            },
+            "count": 60,
+            "totalMs": 2.3351000000002387
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.006199999999807915,
+              "p95": 0.013500000000931323,
+              "p99": 0.030900000001565786,
+              "min": 0.004099999998288695,
+              "max": 0.030900000001565786
+            },
+            "count": 60,
+            "totalMs": 0.4657000000006519
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009700000002339948,
+              "p95": 0.018299999999726424,
+              "p99": 0.030099999999947613,
+              "min": 0.006400000002031447,
+              "max": 0.030099999999947613
+            },
+            "count": 60,
+            "totalMs": 0.6674000000348315
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 63.06560000000172,
+              "p95": 78.50789999999688,
+              "p99": 88.48489999999947,
+              "min": 58.572400000000926,
+              "max": 88.48489999999947
+            },
+            "count": 60,
+            "totalMs": 3943.6182000000153
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.10529999999926076,
+              "p95": 0.17510000000038417,
+              "p99": 0.2775000000074215,
+              "min": 0.08919999999488937,
+              "max": 0.2775000000074215
+            },
+            "count": 600,
+            "totalMs": 7.165200000006735
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.1275000000132422,
+              "p95": 1.3650000000125146,
+              "p99": 1.4795999999987544,
+              "min": 0.7872000000024855,
+              "max": 1.4795999999987544
+            },
+            "count": 6420,
+            "totalMs": 69.47090000002572
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.6705000000074506,
+              "p95": 2.091000000011263,
+              "p99": 2.4143000000040047,
+              "min": 1.3849999999692955,
+              "max": 2.4143000000040047
+            },
+            "count": 4200,
+            "totalMs": 102.57120000002396
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 30.598199999993085,
+              "p95": 39.85779999999795,
+              "p99": 43.980500000016036,
+              "min": 26.48360000001412,
+              "max": 43.980500000016036
+            },
+            "count": 6420,
+            "totalMs": 1924.6788000001288
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.2503999999971711,
+              "p95": 0.38279999998849235,
+              "p99": 0.41530000001512235,
+              "min": 0.2227999999995518,
+              "max": 0.41530000001512235
+            },
+            "count": 5820,
+            "totalMs": 15.776300000037736
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.2437999999965541,
+              "p95": 0.45389999999679276,
+              "p99": 0.5890000000035798,
+              "min": 0.2080000000023574,
+              "max": 0.5890000000035798
+            },
+            "count": 300,
+            "totalMs": 17.584300000027724
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 17.812800000006973,
+              "p95": 21.2457000000104,
+              "p99": 24.100899999997637,
+              "min": 16.26019999998607,
+              "max": 24.100899999997637
+            },
+            "count": 4260,
+            "totalMs": 1104.4090000000288
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 2.7708000000020547,
+              "p95": 4.811000000001513,
+              "p99": 5.355199999998149,
+              "min": 2.4570999999959895,
+              "max": 5.355199999998149
+            },
+            "count": 240,
+            "totalMs": 191.02490000001126
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.07489999999961583,
+              "p95": 0.10099999999874854,
+              "p99": 0.24899999999979627,
+              "min": 0.06539999999949941,
+              "max": 0.24899999999979627
+            },
+            "count": 60,
+            "totalMs": 4.870699999992212
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4200,
+          "energy_physical": 6420,
+          "charging_physical": 4260
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 102,
+          "weather_session_cache_hits": 118,
+          "weather_sample_queries": 134,
+          "weather_forecast_query_items": 85,
+          "weather_sample_evaluations": 84,
+          "energy_evaluations": 107,
+          "charge_integrations": 71,
+          "frontier_peak": 8,
+          "expanded_states": 11,
+          "transitions": 188,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 85,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 14414,
+          "response_wire_bytes": 14414,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 10,
+          "state_shadow_observations": 10,
+          "state_shadow_pairs": 22,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 22,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 10,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 64.1407999999974,
+              "p95": 79.15270000000237,
+              "p99": 82.86549999999988,
+              "min": 60.09660000000076,
+              "max": 82.86549999999988
+            },
+            "cpuUserMs": 1984,
+            "cpuSystemMs": 31
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 65.65380000000005,
+              "p95": 81.70499999999811,
+              "p99": 91.55999999999767,
+              "min": 61.26039999999921,
+              "max": 91.55999999999767
+            },
+            "cpuUserMs": 2109,
+            "cpuSystemMs": 30
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 63.174300000002404,
+              "p95": 75.2534999999989,
+              "p99": 81.12870000000112,
+              "min": 60.13130000000092,
+              "max": 81.12870000000112
+            },
+            "cpuUserMs": 1901,
+            "cpuSystemMs": 32
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 0.8646356524056925
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 66.15830000000278,
+          "p95": 99.50149999999849,
+          "p99": 159.72049999999945,
+          "min": 58.13799999999901,
+          "max": 159.72049999999945
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 65.41029999999955,
+          "p95": 98.69500000000335,
+          "p99": 158.4213000000018,
+          "min": 57.28050000000076,
+          "max": 158.4213000000018
+        },
+        "cpuUserMs": 6138,
+        "cpuSystemMs": 140,
+        "heapDelta": {
+          "n": 60,
+          "p50": -10161544,
+          "p95": 28816752,
+          "p99": 29131896,
+          "min": -15115016,
+          "max": 29131896
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 16431,
+          "p95": 16432,
+          "p99": 16432,
+          "min": 16430,
+          "max": 16432
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 16431,
+          "p95": 16432,
+          "p99": 16432,
+          "min": 16430,
+          "max": 16432
+        },
+        "gcOverlapMs": 166.07999968528748,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 12,
+          "evaluatedTransitions": 203,
+          "roadQueries": 6,
+          "weatherQueries": 86,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4320,
+          "energy_physical": 6900,
+          "charging_physical": 4680
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 65.4429999999993,
+              "p95": 111.93199999999706,
+              "p99": 159.72049999999945,
+              "min": 58.13799999999901,
+              "max": 159.72049999999945
+            },
+            "cpuUserMs": 2125,
+            "cpuSystemMs": 77
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 66.22409999999945,
+              "p95": 99.50149999999849,
+              "p99": 103.71340000000055,
+              "min": 59.55240000000049,
+              "max": 103.71340000000055
+            },
+            "cpuUserMs": 2093,
+            "cpuSystemMs": 32
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 66.15830000000278,
+              "p95": 84.16579999999885,
+              "p99": 85.60390000000189,
+              "min": 60.25569999999789,
+              "max": 85.60390000000189
+            },
+            "cpuUserMs": 1920,
+            "cpuSystemMs": 31
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "planned"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 67.2538999999997,
+          "p95": 92.80319999999847,
+          "p99": 110.05240000000049,
+          "min": 58.1391999999978,
+          "max": 110.05240000000049
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 66.46190000000206,
+          "p95": 91.66370000000097,
+          "p99": 107.69449999999779,
+          "min": 57.42870000000039,
+          "max": 107.69449999999779
+        },
+        "cpuUserMs": 6345,
+        "cpuSystemMs": 93,
+        "heapDelta": {
+          "n": 60,
+          "p50": -10542720,
+          "p95": 28945328,
+          "p99": 29062784,
+          "min": -14980840,
+          "max": 29062784
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 16431,
+          "p95": 16432,
+          "p99": 16432,
+          "min": 16429,
+          "max": 16432
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 16431,
+          "p95": 16432,
+          "p99": 16432,
+          "min": 16429,
+          "max": 16432
+        },
+        "gcOverlapMs": 160.3383999466896,
+        "gcOverlapCount": 150,
+        "searchSummary": {
+          "expandedStates": 12,
+          "evaluatedTransitions": 203,
+          "roadQueries": 6,
+          "weatherQueries": 86,
+          "stoppedReason": "frontier_exhausted",
+          "searchComplete": false,
+          "skippedData": [
+            "station_access_hours_unverified",
+            "traffic_not_modelled_static_road_time",
+            "weather_sampling_range_is_estimated"
+          ],
+          "optimality": "not_proven"
+        },
+        "reasonCodes": [],
+        "finalIncumbentPresent": true,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.021199999999225838,
+              "p95": 0.07540000000153668,
+              "p99": 0.147000000000844,
+              "min": 0.01599999999962165,
+              "max": 0.147000000000844
+            },
+            "count": 120,
+            "totalMs": 2.0878999999877124
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.0305000000007567,
+              "p95": 0.0911999999989348,
+              "p99": 0.1385999999984051,
+              "min": 0.023600000000442378,
+              "max": 0.1385999999984051
+            },
+            "count": 60,
+            "totalMs": 2.5732000000025437
+          },
+          "station_corridor": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.005500000002939487,
+              "p95": 0.01660000000265427,
+              "p99": 0.02500000000145519,
+              "min": 0.003700000001117587,
+              "max": 0.02500000000145519
+            },
+            "count": 60,
+            "totalMs": 0.45349999999962165
+          },
+          "candidate_eligibility": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009200000000419095,
+              "p95": 0.019700000000739237,
+              "p99": 0.028800000000046566,
+              "min": 0.005700000001525041,
+              "max": 0.028800000000046566
+            },
+            "count": 60,
+            "totalMs": 0.652700000002369
+          },
+          "optimizer_search": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 65.45379999999932,
+              "p95": 89.78670000000056,
+              "p99": 104.46719999999914,
+              "min": 56.71359999999913,
+              "max": 104.46719999999914
+            },
+            "count": 60,
+            "totalMs": 4125.536100000001
+          },
+          "state_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.10349999999743886,
+              "p95": 0.17170000000260188,
+              "p99": 0.3119000000078813,
+              "min": 0.08700000000317232,
+              "max": 0.3119000000078813
+            },
+            "count": 600,
+            "totalMs": 6.988099999995029
+          },
+          "weather_sampling": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.1596000000172353,
+              "p95": 1.4283000000141328,
+              "p99": 1.8631999999925029,
+              "min": 0.7609999999694992,
+              "max": 1.8631999999925029
+            },
+            "count": 6900,
+            "totalMs": 70.32199999994918
+          },
+          "weather_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 1.6397000000179105,
+              "p95": 2.472699999991164,
+              "p99": 3.6919000000089,
+              "min": 1.4292999999925087,
+              "max": 3.6919000000089
+            },
+            "count": 4320,
+            "totalMs": 106.39679999987493
+          },
+          "energy_evaluation": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 32.50680000000284,
+              "p95": 41.90220000003319,
+              "p99": 49.66780000000654,
+              "min": 27.150800000003073,
+              "max": 49.66780000000654
+            },
+            "count": 6900,
+            "totalMs": 2010.8524000001344
+          },
+          "candidate_call_shadow": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.273700000023382,
+              "p95": 0.3582000000133121,
+              "p99": 0.4724000000023807,
+              "min": 0.24869999999646097,
+              "max": 0.4724000000023807
+            },
+            "count": 6660,
+            "totalMs": 17.328799999992043
+          },
+          "road_leg_acquisition": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.2202999999972235,
+              "p95": 0.4007000000019616,
+              "p99": 0.5553999999974621,
+              "min": 0.18669999999474385,
+              "max": 0.5553999999974621
+            },
+            "count": 300,
+            "totalMs": 15.57850000002145
+          },
+          "charge_integration": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 18.74029999999766,
+              "p95": 25.073999999978696,
+              "p99": 30.828999999994267,
+              "min": 16.58679999999731,
+              "max": 30.828999999994267
+            },
+            "count": 4680,
+            "totalMs": 1174.8674999999057
+          },
+          "plan_compile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 2.2137000000038825,
+              "p95": 4.020800000005693,
+              "p99": 5.019700000000739,
+              "min": 1.9520999999986088,
+              "max": 5.019700000000739
+            },
+            "count": 180,
+            "totalMs": 154.69000000001324
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.08000000000174623,
+              "p95": 0.09250000000247383,
+              "p99": 0.2382999999972526,
+              "min": 0.06959999999889988,
+              "max": 0.2382999999972526
+            },
+            "count": 60,
+            "totalMs": 5.022500000031869
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 360,
+          "station_port": 60,
+          "weather_port": 4320,
+          "energy_physical": 6900,
+          "charging_physical": 4680
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 110,
+          "weather_session_cache_hits": 131,
+          "weather_sample_queries": 132,
+          "weather_forecast_query_items": 86,
+          "weather_sample_evaluations": 85,
+          "energy_evaluations": 115,
+          "charge_integrations": 78,
+          "frontier_peak": 8,
+          "expanded_states": 12,
+          "transitions": 203,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 86,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 16431,
+          "response_wire_bytes": 16431,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 10,
+          "state_shadow_observations": 10,
+          "state_shadow_pairs": 22,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 22,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 10,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 66.107600000003,
+              "p95": 80.77969999999914,
+              "p99": 81.9307000000008,
+              "min": 59.1971999999987,
+              "max": 81.9307000000008
+            },
+            "cpuUserMs": 2079,
+            "cpuSystemMs": 32
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 67.36800000000221,
+              "p95": 93.48630000000048,
+              "p99": 96.43840000000273,
+              "min": 58.1391999999978,
+              "max": 96.43840000000273
+            },
+            "cpuUserMs": 2094,
+            "cpuSystemMs": 30
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 67.2538999999997,
+              "p95": 92.80319999999847,
+              "p99": 110.05240000000049,
+              "min": 61.38210000000254,
+              "max": 110.05240000000049
+            },
+            "cpuUserMs": 2172,
+            "cpuSystemMs": 31
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 1.6560280418282736
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.4709999999977299,
+          "p95": 1.6366999999991094,
+          "p99": 2.2648000000008324,
+          "min": 0.2348999999994703,
+          "max": 2.2648000000008324
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.3690999999998894,
+          "p95": 1.2952000000004773,
+          "p99": 1.7894999999989523,
+          "min": 0.17939999999725842,
+          "max": 1.7894999999989523
+        },
+        "cpuUserMs": 297,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 150968,
+          "p95": 186376,
+          "p99": 189008,
+          "min": 114832,
+          "max": 189008
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5429000000003725,
+              "p95": 1.1383000000023458,
+              "p99": 1.2563000000009197,
+              "min": 0.30649999999877764,
+              "max": 1.2563000000009197
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4863999999979569,
+              "p95": 1.9870000000009895,
+              "p99": 2.2648000000008324,
+              "min": 0.2348999999994703,
+              "max": 2.2648000000008324
+            },
+            "cpuUserMs": 266,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4040999999997439,
+              "p95": 1.3086999999977706,
+              "p99": 1.4158000000024913,
+              "min": 0.29609999999956926,
+              "max": 1.4158000000024913
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.555000000000291,
+          "p95": 1.4769999999989523,
+          "p99": 2.2308999999986554,
+          "min": 0.29439999999885913,
+          "max": 2.2308999999986554
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.4118000000016764,
+          "p95": 1.1232999999992899,
+          "p99": 1.7453999999997905,
+          "min": 0.19880000000193832,
+          "max": 1.7453999999997905
+        },
+        "cpuUserMs": 236,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 163336,
+          "p95": 200232,
+          "p99": 201160,
+          "min": 127872,
+          "max": 201160
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.024600000000646105,
+              "p95": 0.06490000000121654,
+              "p99": 0.10859999999593128,
+              "min": 0.014100000000325963,
+              "max": 0.10859999999593128
+            },
+            "count": 120,
+            "totalMs": 1.9843000000219035
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.011600000001635635,
+              "p95": 0.027299999997921987,
+              "p99": 0.035800000001472654,
+              "min": 0.004999999997380655,
+              "max": 0.035800000001472654
+            },
+            "count": 60,
+            "totalMs": 0.84159999998883
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 497,
+          "response_wire_bytes": 497,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5322000000014668,
+              "p95": 1.2912999999971362,
+              "p99": 1.416399999998248,
+              "min": 0.3423000000002503,
+              "max": 1.416399999998248
+            },
+            "cpuUserMs": 79,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.705100000002858,
+              "p95": 1.8158000000003085,
+              "p99": 2.2308999999986554,
+              "min": 0.29439999999885913,
+              "max": 2.2308999999986554
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.555000000000291,
+              "p95": 1.4094000000004598,
+              "p99": 1.4769999999989523,
+              "min": 0.32890000000043074,
+              "max": 1.4769999999989523
+            },
+            "cpuUserMs": 141,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 17.83439490508832
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.43990000000121654,
+          "p95": 1.225399999999354,
+          "p99": 1.6231000000007043,
+          "min": 0.2305000000014843,
+          "max": 1.6231000000007043
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.3371999999981199,
+          "p95": 0.9717999999993481,
+          "p99": 1.3792000000030384,
+          "min": 0.16809999999895808,
+          "max": 1.3792000000030384
+        },
+        "cpuUserMs": 126,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 143888,
+          "p95": 186320,
+          "p99": 188944,
+          "min": 132408,
+          "max": 188944
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.44650000000183354,
+              "p95": 1.225399999999354,
+              "p99": 1.6231000000007043,
+              "min": 0.2724999999991269,
+              "max": 1.6231000000007043
+            },
+            "cpuUserMs": 94,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.38070000000152504,
+              "p95": 1.282100000000355,
+              "p99": 1.285200000002078,
+              "min": 0.2305000000014843,
+              "max": 1.285200000002078
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.39799999999740976,
+              "p95": 1.01759999999922,
+              "p99": 1.178299999999581,
+              "min": 0.24069999999846914,
+              "max": 1.178299999999581
+            },
+            "cpuUserMs": 32,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.48909999999887077,
+          "p95": 1.356999999999971,
+          "p99": 2.0570999999981723,
+          "min": 0.2566999999980908,
+          "max": 2.0570999999981723
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.35740000000078,
+          "p95": 0.9930999999996857,
+          "p99": 1.4813000000031025,
+          "min": 0.1687999999994645,
+          "max": 1.4813000000031025
+        },
+        "cpuUserMs": 219,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 156392,
+          "p95": 192752,
+          "p99": 201144,
+          "min": 144952,
+          "max": 201144
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.021500000002561137,
+              "p95": 0.05939999999827705,
+              "p99": 0.3149999999986903,
+              "min": 0.01299999999901047,
+              "max": 0.3149999999986903
+            },
+            "count": 120,
+            "totalMs": 2.0606000000079803
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009100000002945308,
+              "p95": 0.026399999998830026,
+              "p99": 0.04249999999956344,
+              "min": 0.004700000001321314,
+              "max": 0.04249999999956344
+            },
+            "count": 60,
+            "totalMs": 0.7832000000016706
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 497,
+          "response_wire_bytes": 497,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5033000000003085,
+              "p95": 1.356999999999971,
+              "p99": 2.0570999999981723,
+              "min": 0.31190000000060536,
+              "max": 2.0570999999981723
+            },
+            "cpuUserMs": 125,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.49940000000060536,
+              "p95": 1.6286999999974796,
+              "p99": 1.7498999999988882,
+              "min": 0.25869999999849824,
+              "max": 1.7498999999988882
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.44169999999940046,
+              "p95": 1.1574000000000524,
+              "p99": 1.1983000000000175,
+              "min": 0.2566999999980908,
+              "max": 1.1983000000000175
+            },
+            "cpuUserMs": 94,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 11.184360081272601
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.4412000000011176,
+          "p95": 1.34599999999773,
+          "p99": 1.6143000000010943,
+          "min": 0.24249999999665306,
+          "max": 1.6143000000010943
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.3394000000007509,
+          "p95": 1.0082000000002154,
+          "p99": 1.272000000000844,
+          "min": 0.16820000000006985,
+          "max": 1.272000000000844
+        },
+        "cpuUserMs": 281,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 133088,
+          "p95": 170456,
+          "p99": 173104,
+          "min": 125528,
+          "max": 173104
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4555999999975029,
+              "p95": 1.1855999999970663,
+              "p99": 1.1945999999988999,
+              "min": 0.24249999999665306,
+              "max": 1.1945999999988999
+            },
+            "cpuUserMs": 124,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4624000000003434,
+              "p95": 1.34599999999773,
+              "p99": 1.4118999999991502,
+              "min": 0.24430000000211294,
+              "max": 1.4118999999991502
+            },
+            "cpuUserMs": 63,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4173999999984517,
+              "p95": 1.5161000000007334,
+              "p99": 1.6143000000010943,
+              "min": 0.2620999999999185,
+              "max": 1.6143000000010943
+            },
+            "cpuUserMs": 94,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "insufficient_data"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.4837999999981548,
+          "p95": 1.4589000000014494,
+          "p99": 1.6463999999978114,
+          "min": 0.29579999999987194,
+          "max": 1.6463999999978114
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.355200000001787,
+          "p95": 1.0849999999991269,
+          "p99": 1.3502000000007683,
+          "min": 0.19250000000101863,
+          "max": 1.3502000000007683
+        },
+        "cpuUserMs": 235,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 145512,
+          "p95": 184272,
+          "p99": 185304,
+          "min": 137712,
+          "max": 185304
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 497,
+          "p95": 497,
+          "p99": 497,
+          "min": 497,
+          "max": 497
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ENERGY_CALIBRATION_MISSING"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.0235999999968044,
+              "p95": 0.05830000000059954,
+              "p99": 0.06780000000071595,
+              "min": 0.014299999998911517,
+              "max": 0.06780000000071595
+            },
+            "count": 120,
+            "totalMs": 1.7701000000051863
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.009799999999813735,
+              "p95": 0.029399999999441206,
+              "p99": 0.04070000000137952,
+              "min": 0.004700000001321314,
+              "max": 0.04070000000137952
+            },
+            "count": 60,
+            "totalMs": 0.8207000000038533
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 497,
+          "response_wire_bytes": 497,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.47199999999793363,
+              "p95": 1.4020000000018626,
+              "p99": 1.4589000000014494,
+              "min": 0.30159999999887077,
+              "max": 1.4589000000014494
+            },
+            "cpuUserMs": 126,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4904000000024098,
+              "p95": 1.6304999999993015,
+              "p99": 1.6463999999978114,
+              "min": 0.29579999999987194,
+              "max": 1.6463999999978114
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.43909999999959837,
+              "p95": 1.2131999999983236,
+              "p99": 1.238600000000588,
+              "min": 0.2971999999972468,
+              "max": 1.238600000000588
+            },
+            "cpuUserMs": 109,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 9.65548504010184
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.5071000000025379,
+          "p95": 1.4998999999952503,
+          "p99": 2.5406000000002678,
+          "min": 0.29830000000220025,
+          "max": 2.5406000000002678
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.40919999999459833,
+          "p95": 1.244300000002113,
+          "p99": 2.2582000000038533,
+          "min": 0.24289999999746215,
+          "max": 2.2582000000038533
+        },
+        "cpuUserMs": 297,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 158832,
+          "p95": 208072,
+          "p99": 210256,
+          "min": 150288,
+          "max": 210256
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4989000000023225,
+              "p95": 1.474900000001071,
+              "p99": 2.5406000000002678,
+              "min": 0.30760000000009313,
+              "max": 2.5406000000002678
+            },
+            "cpuUserMs": 94,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5197000000007392,
+              "p95": 1.4998999999952503,
+              "p99": 1.5352999999995518,
+              "min": 0.323499999998603,
+              "max": 1.5352999999995518
+            },
+            "cpuUserMs": 109,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4584000000031665,
+              "p95": 1.3316999999988184,
+              "p99": 1.5286999999989348,
+              "min": 0.29830000000220025,
+              "max": 1.5286999999989348
+            },
+            "cpuUserMs": 94,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.5974999999998545,
+          "p95": 1.5728999999992084,
+          "p99": 1.7320999999974447,
+          "min": 0.34619999999995343,
+          "max": 1.7320999999974447
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.46489999999903375,
+          "p95": 1.224000000001979,
+          "p99": 1.3980000000010477,
+          "min": 0.2400999999990745,
+          "max": 1.3980000000010477
+        },
+        "cpuUserMs": 127,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 172032,
+          "p95": 221224,
+          "p99": 223104,
+          "min": 162960,
+          "max": 223104
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.020300000003771856,
+              "p95": 0.060199999999895226,
+              "p99": 0.07069999999657739,
+              "min": 0.014100000000325963,
+              "max": 0.07069999999657739
+            },
+            "count": 120,
+            "totalMs": 1.76149999997142
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.04400000000168802,
+              "p95": 0.13279999999940628,
+              "p99": 0.15650000000096043,
+              "min": 0.028800000000046566,
+              "max": 0.15650000000096043
+            },
+            "count": 60,
+            "totalMs": 3.727499999993597
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.007299999997485429,
+              "p95": 0.01749999999810825,
+              "p99": 0.03619999999500578,
+              "min": 0.004000000000814907,
+              "max": 0.03619999999500578
+            },
+            "count": 60,
+            "totalMs": 0.5807999999997264
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 1,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 494,
+          "response_wire_bytes": 494,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.6510000000016589,
+              "p95": 1.693200000001525,
+              "p99": 1.7320999999974447,
+              "min": 0.3657999999995809,
+              "max": 1.7320999999974447
+            },
+            "cpuUserMs": 79,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.647000000000844,
+              "p95": 1.423399999999674,
+              "p99": 1.4717000000018743,
+              "min": 0.34720000000015716,
+              "max": 1.4717000000018743
+            },
+            "cpuUserMs": 32,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5155999999988126,
+              "p95": 1.4652999999998428,
+              "p99": 1.4827000000004773,
+              "min": 0.34619999999995343,
+              "max": 1.4827000000004773
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 17.826858607151294
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.5331000000005588,
+          "p95": 1.435299999997369,
+          "p99": 2.287499999998545,
+          "min": 0.2800000000061118,
+          "max": 2.287499999998545
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.4376999999949476,
+          "p95": 1.2298999999984517,
+          "p99": 2.041799999999057,
+          "min": 0.22890000000188593,
+          "max": 2.041799999999057
+        },
+        "cpuUserMs": 94,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 158360,
+          "p95": 205896,
+          "p99": 733960,
+          "min": 149680,
+          "max": 733960
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5250000000014552,
+              "p95": 1.3220000000001164,
+              "p99": 1.3289000000004307,
+              "min": 0.2800000000061118,
+              "max": 1.3289000000004307
+            },
+            "cpuUserMs": 63,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5958000000027823,
+              "p95": 1.3045000000056461,
+              "p99": 2.287499999998545,
+              "min": 0.3000000000029104,
+              "max": 2.287499999998545
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4826000000030035,
+              "p95": 1.4896999999982654,
+              "p99": 1.6494999999995343,
+              "min": 0.2960000000020955,
+              "max": 1.6494999999995343
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.5650999999998021,
+          "p95": 1.4945999999981723,
+          "p99": 1.6202999999950407,
+          "min": 0.3260000000009313,
+          "max": 1.6202999999950407
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.430899999999383,
+          "p95": 1.184400000005553,
+          "p99": 1.3387000000002445,
+          "min": 0.23090000000229338,
+          "max": 1.3387000000002445
+        },
+        "cpuUserMs": 140,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 171032,
+          "p95": 221384,
+          "p99": 223608,
+          "min": 162880,
+          "max": 223608
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.01930000000720611,
+              "p95": 0.05510000000504078,
+              "p99": 0.07260000000678701,
+              "min": 0.012500000004365575,
+              "max": 0.07260000000678701
+            },
+            "count": 120,
+            "totalMs": 1.5824000000211527
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.04469999999855645,
+              "p95": 0.13070000000152504,
+              "p99": 0.18049999999493593,
+              "min": 0.028800000000046566,
+              "max": 0.18049999999493593
+            },
+            "count": 60,
+            "totalMs": 3.859600000032515
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.007700000001932494,
+              "p95": 0.018799999998009298,
+              "p99": 0.08060000000114087,
+              "min": 0.004000000000814907,
+              "max": 0.08060000000114087
+            },
+            "count": 60,
+            "totalMs": 0.6156999999875552
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 1,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 494,
+          "response_wire_bytes": 494,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5565999999962514,
+              "p95": 1.4226000000053318,
+              "p99": 1.561600000000908,
+              "min": 0.3540000000066357,
+              "max": 1.561600000000908
+            },
+            "cpuUserMs": 78,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5365000000019791,
+              "p95": 1.4339000000036322,
+              "p99": 1.4773999999961234,
+              "min": 0.3412000000025728,
+              "max": 1.4773999999961234
+            },
+            "cpuUserMs": 62,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5671000000002095,
+              "p95": 1.5872999999992317,
+              "p99": 1.6202999999950407,
+              "min": 0.3260000000009313,
+              "max": 1.6202999999950407
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 6.002626148791926
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.5218000000022585,
+          "p95": 1.623200000001816,
+          "p99": 2.0753999999942607,
+          "min": 0.2818000000042957,
+          "max": 2.0753999999942607
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.43959999999788124,
+          "p95": 1.3270999999949709,
+          "p99": 1.8265000000028522,
+          "min": 0.2239999999947031,
+          "max": 1.8265000000028522
+        },
+        "cpuUserMs": 125,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 158496,
+          "p95": 208528,
+          "p99": 213896,
+          "min": 149680,
+          "max": 213896
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5242999999973108,
+              "p95": 1.3595000000059372,
+              "p99": 1.4310999999943306,
+              "min": 0.31199999999807915,
+              "max": 1.4310999999943306
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.49539999999979045,
+              "p95": 1.9848000000056345,
+              "p99": 2.0753999999942607,
+              "min": 0.2818000000042957,
+              "max": 2.0753999999942607
+            },
+            "cpuUserMs": 78,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5227999999988242,
+              "p95": 1.623200000001816,
+              "p99": 1.7586999999984982,
+              "min": 0.30529999999998836,
+              "max": 1.7586999999984982
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "provider_error"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.606500000001688,
+          "p95": 1.9423999999999069,
+          "p99": 2.7159000000028755,
+          "min": 0.3349999999991269,
+          "max": 2.7159000000028755
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.4404999999969732,
+          "p95": 1.6084000000046217,
+          "p99": 2.324800000002142,
+          "min": 0.2445000000006985,
+          "max": 2.324800000002142
+        },
+        "cpuUserMs": 234,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 171408,
+          "p95": 222456,
+          "p99": 737704,
+          "min": 162880,
+          "max": 737704
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 494,
+          "p95": 494,
+          "p99": 494,
+          "min": 494,
+          "max": 494
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [
+          "ROAD_PROVIDER_RATE_LIMITED"
+        ],
+        "finalIncumbentPresent": false,
+        "stages": {
+          "vehicle_profile": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.020199999991746154,
+              "p95": 0.06919999999081483,
+              "p99": 0.08560000000579748,
+              "min": 0.01290000000881264,
+              "max": 0.08560000000579748
+            },
+            "count": 120,
+            "totalMs": 1.7583000000449829
+          },
+          "base_road": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.04200000000128057,
+              "p95": 0.1492999999973108,
+              "p99": 0.26900000000023283,
+              "min": 0.027699999998731073,
+              "max": 0.26900000000023283
+            },
+            "count": 60,
+            "totalMs": 3.9257999999972526
+          },
+          "json_serialize": {
+            "perPlanMs": {
+              "n": 60,
+              "p50": 0.007400000002235174,
+              "p95": 0.017499999994470272,
+              "p99": 0.021699999997508712,
+              "min": 0.004100000005564652,
+              "max": 0.021699999997508712
+            },
+            "count": 60,
+            "totalMs": 0.5535000000018044
+          }
+        },
+        "physicalCalls": {
+          "vehicle_id": 60,
+          "vehicle_profile": 60,
+          "road_port": 60
+        },
+        "counters": {
+          "road_leg_acquisitions": 1,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 494,
+          "response_wire_bytes": 494,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.606500000001688,
+              "p95": 2.023800000002666,
+              "p99": 2.7159000000028755,
+              "min": 0.33729999999923166,
+              "max": 2.7159000000028755
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.4588000000003376,
+              "p95": 1.4856999999974505,
+              "p99": 1.505300000004354,
+              "min": 0.3349999999991269,
+              "max": 1.505300000004354
+            },
+            "cpuUserMs": 203,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.5737999999983003,
+              "p95": 1.7678999999989173,
+              "p99": 2.512699999999313,
+              "min": 0.36969999999564607,
+              "max": 2.512699999999313
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 16.23227290131525
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.029399999999441206,
+          "p95": 0.1088000000017928,
+          "p99": 0.25,
+          "min": 0.01959999999962747,
+          "max": 0.25
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.02809999999590218,
+          "p95": 0.10390000000188593,
+          "p99": 0.23999999999796273,
+          "min": 0.018199999998614658,
+          "max": 0.23999999999796273
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3896,
+          "p95": 4088,
+          "p99": 5960,
+          "min": 3896,
+          "max": 5960
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.029199999997217674,
+              "p95": 0.08349999999336433,
+              "p99": 0.08620000000519212,
+              "min": 0.01959999999962747,
+              "max": 0.08620000000519212
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.026399999995192047,
+              "p95": 0.0771999999997206,
+              "p99": 0.14450000000215368,
+              "min": 0.01999999999679858,
+              "max": 0.14450000000215368
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.032400000003690366,
+              "p95": 0.12419999999838183,
+              "p99": 0.25,
+              "min": 0.01959999999962747,
+              "max": 0.25
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.06569999999919673,
+          "p95": 0.20120000000315486,
+          "p99": 0.31489999999757856,
+          "min": 0.041799999999057036,
+          "max": 0.31489999999757856
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.02479999999923166,
+          "p95": 0.11339999999472639,
+          "p99": 0.1592000000018743,
+          "min": 0.01620000000548316,
+          "max": 0.1592000000018743
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14472,
+          "p95": 14680,
+          "p99": 17776,
+          "min": 14376,
+          "max": 17776
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 1,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.05700000000069849,
+              "p95": 0.14390000000275904,
+              "p99": 0.14839999999821885,
+              "min": 0.04320000000006985,
+              "max": 0.14839999999821885
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.05730000000039581,
+              "p95": 0.11920000000100117,
+              "p99": 0.20120000000315486,
+              "min": 0.04190000000380678,
+              "max": 0.20120000000315486
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.06569999999919673,
+              "p95": 0.26939999999740394,
+              "p99": 0.31489999999757856,
+              "min": 0.041799999999057036,
+              "max": 0.31489999999757856
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 123.46938775661724
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.03229999999894062,
+          "p95": 0.08469999999942956,
+          "p99": 0.13079999999899883,
+          "min": 0.01810000000114087,
+          "max": 0.13079999999899883
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.030599999998230487,
+          "p95": 0.07809999999881256,
+          "p99": 0.11809999999968568,
+          "min": 0.016700000000128057,
+          "max": 0.11809999999968568
+        },
+        "cpuUserMs": 47,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3896,
+          "p95": 4088,
+          "p99": 4088,
+          "min": 3896,
+          "max": 4088
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.02800000000570435,
+              "p95": 0.07860000000073342,
+              "p99": 0.08369999999558786,
+              "min": 0.021099999998114072,
+              "max": 0.08369999999558786
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.03229999999894062,
+              "p95": 0.11309999999502907,
+              "p99": 0.13079999999899883,
+              "min": 0.01810000000114087,
+              "max": 0.13079999999899883
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.03190000000176951,
+              "p95": 0.0793000000048778,
+              "p99": 0.08469999999942956,
+              "min": 0.019800000001851004,
+              "max": 0.08469999999942956
+            },
+            "cpuUserMs": 47,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.08049999999639113,
+          "p95": 0.1529000000009546,
+          "p99": 0.17010000000300352,
+          "min": 0.03989999999612337,
+          "max": 0.17010000000300352
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.028899999997520354,
+          "p95": 0.08120000000053551,
+          "p99": 0.10579999999754364,
+          "min": 0.016400000000430737,
+          "max": 0.10579999999754364
+        },
+        "cpuUserMs": 32,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14376,
+          "p95": 14664,
+          "p99": 14664,
+          "min": 13640,
+          "max": 14664
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 1,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07910000000265427,
+              "p95": 0.12890000000334112,
+              "p99": 0.13730000000214204,
+              "min": 0.047599999998055864,
+              "max": 0.13730000000214204
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.09990000000107102,
+              "p95": 0.16739999999845168,
+              "p99": 0.17010000000300352,
+              "min": 0.042400000005727634,
+              "max": 0.17010000000300352
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07269999999698484,
+              "p95": 0.14469999999710126,
+              "p99": 0.1529000000009546,
+              "min": 0.03989999999612337,
+              "max": 0.1529000000009546
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 149.22600618895163
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.03539999999338761,
+          "p95": 0.08950000000186265,
+          "p99": 0.17480000000068685,
+          "min": 0.01780000000144355,
+          "max": 0.17480000000068685
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.03359999999520369,
+          "p95": 0.08269999999902211,
+          "p99": 0.1625999999960186,
+          "min": 0.016499999997904524,
+          "max": 0.1625999999960186
+        },
+        "cpuUserMs": 31,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3896,
+          "p95": 4088,
+          "p99": 4088,
+          "min": 3896,
+          "max": 4088
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.04190000000380678,
+              "p95": 0.1327000000019325,
+              "p99": 0.17480000000068685,
+              "min": 0.019800000001851004,
+              "max": 0.17480000000068685
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.03209999999671709,
+              "p95": 0.08810000000084983,
+              "p99": 0.08950000000186265,
+              "min": 0.017899999998917338,
+              "max": 0.08950000000186265
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.033999999999650754,
+              "p95": 0.08060000000114087,
+              "p99": 0.15499999999883585,
+              "min": 0.01780000000144355,
+              "max": 0.15499999999883585
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "AbortError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.07400000000052387,
+          "p95": 0.16079999999783468,
+          "p99": 0.2967999999964377,
+          "min": 0.04110000000218861,
+          "max": 0.2967999999964377
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.027999999998428393,
+          "p95": 0.08819999999832362,
+          "p99": 0.22389999999722932,
+          "min": 0.015800000001036096,
+          "max": 0.22389999999722932
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14376,
+          "p95": 14664,
+          "p99": 14664,
+          "min": 14376,
+          "max": 14664
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 1,
+          "timeout": 0,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07650000000285218,
+              "p95": 0.1548999999940861,
+              "p99": 0.16079999999783468,
+              "min": 0.04509999999572756,
+              "max": 0.16079999999783468
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.052999999999883585,
+              "p95": 0.13089999999647262,
+              "p99": 0.14979999999923166,
+              "min": 0.04110000000218861,
+              "max": 0.14979999999923166
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07390000000305008,
+              "p95": 0.18980000000010477,
+              "p99": 0.2967999999964377,
+              "min": 0.0415999999968335,
+              "max": 0.2967999999964377
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 109.03954806312537
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_total_duration",
+      "off": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.03220000000146683,
+          "p95": 0.12049999999726424,
+          "p99": 0.1911000000036438,
+          "min": 0.016499999997904524,
+          "max": 0.1911000000036438
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.030699999995704275,
+          "p95": 0.11429999999381835,
+          "p99": 0.18069999999715947,
+          "min": 0.015599999998812564,
+          "max": 0.18069999999715947
+        },
+        "cpuUserMs": 16,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3864,
+          "p95": 4056,
+          "p99": 4056,
+          "min": 3864,
+          "max": 4056
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.04290000000037253,
+              "p95": 0.13439999999536667,
+              "p99": 0.1911000000036438,
+              "min": 0.0202999999964959,
+              "max": 0.1911000000036438
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.029799999996612314,
+              "p95": 0.09999999999854481,
+              "p99": 0.1213999999963562,
+              "min": 0.017699999996693805,
+              "max": 0.1213999999963562
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.027999999998428393,
+              "p95": 0.08219999999710126,
+              "p99": 0.08370000000286382,
+              "min": 0.016499999997904524,
+              "max": 0.08370000000286382
+            },
+            "cpuUserMs": 16,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.07639999999810243,
+          "p95": 0.18289999999979045,
+          "p99": 0.23289999999542488,
+          "min": 0.03830000000016298,
+          "max": 0.23289999999542488
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.03020000000105938,
+          "p95": 0.09269999999378342,
+          "p99": 0.12789999999949941,
+          "min": 0.01590000000578584,
+          "max": 0.12789999999949941
+        },
+        "cpuUserMs": 47,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14352,
+          "p95": 14640,
+          "p99": 14640,
+          "min": 14352,
+          "max": 14640
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 0,
+          "timeout": 1,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.09780000000318978,
+              "p95": 0.17210000000341097,
+              "p99": 0.18289999999979045,
+              "min": 0.049000000006344635,
+              "max": 0.18289999999979045
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.06420000000071013,
+              "p95": 0.18469999999797437,
+              "p99": 0.23289999999542488,
+              "min": 0.04170000000158325,
+              "max": 0.23289999999542488
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07630000000062864,
+              "p95": 0.12800000000424916,
+              "p99": 0.20040000000153668,
+              "min": 0.03830000000016298,
+              "max": 0.20040000000153668
+            },
+            "cpuUserMs": 47,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 137.2670807286401
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_charging_stops",
+      "off": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.02930000000196742,
+          "p95": 0.08530000000610016,
+          "p99": 0.12340000000403961,
+          "min": 0.016400000000430737,
+          "max": 0.12340000000403961
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.02809999999590218,
+          "p95": 0.07770000000164146,
+          "p99": 0.11769999999523861,
+          "min": 0.015400000003864989,
+          "max": 0.11769999999523861
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3864,
+          "p95": 4056,
+          "p99": 4056,
+          "min": 3864,
+          "max": 4056
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.03259999999863794,
+              "p95": 0.09259999999630963,
+              "p99": 0.09740000000601867,
+              "min": 0.01690000000235159,
+              "max": 0.09740000000601867
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.022199999999429565,
+              "p95": 0.08000000000174623,
+              "p99": 0.12340000000403961,
+              "min": 0.016999999999825377,
+              "max": 0.12340000000403961
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.02860000000509899,
+              "p95": 0.08069999999861466,
+              "p99": 0.08530000000610016,
+              "min": 0.016400000000430737,
+              "max": 0.08530000000610016
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.06989999999495922,
+          "p95": 0.15320000000065193,
+          "p99": 0.16270000000076834,
+          "min": 0.04199999999400461,
+          "max": 0.16270000000076834
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.02599999999802094,
+          "p95": 0.08000000000174623,
+          "p99": 0.09240000000136206,
+          "min": 0.015500000001338776,
+          "max": 0.09240000000136206
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14352,
+          "p95": 14640,
+          "p99": 14640,
+          "min": 14352,
+          "max": 14640
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 0,
+          "timeout": 1,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07160000000294531,
+              "p95": 0.12730000000010477,
+              "p99": 0.1330999999991036,
+              "min": 0.04659999999421416,
+              "max": 0.1330999999991036
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.050800000004528556,
+              "p95": 0.1532999999981257,
+              "p99": 0.16270000000076834,
+              "min": 0.04260000000067521,
+              "max": 0.16270000000076834
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.06960000000253785,
+              "p95": 0.15009999999892898,
+              "p99": 0.16230000000359723,
+              "min": 0.04199999999400461,
+              "max": 0.16230000000359723
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 138.56655286780074
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_energy",
+      "off": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.02899999999499414,
+          "p95": 0.075700000001234,
+          "p99": 0.1091999999989639,
+          "min": 0.01659999999537831,
+          "max": 0.1091999999989639
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.027399999999033753,
+          "p95": 0.06990000000223517,
+          "p99": 0.10380000000441214,
+          "min": 0.015199999994365498,
+          "max": 0.10380000000441214
+        },
+        "cpuUserMs": 0,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 3864,
+          "p95": 4056,
+          "p99": 4056,
+          "min": 3864,
+          "max": 4056
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": null,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.02870000000257278,
+              "p95": 0.075700000001234,
+              "p99": 0.1091999999989639,
+              "min": 0.019500000002153683,
+              "max": 0.1091999999989639
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.031500000004598405,
+              "p95": 0.07410000000527361,
+              "p99": 0.07670000000507571,
+              "min": 0.01659999999537831,
+              "max": 0.07670000000507571
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.025499999996100087,
+              "p95": 0.07569999999395804,
+              "p99": 0.09390000000712462,
+              "min": 0.018699999993259553,
+              "max": 0.09390000000712462
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "on": {
+        "n": 60,
+        "status": [
+          "TimeoutError"
+        ],
+        "wallMs": {
+          "n": 60,
+          "p50": 0.07009999999718275,
+          "p95": 0.15789999999833526,
+          "p99": 0.18690000000060536,
+          "min": 0.040000000000873115,
+          "max": 0.18690000000060536
+        },
+        "planWallMs": {
+          "n": 60,
+          "p50": 0.025400000005902257,
+          "p95": 0.07900000000518048,
+          "p99": 0.08870000000024447,
+          "min": 0.014999999999417923,
+          "max": 0.08870000000024447
+        },
+        "cpuUserMs": 31,
+        "cpuSystemMs": 0,
+        "heapDelta": {
+          "n": 60,
+          "p50": 14352,
+          "p95": 14640,
+          "p99": 14640,
+          "min": 14352,
+          "max": 14640
+        },
+        "decodedBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "wireBytes": {
+          "n": 60,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "gcOverlapMs": 0,
+        "gcOverlapCount": 0,
+        "searchSummary": null,
+        "reasonCodes": [],
+        "finalIncumbentPresent": false,
+        "stages": {},
+        "physicalCalls": {},
+        "counters": {
+          "road_leg_acquisitions": 0,
+          "road_session_cache_hits": 0,
+          "weather_session_cache_hits": 0,
+          "weather_sample_queries": 0,
+          "weather_forecast_query_items": 0,
+          "weather_sample_evaluations": 0,
+          "energy_evaluations": 0,
+          "charge_integrations": 0,
+          "frontier_peak": 0,
+          "expanded_states": 0,
+          "transitions": 0,
+          "road_queries_budgeted": 0,
+          "weather_queries_budgeted": 0,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 0,
+          "response_wire_bytes": 0,
+          "cancelled": 0,
+          "timeout": 1,
+          "candidate_eligibility_total": 0,
+          "candidate_selected_total": 0,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 0,
+          "state_shadow_observations": 0,
+          "state_shadow_pairs": 0,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 0,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 0,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.0603999999948428,
+              "p95": 0.12890000000334112,
+              "p99": 0.15200000000186265,
+              "min": 0.046399999999266583,
+              "max": 0.15200000000186265
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.06990000000223517,
+              "p95": 0.15890000000217697,
+              "p99": 0.18690000000060536,
+              "min": 0.043600000004516914,
+              "max": 0.18690000000060536
+            },
+            "cpuUserMs": 0,
+            "cpuSystemMs": 0
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 20,
+              "p50": 0.07009999999718275,
+              "p95": 0.14449999999487773,
+              "p99": 0.15789999999833526,
+              "min": 0.040000000000873115,
+              "max": 0.15789999999833526
+            },
+            "cpuUserMs": 31,
+            "cpuSystemMs": 0
+          }
+        ]
+      },
+      "metricsOnWallP50OverheadPercent": 141.72413796304522
+    }
+  ],
+  "status": "CURRENT_PROFILE_PASS_NO_SPEEDUP_ACCEPTANCE",
+  "historicalComparison": {
+    "status": "NOT_COMPARABLE",
+    "sourceComparison": [
+      {
+        "path": "src/planning/ev-planning.service.ts",
+        "old": "d1ebf37bb86a4ea06639d95bfd179f836c67db6eafc0d436b93626db4e2f23fc",
+        "current": "c7426ff7a801ce13c6701a460e3926dfc50e2aeb58523c6381204c7b2341f8d3",
+        "equal": false
+      },
+      {
+        "path": "src/planning/planning-session.ts",
+        "old": "a3fe5798a160976ddcf334f2a71a455ee5c52a6cf6cc97f9def53483f7530821",
+        "current": "64abb61baa8829d1bbccff5480246b1780492f2fbd7d76ab5ce72a07d063feee",
+        "equal": false
+      },
+      {
+        "path": "src/planning/charge-stop-optimizer.ts",
+        "old": "746800091407eee067c763f0df4b9c9e3bd20a05bdf81a4f4591d67ca50b5a3f",
+        "current": "dada5ad819b024919b71d73c1ef537328396ad4dd9f8bb6235bc1447126a86a8",
+        "equal": false
+      },
+      {
+        "path": "src/planning/plan-compiler.ts",
+        "old": "dc4ed22f2b1fad3f4d6331c64a7c89aa655ec7fd2bb551b277f453de13c176a8",
+        "current": "dc4ed22f2b1fad3f4d6331c64a7c89aa655ec7fd2bb551b277f453de13c176a8",
+        "equal": true
+      },
+      {
+        "path": "src/planning/http/planning-http.service.ts",
+        "old": "97b1cb6ca17c77bf7990979124174343870888ae2372e26710e1233cf082747c",
+        "current": "97b1cb6ca17c77bf7990979124174343870888ae2372e26710e1233cf082747c",
+        "equal": true
+      },
+      {
+        "path": "src/planning/http/planning-response.ts",
+        "old": "c77b99fe62e64ecc868486567726dfe5b1cbcd2b864c93c87045b6bf6b37fc34",
+        "current": "c77b99fe62e64ecc868486567726dfe5b1cbcd2b864c93c87045b6bf6b37fc34",
+        "equal": true
+      },
+      {
+        "path": "src/roads/road-client.ts",
+        "old": "7118b4ca2fd62794979932e7516d7b3ceb8826f4e8ea6f50dd00e7bd95a3e34c",
+        "current": "c260d09cb0568919ceb20e283fecdfd734056366764b2831ba90e890d86a2145",
+        "equal": false
+      },
+      {
+        "path": "src/weather/weather-cache.ts",
+        "old": "d16a5a37481be928759e5613f17e13e2770acf037f78fccfe571802b0ea959b6",
+        "current": "d16a5a37481be928759e5613f17e13e2770acf037f78fccfe571802b0ea959b6",
+        "equal": true
+      }
+    ],
+    "fixtureFactoryMatches": true,
+    "reason": "Different source/dirty HEAD and historical single-process sequential design; no safely reconstructed old-production control. No historical improvement percentage."
+  },
+  "savings": {
+    "queueAlgorithm": 0,
+    "candidatePruning": 0,
+    "statePruning": 0,
+    "energyReuse": 0,
+    "providerRequests": 0
+  },
+  "localProviderPilot": {
+    "status": "NOT_RUN",
+    "reason": "No dedicated verified cache namespace, local provider/runtime/DEM acceptance audit for this task; existing service/cache left untouched. No cold-cache claim from prior records."
+  },
+  "externalProviderLoad": "NOT_RUN",
+  "httpAndPgSynthetic": "NOT_APPLICABLE: synthetic ports only; zero physical HTTP/PG, not measured zero latency",
+  "metricCoverageGaps": {
+    "frontierPushPop": "NOT_MEASURED: no production hook; no inferred counts from seed-inclusive expandedStates",
+    "seedIncumbentUpdates": "NOT_MEASURED: no separate hook; full transition trace equivalence and final incumbent presence only",
+    "httpBodyAndTraceAttributes": "NOT_RUN: local provider pilot not run",
+    "pgLeaseWaitQuota": "NOT_RUN: in-memory ports only"
+  },
+  "limitations": [
+    "p99 with 60 samples per condition/group is sample maximum, not population SLA.",
+    "Windows CPU microsecond format is not resolution; aggregate user/system rather than single short sample.",
+    "Default telemetry off. On enables existing 003/004 observers too; no independent flag means component stage costs only, not causal isolated toggle.",
+    "GC/JIT/shared machine load not fully controlled; snapshots include setup/warmup outside timed windows.",
+    "No CR-PERF-006 and no production changes."
+  ]
+}

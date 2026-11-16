@@ -1,0 +1,29 @@
+PASS src/planning/__tests__/optimizer.spec.ts (8.779 s)
+  Application-owned EV stop optimization
+    √ handles 5003 segment weather queries with default budgets and keeps the full validated route (4600 ms)
+    √ exposes specific missing socket and conflicting road-speed reasons instead of a generic data failure (10 ms)
+    √ chooses two efficient partial charges for time and one >80% charge for fewer stops (368 ms)
+    √ respects user starting SOC and can produce a route with no charge (102 ms)
+    √ returns a validated incumbent when the state budget is exhausted (8 ms)
+    √ returns a validated incumbent when the frontier budget is exhausted (9 ms)
+    √ does not turn a missing vehicle calibration into invented road/weather requests (1 ms)
+    √ minimizes net driving energy rather than elapsed time in energy mode (20 ms)
+    √ does not invent a post-charge temperature to force another charging stop (114 ms)
+    √ preserves source attribution and checks scenario weather after charging delays (176 ms)
+    √ accounts for connection battery discharge separately from inlet losses (155 ms)
+    √ fails closed with no reliable charging plan: no_curve (9 ms)
+    √ fails closed with no reliable charging plan: no_evse (4 ms)
+    √ fails closed with no reliable charging plan: unknown_weather (8 ms)
+    √ fails closed with no reliable charging plan: closed (3 ms)
+    √ fails closed with no reliable charging plan: bad_hardware (17 ms)
+    √ fails closed with no reliable charging plan: cold (20 ms)
+    √ fails closed with no reliable charging plan: access (11 ms)
+    √ fails closed with no reliable charging plan: shared_pool (12 ms)
+    √ does not label a road provider error or candidate truncation as global infeasibility (5 ms)
+    √ keeps caller cancellation separate from a solver budget failure (6 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       21 passed, 21 total
+Snapshots:   0 total
+Time:        9.547 s, estimated 11 s
+Ran all test suites within paths "src/planning/__tests__/optimizer.spec.ts".

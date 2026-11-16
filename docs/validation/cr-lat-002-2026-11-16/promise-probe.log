@@ -1,0 +1,227 @@
+FAIL src/planning/__tests__/state-shadow-equivalence.spec.ts (21.37 s)
+  Current versioned algorithm with/without bounded state shadow
+    × preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / equal_alternatives (5020 ms)
+    × preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / equal_alternatives (5077 ms)
+    × preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / equal_alternatives (5003 ms)
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / normal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / no_dc
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / wrong_standard
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / missing_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / mixed_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / stale
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / missing_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / occupied
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / future_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / private
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / public_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / membership_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / catalogue_membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / catalogue_claims
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / opening_hours
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / shared_pool
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / narrow_curve
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / duplicate_id
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / invalid_match
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / endpoint_gap
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / corridors
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / limit
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / truncated
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / coverage_missing
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / bad_metadata
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / empty
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / direct
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / reserve_boundary
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / state_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / weather_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / road_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / cancel
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / quota
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / timeout
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / unknown_excluded
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / all_unavailable
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / source_conflict
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / sole_station
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / long_route
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / many_stations
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / deadline
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / transition_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / frontier_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / incumbent_state
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / incumbent_frontier
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / regen
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / thermal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / temperature_provenance
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / capacity_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / seeded_graph_1
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / seeded_graph_2
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / normal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / no_dc
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / wrong_standard
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / missing_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / mixed_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / stale
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / missing_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / occupied
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / future_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / private
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / public_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / membership_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / catalogue_membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / catalogue_claims
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / opening_hours
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / shared_pool
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / narrow_curve
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / duplicate_id
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / invalid_match
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / endpoint_gap
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / corridors
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / limit
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / truncated
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / coverage_missing
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / bad_metadata
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / empty
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / direct
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / reserve_boundary
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / state_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / weather_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / road_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / cancel
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / quota
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / timeout
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / unknown_excluded
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / all_unavailable
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / source_conflict
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / sole_station
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / long_route
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / many_stations
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / deadline
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / transition_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / frontier_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / incumbent_state
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / incumbent_frontier
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / regen
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / thermal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / temperature_provenance
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / capacity_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / seeded_graph_1
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / seeded_graph_2
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / normal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / no_dc
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / wrong_standard
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / missing_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / mixed_evse
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / stale
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / missing_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / occupied
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / future_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / private
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / public_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / membership_unknown
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / catalogue_membership
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / catalogue_claims
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / opening_hours
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / shared_pool
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / narrow_curve
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / duplicate_id
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / invalid_match
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / endpoint_gap
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / corridors
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / limit
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / truncated
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / coverage_missing
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / bad_metadata
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / empty
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / direct
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / reserve_boundary
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / state_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / weather_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / road_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / cancel
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / quota
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / timeout
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / unknown_excluded
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / all_unavailable
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / source_conflict
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / sole_station
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / long_route
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / many_stations
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / deadline
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / transition_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / frontier_budget
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / incumbent_state
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / incumbent_frontier
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / regen
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / thermal
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / temperature_provenance
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / capacity_observed
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / seeded_graph_1
+    ○ skipped preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / seeded_graph_2
+
+  ● Current versioned algorithm with/without bounded state shadow › preserves plan/input/replay/trace/budgets/003 counters: minimum_total_duration / equal_alternatives
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+       5 |  beforeAll(()=>{process.env.PLANNING_METRICS_ENABLED='false';jest.useFakeTimers({now:new Date('2026-11-15T09:00:00Z'),doNotFake:['performance','hrtime','nextTick','setImmediate','setTimeout','clearTimeout','setInterval','clearInterval']});});
+       6 |  afterAll(()=>{jest.useRealTimers();if(flag===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=flag;});
+    >  7 |  it.each(objectives.flatMap(objective=>stateCases.map(kind=>[objective,kind] as const)))('preserves plan/input/replay/trace/budgets/003 counters: %s / %s',async(objective,kind)=>{
+         |                                                                                         ^
+       8 |   const fetch=jest.spyOn(global,'fetch').mockRejectedValue(new Error('No external provider'));
+       9 |   try{const row=await validateStateCase(kind,objective);expect(row.equivalent).toBe(true);expect(row.shadow.actual_pruned_states).toBe(0);expect(fetch).not.toHaveBeenCalled();}finally{fetch.mockRestore();}
+      10 |  });
+
+      at ../../../node_modules/.pnpm/jest-each@29.7.0/node_modules/jest-each/build/bind.js:47:15
+          at Array.forEach (<anonymous>)
+      at planning/__tests__/state-shadow-equivalence.spec.ts:7:89
+      at Object.<anonymous> (planning/__tests__/state-shadow-equivalence.spec.ts:3:1)
+
+  ● Current versioned algorithm with/without bounded state shadow › preserves plan/input/replay/trace/budgets/003 counters: minimum_charging_stops / equal_alternatives
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+       5 |  beforeAll(()=>{process.env.PLANNING_METRICS_ENABLED='false';jest.useFakeTimers({now:new Date('2026-11-15T09:00:00Z'),doNotFake:['performance','hrtime','nextTick','setImmediate','setTimeout','clearTimeout','setInterval','clearInterval']});});
+       6 |  afterAll(()=>{jest.useRealTimers();if(flag===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=flag;});
+    >  7 |  it.each(objectives.flatMap(objective=>stateCases.map(kind=>[objective,kind] as const)))('preserves plan/input/replay/trace/budgets/003 counters: %s / %s',async(objective,kind)=>{
+         |                                                                                         ^
+       8 |   const fetch=jest.spyOn(global,'fetch').mockRejectedValue(new Error('No external provider'));
+       9 |   try{const row=await validateStateCase(kind,objective);expect(row.equivalent).toBe(true);expect(row.shadow.actual_pruned_states).toBe(0);expect(fetch).not.toHaveBeenCalled();}finally{fetch.mockRestore();}
+      10 |  });
+
+      at ../../../node_modules/.pnpm/jest-each@29.7.0/node_modules/jest-each/build/bind.js:47:15
+          at Array.forEach (<anonymous>)
+      at planning/__tests__/state-shadow-equivalence.spec.ts:7:89
+      at Object.<anonymous> (planning/__tests__/state-shadow-equivalence.spec.ts:3:1)
+
+  ● Current versioned algorithm with/without bounded state shadow › preserves plan/input/replay/trace/budgets/003 counters: minimum_energy / equal_alternatives
+
+    thrown: "Exceeded timeout of 5000 ms for a test.
+    Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+
+       5 |  beforeAll(()=>{process.env.PLANNING_METRICS_ENABLED='false';jest.useFakeTimers({now:new Date('2026-11-15T09:00:00Z'),doNotFake:['performance','hrtime','nextTick','setImmediate','setTimeout','clearTimeout','setInterval','clearInterval']});});
+       6 |  afterAll(()=>{jest.useRealTimers();if(flag===undefined)delete process.env.PLANNING_METRICS_ENABLED;else process.env.PLANNING_METRICS_ENABLED=flag;});
+    >  7 |  it.each(objectives.flatMap(objective=>stateCases.map(kind=>[objective,kind] as const)))('preserves plan/input/replay/trace/budgets/003 counters: %s / %s',async(objective,kind)=>{
+         |                                                                                         ^
+       8 |   const fetch=jest.spyOn(global,'fetch').mockRejectedValue(new Error('No external provider'));
+       9 |   try{const row=await validateStateCase(kind,objective);expect(row.equivalent).toBe(true);expect(row.shadow.actual_pruned_states).toBe(0);expect(fetch).not.toHaveBeenCalled();}finally{fetch.mockRestore();}
+      10 |  });
+
+      at ../../../node_modules/.pnpm/jest-each@29.7.0/node_modules/jest-each/build/bind.js:47:15
+          at Array.forEach (<anonymous>)
+      at planning/__tests__/state-shadow-equivalence.spec.ts:7:89
+      at Object.<anonymous> (planning/__tests__/state-shadow-equivalence.spec.ts:3:1)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 159 skipped, 162 total
+Snapshots:   0 total
+Time:        22.23 s, estimated 109 s
+Ran all test suites within paths "src/planning/__tests__/state-shadow-equivalence.spec.ts".
+Jest did not exit one second after the test run has completed.
+
+'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.

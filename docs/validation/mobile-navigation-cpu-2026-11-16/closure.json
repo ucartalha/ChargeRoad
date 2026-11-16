@@ -1,0 +1,45 @@
+{
+  "generatedAt": "2026-11-16T00:37:28.912Z",
+  "decision": "NO_GO",
+  "equivalence": "PASS",
+  "performance": "NO_GO",
+  "render": "NOT_RUN",
+  "device": "NOT_RUN",
+  "apiDb": "NOT_RUN",
+  "nextTaskStarted": false,
+  "protectedInitialFiles": 579,
+  "existingChanged": [
+    {
+      "path": "apps/mobile/scripts/test.cjs",
+      "before": "325c446192d064ea0cadbd75d6fe728f5d07832f82814d9f38fd02f03522495c",
+      "after": "068f75874da73c5c586d76f62bcc2ab7f9153915ad8234e81e10708824219fa5"
+    },
+    {
+      "path": "docs/TASKS.md",
+      "before": "2c3a54ccb7bf10ef54da907feb1548e5fcf24725d0f8251b59e0f648336bbd99",
+      "after": "edc8eea15587479f341ad62afe670db6998f371ce8c23148369b9400d0c7edf1"
+    },
+    {
+      "path": "docs/tasks/performance/CR-PERF-006-mobil-gps-rota-esleme-ve-ekran-render-yuku.md",
+      "before": "3be140d1be8724e525d699adbcffe2540fcf147c69827c20e743017b47ed8159",
+      "after": "2baf7296380e0740e1e22dfdcaf1400e7cc890c2f4bfcf608505ac5a0cc81134"
+    }
+  ],
+  "originalCoreStillMatches": true,
+  "applicationNavigationAndBackendUnchanged": true,
+  "historicalEvidenceUnchanged": true,
+  "measuredSourcesStillMatch": true,
+  "finalDiffCheck": "PASS",
+  "productionIndexEnabled": false,
+  "reportSha256": "2f6351988486101ce4905090e7c094521aa243af371789b0334287ea29a168ba",
+  "evidenceHashes": {
+    "start.json": "ba7a6fc70322394327db4a2a2a739c2f0b46cf45f16713bebd0197d2799678e5",
+    "baseline/golden.json": "e4abefb61d364ea093171129fe161fb589d3e5d4b3df6ba36ced15cc6f316fc4",
+    "run4/summary.json": "7bc079d760d2ab81d241d6a107ecaad3ef5c2ca5b13d56a103d38dd440680ff9",
+    "run4/process-1.json": "c04c4da95d6f4fd702e9c9284b182fb970874e64eb2c4ee538dd1db2d5463763",
+    "run4/process-2.json": "4fd10cb81ac49546503e3cb89a617227f4c7724c4c4ff18f6865215d7e0cb26f",
+    "run4/process-3.json": "840eb782fc496a27d686f4f9d7e378b36b74d783ab0cbc424e56d25777fdecaf",
+    "checks.json": "6e419d983eb91c46a627919bf7160bc433e63b1f7144d97698c9d38d421c7e2d",
+    "operations-steady.json": "d7c08af266f7af78b0fa3121ab82de79f064d88757e7de4b7ab1fe34f781f34f"
+  }
+}

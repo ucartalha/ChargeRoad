@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-11-16T12:28:36.882Z",
+  "diagnosis": "ARCHIVED_WEATHER_ACQUISITION_DOMINANT_IN_TWO_PLANNED_CASES",
+  "pollingDecision": "NO_GO",
+  "productionChanged": false,
+  "defaultPollAfterMilliseconds": 5000,
+  "apiRegression": "FAIL",
+  "apiTestCounts": {
+    "passed": 1179,
+    "failed": 3,
+    "total": 1182
+  },
+  "targetedOldTimeoutRecheck": "FAIL",
+  "sourceCount": 609,
+  "existingChanged": [
+    {
+      "path": "apps/api/src/planning/__tests__/planning-jobs.integration.spec.ts",
+      "before": "b97d79f45b3adbb8333f384df1048858c53d8c3b693305422348c92b8e4b9f1b",
+      "after": "e3b4043c3cc4733597649b95ac6b356a2906410c0b2c313588da078ed3ca8a8e"
+    },
+    {
+      "path": "docs/TASKS.md",
+      "before": "edc8eea15587479f341ad62afe670db6998f371ce8c23148369b9400d0c7edf1",
+      "after": "79a520cbe22600f13755f95158dd26b04d54987b401d39c694a4929dc4e68887"
+    }
+  ],
+  "historicalEvidenceUnchanged": true,
+  "abSourcesStillMatch": true,
+  "devicePaint": "NOT_RUN",
+  "newExternalProviderRequests": 0,
+  "nextTaskStarted": false,
+  "finalDiffCheck": "PASS",
+  "reportSha256": "d3403d596dc341856058af0284bc8c46e180e8e394fb6848ee3b37fa5eb2d2e2",
+  "evidenceHashes": {
+    "runtime-stages.json": "15842401d6fe9153b4f3a6b987e9c6f02c196942880b8c368dde83d240eaaee6",
+    "native-isolated-chain.json": "886428c2a9c08eedd34b80baf6ee5061f7607e18508065217857261e82febf7d",
+    "polling-ab.json": "02eee628ce534dc13f4c92cccd8a056b894b14d8eabf78f257711032e509a2d8",
+    "check-final/checks.json": "c0b0ed1417078e9f732dcb634021b3c2ebe3777dce58d157520e52060e303eea",
+    "checks-interrupted.json": "c3c0f84084d9c9bc3d69401b5bcc193128da35c5142ca09545b03e325491411d"
+  }
+}

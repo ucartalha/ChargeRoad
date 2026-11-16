@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-11-16T12:00:33.356Z",
+  "status": "PASS",
+  "events": [
+    {
+      "correlationHash": "4c65e8bc1aa3af01",
+      "status": "planned",
+      "elapsedMs": 84832
+    },
+    {
+      "correlationHash": "0619e36f998ec9b9",
+      "status": "insufficient_data",
+      "elapsedMs": 617
+    },
+    {
+      "correlationHash": "8184eb61473c423c",
+      "status": "insufficient_data",
+      "elapsedMs": 447
+    },
+    {
+      "correlationHash": "b552e596cc8cd5cb",
+      "status": "provider_error",
+      "elapsedMs": 473
+    },
+    {
+      "correlationHash": "dc5795c481f2cc7e",
+      "status": "provider_error",
+      "elapsedMs": 297
+    },
+    {
+      "correlationHash": "25644363f6c9b53f",
+      "status": "provider_error",
+      "elapsedMs": 288
+    },
+    {
+      "correlationHash": "35823cdc76adadaf",
+      "status": "provider_error",
+      "elapsedMs": 275
+    },
+    {
+      "correlationHash": "52f53171fcaf204a",
+      "status": "planned",
+      "elapsedMs": 28554
+    }
+  ],
+  "metricRecords": 13,
+  "metricScopes": [
+    {
+      "scope": "job_execute",
+      "n": 8
+    },
+    {
+      "scope": "job_result",
+      "n": 5
+    }
+  ],
+  "note": "Archived server observations only; no matching client paint trace. No request/user payload retained.",
+  "sourceSha256": "8a103f78a1fbfd0b5c57a41721dc5ef2c4245c9608b2bc9b70811cf143d6f296",
+  "sourceMtime": "2026-11-16T11:34:01.050Z"
+}

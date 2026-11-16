@@ -4,7 +4,9 @@
 **Öncelik:** P0  
 **Risk:** Orta  
 **Bağımlılıklar:** 01  
-**Durum:** TODO
+**Durum:** BLOCKED — offline proof DONE; aktif indeks/render NO-GO (2026-11-16)
+
+[Yeni kullanıcı promptuna göre kapanış](../../validation/mobile-navigation-cpu.md): 40 golden vaka, 80 mobil test; eski/yeni outcome birebir. Sekiz paired iş yükünde net performans NO-GO; üretim core/panel/map/storage değişmedi. Expo export/typecheck/build PASS, cihaz/render NOT_RUN. CR-PERF-007 başlamadı.
 
 ## Amaç
 

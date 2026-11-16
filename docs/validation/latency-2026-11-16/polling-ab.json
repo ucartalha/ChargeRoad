@@ -1,0 +1,625 @@
+{
+  "generatedAt": "2026-11-16T11:52:00.521Z",
+  "sources": {
+    "apps/mobile/src/api/planning.ts": "95ea03aeb5bdb635df020b30d7579143cf4ef9c284e35e6d6868f1a1a2b81cff",
+    "apps/api/src/planning/http/planning-jobs.store.ts": "7c7b70c191758b07e3e70b4f21c5d02063721df50099beda3c7229c62ebd96ae",
+    "apps/api/src/planning/http/planning-jobs.worker.ts": "517c61a540c75581d8d6b01eec3449d4a2973cc571c2d52981d799b452c6108d",
+    "apps/api/src/planning/validation/latency-poll-pilot.ts": "db5a546d3e62aea1d9b4d78f5d59323b07322cab86cc86d576b2491278e4a9f1",
+    "apps/api/scripts/benchmark-polling-latency.cjs": "bb48469520e73c15595a0f4d2d1e1112110bf257df30e2ced31efb5be13860ea"
+  },
+  "groups": [
+    {
+      "readyMs": 100,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 4930,
+          "p95": 4930,
+          "p99": 4930
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 5060,
+          "p95": 5060,
+          "p99": 5060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1930,
+          "p95": 1930,
+          "p99": 1930
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 2060,
+          "p95": 2060,
+          "p99": 2060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 500,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 4530,
+          "p95": 4530,
+          "p99": 4530
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 5060,
+          "p95": 5060,
+          "p99": 5060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1530,
+          "p95": 1530,
+          "p99": 1530
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 2060,
+          "p95": 2060,
+          "p99": 2060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 1900,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 3130,
+          "p95": 3130,
+          "p99": 3130
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 5060,
+          "p95": 5060,
+          "p99": 5060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 130,
+          "p95": 130,
+          "p99": 130
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 2060,
+          "p95": 2060,
+          "p99": 2060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 2100,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 2930,
+          "p95": 2930,
+          "p99": 2930
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 5060,
+          "p95": 5060,
+          "p99": 5060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1950,
+          "p95": 1950,
+          "p99": 1950
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 4080,
+          "p95": 4080,
+          "p99": 4080
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 2,
+          "p95": 2,
+          "p99": 2
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 4500,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 530,
+          "p95": 530,
+          "p99": 530
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 5060,
+          "p95": 5060,
+          "p99": 5060
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1570,
+          "p95": 1570,
+          "p99": 1570
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 6100,
+          "p95": 6100,
+          "p99": 6100
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 6500,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 3550,
+          "p95": 3550,
+          "p99": 3550
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 10080,
+          "p95": 10080,
+          "p99": 10080
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 2,
+          "p95": 2,
+          "p99": 2
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1590,
+          "p95": 1590,
+          "p99": 1590
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 8120,
+          "p95": 8120,
+          "p99": 8120
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 4,
+          "p95": 4,
+          "p99": 4
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 9500,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 550,
+          "p95": 550,
+          "p99": 550
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 10080,
+          "p95": 10080,
+          "p99": 10080
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 2,
+          "p95": 2,
+          "p99": 2
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 610,
+          "p95": 610,
+          "p99": 610
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 10140,
+          "p95": 10140,
+          "p99": 10140
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 5,
+          "p95": 5,
+          "p99": 5
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 10500,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 4570,
+          "p95": 4570,
+          "p99": 4570
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 15100,
+          "p95": 15100,
+          "p99": 15100
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 4630,
+          "p95": 4630,
+          "p99": 4630
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 15160,
+          "p95": 15160,
+          "p99": 15160
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 6,
+          "p95": 6,
+          "p99": 6
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 14000,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1070,
+          "p95": 1070,
+          "p99": 1070
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 15100,
+          "p95": 15100,
+          "p99": 15100
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 1130,
+          "p95": 1130,
+          "p99": 1130
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 15160,
+          "p95": 15160,
+          "p99": 15160
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 6,
+          "p95": 6,
+          "p99": 6
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 30000,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 130,
+          "p95": 130,
+          "p99": 130
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 30160,
+          "p95": 30160,
+          "p99": 30160
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 6,
+          "p95": 6,
+          "p99": 6
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 190,
+          "p95": 190,
+          "p99": 190
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 30220,
+          "p95": 30220,
+          "p99": 30220
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 9,
+          "p95": 9,
+          "p99": 9
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    },
+    {
+      "readyMs": 60000,
+      "before": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 250,
+          "p95": 250,
+          "p99": 250
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 60280,
+          "p95": 60280,
+          "p99": 60280
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      },
+      "prototype": {
+        "readyToObservedMs": {
+          "n": 18,
+          "p50": 310,
+          "p95": 310,
+          "p99": 310
+        },
+        "finalResponseAcceptedMs": {
+          "n": 18,
+          "p50": 60340,
+          "p95": 60340,
+          "p99": 60340
+        },
+        "statusGets": {
+          "n": 18,
+          "p50": 15,
+          "p95": 15,
+          "p99": 15
+        },
+        "resultGets": {
+          "n": 18,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1
+        }
+      }
+    }
+  ],
+  "scope": "First/only A-B hypothesis, virtual same-process timeline; 3 independent processes, warmup 2/arm, 3 balanced blocks, 18 samples/arm/readiness group, concurrency1.",
+  "policy": "prototype only: development opt-in 2000ms while job age<10000ms, otherwise native5000ms. Client always honors server hint. Not wired into production.",
+  "actualUiPaint": "NOT_RUN",
+  "localProvider": "NOT_RUN",
+  "previewOnOff": "NOT_RUN",
+  "sharedQueueLoad": "NOT_RUN",
+  "abrp": "NOT_COMPARABLE",
+  "decision": "NO_GO_FOR_PRODUCTION_OR_REAL_VISIBLE_LATENCY_CLAIM"
+}

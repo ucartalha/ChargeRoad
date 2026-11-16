@@ -1,0 +1,4028 @@
+{
+  "generatedAt": "2026-11-16T13:14:33.146Z",
+  "sources": {
+    "apps/api/src/weather/weather-cache.ts": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+    "apps/api/src/weather/weather.service.ts": "1bb3f4f3435738def95680721bb302bf3fb964322a28c931707782071e277cc4",
+    "apps/api/src/weather/met-norway.adapter.ts": "59e52354d4b7c373d68fd287c093381b7bbfec1d98911a691533bae2f6e4addf",
+    "apps/api/src/weather/weather-policy.ts": "713c0517db87bef3fe65bcc5fdf51e2cbf5669d1aec66a04dfbcaa9300b130fb",
+    "apps/api/scripts/diagnose-weather-acquisition.cjs": "606314d16ae63355f05feead8a0c1f5426a286ea9609831ac22f984ca856c7fc"
+  },
+  "fixtureEpoch": 1794834301981,
+  "groups": [
+    {
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1324.5227,
+          "p95": 1483.8597,
+          "p99": 1483.8597,
+          "min": 1309.5821999999998,
+          "max": 1483.8597
+        },
+        "cpuUserMs": 187,
+        "cpuSystemMs": 62,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 108,
+          "p95": 126,
+          "p99": 126,
+          "min": 90,
+          "max": 126
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 1002856,
+          "p95": 1336944,
+          "p99": 1336944,
+          "min": -37915176,
+          "max": 1336944
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 0,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1309.5821999999998,
+              "p95": 1337.4453999999996,
+              "p99": 1337.4453999999996,
+              "min": 1309.5821999999998,
+              "max": 1337.4453999999996
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1324.5227,
+              "p95": 1392.8168000000005,
+              "p99": 1392.8168000000005,
+              "min": 1324.5227,
+              "max": 1392.8168000000005
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1311.6145000000006,
+              "p95": 1483.8597,
+              "p99": 1483.8597,
+              "min": 1311.6145000000006,
+              "max": 1483.8597
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1349.6874999999995,
+          "p95": 1563.4857000000002,
+          "p99": 1563.4857000000002,
+          "min": 1286.3252000000002,
+          "max": 1563.4857000000002
+        },
+        "cpuUserMs": 375,
+        "cpuSystemMs": 31,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 108,
+          "p95": 117,
+          "p99": 117,
+          "min": 99,
+          "max": 117
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 1472168,
+          "p95": 1725376,
+          "p99": 1725376,
+          "min": -42301792,
+          "max": 1725376
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 0,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1349.6874999999995,
+              "p95": 1377.2696999999998,
+              "p99": 1377.2696999999998,
+              "min": 1349.6874999999995,
+              "max": 1377.2696999999998
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1286.3252000000002,
+              "p95": 1316.4326,
+              "p99": 1316.4326,
+              "min": 1286.3252000000002,
+              "max": 1316.4326
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1443.976200000001,
+              "p95": 1563.4857000000002,
+              "p99": 1563.4857000000002,
+              "min": 1443.976200000001,
+              "max": 1563.4857000000002
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 4.547473508864641e-13,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 27.896999999999025,
+          "p95": 62.30569999999898,
+          "p99": 62.30569999999898,
+          "min": 19.886200000000827,
+          "max": 62.30569999999898
+        },
+        "cpuUserMs": 62,
+        "cpuSystemMs": 15,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 470200,
+          "p95": 506552,
+          "p99": 506552,
+          "min": 264288,
+          "max": 506552
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 19.886200000000827,
+              "p95": 22.204100000000835,
+              "p99": 22.204100000000835,
+              "min": 19.886200000000827,
+              "max": 22.204100000000835
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 27.896999999999025,
+              "p95": 33.759000000000015,
+              "p99": 33.759000000000015,
+              "min": 27.896999999999025,
+              "max": 33.759000000000015
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 49.48400000000038,
+              "p95": 62.30569999999898,
+              "p99": 62.30569999999898,
+              "min": 49.48400000000038,
+              "max": 62.30569999999898
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 34.30169999999998,
+          "p95": 61.93499999999949,
+          "p99": 61.93499999999949,
+          "min": 14.42200000000048,
+          "max": 61.93499999999949
+        },
+        "cpuUserMs": 77,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 518424,
+          "p95": 597560,
+          "p99": 597560,
+          "min": 499312,
+          "max": 597560
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 14.42200000000048,
+              "p95": 61.93499999999949,
+              "p99": 61.93499999999949,
+              "min": 14.42200000000048,
+              "max": 61.93499999999949
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 34.22400000000016,
+              "p95": 40.01770000000033,
+              "p99": 40.01770000000033,
+              "min": 34.22400000000016,
+              "max": 40.01770000000033
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 34.30169999999998,
+              "p95": 54.46049999999923,
+              "p99": 54.46049999999923,
+              "min": 34.30169999999998,
+              "max": 54.46049999999923
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "short",
+      "objective": "minimum_charging_stops",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 167.84990000000107,
+          "p95": 221.33090000000084,
+          "p99": 221.33090000000084,
+          "min": 138.63650000000052,
+          "max": 221.33090000000084
+        },
+        "cpuUserMs": 16,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 466888,
+          "p95": 474032,
+          "p99": 474032,
+          "min": 466576,
+          "max": 474032
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 1,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 0,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 220.65810000000056,
+              "p95": 221.33090000000084,
+              "p99": 221.33090000000084,
+              "min": 220.65810000000056,
+              "max": 221.33090000000084
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 138.63650000000052,
+              "p95": 156.9441999999999,
+              "p99": 156.9441999999999,
+              "min": 138.63650000000052,
+              "max": 156.9441999999999
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 167.84990000000107,
+              "p95": 204.84039999999914,
+              "p99": 204.84039999999914,
+              "min": 167.84990000000107,
+              "max": 204.84039999999914
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 125.15120000000024,
+          "p95": 230.42809999999918,
+          "p99": 230.42809999999918,
+          "min": 45.39940000000024,
+          "max": 230.42809999999918
+        },
+        "cpuUserMs": 155,
+        "cpuSystemMs": 32,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -19754456,
+          "p95": 564072,
+          "p99": 564072,
+          "min": -31041552,
+          "max": 564072
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 1,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 0,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 70.10580000000118,
+              "p95": 230.42809999999918,
+              "p99": 230.42809999999918,
+              "min": 70.10580000000118,
+              "max": 230.42809999999918
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 125.15120000000024,
+              "p95": 151.66940000000068,
+              "p99": 151.66940000000068,
+              "min": 125.15120000000024,
+              "max": 151.66940000000068
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 45.39940000000024,
+              "p95": 199.96629999999823,
+              "p99": 199.96629999999823,
+              "min": 45.39940000000024,
+              "max": 199.96629999999823
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "short",
+      "objective": "minimum_charging_stops",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 17.43870000000061,
+          "p95": 30.805600000001505,
+          "p99": 30.805600000001505,
+          "min": 11.482200000000375,
+          "max": 30.805600000001505
+        },
+        "cpuUserMs": 31,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 390432,
+          "p95": 402536,
+          "p99": 402536,
+          "min": 248712,
+          "max": 402536
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 1,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 11.482200000000375,
+              "p95": 13.0617000000002,
+              "p99": 13.0617000000002,
+              "min": 11.482200000000375,
+              "max": 13.0617000000002
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 20.6908999999996,
+              "p95": 29.66660000000047,
+              "p99": 29.66660000000047,
+              "min": 20.6908999999996,
+              "max": 29.66660000000047
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 17.43870000000061,
+              "p95": 30.805600000001505,
+              "p99": 30.805600000001505,
+              "min": 17.43870000000061,
+              "max": 30.805600000001505
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 14.351800000000367,
+          "p95": 28.073199999998906,
+          "p99": 28.073199999998906,
+          "min": 6.606200000000172,
+          "max": 28.073199999998906
+        },
+        "cpuUserMs": 31,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 402576,
+          "p95": 452496,
+          "p99": 452496,
+          "min": -12801408,
+          "max": 452496
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 1,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 11.903000000000247,
+              "p95": 14.949500000000626,
+              "p99": 14.949500000000626,
+              "min": 11.903000000000247,
+              "max": 14.949500000000626
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 6.606200000000172,
+              "p95": 14.351800000000367,
+              "p99": 14.351800000000367,
+              "min": 6.606200000000172,
+              "max": 14.351800000000367
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 18.502999999998792,
+              "p95": 28.073199999998906,
+              "p99": 28.073199999998906,
+              "min": 18.502999999998792,
+              "max": 28.073199999998906
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1391.5607,
+          "p95": 1580.6265000000003,
+          "p99": 1580.6265000000003,
+          "min": 1240.7954000000009,
+          "max": 1580.6265000000003
+        },
+        "cpuUserMs": 156,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 99,
+          "p95": 135,
+          "p99": 135,
+          "min": 90,
+          "max": 135
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 887160,
+          "p95": 989296,
+          "p99": 989296,
+          "min": -17748384,
+          "max": 989296
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 0,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1340.4856999999993,
+              "p95": 1407.7024000000001,
+              "p99": 1407.7024000000001,
+              "min": 1340.4856999999993,
+              "max": 1407.7024000000001
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1240.7954000000009,
+              "p95": 1580.6265000000003,
+              "p99": 1580.6265000000003,
+              "min": 1240.7954000000009,
+              "max": 1580.6265000000003
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1391.5607,
+              "p95": 1398.3165000000008,
+              "p99": 1398.3165000000008,
+              "min": 1391.5607,
+              "max": 1398.3165000000008
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1426.2744000000002,
+          "p95": 1591.5696999999982,
+          "p99": 1591.5696999999982,
+          "min": 1201.6562999999987,
+          "max": 1591.5696999999982
+        },
+        "cpuUserMs": 391,
+        "cpuSystemMs": 47,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 108,
+          "p95": 117,
+          "p99": 117,
+          "min": 90,
+          "max": 117
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 1374240,
+          "p95": 1528784,
+          "p99": 1528784,
+          "min": -29346792,
+          "max": 1528784
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 0,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1201.6562999999987,
+              "p95": 1330.6509000000005,
+              "p99": 1330.6509000000005,
+              "min": 1201.6562999999987,
+              "max": 1330.6509000000005
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1426.2744000000002,
+              "p95": 1427.9775000000009,
+              "p99": 1427.9775000000009,
+              "min": 1426.2744000000002,
+              "max": 1427.9775000000009
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1431.7713999999996,
+              "p95": 1591.5696999999982,
+              "p99": 1591.5696999999982,
+              "min": 1431.7713999999996,
+              "max": 1591.5696999999982
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 25.379000000000815,
+          "p95": 45.54079999999885,
+          "p99": 45.54079999999885,
+          "min": 20.72899999999936,
+          "max": 45.54079999999885
+        },
+        "cpuUserMs": 46,
+        "cpuSystemMs": 15,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 424528,
+          "p95": 478984,
+          "p99": 478984,
+          "min": 399104,
+          "max": 478984
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 25.379000000000815,
+              "p95": 35.756899999998495,
+              "p99": 35.756899999998495,
+              "min": 25.379000000000815,
+              "max": 35.756899999998495
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 21.44340000000011,
+              "p95": 28.14099999999962,
+              "p99": 28.14099999999962,
+              "min": 21.44340000000011,
+              "max": 28.14099999999962
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 20.72899999999936,
+              "p95": 45.54079999999885,
+              "p99": 45.54079999999885,
+              "min": 20.72899999999936,
+              "max": 45.54079999999885
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 34.84890000000087,
+          "p95": 51.27600000000166,
+          "p99": 51.27600000000166,
+          "min": 14.052299999999377,
+          "max": 51.27600000000166
+        },
+        "cpuUserMs": 47,
+        "cpuSystemMs": 31,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 444136,
+          "p95": 493416,
+          "p99": 493416,
+          "min": -13675680,
+          "max": 493416
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 0,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 23.160099999999147,
+              "p95": 51.27600000000166,
+              "p99": 51.27600000000166,
+              "min": 23.160099999999147,
+              "max": 51.27600000000166
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 35.39350000000013,
+              "p95": 46.461199999999735,
+              "p99": 46.461199999999735,
+              "min": 35.39350000000013,
+              "max": 46.461199999999735
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 14.052299999999377,
+              "p95": 34.84890000000087,
+              "p99": 34.84890000000087,
+              "min": 14.052299999999377,
+              "max": 34.84890000000087
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 10,
+      "forecastCalls": 1,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1409.4462999999996,
+          "p95": 1529.3307000000023,
+          "p99": 1529.3307000000023,
+          "min": 1284.7430999999997,
+          "max": 1529.3307000000023
+        },
+        "cpuUserMs": 438,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 108,
+          "p95": 117,
+          "p99": 117,
+          "min": 90,
+          "max": 117
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4970096,
+          "p95": 5679640,
+          "p99": 5679640,
+          "min": 4721176,
+          "max": 5679640
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 3,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1409.4462999999996,
+              "p95": 1423.1668999999965,
+              "p99": 1423.1668999999965,
+              "min": 1409.4462999999996,
+              "max": 1423.1668999999965
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1428.8149000000012,
+              "p95": 1529.3307000000023,
+              "p99": 1529.3307000000023,
+              "min": 1428.8149000000012,
+              "max": 1529.3307000000023
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1284.7430999999997,
+              "p95": 1311.3932000000023,
+              "p99": 1311.3932000000023,
+              "min": 1284.7430999999997,
+              "max": 1311.3932000000023
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1459.5722999999998,
+          "p95": 1587.8894,
+          "p99": 1587.8894,
+          "min": 1386.741399999999,
+          "max": 1587.8894
+        },
+        "cpuUserMs": 593,
+        "cpuSystemMs": 47,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 117,
+          "p95": 126,
+          "p99": 126,
+          "min": 90,
+          "max": 126
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -14920712,
+          "p95": 6744416,
+          "p99": 6744416,
+          "min": -26449480,
+          "max": 6744416
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 3,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1388.877199999999,
+              "p95": 1498.488800000001,
+              "p99": 1498.488800000001,
+              "min": 1388.877199999999,
+              "max": 1498.488800000001
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1576.127800000002,
+              "p95": 1587.8894,
+              "p99": 1587.8894,
+              "min": 1576.127800000002,
+              "max": 1587.8894
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1386.741399999999,
+              "p95": 1459.5722999999998,
+              "p99": 1459.5722999999998,
+              "min": 1386.741399999999,
+              "max": 1459.5722999999998
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 18.67000000000189,
+          "p95": 30.08640000000014,
+          "p99": 30.08640000000014,
+          "min": 15.599000000001979,
+          "max": 30.08640000000014
+        },
+        "cpuUserMs": 139,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4306344,
+          "p95": 4337960,
+          "p99": 4337960,
+          "min": -14386744,
+          "max": 4337960
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 3,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 15.599000000001979,
+              "p95": 18.469099999998434,
+              "p99": 18.469099999998434,
+              "min": 15.599000000001979,
+              "max": 18.469099999998434
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 21.25420000000304,
+              "p95": 30.08640000000014,
+              "p99": 30.08640000000014,
+              "min": 21.25420000000304,
+              "max": 30.08640000000014
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 18.67000000000189,
+              "p95": 26.328700000001845,
+              "p99": 26.328700000001845,
+              "min": 18.67000000000189,
+              "max": 26.328700000001845
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 22.168299999997544,
+          "p95": 27.128600000000006,
+          "p99": 27.128600000000006,
+          "min": 17.030000000002474,
+          "max": 27.128600000000006
+        },
+        "cpuUserMs": 110,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4409688,
+          "p95": 4469792,
+          "p99": 4469792,
+          "min": -25170120,
+          "max": 4469792
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 3,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 17.52509999999893,
+              "p95": 25.4362000000001,
+              "p99": 25.4362000000001,
+              "min": 17.52509999999893,
+              "max": 25.4362000000001
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 26.90390000000116,
+              "p95": 27.128600000000006,
+              "p99": 27.128600000000006,
+              "min": 26.90390000000116,
+              "max": 27.128600000000006
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 17.030000000002474,
+              "p95": 22.168299999997544,
+              "p99": 22.168299999997544,
+              "min": 17.030000000002474,
+              "max": 22.168299999997544
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_charging_stops",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 131.6915999999983,
+          "p95": 251.98949999999968,
+          "p99": 251.98949999999968,
+          "min": 97.8315999999977,
+          "max": 251.98949999999968
+        },
+        "cpuUserMs": 31,
+        "cpuSystemMs": 16,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4167408,
+          "p95": 4188784,
+          "p99": 4188784,
+          "min": 4010632,
+          "max": 4188784
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 2,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 1,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 97.8315999999977,
+              "p95": 100.52499999999782,
+              "p99": 100.52499999999782,
+              "min": 97.8315999999977,
+              "max": 100.52499999999782
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 238.98769999999786,
+              "p95": 251.98949999999968,
+              "p99": 251.98949999999968,
+              "min": 238.98769999999786,
+              "max": 251.98949999999968
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 131.6915999999983,
+              "p95": 136.85080000000016,
+              "p99": 136.85080000000016,
+              "min": 131.6915999999983,
+              "max": 136.85080000000016
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 158.39510000000155,
+          "p95": 258.14540000000125,
+          "p99": 258.14540000000125,
+          "min": 79.82979999999952,
+          "max": 258.14540000000125
+        },
+        "cpuUserMs": 76,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -19182656,
+          "p95": 4301760,
+          "p99": 4301760,
+          "min": -20102200,
+          "max": 4301760
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 2,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 1,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 79.82979999999952,
+              "p95": 210.6376999999993,
+              "p99": 210.6376999999993,
+              "min": 79.82979999999952,
+              "max": 210.6376999999993
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 241.3755999999994,
+              "p95": 258.14540000000125,
+              "p99": 258.14540000000125,
+              "min": 241.3755999999994,
+              "max": 258.14540000000125
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 110.62390000000232,
+              "p95": 158.39510000000155,
+              "p99": 158.39510000000155,
+              "min": 110.62390000000232,
+              "max": 158.39510000000155
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_charging_stops",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 14.832600000001548,
+          "p95": 32.98570000000109,
+          "p99": 32.98570000000109,
+          "min": 8.986300000000483,
+          "max": 32.98570000000109
+        },
+        "cpuUserMs": 47,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4082584,
+          "p95": 4107176,
+          "p99": 4107176,
+          "min": -14365312,
+          "max": 4107176
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 2,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 1,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 8.986300000000483,
+              "p95": 30.43029999999999,
+              "p99": 30.43029999999999,
+              "min": 8.986300000000483,
+              "max": 30.43029999999999
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 17.01429999999891,
+              "p95": 32.98570000000109,
+              "p99": 32.98570000000109,
+              "min": 17.01429999999891,
+              "max": 32.98570000000109
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 12.990799999999581,
+              "p95": 14.832600000001548,
+              "p99": 14.832600000001548,
+              "min": 12.990799999999581,
+              "max": 14.832600000001548
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 14.687200000000303,
+          "p95": 25.343800000002375,
+          "p99": 25.343800000002375,
+          "min": 12.77390000000014,
+          "max": 25.343800000002375
+        },
+        "cpuUserMs": 203,
+        "cpuSystemMs": 16,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -18869336,
+          "p95": 4278472,
+          "p99": 4278472,
+          "min": -19205760,
+          "max": 4278472
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 2,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 1,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 12.77390000000014,
+              "p95": 14.423799999996845,
+              "p99": 14.423799999996845,
+              "min": 12.77390000000014,
+              "max": 14.423799999996845
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 15.566299999998591,
+              "p95": 17.4333000000006,
+              "p99": 17.4333000000006,
+              "min": 15.566299999998591,
+              "max": 17.4333000000006
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 14.687200000000303,
+              "p95": 25.343800000002375,
+              "p99": 25.343800000002375,
+              "min": 14.687200000000303,
+              "max": 25.343800000002375
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1284.4206999999988,
+          "p95": 1498.9252000000015,
+          "p99": 1498.9252000000015,
+          "min": 1261.1662999999971,
+          "max": 1498.9252000000015
+        },
+        "cpuUserMs": 219,
+        "cpuSystemMs": 15,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 108,
+          "p95": 117,
+          "p99": 117,
+          "min": 99,
+          "max": 117
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4446048,
+          "p95": 4525520,
+          "p99": 4525520,
+          "min": -18852640,
+          "max": 4525520
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 3,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1271.0481,
+              "p95": 1297.8460999999988,
+              "p99": 1297.8460999999988,
+              "min": 1271.0481,
+              "max": 1297.8460999999988
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1456.7772000000004,
+              "p95": 1498.9252000000015,
+              "p99": 1498.9252000000015,
+              "min": 1456.7772000000004,
+              "max": 1498.9252000000015
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1261.1662999999971,
+              "p95": 1284.4206999999988,
+              "p99": 1284.4206999999988,
+              "min": 1261.1662999999971,
+              "max": 1284.4206999999988
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1363.8062000000027,
+          "p95": 1512.4860000000008,
+          "p99": 1512.4860000000008,
+          "min": 1322.6264999999985,
+          "max": 1512.4860000000008
+        },
+        "cpuUserMs": 233,
+        "cpuSystemMs": 31,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 99,
+          "p95": 108,
+          "p99": 108,
+          "min": 90,
+          "max": 108
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4907928,
+          "p95": 5186264,
+          "p99": 5186264,
+          "min": -38887544,
+          "max": 5186264
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 3,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1322.6264999999985,
+              "p95": 1392.1862,
+              "p99": 1392.1862,
+              "min": 1322.6264999999985,
+              "max": 1392.1862
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1376.1797000000006,
+              "p95": 1512.4860000000008,
+              "p99": 1512.4860000000008,
+              "min": 1376.1797000000006,
+              "max": 1512.4860000000008
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1357.031500000001,
+              "p95": 1363.8062000000027,
+              "p99": 1363.8062000000027,
+              "min": 1357.031500000001,
+              "max": 1363.8062000000027
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 28.779999999998836,
+          "p95": 43.472900000000664,
+          "p99": 43.472900000000664,
+          "min": 16.888100000000122,
+          "max": 43.472900000000664
+        },
+        "cpuUserMs": 109,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 4027760,
+          "p95": 4048408,
+          "p99": 4048408,
+          "min": 4021288,
+          "max": 4048408
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 3,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 28.779999999998836,
+              "p95": 29.283299999999144,
+              "p99": 29.283299999999144,
+              "min": 28.779999999998836,
+              "max": 29.283299999999144
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 37.299300000002404,
+              "p95": 43.472900000000664,
+              "p99": 43.472900000000664,
+              "min": 37.299300000002404,
+              "max": 43.472900000000664
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 16.888100000000122,
+              "p95": 20.479200000001583,
+              "p99": 20.479200000001583,
+              "min": 16.888100000000122,
+              "max": 20.479200000001583
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 28.68540000000212,
+          "p95": 34.885599999997794,
+          "p99": 34.885599999997794,
+          "min": 25.336300000002666,
+          "max": 34.885599999997794
+        },
+        "cpuUserMs": 172,
+        "cpuSystemMs": 0,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -16186800,
+          "p95": 4176240,
+          "p99": 4176240,
+          "min": -21045072,
+          "max": 4176240
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 6,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 3,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 28.68540000000212,
+              "p95": 31.433899999999994,
+              "p99": 31.433899999999994,
+              "min": 28.68540000000212,
+              "max": 31.433899999999994
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 25.336300000002666,
+              "p95": 33.67729999999938,
+              "p99": 33.67729999999938,
+              "min": 25.336300000002666,
+              "max": 33.67729999999938
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 26.035200000002078,
+              "p95": 34.885599999997794,
+              "p99": 34.885599999997794,
+              "min": 26.035200000002078,
+              "max": 34.885599999997794
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 200,
+      "forecastCalls": 2,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        200,
+        200,
+        200,
+        200,
+        200,
+        200
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1480.449099999998,
+          "p95": 1685.6276000000034,
+          "p99": 1685.6276000000034,
+          "min": 1262.8111000000026,
+          "max": 1685.6276000000034
+        },
+        "cpuUserMs": 1249,
+        "cpuSystemMs": 47,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 99,
+          "p95": 117,
+          "p99": 117,
+          "min": 99,
+          "max": 117
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 3345432,
+          "p95": 27057248,
+          "p99": 27057248,
+          "min": -11506512,
+          "max": 27057248
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 6,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1262.8111000000026,
+              "p95": 1290.1360999999997,
+              "p99": 1290.1360999999997,
+              "min": 1262.8111000000026,
+              "max": 1290.1360999999997
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1480.449099999998,
+              "p95": 1536.033199999998,
+              "p99": 1536.033199999998,
+              "min": 1480.449099999998,
+              "max": 1536.033199999998
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1586.6185000000005,
+              "p95": 1685.6276000000034,
+              "p99": 1685.6276000000034,
+              "min": 1586.6185000000005,
+              "max": 1685.6276000000034
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1512.765099999997,
+          "p95": 1626.7489000000023,
+          "p99": 1626.7489000000023,
+          "min": 1218.139900000002,
+          "max": 1626.7489000000023
+        },
+        "cpuUserMs": 1437,
+        "cpuSystemMs": 140,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 99,
+          "p95": 126,
+          "p99": 126,
+          "min": 90,
+          "max": 126
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -2663184,
+          "p95": 34827696,
+          "p99": 34827696,
+          "min": -17732816,
+          "max": 34827696
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 6,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1218.139900000002,
+              "p95": 1547.6371,
+              "p99": 1547.6371,
+              "min": 1218.139900000002,
+              "max": 1547.6371
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1512.765099999997,
+              "p95": 1626.7489000000023,
+              "p99": 1626.7489000000023,
+              "min": 1512.765099999997,
+              "max": 1626.7489000000023
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1283.5787999999993,
+              "p95": 1590.3485999999975,
+              "p99": 1590.3485999999975,
+              "min": 1283.5787999999993,
+              "max": 1590.3485999999975
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 1.0913936421275139e-11,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 146.0002999999997,
+          "p95": 188.2468000000008,
+          "p99": 188.2468000000008,
+          "min": 114.90690000000177,
+          "max": 188.2468000000008
+        },
+        "cpuUserMs": 985,
+        "cpuSystemMs": 47,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -8001408,
+          "p95": 23888696,
+          "p99": 23888696,
+          "min": -10488264,
+          "max": 23888696
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 6,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 114.90690000000177,
+              "p95": 118.83800000000338,
+              "p99": 118.83800000000338,
+              "min": 114.90690000000177,
+              "max": 118.83800000000338
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 146.0002999999997,
+              "p95": 188.2468000000008,
+              "p99": 188.2468000000008,
+              "min": 146.0002999999997,
+              "max": 188.2468000000008
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 154.18279999999504,
+              "p95": 166.32160000000295,
+              "p99": 166.32160000000295,
+              "min": 154.18279999999504,
+              "max": 166.32160000000295
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 143.02790000000095,
+          "p95": 179.03570000000036,
+          "p99": 179.03570000000036,
+          "min": 124.88779999999679,
+          "max": 179.03570000000036
+        },
+        "cpuUserMs": 827,
+        "cpuSystemMs": 93,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -372016,
+          "p95": 23776864,
+          "p99": 23776864,
+          "min": -3596216,
+          "max": 23776864
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 6,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 124.88779999999679,
+              "p95": 128.02670000000217,
+              "p99": 128.02670000000217,
+              "min": 124.88779999999679,
+              "max": 128.02670000000217
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 156.00900000000547,
+              "p95": 179.03570000000036,
+              "p99": 179.03570000000036,
+              "min": 156.00900000000547,
+              "max": 179.03570000000036
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 143.02790000000095,
+              "p95": 155.61309999999503,
+              "p99": 155.61309999999503,
+              "min": 143.02790000000095,
+              "max": 155.61309999999503
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_charging_stops",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 287.581299999998,
+          "p95": 307.4974999999977,
+          "p99": 307.4974999999977,
+          "min": 253.10540000000037,
+          "max": 307.4974999999977
+        },
+        "cpuUserMs": 562,
+        "cpuSystemMs": 47,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -11248168,
+          "p95": 21405760,
+          "p99": 21405760,
+          "min": -11484008,
+          "max": 21405760
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 2,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 287.581299999998,
+              "p95": 288.958000000006,
+              "p99": 288.958000000006,
+              "min": 287.581299999998,
+              "max": 288.958000000006
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 285.15460000000166,
+              "p95": 298.1186999999991,
+              "p99": 298.1186999999991,
+              "min": 285.15460000000166,
+              "max": 298.1186999999991
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 253.10540000000037,
+              "p95": 307.4974999999977,
+              "p99": 307.4974999999977,
+              "min": 253.10540000000037,
+              "max": 307.4974999999977
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 314.1664000000019,
+          "p95": 388.8639000000039,
+          "p99": 388.8639000000039,
+          "min": 274.5425000000032,
+          "max": 388.8639000000039
+        },
+        "cpuUserMs": 845,
+        "cpuSystemMs": 16,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 12,
+          "p95": 12,
+          "p99": 12,
+          "min": 12,
+          "max": 12
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 25933328,
+          "p95": 26082496,
+          "p99": 26082496,
+          "min": -3419832,
+          "max": 26082496
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 0,
+            "misses": 1,
+            "coalesced": 2,
+            "externalCalls": 1
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 314.1664000000019,
+              "p95": 315.16309999999794,
+              "p99": 315.16309999999794,
+              "min": 314.1664000000019,
+              "max": 315.16309999999794
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 311.9945999999982,
+              "p95": 388.8639000000039,
+              "p99": 388.8639000000039,
+              "min": 311.9945999999982,
+              "max": 388.8639000000039
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 274.5425000000032,
+              "p95": 322.55259999999544,
+              "p99": 322.55259999999544,
+              "min": 274.5425000000032,
+              "max": 322.55259999999544
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_charging_stops",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 80.0144999999975,
+          "p95": 143.01900000000023,
+          "p99": 143.01900000000023,
+          "min": 69.50630000000092,
+          "max": 143.01900000000023
+        },
+        "cpuUserMs": 468,
+        "cpuSystemMs": 48,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -4388088,
+          "p95": 21304864,
+          "p99": 21304864,
+          "min": -11770688,
+          "max": 21304864
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 2,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 79.40580000000045,
+              "p95": 106.94000000000233,
+              "p99": 106.94000000000233,
+              "min": 79.40580000000045,
+              "max": 106.94000000000233
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 106.49289999999746,
+              "p95": 143.01900000000023,
+              "p99": 143.01900000000023,
+              "min": 106.49289999999746,
+              "max": 143.01900000000023
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 69.50630000000092,
+              "p95": 80.0144999999975,
+              "p99": 80.0144999999975,
+              "min": 69.50630000000092,
+              "max": 80.0144999999975
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 91.15120000000024,
+          "p95": 119.98179999999411,
+          "p99": 119.98179999999411,
+          "min": 64.89020000000164,
+          "max": 119.98179999999411
+        },
+        "cpuUserMs": 717,
+        "cpuSystemMs": 15,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 1,
+          "p95": 1,
+          "p99": 1,
+          "min": 1,
+          "max": 1
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -3791864,
+          "p95": 25752960,
+          "p99": 25752960,
+          "min": -8322280,
+          "max": 25752960
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 3,
+            "hits": 1,
+            "misses": 0,
+            "coalesced": 2,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 91.15120000000024,
+              "p95": 119.98179999999411,
+              "p99": 119.98179999999411,
+              "min": 91.15120000000024,
+              "max": 119.98179999999411
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 107.46639999999752,
+              "p95": 108.28310000000056,
+              "p99": 108.28310000000056,
+              "min": 107.46639999999752,
+              "max": 108.28310000000056
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 64.89020000000164,
+              "p95": 68.84769999999844,
+              "p99": 68.84769999999844,
+              "min": 64.89020000000164,
+              "max": 68.84769999999844
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 1,
+      "uniqueActualSampleLocations": 1,
+      "distinctLocationTimePairs": 2,
+      "distinctProviderCacheKeys": 1,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1463.0445000000036,
+          "p95": 1695.482600000003,
+          "p99": 1695.482600000003,
+          "min": 1304.8740000000034,
+          "max": 1695.482600000003
+        },
+        "cpuUserMs": 765,
+        "cpuSystemMs": 77,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 90,
+          "p95": 108,
+          "p99": 108,
+          "min": 90,
+          "max": 108
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": 2078088,
+          "p95": 3412856,
+          "p99": 3412856,
+          "min": -11502176,
+          "max": 3412856
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 6,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1463.0445000000036,
+              "p95": 1471.1951999999947,
+              "p99": 1471.1951999999947,
+              "min": 1463.0445000000036,
+              "max": 1471.1951999999947
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1304.8740000000034,
+              "p95": 1462.0441000000064,
+              "p99": 1462.0441000000064,
+              "min": 1304.8740000000034,
+              "max": 1462.0441000000064
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1536.9433999999965,
+              "p95": 1695.482600000003,
+              "p99": 1695.482600000003,
+              "min": 1536.9433999999965,
+              "max": 1695.482600000003
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 1528.748400000004,
+          "p95": 1594.321299999996,
+          "p99": 1594.321299999996,
+          "min": 1448.904100000007,
+          "max": 1594.321299999996
+        },
+        "cpuUserMs": 797,
+        "cpuSystemMs": 63,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 90,
+          "p95": 108,
+          "p99": 108,
+          "min": 90,
+          "max": 108
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -3427408,
+          "p95": 24022792,
+          "p99": 24022792,
+          "min": -6961928,
+          "max": 24022792
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 0,
+            "misses": 3,
+            "coalesced": 6,
+            "externalCalls": 3
+          }
+        ],
+        "orderHashVariants": 2,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 1467.241900000001,
+              "p95": 1594.321299999996,
+              "p99": 1594.321299999996,
+              "min": 1467.241900000001,
+              "max": 1594.321299999996
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 1534.4349000000002,
+              "p95": 1570.5676999999996,
+              "p99": 1570.5676999999996,
+              "min": 1534.4349000000002,
+              "max": 1570.5676999999996
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 1448.904100000007,
+              "p95": 1528.748400000004,
+              "p99": 1528.748400000004,
+              "min": 1448.904100000007,
+              "max": 1528.748400000004
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read",
+        "fixture_connection_acquire",
+        "fixture_sql_transaction_or_state",
+        "fixture_sql_provider_lock_sql",
+        "fixture_sql_entry_recheck",
+        "fixture_sql_active_leases",
+        "fixture_sql_lease_claim",
+        "fixture_sql_pace_reserve",
+        "fixture_http_transport",
+        "fixture_sql_fenced_save",
+        "pacing_retry"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    },
+    {
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": true,
+      "before": {
+        "wallMs": {
+          "n": 6,
+          "p50": 121.51050000000396,
+          "p95": 142.46699999999691,
+          "p99": 142.46699999999691,
+          "min": 92.70730000000185,
+          "max": 142.46699999999691
+        },
+        "cpuUserMs": 672,
+        "cpuSystemMs": 32,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -8125248,
+          "p95": 21263112,
+          "p99": 21263112,
+          "min": -11592424,
+          "max": 21263112
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 6,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 121.51050000000396,
+              "p95": 133.52590000000055,
+              "p99": 133.52590000000055,
+              "min": 121.51050000000396,
+              "max": 133.52590000000055
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 92.70730000000185,
+              "p95": 94.15090000000055,
+              "p99": 94.15090000000055,
+              "min": 92.70730000000185,
+              "max": 94.15090000000055
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 128.85540000000037,
+              "p95": 142.46699999999691,
+              "p99": 142.46699999999691,
+              "min": 128.85540000000037,
+              "max": 142.46699999999691
+            }
+          }
+        ]
+      },
+      "observed": {
+        "wallMs": {
+          "n": 6,
+          "p50": 113.13880000000063,
+          "p95": 157.7855000000054,
+          "p99": 157.7855000000054,
+          "min": 82.18820000000414,
+          "max": 157.7855000000054
+        },
+        "cpuUserMs": 657,
+        "cpuSystemMs": 30,
+        "fixtureSqlCalls": {
+          "n": 6,
+          "p50": 3,
+          "p95": 3,
+          "p99": 3,
+          "min": 3,
+          "max": 3
+        },
+        "fixtureTransportCalls": {
+          "n": 6,
+          "p50": 0,
+          "p95": 0,
+          "p99": 0,
+          "min": 0,
+          "max": 0
+        },
+        "heapDelta": {
+          "n": 6,
+          "p50": -4341616,
+          "p95": 23014496,
+          "p99": 23014496,
+          "min": -9367920,
+          "max": 23014496
+        },
+        "cacheCounterVariants": [
+          {
+            "lookups": 9,
+            "hits": 3,
+            "misses": 0,
+            "coalesced": 6,
+            "externalCalls": 0
+          }
+        ],
+        "orderHashVariants": 1,
+        "perProcess": [
+          {
+            "process": 1,
+            "wallMs": {
+              "n": 2,
+              "p50": 134.1342999999979,
+              "p95": 157.7855000000054,
+              "p99": 157.7855000000054,
+              "min": 134.1342999999979,
+              "max": 157.7855000000054
+            }
+          },
+          {
+            "process": 2,
+            "wallMs": {
+              "n": 2,
+              "p50": 82.18820000000414,
+              "p95": 89.30189999999857,
+              "p99": 89.30189999999857,
+              "min": 82.18820000000414,
+              "max": 89.30189999999857
+            }
+          },
+          {
+            "process": 3,
+            "wallMs": {
+              "n": 2,
+              "p50": 113.13880000000063,
+              "p95": 141.3330999999962,
+              "p99": 141.3330999999962,
+              "min": 113.13880000000063,
+              "max": 141.3330999999962
+            }
+          }
+        ]
+      },
+      "outcomeVariants": 1,
+      "fieldVariantCounts": {
+        "result": 1,
+        "physicalFixtureTransportCalls": 1,
+        "httpCodes": 1,
+        "cacheCounters": 1
+      },
+      "queryItems": 3000,
+      "forecastCalls": 3,
+      "uniqueRequestedLocations": 3,
+      "uniqueActualSampleLocations": 3,
+      "distinctLocationTimePairs": 6,
+      "distinctProviderCacheKeys": 3,
+      "perGetCoveragePartitionMaxOverflowMs": 0,
+      "perGetCategories": [
+        "unattributed",
+        "fixture_sql_cache_read"
+      ],
+      "forecastSelectionCalls": [
+        3000,
+        3000,
+        3000,
+        3000,
+        3000,
+        3000
+      ],
+      "perJobExclusiveWait": "NOT_MEASURED: overlapping acquisitions; fixture labels cannot attribute real PG/network/lock causality"
+    }
+  ],
+  "instrumentationOrderGate": "FAIL",
+  "failures": [
+    {
+      "process": 1,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 1,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 1,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 1,
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "medium",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 2,
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 3,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 3,
+      "profile": "short",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 3,
+      "profile": "short",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 3,
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 3,
+      "profile": "medium",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d",
+      "currentOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567"
+    },
+    {
+      "process": 3,
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 3,
+      "profile": "long",
+      "objective": "minimum_total_duration",
+      "warm": false,
+      "enabled": true,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    },
+    {
+      "process": 3,
+      "profile": "long",
+      "objective": "minimum_energy",
+      "warm": false,
+      "enabled": false,
+      "code": "INSTRUMENTATION_SEMANTIC_MISMATCH/transportOrderHash",
+      "beforeOrderHash": "a251a31e203bd33bd061d24f34c3eec7a2ec650c2b7a420ee3bf662b50c78567",
+      "currentOrderHash": "6333d654f855088b00d76a5a3f236e2115db90b347cb3a45c24ea28d10ebda9d"
+    }
+  ],
+  "semanticStatuses": [
+    {
+      "process": 1,
+      "cases": [
+        {
+          "kind": "unknown",
+          "status": "PASS"
+        },
+        {
+          "kind": "stale",
+          "status": "PASS"
+        },
+        {
+          "kind": "outside",
+          "status": "PASS"
+        },
+        {
+          "kind": "429",
+          "status": "PASS"
+        },
+        {
+          "kind": "503",
+          "status": "PASS"
+        },
+        {
+          "kind": "304",
+          "status": "PASS"
+        },
+        {
+          "kind": "cancel",
+          "status": "PASS"
+        },
+        {
+          "kind": "deadline",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "process": 2,
+      "cases": [
+        {
+          "kind": "unknown",
+          "status": "PASS"
+        },
+        {
+          "kind": "stale",
+          "status": "PASS"
+        },
+        {
+          "kind": "outside",
+          "status": "PASS"
+        },
+        {
+          "kind": "429",
+          "status": "PASS"
+        },
+        {
+          "kind": "503",
+          "status": "PASS"
+        },
+        {
+          "kind": "304",
+          "status": "PASS"
+        },
+        {
+          "kind": "cancel",
+          "status": "PASS"
+        },
+        {
+          "kind": "deadline",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "process": 3,
+      "cases": [
+        {
+          "kind": "unknown",
+          "status": "PASS"
+        },
+        {
+          "kind": "stale",
+          "status": "PASS"
+        },
+        {
+          "kind": "outside",
+          "status": "PASS"
+        },
+        {
+          "kind": "429",
+          "status": "PASS"
+        },
+        {
+          "kind": "503",
+          "status": "PASS"
+        },
+        {
+          "kind": "304",
+          "status": "PASS"
+        },
+        {
+          "kind": "cancel",
+          "status": "PASS"
+        },
+        {
+          "kind": "deadline",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "actualSavings": 0,
+  "stageB": "NOT_RUN",
+  "realPgPerformance": "NOT_MEASURED: readonly missing-key EXPLAIN only, no mutation fixture authorized",
+  "notes": [
+    "All strict mismatches retained; no sorting of provider order or expected/golden replacement.",
+    "Even baseline-only order varies in several cohorts; this is not proven observer causality, but strict invariance remains unproven.",
+    "SQL model enforces test serialization with JS mutex. It does not prove actual PostgreSQL lock/lease races.",
+    "Metrics overhead timings include actual fixture awaits; compiler/setup excluded; not production instrumentation acceptance.",
+    "n6 per arm/group; p95/p99 sample maximum. Job labels 3 objectives do not run the optimizer in this forecast microflow."
+  ]
+}

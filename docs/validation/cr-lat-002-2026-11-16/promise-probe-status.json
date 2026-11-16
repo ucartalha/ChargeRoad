@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-11-16T13:25:06.960Z",
+  "status": "FAIL",
+  "exitCode": 1,
+  "testTimeoutChanged": false,
+  "scope": "Opt-in observational setup, not a green gate substitute",
+  "watchdog": null
+}

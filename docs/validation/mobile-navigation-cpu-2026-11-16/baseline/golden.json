@@ -1,0 +1,287 @@
+{
+  "generatedAt": "2026-11-16T00:24:47.887Z",
+  "originalSourceHash": "97d292effe4c71369774ddd6f66b6997a3858230b6ce6790c978070d11fbea2c",
+  "rows": [
+    {
+      "size": 200,
+      "layout": "polyline",
+      "shape": "regular",
+      "fixtureHash": "21b3271844b1a4cb7733b49c0115e137def4d3c852dad9ec15c54d0967ce9f0d",
+      "outcomeHash": "a464d0439786c85916e26445e429d24d4b03e4b9f7c24d306382006fe362e7f7"
+    },
+    {
+      "size": 200,
+      "layout": "polyline",
+      "shape": "hotspot",
+      "fixtureHash": "3b508abf129fd36d315d184a8656dcaeb631b0078134a9e7d95a23352874593b",
+      "outcomeHash": "ef60dcdc319982aa0e14e18315b160e5a7e79859ba0c3651b607a8b569fe6636"
+    },
+    {
+      "size": 200,
+      "layout": "polyline",
+      "shape": "loopback",
+      "fixtureHash": "c34619a3af855ae88193ff70429e2bfe786a1229cb135595a82319468dfdfded",
+      "outcomeHash": "533e50a05cadd5820462211f3a68466b5afef7507c8f60c62183a259056be215"
+    },
+    {
+      "size": 200,
+      "layout": "polyline",
+      "shape": "parallel",
+      "fixtureHash": "8108da0f2a7157764193ee9afc4e048815ece7487dc759a53871c52342234666",
+      "outcomeHash": "899cf29555d7e9dc484c4ebe135465fdf75977f987b76b1cbc905ff52dee167b"
+    },
+    {
+      "size": 200,
+      "layout": "polyline",
+      "shape": "antimeridian",
+      "fixtureHash": "084187ae57b786424a68707b605556c4e04e6bdf2eb11921d771dffee4225695",
+      "outcomeHash": "dd0f0d081da7a248be140ac298f39c6b803e764cb31454d665a19f5a5643342f"
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "shape": "regular",
+      "fixtureHash": "fbf24ca7e3689460ca37e40719dcb9163241d2f38402fe3ac757497ed3476506",
+      "outcomeHash": "6b76d343612d6a08c18c87e9aeb9f7e45c2cecedf8284f2e79be743e4b3b9c0b"
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "shape": "hotspot",
+      "fixtureHash": "91ce6346d6326967f51b368d73d84d6f270a407a90eec570f5d06c5127bef5d0",
+      "outcomeHash": "6b76d343612d6a08c18c87e9aeb9f7e45c2cecedf8284f2e79be743e4b3b9c0b"
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "shape": "loopback",
+      "fixtureHash": "ce62c59e601e9097d1aa45e284e99ca81d8b43be246cc4314126b882b6bce84b",
+      "outcomeHash": "6b76d343612d6a08c18c87e9aeb9f7e45c2cecedf8284f2e79be743e4b3b9c0b"
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "shape": "parallel",
+      "fixtureHash": "dbe699ecb7ed4df4928447462cabd937f52f755f732cc212b4d6833973234942",
+      "outcomeHash": "6b76d343612d6a08c18c87e9aeb9f7e45c2cecedf8284f2e79be743e4b3b9c0b"
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "shape": "antimeridian",
+      "fixtureHash": "7ca67ab415137885d69beff6d8e54f416f1d2dc239724b0361189df76274f8ce",
+      "outcomeHash": "6b76d343612d6a08c18c87e9aeb9f7e45c2cecedf8284f2e79be743e4b3b9c0b"
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "shape": "regular",
+      "fixtureHash": "7c6283b5dce658099eac5ad44ea6577db810fc30a0995425d2a490b53e89f5e7",
+      "outcomeHash": "79af9aba09d546f9fcf8847f2342e032a4cdcd22e06d6592eb4b14fb09d4f313"
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "shape": "hotspot",
+      "fixtureHash": "eac1bf07f6e333dc9a627a8fcace2796ba126e059ac339a719cb7b9ccb761c5f",
+      "outcomeHash": "6307ec62f6f230fc9e71f4aea25f99b29b35362b82d024ac15f3b74a46d319b2"
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "shape": "loopback",
+      "fixtureHash": "78284b1af43b49ea0567cc13fbc1ec01b378ca5bb68a91c87cef3d449e8da8e0",
+      "outcomeHash": "c8727f8da7d4fd2cb1e5e3af02857eef7ba70f4c970b0a53694fd5047dfab772"
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "shape": "parallel",
+      "fixtureHash": "6075e49d1cf2eb25105d7502b2187180a6c677714994ac5e532fda28b83e2885",
+      "outcomeHash": "055001137066af6f1026c4598475be8ab9c213881de81b6f17019bbd35298f95"
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "shape": "antimeridian",
+      "fixtureHash": "739733aad7d400248ab90e4c0994d314af771fe579a2d83d610a886413baf8d3",
+      "outcomeHash": "c09e97bff690f87580db317842045eb2abe73bbe16a337e9c646621cd46483b7"
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "shape": "regular",
+      "fixtureHash": "3b04d23b4c8510af48f97aa5041c921aeaaf281025c87ed4f2c1b2eeebd017e0",
+      "outcomeHash": "d9c68789d181f1bcbac5c2df65d2626537c2ba27521f955cc39095498c34f6dd"
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "shape": "hotspot",
+      "fixtureHash": "ae07472dceae5e417ed36b10356fdbd0fd28c2240c675d5d8aee48e7de0616ba",
+      "outcomeHash": "d9c68789d181f1bcbac5c2df65d2626537c2ba27521f955cc39095498c34f6dd"
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "shape": "loopback",
+      "fixtureHash": "af4b5117a09e46711ca7b1c8c896990fa3cc5532ee50eed97c909586f65734a3",
+      "outcomeHash": "d9c68789d181f1bcbac5c2df65d2626537c2ba27521f955cc39095498c34f6dd"
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "shape": "parallel",
+      "fixtureHash": "0957371a33e0b04abdc16f4038728b266335468baec0c9d0890a148ef25c4784",
+      "outcomeHash": "d9c68789d181f1bcbac5c2df65d2626537c2ba27521f955cc39095498c34f6dd"
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "shape": "antimeridian",
+      "fixtureHash": "d2589a598f695a861d166d5faf265e2e739e6dfcfd61508fcafef142586f8fbe",
+      "outcomeHash": "d9c68789d181f1bcbac5c2df65d2626537c2ba27521f955cc39095498c34f6dd"
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "shape": "regular",
+      "fixtureHash": "48224cd7eba1e6ace02899c4a2820999d577dedea6b034acc23dfacb6c06b151",
+      "outcomeHash": "392235375bd3d44a50e4ae050e51bff32b95ba13ce93c595a95d321c1754f588"
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "shape": "hotspot",
+      "fixtureHash": "fd5631e6973829a20f3e0d9fd892ddfce7f2324afa50c075f86abf93d1ff0c82",
+      "outcomeHash": "1ad60ce1ac4f2b4b2d725d64fce178fb311bc1affa4ab98a3e69cf2ab7a1c739"
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "shape": "loopback",
+      "fixtureHash": "5a9cc955f08f307c537702ccffe388266cb742370f0cdb487a54f3e25f423eaf",
+      "outcomeHash": "24585521c027e740144e73332c403a97550f97de2d2f549340485302dfdec6d7"
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "shape": "parallel",
+      "fixtureHash": "5df831049f8e9b0bd1d244e57e2f86a6900b4ea69089696154366ceb8c5483eb",
+      "outcomeHash": "d4481eb6ab3f3024f532861cbb28ab687894803fa59c96decb67c546ed8c4979"
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "shape": "antimeridian",
+      "fixtureHash": "e4d8e70f2923a6d86a0e6a208d7c14f4bb83ea3073eb75668b826714260650ca",
+      "outcomeHash": "9dea42cf4087d757a6ab653f1bd3e25a04ec093dbc060677e4d9e391c3ee707a"
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "shape": "regular",
+      "fixtureHash": "61bd8ae3597ba3f0819c8021f1b87e8550a436afe2e6fbc2cea873e4845bf918",
+      "outcomeHash": "cc073dbebec81e6a1d80c29d4c492acb3f127a6d2a050ebc220a4dce8ddc99ba"
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "shape": "hotspot",
+      "fixtureHash": "5e1a29491b8b18d82370433f43acefc63880977a4ecfaed0384f6feb52a8b49e",
+      "outcomeHash": "5dac538f43242bb47863d37d860af5c78d948e0fea7b4d4189e279d7c968da74"
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "shape": "loopback",
+      "fixtureHash": "be5f960c3217858feedd7a9f2ab70ca2a0da4dbae6995e6e16960dce9dfa07ff",
+      "outcomeHash": "ca9089325ff2768392e03a2f6061d9662b28b9c9f52dc20f1a8e8d133bc51fa9"
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "shape": "parallel",
+      "fixtureHash": "b2cb88f32ca6286218567f3a9a8dedb16d007989fd4377d45ab7f53b260454c9",
+      "outcomeHash": "4ab2f3a356a0d2c8b39f7037e14162c3cca957e1b1747cb58afd30d3eaa97d76"
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "shape": "antimeridian",
+      "fixtureHash": "fe4fc57405b1de0ccc155863b8e8af51f86f2973edbee86a325ce868a6a1b9f2",
+      "outcomeHash": "a1da50ff41aa6b848151209bd357fbab853323426616e1fb035bdc06eb169453"
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "shape": "regular",
+      "fixtureHash": "c1766886a32405a414c49ea36601c94663d295f84424f044cf7d22157deaffb0",
+      "outcomeHash": "fde1e7270952508961f1fa19107825c5f65b507ac402e7a01b5e9f770616b155"
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "shape": "hotspot",
+      "fixtureHash": "3ec9e6088e8f9de19a32babdd30929cd4d065b5652ff3abe17b8c6c2a38eaaa9",
+      "outcomeHash": "2a8f81ad13a1de91e75a15050d62f7eeb007b277e6a2950c328f14892e843a3e"
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "shape": "loopback",
+      "fixtureHash": "a1850279eef8b94f18caf6405f6d1f0e9db8fc66e5cdb5faac5c26512cc6286b",
+      "outcomeHash": "d47345ab56d4a6fc3678592033fa4340bb592d34af27ed176bf17510d5d82bb4"
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "shape": "parallel",
+      "fixtureHash": "ddcbc9e0106a8fe75661df8061cb3a5ecce54f01588b172a8278b4d68d2552a2",
+      "outcomeHash": "cc5e2549fac542464d211f8a363672cda5c49751258409e6aca75291e691caf4"
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "shape": "antimeridian",
+      "fixtureHash": "f0a2652e6380ed532cde99a0c2565a2bcc5a0e82d2c68081590c1146b1d4564f",
+      "outcomeHash": "7ebaeb6803a8a493039b5bdad5b8fdb78c7bee450b263653553c992c2fe3cb54"
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "shape": "regular",
+      "fixtureHash": "472063e56c7c1a8a993d5fa70e1f381846f1cc06a9204aab382dac161bc12c5a",
+      "outcomeHash": "d41eae7494c79520c97cda30c90c07b189144796649d309804f0f455b2268570"
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "shape": "hotspot",
+      "fixtureHash": "01eb1d5d462a0a6c1013ae4d4d0f63c7f80567f2886b5d1fa94ec70a290861fe",
+      "outcomeHash": "1016f076d990874731f6e040c2a9a6a00e5ea186835fe7cfd55d6d4d24966836"
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "shape": "loopback",
+      "fixtureHash": "ac321e3488886d3a563d08f47602afadab2d9bded6b736bd4c56135a0cd160e2",
+      "outcomeHash": "1b833cb9afc9f7048703f66a75b42dfe0218263e755abc59b90b261d6c6e9c4f"
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "shape": "parallel",
+      "fixtureHash": "1ce7503768e1e0e6e8e0b835f1b9c34fe833c5e6498c9d21ba42520a72f33090",
+      "outcomeHash": "7a17de910b2441416f518f35cd904eb572cb5bddd4c1ee16149fc122c48a77b7"
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "shape": "antimeridian",
+      "fixtureHash": "c2e545652a9c2376fdfc82322b497ccdac86c55c434c4c526e67e6dbff2e99eb",
+      "outcomeHash": "66289d9ac39d235e487051243626a747bd578d8d1ba2ec7d48a820e5143a1f04"
+    }
+  ],
+  "wallMs": 388.98060000000004
+}

@@ -1,0 +1,734 @@
+{
+  "generatedAt": "2026-11-16T13:25:04.693Z",
+  "scope": "opt-in observer overhead; not acceptance timing",
+  "caseNumber": 2,
+  "kind": "equal_alternatives",
+  "objective": "minimum_charging_stops",
+  "status": "rejected",
+  "samples": [
+    {
+      "elapsedMs": 556.9434000000001,
+      "pendingValidations": 2,
+      "cpuUserMs": 531,
+      "cpuSystemMs": 16,
+      "eventLoopMaxMs": 164.757503,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1063.7697000000007,
+      "pendingValidations": 2,
+      "cpuUserMs": 1015,
+      "cpuSystemMs": 63,
+      "eventLoopMaxMs": 168.296447,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1729.5596999999998,
+      "pendingValidations": 2,
+      "cpuUserMs": 1640,
+      "cpuSystemMs": 94,
+      "eventLoopMaxMs": 181.010431,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2248.688100000001,
+      "pendingValidations": 2,
+      "cpuUserMs": 2140,
+      "cpuSystemMs": 94,
+      "eventLoopMaxMs": 181.010431,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2766.143399999999,
+      "pendingValidations": 2,
+      "cpuUserMs": 2625,
+      "cpuSystemMs": 172,
+      "eventLoopMaxMs": 181.010431,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3300.6746000000003,
+      "pendingValidations": 2,
+      "cpuUserMs": 3109,
+      "cpuSystemMs": 219,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3835.0105999999996,
+      "pendingValidations": 2,
+      "cpuUserMs": 3656,
+      "cpuSystemMs": 234,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4343.7015999999985,
+      "pendingValidations": 2,
+      "cpuUserMs": 4125,
+      "cpuSystemMs": 250,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5076.4341,
+      "pendingValidations": 2,
+      "cpuUserMs": 4781,
+      "cpuSystemMs": 266,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5217.859300000002,
+      "pendingValidations": 3,
+      "cpuUserMs": 4937,
+      "cpuSystemMs": 266,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5711.118400000001,
+      "pendingValidations": 3,
+      "cpuUserMs": 5390,
+      "cpuSystemMs": 281,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 6487.7505,
+      "pendingValidations": 3,
+      "cpuUserMs": 6109,
+      "cpuSystemMs": 344,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 7002.609300000002,
+      "pendingValidations": 3,
+      "cpuUserMs": 6593,
+      "cpuSystemMs": 375,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 7561.9587999999985,
+      "pendingValidations": 3,
+      "cpuUserMs": 7203,
+      "cpuSystemMs": 422,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 8075.6497,
+      "pendingValidations": 3,
+      "cpuUserMs": 7796,
+      "cpuSystemMs": 422,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 8652.636700000001,
+      "pendingValidations": 3,
+      "cpuUserMs": 8359,
+      "cpuSystemMs": 422,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 9200.414299999999,
+      "pendingValidations": 2,
+      "cpuUserMs": 8859,
+      "cpuSystemMs": 453,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 9764.020300000002,
+      "pendingValidations": 2,
+      "cpuUserMs": 9375,
+      "cpuSystemMs": 500,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 10349.463000000002,
+      "pendingValidations": 2,
+      "cpuUserMs": 9953,
+      "cpuSystemMs": 531,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 11021.9085,
+      "pendingValidations": 2,
+      "cpuUserMs": 10562,
+      "cpuSystemMs": 578,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 11748.0885,
+      "pendingValidations": 2,
+      "cpuUserMs": 11343,
+      "cpuSystemMs": 609,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 12316.800700000002,
+      "pendingValidations": 2,
+      "cpuUserMs": 11890,
+      "cpuSystemMs": 609,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 12832.938400000001,
+      "pendingValidations": 2,
+      "cpuUserMs": 12390,
+      "cpuSystemMs": 625,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 13357.882,
+      "pendingValidations": 2,
+      "cpuUserMs": 12875,
+      "cpuSystemMs": 641,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 13912.262100000002,
+      "pendingValidations": 2,
+      "cpuUserMs": 13468,
+      "cpuSystemMs": 641,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 14431.713399999999,
+      "pendingValidations": 2,
+      "cpuUserMs": 13984,
+      "cpuSystemMs": 656,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 14641.707199999999,
+      "pendingValidations": 2,
+      "cpuUserMs": 14187,
+      "cpuSystemMs": 656,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    }
+  ],
+  "code": "STATE_SHADOW_BEHAVIOR_CHANGED/equal_alternatives/minimum_charging_stops",
+  "wallMs": 14641.758500000002,
+  "gc": [
+    {
+      "duration": 1.7267000079154968,
+      "start": 14308.5165
+    },
+    {
+      "duration": 2.1733999848365784,
+      "start": 14547.9276
+    },
+    {
+      "duration": 1.8007000088691711,
+      "start": 14763.6751
+    },
+    {
+      "duration": 1.7620999813079834,
+      "start": 14985.4962
+    },
+    {
+      "duration": 2.592899978160858,
+      "start": 15225.1798
+    },
+    {
+      "duration": 2.605400025844574,
+      "start": 15527.2613
+    },
+    {
+      "duration": 1.6678000092506409,
+      "start": 15832.992
+    },
+    {
+      "duration": 1.9893999695777893,
+      "start": 16047.3466
+    },
+    {
+      "duration": 1.185200035572052,
+      "start": 16210.2159
+    },
+    {
+      "duration": 1.161799967288971,
+      "start": 16410.1052
+    },
+    {
+      "duration": 1.3498000502586365,
+      "start": 16616.8391
+    },
+    {
+      "duration": 1.6439000368118286,
+      "start": 16825.3715
+    },
+    {
+      "duration": 1.347000002861023,
+      "start": 17000.9072
+    },
+    {
+      "duration": 1.11489999294281,
+      "start": 17157.2668
+    },
+    {
+      "duration": 2.521399974822998,
+      "start": 17381.8368
+    },
+    {
+      "duration": 1.6830999851226807,
+      "start": 17579.4089
+    },
+    {
+      "duration": 2.2716999650001526,
+      "start": 17821.3606
+    },
+    {
+      "duration": 2.0602999925613403,
+      "start": 17996.4101
+    },
+    {
+      "duration": 1.6699000000953674,
+      "start": 18225.1048
+    },
+    {
+      "duration": 1.4839999675750732,
+      "start": 18433.196
+    },
+    {
+      "duration": 1.5948999524116516,
+      "start": 18594.6192
+    },
+    {
+      "duration": 1.272700011730194,
+      "start": 18780.0346
+    },
+    {
+      "duration": 1.2193999886512756,
+      "start": 18935.0585
+    },
+    {
+      "duration": 2.633500039577484,
+      "start": 19142.6308
+    },
+    {
+      "duration": 1.9428000450134277,
+      "start": 19364.2195
+    },
+    {
+      "duration": 1.6563999652862549,
+      "start": 19522.9115
+    },
+    {
+      "duration": 1.1506999731063843,
+      "start": 19692.4901
+    },
+    {
+      "duration": 1.3668999671936035,
+      "start": 19872.5211
+    },
+    {
+      "duration": 2.0722000002861023,
+      "start": 20071.6025
+    },
+    {
+      "duration": 2.3436999917030334,
+      "start": 20334.4965
+    },
+    {
+      "duration": 2.2481000423431396,
+      "start": 20588.3754
+    },
+    {
+      "duration": 1.3895000219345093,
+      "start": 20824.3425
+    },
+    {
+      "duration": 1.626800000667572,
+      "start": 21040.1361
+    },
+    {
+      "duration": 1.375,
+      "start": 21238.7321
+    },
+    {
+      "duration": 2.0924999713897705,
+      "start": 21411.1476
+    },
+    {
+      "duration": 1.1769999861717224,
+      "start": 21597.9172
+    },
+    {
+      "duration": 1.112500011920929,
+      "start": 21723.3431
+    },
+    {
+      "duration": 1.1086999773979187,
+      "start": 21837.7811
+    },
+    {
+      "duration": 2.115899980068207,
+      "start": 21951.9495
+    },
+    {
+      "duration": 1.105299949645996,
+      "start": 22087.857
+    },
+    {
+      "duration": 1.5644999742507935,
+      "start": 22237.2631
+    },
+    {
+      "duration": 1.2835000157356262,
+      "start": 22424.5421
+    },
+    {
+      "duration": 1.2972000241279602,
+      "start": 22635.6991
+    },
+    {
+      "duration": 1.270900011062622,
+      "start": 22803.4987
+    },
+    {
+      "duration": 1.3694999814033508,
+      "start": 22949.5044
+    },
+    {
+      "duration": 1.6394000053405762,
+      "start": 23132.4947
+    },
+    {
+      "duration": 1.9674000144004822,
+      "start": 23311.6367
+    },
+    {
+      "duration": 1.597599983215332,
+      "start": 23511.913
+    },
+    {
+      "duration": 1.4024999737739563,
+      "start": 23690.4805
+    },
+    {
+      "duration": 1.6601999998092651,
+      "start": 23915.4841
+    },
+    {
+      "duration": 1.986299991607666,
+      "start": 24098.7897
+    },
+    {
+      "duration": 2.6409000158309937,
+      "start": 24339.7908
+    },
+    {
+      "duration": 1.8769000172615051,
+      "start": 24560.5709
+    },
+    {
+      "duration": 1.8206000328063965,
+      "start": 24773.4624
+    },
+    {
+      "duration": 2.5298999547958374,
+      "start": 24989.1788
+    },
+    {
+      "duration": 1.7566999793052673,
+      "start": 25183.5716
+    },
+    {
+      "duration": 1.5314000248908997,
+      "start": 25394.4919
+    },
+    {
+      "duration": 2.3572999835014343,
+      "start": 25622.2983
+    },
+    {
+      "duration": 1.9919999837875366,
+      "start": 25871.6777
+    },
+    {
+      "duration": 1.9674999713897705,
+      "start": 26086.6399
+    },
+    {
+      "duration": 1.4514999985694885,
+      "start": 26304.7165
+    },
+    {
+      "duration": 2.1905999779701233,
+      "start": 26478.6274
+    },
+    {
+      "duration": 1.4340999722480774,
+      "start": 26621.3088
+    },
+    {
+      "duration": 1.3269000053405762,
+      "start": 26755.9663
+    },
+    {
+      "duration": 1.2111999988555908,
+      "start": 26904.2451
+    },
+    {
+      "duration": 1.1633999943733215,
+      "start": 27071.8056
+    },
+    {
+      "duration": 1.6434999704360962,
+      "start": 27246.2004
+    },
+    {
+      "duration": 1.3147000074386597,
+      "start": 27380.2275
+    },
+    {
+      "duration": 1.3134999871253967,
+      "start": 27519.2786
+    },
+    {
+      "duration": 1.3583999872207642,
+      "start": 27700.7728
+    },
+    {
+      "duration": 1.6714999675750732,
+      "start": 27867.612
+    },
+    {
+      "duration": 1.585200011730194,
+      "start": 28052.9391
+    },
+    {
+      "duration": 1.4445000290870667,
+      "start": 28205.587
+    },
+    {
+      "duration": 1.0543000102043152,
+      "start": 28356.0989
+    },
+    {
+      "duration": 2.2117000222206116,
+      "start": 28485.0159
+    },
+    {
+      "duration": 1.6818000078201294,
+      "start": 28672.1057
+    }
+  ]
+}

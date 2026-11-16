@@ -1,0 +1,160 @@
+{
+  "generatedAt": "2026-11-16T13:06:29.689Z",
+  "scope": "Whole original isolated Jest process, includes startup/transpile/proof hashing; not weather or per-case CPU attribution",
+  "sampleCount": 21292,
+  "totalProfileMs": 33734.63,
+  "top": [
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 576
+    },
+    {
+      "function": "(program)",
+      "file": "",
+      "hits": 480
+    },
+    {
+      "function": "(garbage collector)",
+      "file": "",
+      "hits": 409
+    },
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 343
+    },
+    {
+      "function": "openThroughout",
+      "file": "planning-session.ts",
+      "hits": 261
+    },
+    {
+      "function": "evaluate",
+      "file": "energy-engine.ts",
+      "hits": 237
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 204
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 197
+    },
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 192
+    },
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 175
+    },
+    {
+      "function": "wrapSafe",
+      "file": "loader",
+      "hits": 149
+    },
+    {
+      "function": "evaluate",
+      "file": "energy-engine.ts",
+      "hits": 138
+    },
+    {
+      "function": "openThroughout",
+      "file": "planning-session.ts",
+      "hits": 130
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 120
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 116
+    },
+    {
+      "function": "Script",
+      "file": "node:vm",
+      "hits": 115
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 111
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 108
+    },
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 106
+    },
+    {
+      "function": "(anonymous)",
+      "file": "knowledge-package.ts",
+      "hits": 100
+    },
+    {
+      "function": "digest",
+      "file": "frontier-performance-harness.ts",
+      "hits": 95
+    },
+    {
+      "function": "normalized",
+      "file": "frontier-performance-harness.ts",
+      "hits": 92
+    },
+    {
+      "function": "open",
+      "file": "",
+      "hits": 81
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 72
+    },
+    {
+      "function": "(anonymous)",
+      "file": "state-dominance-validation.ts",
+      "hits": 71
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 67
+    },
+    {
+      "function": "canonicalJson",
+      "file": "knowledge-package.ts",
+      "hits": 63
+    },
+    {
+      "function": "update",
+      "file": "hash",
+      "hits": 62
+    },
+    {
+      "function": "(anonymous)",
+      "file": "knowledge-package.ts",
+      "hits": 59
+    },
+    {
+      "function": "open",
+      "file": "planning-session.ts",
+      "hits": 59
+    }
+  ],
+  "gcScavenges": 149,
+  "gcMajor": 9
+}

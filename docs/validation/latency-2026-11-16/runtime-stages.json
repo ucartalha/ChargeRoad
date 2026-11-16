@@ -1,0 +1,1306 @@
+{
+  "generatedAt": "2026-11-16T12:01:07.142Z",
+  "sourceSha256": "8a103f78a1fbfd0b5c57a41721dc5ef2c4245c9608b2bc9b70811cf143d6f296",
+  "scope": "archived server-only measured stage snapshots; inclusive, not a new provider experiment",
+  "records": [
+    {
+      "correlationHash": "4c65e8bc1aa3af01",
+      "scope": "job_execute",
+      "outcome": "planned",
+      "durationMs": 85086.33050000001,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 85086.11030000003,
+          "maxMs": 85086.11030000003,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 229,
+          "maxMs": 229,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 84944.0461,
+          "maxMs": 84944.0461,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 20.467800000013085,
+          "maxMs": 17.03760000001057,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 511.8716999999888,
+          "maxMs": 511.8716999999888,
+          "active": 0
+        },
+        "road_http": {
+          "count": 88,
+          "totalMs": 2290.9026999999187,
+          "maxMs": 204.3125,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 508.61149999999907,
+          "maxMs": 508.61149999999907,
+          "active": 0
+        },
+        "candidate_eligibility": {
+          "count": 1,
+          "totalMs": 0.5393000000040047,
+          "maxMs": 0.5393000000040047,
+          "active": 0
+        },
+        "optimizer_search": {
+          "count": 1,
+          "totalMs": 83623.18280000001,
+          "maxMs": 83623.18280000001,
+          "active": 0
+        },
+        "state_shadow": {
+          "count": 5,
+          "totalMs": 0.5979000000224914,
+          "maxMs": 0.21480000001611188,
+          "active": 0
+        },
+        "weather_sampling": {
+          "count": 104,
+          "totalMs": 426.4972999999882,
+          "maxMs": 17.50889999998617,
+          "active": 0
+        },
+        "weather_acquisition": {
+          "count": 77,
+          "totalMs": 72148.21539999978,
+          "maxMs": 30023.590000000026,
+          "active": 0
+        },
+        "weather_cache_acquisition": {
+          "count": 3626,
+          "totalMs": 143144.6303999991,
+          "maxMs": 7521.5032000000065,
+          "active": 0
+        },
+        "weather_http": {
+          "count": 128,
+          "totalMs": 17442.65799999988,
+          "maxMs": 359.51070000001346,
+          "active": 0
+        },
+        "energy_evaluation": {
+          "count": 103,
+          "totalMs": 2743.5893999998516,
+          "maxMs": 98.78549999999814,
+          "active": 0
+        },
+        "candidate_call_shadow": {
+          "count": 97,
+          "totalMs": 0.5047999999369495,
+          "maxMs": 0.029399999999441206,
+          "active": 0
+        },
+        "road_leg_acquisition": {
+          "count": 36,
+          "totalMs": 7037.597600000212,
+          "maxMs": 386.4005999999936,
+          "active": 0
+        },
+        "charge_integration": {
+          "count": 207,
+          "totalMs": 166.3012000004528,
+          "maxMs": 6.826600000000326,
+          "active": 0
+        },
+        "plan_compile": {
+          "count": 2,
+          "totalMs": 347.1657000000123,
+          "maxMs": 181.50370000000112,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 12.399300000048243,
+          "maxMs": 12.399300000048243,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 37,
+        "road_session_cache_hits": 50,
+        "weather_session_cache_hits": 57,
+        "weather_sample_queries": 64219,
+        "weather_forecast_query_items": 45220,
+        "weather_sample_evaluations": 12410,
+        "energy_evaluations": 103,
+        "charge_integrations": 207,
+        "frontier_peak": 3,
+        "expanded_states": 35,
+        "transitions": 117,
+        "road_queries_budgeted": 37,
+        "weather_queries_budgeted": 45220,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 88,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 1275,
+        "weather_pg_cache_misses": 2351,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 88,
+        "weather_http_acquisitions": 128,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 500,
+        "candidate_selected_total": 16,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 500,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 5,
+        "state_shadow_observations": 5,
+        "state_shadow_pairs": 1,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 1,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 5,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "4c65e8bc1aa3af01",
+      "scope": "job_result",
+      "outcome": "success",
+      "durationMs": 23.729200000001583,
+      "incomplete": false,
+      "stages": {
+        "json_serialize": {
+          "count": 1,
+          "totalMs": 8.162899999995716,
+          "maxMs": 8.162899999995716,
+          "active": 0
+        },
+        "gzip": {
+          "count": 1,
+          "totalMs": 15.278200000000652,
+          "maxMs": 15.278200000000652,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 0,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 0,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 0,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 3304272,
+        "response_wire_bytes": 524852,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "0619e36f998ec9b9",
+      "scope": "job_execute",
+      "outcome": "insufficient_data",
+      "durationMs": 651.4814999999944,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 651.4092999999411,
+          "maxMs": 651.4092999999411,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 505,
+          "maxMs": 505,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 618.0092999999179,
+          "maxMs": 618.0092999999179,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 2,
+          "totalMs": 6.381400000071153,
+          "maxMs": 6.2920000000158325,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 564.8815999999642,
+          "maxMs": 564.8815999999642,
+          "active": 0
+        },
+        "road_http": {
+          "count": 3,
+          "totalMs": 294.3712999999989,
+          "maxMs": 277.97930000000633,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.028399999951943755,
+          "maxMs": 0.028399999951943755,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 3,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 3,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "8184eb61473c423c",
+      "scope": "job_execute",
+      "outcome": "insufficient_data",
+      "durationMs": 457.3841000000248,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 457.34679999994114,
+          "maxMs": 457.34679999994114,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 92,
+          "maxMs": 92,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 446.87630000000354,
+          "maxMs": 446.87630000000354,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 2,
+          "totalMs": 4.447900000028312,
+          "maxMs": 4.402800000039861,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 406.3628000000026,
+          "maxMs": 406.3628000000026,
+          "active": 0
+        },
+        "road_http": {
+          "count": 3,
+          "totalMs": 111.21709999989253,
+          "maxMs": 96.84219999995548,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.017100000055506825,
+          "maxMs": 0.017100000055506825,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 3,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 3,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "8184eb61473c423c",
+      "scope": "job_result",
+      "outcome": "success",
+      "durationMs": 0.12919999996665865,
+      "incomplete": false,
+      "stages": {
+        "json_serialize": {
+          "count": 1,
+          "totalMs": 0.02529999997932464,
+          "maxMs": 0.02529999997932464,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 0,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 0,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 0,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 673,
+        "response_wire_bytes": 673,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "b552e596cc8cd5cb",
+      "scope": "job_execute",
+      "outcome": "provider_error",
+      "durationMs": 504.35249999992084,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 504.33259999996517,
+          "maxMs": 504.33259999996517,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 117,
+          "maxMs": 117,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 473.6269999999786,
+          "maxMs": 473.6269999999786,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 7.292200000025332,
+          "maxMs": 3.9053000001003966,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 380.24479999998584,
+          "maxMs": 380.24479999998584,
+          "active": 0
+        },
+        "road_http": {
+          "count": 3,
+          "totalMs": 101.62470000004396,
+          "maxMs": 89.43460000003688,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 55.40509999997448,
+          "maxMs": 55.40509999997448,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.01919999998062849,
+          "maxMs": 0.01919999998062849,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 3,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 3,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "dc5795c481f2cc7e",
+      "scope": "job_execute",
+      "outcome": "provider_error",
+      "durationMs": 328.2057999999961,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 328.1888999999501,
+          "maxMs": 328.1888999999501,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 68,
+          "maxMs": 68,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 297.08580000000075,
+          "maxMs": 297.08580000000075,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 9.801899999962188,
+          "maxMs": 5.93929999996908,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 232.87510000006296,
+          "maxMs": 232.87510000006296,
+          "active": 0
+        },
+        "road_http": {
+          "count": 2,
+          "totalMs": 14.522900000098161,
+          "maxMs": 8.423600000096485,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 21.95400000002701,
+          "maxMs": 21.95400000002701,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.05599999998230487,
+          "maxMs": 0.05599999998230487,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 1,
+        "road_pg_cache_misses": 2,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 2,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "dc5795c481f2cc7e",
+      "scope": "job_result",
+      "outcome": "success",
+      "durationMs": 0.062200000043958426,
+      "incomplete": false,
+      "stages": {
+        "json_serialize": {
+          "count": 1,
+          "totalMs": 0.020499999984167516,
+          "maxMs": 0.020499999984167516,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 0,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 0,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 0,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 608,
+        "response_wire_bytes": 608,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "25644363f6c9b53f",
+      "scope": "job_execute",
+      "outcome": "provider_error",
+      "durationMs": 297.0598000000464,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 297.0387000000337,
+          "maxMs": 297.0387000000337,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 136,
+          "maxMs": 136,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 288.6226000000024,
+          "maxMs": 288.6226000000024,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 7.19220000016503,
+          "maxMs": 4.120700000086799,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 231.15399999998044,
+          "maxMs": 231.15399999998044,
+          "active": 0
+        },
+        "road_http": {
+          "count": 2,
+          "totalMs": 15.721499999985099,
+          "maxMs": 8.120299999951385,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 21.387099999934435,
+          "maxMs": 21.387099999934435,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.015699999989010394,
+          "maxMs": 0.015699999989010394,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 1,
+        "road_pg_cache_misses": 2,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 2,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "25644363f6c9b53f",
+      "scope": "job_result",
+      "outcome": "success",
+      "durationMs": 0.09460000006947666,
+      "incomplete": false,
+      "stages": {
+        "json_serialize": {
+          "count": 1,
+          "totalMs": 0.02350000001024455,
+          "maxMs": 0.02350000001024455,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 0,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 0,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 0,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 608,
+        "response_wire_bytes": 608,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "35823cdc76adadaf",
+      "scope": "job_execute",
+      "outcome": "provider_error",
+      "durationMs": 279.78410000004806,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 279.7577999999048,
+          "maxMs": 279.7577999999048,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 50,
+          "maxMs": 50,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 275.49930000002496,
+          "maxMs": 275.49930000002496,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 10.552300000097603,
+          "maxMs": 6.4372999999905005,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 213.0431999999564,
+          "maxMs": 213.0431999999564,
+          "active": 0
+        },
+        "road_http": {
+          "count": 2,
+          "totalMs": 12.48830000020098,
+          "maxMs": 6.38460000010673,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 22.580100000021048,
+          "maxMs": 22.580100000021048,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 0.014399999985471368,
+          "maxMs": 0.014399999985471368,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 1,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 1,
+        "road_pg_cache_misses": 2,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 2,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "52f53171fcaf204a",
+      "scope": "job_execute",
+      "outcome": "planned",
+      "durationMs": 28687.504399999976,
+      "incomplete": false,
+      "stages": {
+        "job_execute": {
+          "count": 1,
+          "totalMs": 28687.454999999958,
+          "maxMs": 28687.454999999958,
+          "active": 0
+        },
+        "job_wait": {
+          "count": 1,
+          "totalMs": 473,
+          "maxMs": 473,
+          "active": 0
+        },
+        "http_plan": {
+          "count": 1,
+          "totalMs": 28616.653800000087,
+          "maxMs": 28616.653800000087,
+          "active": 0
+        },
+        "vehicle_profile": {
+          "count": 3,
+          "totalMs": 7.278800000087358,
+          "maxMs": 3.8307000000495464,
+          "active": 0
+        },
+        "base_road": {
+          "count": 1,
+          "totalMs": 271.83539999998175,
+          "maxMs": 271.83539999998175,
+          "active": 0
+        },
+        "road_http": {
+          "count": 76,
+          "totalMs": 1836.6738999998197,
+          "maxMs": 146.40230000007432,
+          "active": 0
+        },
+        "station_corridor": {
+          "count": 1,
+          "totalMs": 371.8656000000192,
+          "maxMs": 371.8656000000192,
+          "active": 0
+        },
+        "candidate_eligibility": {
+          "count": 1,
+          "totalMs": 0.34970000002067536,
+          "maxMs": 0.34970000002067536,
+          "active": 0
+        },
+        "optimizer_search": {
+          "count": 1,
+          "totalMs": 27805.27960000001,
+          "maxMs": 27805.27960000001,
+          "active": 0
+        },
+        "state_shadow": {
+          "count": 19,
+          "totalMs": 1.1993000004440546,
+          "maxMs": 0.18680000002495944,
+          "active": 0
+        },
+        "weather_sampling": {
+          "count": 111,
+          "totalMs": 311.9370999991661,
+          "maxMs": 9.043999999994412,
+          "active": 0
+        },
+        "weather_acquisition": {
+          "count": 72,
+          "totalMs": 18624.24740000046,
+          "maxMs": 17168.152999999933,
+          "active": 0
+        },
+        "weather_cache_acquisition": {
+          "count": 1141,
+          "totalMs": 35536.849099999876,
+          "maxMs": 3698.5659999999916,
+          "active": 0
+        },
+        "weather_http": {
+          "count": 33,
+          "totalMs": 4330.375999999815,
+          "maxMs": 304.1269999999786,
+          "active": 0
+        },
+        "energy_evaluation": {
+          "count": 110,
+          "totalMs": 2764.636700000032,
+          "maxMs": 65.03509999997914,
+          "active": 0
+        },
+        "candidate_call_shadow": {
+          "count": 114,
+          "totalMs": 0.6704999996582046,
+          "maxMs": 0.023999999975785613,
+          "active": 0
+        },
+        "road_leg_acquisition": {
+          "count": 37,
+          "totalMs": 5023.218900000327,
+          "maxMs": 189.56379999988712,
+          "active": 0
+        },
+        "charge_integration": {
+          "count": 372,
+          "totalMs": 292.13180000148714,
+          "maxMs": 2.6527000000933185,
+          "active": 0
+        },
+        "plan_compile": {
+          "count": 2,
+          "totalMs": 220.37089999997988,
+          "maxMs": 117.41029999998864,
+          "active": 0
+        },
+        "response_preflight_serialize": {
+          "count": 1,
+          "totalMs": 8.910499999998137,
+          "maxMs": 8.910499999998137,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 38,
+        "road_session_cache_hits": 74,
+        "weather_session_cache_hits": 57,
+        "weather_sample_queries": 56998,
+        "weather_forecast_query_items": 34745,
+        "weather_sample_evaluations": 1141,
+        "energy_evaluations": 110,
+        "charge_integrations": 372,
+        "frontier_peak": 17,
+        "expanded_states": 5,
+        "transitions": 130,
+        "road_queries_budgeted": 38,
+        "weather_queries_budgeted": 34745,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 76,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 1108,
+        "weather_pg_cache_misses": 33,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 76,
+        "weather_http_acquisitions": 33,
+        "response_decoded_bytes": 0,
+        "response_wire_bytes": 0,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 500,
+        "candidate_selected_total": 16,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 500,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 19,
+        "state_shadow_observations": 19,
+        "state_shadow_pairs": 24,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 20,
+        "unsafe_or_unproven_pairs": 4,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 19,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    },
+    {
+      "correlationHash": "52f53171fcaf204a",
+      "scope": "job_result",
+      "outcome": "success",
+      "durationMs": 51.43640000000596,
+      "incomplete": false,
+      "stages": {
+        "json_serialize": {
+          "count": 1,
+          "totalMs": 9.0916000000434,
+          "maxMs": 9.0916000000434,
+          "active": 0
+        },
+        "gzip": {
+          "count": 1,
+          "totalMs": 42.034100000048056,
+          "maxMs": 42.034100000048056,
+          "active": 0
+        }
+      },
+      "counters": {
+        "road_leg_acquisitions": 0,
+        "road_session_cache_hits": 0,
+        "weather_session_cache_hits": 0,
+        "weather_sample_queries": 0,
+        "weather_forecast_query_items": 0,
+        "weather_sample_evaluations": 0,
+        "energy_evaluations": 0,
+        "charge_integrations": 0,
+        "frontier_peak": 0,
+        "expanded_states": 0,
+        "transitions": 0,
+        "road_queries_budgeted": 0,
+        "weather_queries_budgeted": 0,
+        "road_pg_cache_hits": 0,
+        "road_pg_cache_misses": 0,
+        "road_cache_coalesced_hits": 0,
+        "weather_pg_cache_hits": 0,
+        "weather_pg_cache_misses": 0,
+        "weather_cache_coalesced": 0,
+        "road_http_acquisitions": 0,
+        "weather_http_acquisitions": 0,
+        "response_decoded_bytes": 2251897,
+        "response_wire_bytes": 355460,
+        "cancelled": 0,
+        "timeout": 0,
+        "candidate_eligibility_total": 0,
+        "candidate_selected_total": 0,
+        "candidate_eligibility_eligible": 0,
+        "candidate_eligibility_uncertain": 0,
+        "candidate_eligibility_provably_ineligible": 0,
+        "candidate_reject_public_access": 0,
+        "candidate_reject_membership": 0,
+        "candidate_reject_lifecycle": 0,
+        "candidate_potential_drive_calls": 0,
+        "candidate_potential_charge_calls": 0,
+        "states_seen": 0,
+        "state_shadow_observations": 0,
+        "state_shadow_pairs": 0,
+        "exact_duplicate_candidates": 0,
+        "potential_dominance_pairs": 0,
+        "not_equivalent_pairs": 0,
+        "unsafe_or_unproven_pairs": 0,
+        "state_shadow_budget_skipped": 0,
+        "state_shadow_entries_peak": 0,
+        "state_shadow_capture_failures": 0,
+        "actual_pruned_states": 0
+      }
+    }
+  ]
+}

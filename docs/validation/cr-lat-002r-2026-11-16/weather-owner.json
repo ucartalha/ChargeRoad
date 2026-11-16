@@ -1,0 +1,73 @@
+{
+  "modelOnly": true,
+  "realPg": "NOT_RUN",
+  "rows": [
+    {
+      "kind": "shared-caller-cancel",
+      "status": "PASS",
+      "before": {
+        "kind": "shared-caller-cancel",
+        "calls": 1,
+        "cancelIndependent": true,
+        "saved": true,
+        "pendingAfter": 0
+      },
+      "after": {
+        "kind": "shared-caller-cancel",
+        "calls": 1,
+        "cancelIndependent": true,
+        "saved": true,
+        "pendingAfter": 0
+      }
+    },
+    {
+      "kind": "cross-instance-zero-budget",
+      "status": "PASS",
+      "before": {
+        "kind": "cross-instance-zero-budget",
+        "calls": 1,
+        "cancelIndependent": true,
+        "saved": true,
+        "pendingAfter": 0
+      },
+      "after": {
+        "kind": "cross-instance-zero-budget",
+        "calls": 1,
+        "cancelIndependent": true,
+        "saved": true,
+        "pendingAfter": 0
+      }
+    },
+    {
+      "kind": "fresh-zero-budget-quota",
+      "status": "PASS",
+      "before": {
+        "kind": "fresh-zero-budget-quota",
+        "calls": 0,
+        "saved": true
+      },
+      "after": {
+        "kind": "fresh-zero-budget-quota",
+        "calls": 0,
+        "saved": true
+      }
+    },
+    {
+      "kind": "expired-owner-fenced",
+      "status": "PASS",
+      "before": {
+        "kind": "expired-owner-fenced",
+        "calls": 1,
+        "fencing": true,
+        "foreignOwnerUnchanged": true
+      },
+      "after": {
+        "kind": "expired-owner-fenced",
+        "calls": 1,
+        "fencing": true,
+        "foreignOwnerUnchanged": true
+      }
+    }
+  ],
+  "status": "PASS"
+}

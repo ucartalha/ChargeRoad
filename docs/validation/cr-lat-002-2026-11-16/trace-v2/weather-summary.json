@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-11-16T13:07:27.657Z",
+  "sources": {
+    "apps/api/src/weather/weather-cache.ts": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+    "apps/api/src/weather/weather.service.ts": "1bb3f4f3435738def95680721bb302bf3fb964322a28c931707782071e277cc4",
+    "apps/api/src/weather/met-norway.adapter.ts": "59e52354d4b7c373d68fd287c093381b7bbfec1d98911a691533bae2f6e4addf",
+    "apps/api/src/weather/weather-policy.ts": "713c0517db87bef3fe65bcc5fdf51e2cbf5669d1aec66a04dfbcaa9300b130fb",
+    "apps/api/scripts/diagnose-weather-acquisition.cjs": "606314d16ae63355f05feead8a0c1f5426a286ea9609831ac22f984ca856c7fc"
+  },
+  "status": "STAGE_A_ONLY",
+  "instrumentationEquivalence": "FAIL",
+  "failureCount": 31,
+  "processes": 3,
+  "order": "ABBA/BAAB; one warmup/arm; 2 samples/arm/group/process => n6 pooled",
+  "optimization": "NOT_RUN: state timeout regression gate remains red",
+  "realWeatherNetwork": "NOT_RUN",
+  "realPgWriteFixture": "NOT_RUN: no new schema/migration/reset/drop under task restriction",
+  "actualSavings": 0
+}

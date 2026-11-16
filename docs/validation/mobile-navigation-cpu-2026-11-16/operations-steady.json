@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-11-16T00:33:02.054Z",
+  "status": "PASS",
+  "rows": [
+    {
+      "size": 200,
+      "layout": "polyline",
+      "fixes": 32,
+      "original": {
+        "lengths": 6400,
+        "projections": 6400
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 200,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 6400,
+        "numericPayloadBytes": 4816
+      },
+      "equivalent": true
+    },
+    {
+      "size": 200,
+      "layout": "segments",
+      "fixes": 32,
+      "original": {
+        "lengths": 1585,
+        "projections": 1585
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 200,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 1585,
+        "numericPayloadBytes": 8000
+      },
+      "equivalent": true
+    },
+    {
+      "size": 1000,
+      "layout": "polyline",
+      "fixes": 32,
+      "original": {
+        "lengths": 32000,
+        "projections": 32000
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 1000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 32000,
+        "numericPayloadBytes": 24016
+      },
+      "equivalent": true
+    },
+    {
+      "size": 1000,
+      "layout": "segments",
+      "fixes": 32,
+      "original": {
+        "lengths": 2385,
+        "projections": 2385
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 1000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 2385,
+        "numericPayloadBytes": 40000
+      },
+      "equivalent": true
+    },
+    {
+      "size": 5000,
+      "layout": "polyline",
+      "fixes": 32,
+      "original": {
+        "lengths": 160000,
+        "projections": 160000
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 5000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 160000,
+        "numericPayloadBytes": 120016
+      },
+      "equivalent": true
+    },
+    {
+      "size": 5000,
+      "layout": "segments",
+      "fixes": 32,
+      "original": {
+        "lengths": 6385,
+        "projections": 6385
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 5000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 6385,
+        "numericPayloadBytes": 200000
+      },
+      "equivalent": true
+    },
+    {
+      "size": 15000,
+      "layout": "polyline",
+      "fixes": 32,
+      "original": {
+        "lengths": 480000,
+        "projections": 480000
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 15000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 480000,
+        "numericPayloadBytes": 360016
+      },
+      "equivalent": true
+    },
+    {
+      "size": 15000,
+      "layout": "segments",
+      "fixes": 32,
+      "original": {
+        "lengths": 16385,
+        "projections": 16385
+      },
+      "candidate": {
+        "buildEdgeLengthEvaluations": 15000,
+        "fixEdgeLengthEvaluations": 0,
+        "projections": 16385,
+        "numericPayloadBytes": 600000
+      },
+      "equivalent": true
+    }
+  ],
+  "scope": "Separate instrumented operation counts, never timing data; original source body counters only. Candidate constructor optional diagnostic counts actual distanceMeters calls.",
+  "sources": {
+    "original": "97d292effe4c71369774ddd6f66b6997a3858230b6ce6790c978070d11fbea2c",
+    "index": "628f2d0961eb5761ba76d4768f6c75795c7a9ff82f6959a383973f80a45bf3fd",
+    "harness": "85da9b5bc9824c46638d90667270a5c3343d9b75327b001f978acadb0b84cb86"
+  },
+  "render": {
+    "status": "NOT_RUN",
+    "reason": "No mounted RN component/Profiler/device. Snapshot/Map callbacks unchanged; no render savings or FPS claim."
+  },
+  "raceAppStateDevice": {
+    "status": "NOT_RUN",
+    "reason": "No app callback changes. Generation/abort/AppState source hashes protected; runtime device acceptance not performed."
+  }
+}

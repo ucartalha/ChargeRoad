@@ -1,0 +1,587 @@
+{
+  "generatedAt": "2026-11-16T12:47:24.241Z",
+  "mode": "opt-in native process, same original exported invariant function, fixed same wall clock; bootstrap excluded",
+  "sources": {
+    "apps/api/src/planning/__tests__/state-shadow-equivalence.spec.ts": "25bf688b2f108e6f2bb13af56e6af981b723ded02c5560d5e620c74d076d2a2d",
+    "apps/api/src/planning/validation/state-dominance-validation.ts": "15cad1c78150eca9ce6b1364717bb21a9f34612b3a763a3b6c1995b9d04f2fe4",
+    "apps/api/src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "apps/api/src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "apps/api/src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "apps/api/scripts/diagnose-weather-regression.cjs": "bbb4f8d8d2ea1d670f316ef05f9e2dbf2b969ae446b6d0ba300f4cc191cfb872"
+  },
+  "objective": "minimum_energy",
+  "repeat": 3,
+  "original5000msGate": "FAIL",
+  "wallMs": 5031.839,
+  "cpuUserMs": 6062,
+  "cpuSystemMs": 140,
+  "heapBefore": 83160928,
+  "heapAfter": 93060200,
+  "gc": [
+    {
+      "start": 3375.3913,
+      "duration": 9.164000034332275,
+      "kind": 1
+    },
+    {
+      "start": 3499.6952,
+      "duration": 0.7016000151634216,
+      "kind": 8
+    },
+    {
+      "start": 3522.8279,
+      "duration": 10.606599986553192,
+      "kind": 4
+    },
+    {
+      "start": 3726.7712,
+      "duration": 1.9855999946594238,
+      "kind": 1
+    },
+    {
+      "start": 3872.4013,
+      "duration": 2.4908000230789185,
+      "kind": 1
+    },
+    {
+      "start": 4045.1168,
+      "duration": 2.6592000126838684,
+      "kind": 1
+    },
+    {
+      "start": 4231.5142,
+      "duration": 3.1870999932289124,
+      "kind": 1
+    },
+    {
+      "start": 4374.5681,
+      "duration": 2.104699969291687,
+      "kind": 1
+    },
+    {
+      "start": 4487.2629,
+      "duration": 1.467199981212616,
+      "kind": 1
+    },
+    {
+      "start": 4615.6745,
+      "duration": 2.69760000705719,
+      "kind": 1
+    },
+    {
+      "start": 4762.78,
+      "duration": 1.5551999807357788,
+      "kind": 1
+    },
+    {
+      "start": 4873.3921,
+      "duration": 2.1323999762535095,
+      "kind": 1
+    },
+    {
+      "start": 4975.9254,
+      "duration": 1.8650000095367432,
+      "kind": 1
+    },
+    {
+      "start": 5088.8711,
+      "duration": 1.691100001335144,
+      "kind": 1
+    },
+    {
+      "start": 5198.9084,
+      "duration": 1.6013999581336975,
+      "kind": 1
+    },
+    {
+      "start": 5386.3375,
+      "duration": 2.392899990081787,
+      "kind": 1
+    },
+    {
+      "start": 5518.9165,
+      "duration": 2.2620999813079834,
+      "kind": 1
+    },
+    {
+      "start": 5675.6611,
+      "duration": 1.8770999908447266,
+      "kind": 1
+    },
+    {
+      "start": 5794.3554,
+      "duration": 2.0896000266075134,
+      "kind": 1
+    },
+    {
+      "start": 5925.7973,
+      "duration": 2.032100021839142,
+      "kind": 1
+    },
+    {
+      "start": 6068.0532,
+      "duration": 2.0205000042915344,
+      "kind": 1
+    },
+    {
+      "start": 6218.1756,
+      "duration": 1.8849999904632568,
+      "kind": 1
+    },
+    {
+      "start": 6324.0941,
+      "duration": 1.5788999795913696,
+      "kind": 1
+    },
+    {
+      "start": 6450.2309,
+      "duration": 1.7911999821662903,
+      "kind": 1
+    },
+    {
+      "start": 6569.9812,
+      "duration": 2.136299967765808,
+      "kind": 1
+    },
+    {
+      "start": 6702.7629,
+      "duration": 1.9258999824523926,
+      "kind": 1
+    },
+    {
+      "start": 6852.1024,
+      "duration": 3.146400034427643,
+      "kind": 1
+    },
+    {
+      "start": 7026.6709,
+      "duration": 2.241699993610382,
+      "kind": 1
+    },
+    {
+      "start": 7159.1483,
+      "duration": 1.8745999932289124,
+      "kind": 1
+    },
+    {
+      "start": 7289.1557,
+      "duration": 1.5878999829292297,
+      "kind": 1
+    },
+    {
+      "start": 7371.6523,
+      "duration": 1.4176999926567078,
+      "kind": 1
+    },
+    {
+      "start": 7459.5168,
+      "duration": 1.2940999865531921,
+      "kind": 1
+    },
+    {
+      "start": 7588.1185,
+      "duration": 1.5334999561309814,
+      "kind": 1
+    },
+    {
+      "start": 7704.6642,
+      "duration": 1.7896000146865845,
+      "kind": 1
+    },
+    {
+      "start": 7813.9803,
+      "duration": 1.388100028038025,
+      "kind": 1
+    },
+    {
+      "start": 7911.0812,
+      "duration": 1.0308000445365906,
+      "kind": 1
+    },
+    {
+      "start": 7992.5673,
+      "duration": 1.048200011253357,
+      "kind": 1
+    },
+    {
+      "start": 8056.476,
+      "duration": 0.8888000249862671,
+      "kind": 1
+    },
+    {
+      "start": 8110.3091,
+      "duration": 0.9218999743461609,
+      "kind": 1
+    },
+    {
+      "start": 8177.4051,
+      "duration": 0.932200014591217,
+      "kind": 1
+    }
+  ],
+  "eventLoop": {
+    "meanMs": 33.59679634285715,
+    "maxMs": 164.495359
+  },
+  "pendingSamples": [
+    {
+      "elapsedMs": 328.4618999999998,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 511.0363000000002,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 699.5909999999999,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 813.4502000000002,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 915.7883000000002,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1060.3321,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1187.7665000000002,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1294.9015999999997,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1444.4671999999996,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1571.7696,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1702.2477999999996,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1804.7761999999998,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1905.2219,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2014.0450999999998,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2217.8318000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2347.7837999999997,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2504.5168,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2628.1038000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2754.6634,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2882.4316999999996,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2993.5665999999997,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3122.1482,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3227.0737999999997,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3329.1193,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3434.2021,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3545.4446000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3658.3857000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3788.3474,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3980.6330000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4096.297500000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4226.7983,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4376.452799999999,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4476.4025,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4583.930200000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4686.168299999999,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4797.247600000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4896.8166,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5006.281000000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    }
+  ],
+  "endResources": [
+    "PipeWrap",
+    "PipeWrap"
+  ],
+  "externalCalls": 0,
+  "dbPoolWait": "NOT_APPLICABLE: original synthetic ports, no DB",
+  "workerThreads": "none created",
+  "result": {
+    "kind": "equal_alternatives",
+    "objective": "minimum_energy",
+    "inputHash": "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+    "outcomeHash": "ef7ae064af8dc6b16a260defc5db9e0764ed1963d77d8c59a393a6ded9b0b83c",
+    "traceHash": "3274d4d95403fc6d30ab664129805b11c8c99afba55bf42bacb71906d48698e6",
+    "equivalent": true,
+    "status": "planned",
+    "stoppedReason": "frontier_exhausted",
+    "reasonCodes": [],
+    "calls": {
+      "vehicle_id": 1,
+      "vehicle_profile": 1,
+      "road": 6,
+      "stations": 1,
+      "weather": 125,
+      "energy": 626,
+      "charging": 219
+    },
+    "previousEligibilityCounters": {
+      "candidate_eligibility_total": 2,
+      "candidate_selected_total": 2,
+      "candidate_eligibility_eligible": 2,
+      "candidate_eligibility_uncertain": 0,
+      "candidate_eligibility_provably_ineligible": 0,
+      "candidate_reject_public_access": 0,
+      "candidate_reject_membership": 0,
+      "candidate_reject_lifecycle": 0,
+      "candidate_potential_drive_calls": 0,
+      "candidate_potential_charge_calls": 0
+    },
+    "shadow": {
+      "states_seen": 35,
+      "state_shadow_observations": 35,
+      "state_shadow_pairs": 119,
+      "exact_duplicate_candidates": 0,
+      "potential_dominance_pairs": 0,
+      "not_equivalent_pairs": 102,
+      "unsafe_or_unproven_pairs": 17,
+      "state_shadow_budget_skipped": 0,
+      "state_shadow_entries_peak": 35,
+      "state_shadow_capture_failures": 0,
+      "actual_pruned_states": 0
+    },
+    "shadowEvaluationMs": 2.5824000000020533,
+    "actualSavedProviderCalls": 0,
+    "actualSavedEngineCalls": 0
+  }
+}

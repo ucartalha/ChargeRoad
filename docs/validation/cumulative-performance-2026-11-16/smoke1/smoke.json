@@ -1,0 +1,1541 @@
+{
+  "generatedAt": "2026-11-15T23:44:26.623Z",
+  "sourceHashes": {
+    "src/planning/ev-planning.service.ts": "9a8c6c45887291a147cffd97801e0e99d9b0ea7803f7db966f29f3e570df1332",
+    "src/planning/planning-session.ts": "e8edf05756e862490007e1d18321893d985684576b65124343ef079e8182b67a",
+    "src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "src/planning/plan-compiler.ts": "7d3a2046cdb720126e3d3d168931ce5f462652446f3753ecb32fd0c99d5a6851",
+    "src/planning/optimizer-policy.ts": "158d29fb0cc6a423e0e901ef4241c4130775491bd86a01570e1bb12b14aa2082",
+    "src/planning/candidate-eligibility-shadow.ts": "69bcf2c0c26d2baf84dad670831085eae240f4d6a34e9721f929965263f5a738",
+    "src/planning/state-dominance-shadow.ts": "3c94a33659baa3e40264694b1d20e86751b0f4c8bf2582bfa6e491d20c50435a",
+    "src/planning/state-dominance.ts": "4fa777b02e6f537c14a0793fc1602cec837aa8e73f5fc34feaf2342e0d9d5070",
+    "src/observability/planning-metrics.ts": "c56bc1d9bd192f34bd669c6a5ef116f3ccb8a6d0f3094c2dc92531800958686d",
+    "src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "src/energy/energy-policy.ts": "35c92bc6e04a63292ebb813ff6ce4f5197db6b778087f463b4aec834a5bfeb57",
+    "src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "src/weather/weather-sampler.ts": "511570cc180ebd47f6ff79a508a76c9a7b439f740791d2154f71977a608de88a",
+    "src/weather/planning-weather-policy.ts": "8b9f989a910af24f06604441d144378205ffc374097b25dda16fd749aecba330",
+    "src/roads/road-client.ts": "e7017108a7b5f35371513c3af5609f31fd7a8e47f17c9b86deb9bc501403bb9d",
+    "src/weather/weather-cache.ts": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+    "src/planning/http/planning-response.ts": "d0be32323d9b61b34f310e2beeea62183ec7618418e5779599a906246bec1106",
+    "src/planning/__tests__/optimizer.fixtures.ts": "70fe99a651153dd97c10463cc895b6e9bf43394dfd4641b4f18926bc68475944",
+    "scripts/benchmark-cumulative-performance.ts": "0970df9ae38b9948a369a466e64fed7c126c01ef719133fee95e5a27003f7141"
+  },
+  "environment": {
+    "node": "v26.13.0",
+    "platform": "win32",
+    "release": "10.0.26200",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "logicalCpus": 20,
+    "memoryBytes": 16869548032
+  },
+  "config": {
+    "processes": 3,
+    "warmupsPerArm": 5,
+    "blocks": 10,
+    "samplesPerArmPerProcess": 20,
+    "concurrency": 1,
+    "clock": "2026-11-13T09:00:00Z",
+    "shadow": "follows existing metrics flag; no independent toggle"
+  },
+  "wholeProcessCpu": {
+    "userMs": 3407,
+    "systemMs": 125
+  },
+  "heap": {
+    "start": 454881520,
+    "endAfterGc": 387452608
+  },
+  "gcEvents": [
+    {
+      "start": 3694.1445,
+      "duration": 3.676300048828125,
+      "kind": 1
+    },
+    {
+      "start": 3753.0087,
+      "duration": 1.156000018119812,
+      "kind": 8
+    },
+    {
+      "start": 3827.3217,
+      "duration": 26.896099984645844,
+      "kind": 4
+    },
+    {
+      "start": 3906.073,
+      "duration": 1.8889000415802002,
+      "kind": 1
+    },
+    {
+      "start": 3956.4057,
+      "duration": 3.5419999957084656,
+      "kind": 1
+    },
+    {
+      "start": 3990.2341,
+      "duration": 2.5167999863624573,
+      "kind": 1
+    },
+    {
+      "start": 4032.0001,
+      "duration": 2.1534000039100647,
+      "kind": 1
+    },
+    {
+      "start": 4059.134,
+      "duration": 1.7145999670028687,
+      "kind": 1
+    },
+    {
+      "start": 4088.7396,
+      "duration": 1.4121999740600586,
+      "kind": 1
+    },
+    {
+      "start": 4113.5765,
+      "duration": 1.2218999862670898,
+      "kind": 1
+    },
+    {
+      "start": 4117.9742,
+      "duration": 82.53650003671646,
+      "kind": 4
+    },
+    {
+      "start": 4242.3642,
+      "duration": 1.487999975681305,
+      "kind": 1
+    },
+    {
+      "start": 4272.5324,
+      "duration": 2.4665000438690186,
+      "kind": 1
+    },
+    {
+      "start": 4310.9346,
+      "duration": 2.038599967956543,
+      "kind": 1
+    },
+    {
+      "start": 4357.5416,
+      "duration": 2.0302000045776367,
+      "kind": 1
+    },
+    {
+      "start": 4386.4674,
+      "duration": 2.342299997806549,
+      "kind": 1
+    },
+    {
+      "start": 4426.6071,
+      "duration": 2.1831000447273254,
+      "kind": 1
+    },
+    {
+      "start": 4454.0363,
+      "duration": 2.210599958896637,
+      "kind": 1
+    },
+    {
+      "start": 4510.5545,
+      "duration": 1.9657999873161316,
+      "kind": 1
+    },
+    {
+      "start": 4543.4741,
+      "duration": 2.4957000017166138,
+      "kind": 1
+    },
+    {
+      "start": 4574.0537,
+      "duration": 2.2105000019073486,
+      "kind": 1
+    },
+    {
+      "start": 4625.6632,
+      "duration": 3.234100043773651,
+      "kind": 1
+    },
+    {
+      "start": 4663.8102,
+      "duration": 2.438099980354309,
+      "kind": 1
+    },
+    {
+      "start": 4700.3836,
+      "duration": 2.286799967288971,
+      "kind": 1
+    },
+    {
+      "start": 4757.4054,
+      "duration": 2.9782999753952026,
+      "kind": 1
+    },
+    {
+      "start": 4784.8662,
+      "duration": 2.012600004673004,
+      "kind": 1
+    },
+    {
+      "start": 4812.9383,
+      "duration": 1.5796000361442566,
+      "kind": 1
+    },
+    {
+      "start": 4844.2651,
+      "duration": 2.163800001144409,
+      "kind": 1
+    },
+    {
+      "start": 4882.5738,
+      "duration": 1.5361000299453735,
+      "kind": 1
+    },
+    {
+      "start": 4911.5015,
+      "duration": 1.7181000113487244,
+      "kind": 1
+    },
+    {
+      "start": 4918.6021,
+      "duration": 91.47350001335144,
+      "kind": 4
+    },
+    {
+      "start": 5050.0801,
+      "duration": 0.8341000080108643,
+      "kind": 1
+    },
+    {
+      "start": 5072.6185,
+      "duration": 1.583400011062622,
+      "kind": 1
+    },
+    {
+      "start": 5103.2626,
+      "duration": 0.9546999931335449,
+      "kind": 1
+    },
+    {
+      "start": 5126.9297,
+      "duration": 1.9394000172615051,
+      "kind": 1
+    },
+    {
+      "start": 5151.8578,
+      "duration": 0.7239999771118164,
+      "kind": 1
+    },
+    {
+      "start": 5181.3533,
+      "duration": 1.7491000294685364,
+      "kind": 1
+    },
+    {
+      "start": 5211.689,
+      "duration": 1.2815000414848328,
+      "kind": 1
+    },
+    {
+      "start": 5242.9525,
+      "duration": 0.8172000050544739,
+      "kind": 1
+    },
+    {
+      "start": 5269.587,
+      "duration": 0.9843000173568726,
+      "kind": 1
+    },
+    {
+      "start": 5292.0025,
+      "duration": 0.7712999582290649,
+      "kind": 1
+    }
+  ],
+  "rows": [
+    {
+      "process": 0,
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "enabled": false,
+      "block": 0,
+      "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+      "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 7,
+        "station_port": 1,
+        "weather_port": 51,
+        "energy_physical": 69,
+        "charging_physical": 39
+      },
+      "metrics": null,
+      "status": "planned",
+      "wallMs": 60.33840000000055,
+      "planWallMs": 59.57050000000072,
+      "cpuUserMs": 188,
+      "cpuSystemMs": 0,
+      "heapBefore": 385123896,
+      "heapAfter": 405874000,
+      "decodedBytes": 11907,
+      "wireBytes": 11907,
+      "window": {
+        "start": 4201.704,
+        "end": 4262.0424
+      }
+    },
+    {
+      "process": 0,
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "enabled": true,
+      "block": 0,
+      "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+      "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 7,
+        "station_port": 1,
+        "weather_port": 51,
+        "energy_physical": 69,
+        "charging_physical": 39
+      },
+      "metrics": {
+        "event": "planning_metrics",
+        "version": "planning-metrics/1.0.0",
+        "requestId": "11111111-1111-4111-8111-111111111111",
+        "scope": "benchmark",
+        "algorithms": {
+          "optimizer": "chargeroad-optimizer/1.2.0",
+          "energy": "chargeroad-energy/1.3.3",
+          "charging": "dc-curve-integration/1.2.0"
+        },
+        "durationMs": 66.13369999999941,
+        "outcome": "planned",
+        "incomplete": false,
+        "stages": {
+          "vehicle_profile": {
+            "count": 2,
+            "totalMs": 0.046199999999771535,
+            "maxMs": 0.0374999999994543,
+            "active": 0
+          },
+          "base_road": {
+            "count": 1,
+            "totalMs": 0.04150000000026921,
+            "maxMs": 0.04150000000026921,
+            "active": 0
+          },
+          "station_corridor": {
+            "count": 1,
+            "totalMs": 0.011899999999513966,
+            "maxMs": 0.011899999999513966,
+            "active": 0
+          },
+          "candidate_eligibility": {
+            "count": 1,
+            "totalMs": 0.01739999999972497,
+            "maxMs": 0.01739999999972497,
+            "active": 0
+          },
+          "optimizer_search": {
+            "count": 1,
+            "totalMs": 63.533300000000054,
+            "maxMs": 63.533300000000054,
+            "active": 0
+          },
+          "state_shadow": {
+            "count": 15,
+            "totalMs": 0.2826999999997497,
+            "maxMs": 0.03330000000005384,
+            "active": 0
+          },
+          "weather_sampling": {
+            "count": 69,
+            "totalMs": 1.1163999999953376,
+            "maxMs": 0.06549999999970169,
+            "active": 0
+          },
+          "weather_acquisition": {
+            "count": 51,
+            "totalMs": 3.012699999997494,
+            "maxMs": 0.28700000000026193,
+            "active": 0
+          },
+          "energy_evaluation": {
+            "count": 69,
+            "totalMs": 30.068700000001627,
+            "maxMs": 0.976900000000569,
+            "active": 0
+          },
+          "plan_compile": {
+            "count": 3,
+            "totalMs": 2.7191000000011627,
+            "maxMs": 1.1505999999999403,
+            "active": 0
+          },
+          "candidate_call_shadow": {
+            "count": 55,
+            "totalMs": 0.30389999999624706,
+            "maxMs": 0.012600000000020373,
+            "active": 0
+          },
+          "road_leg_acquisition": {
+            "count": 6,
+            "totalMs": 0.4661000000005515,
+            "maxMs": 0.16499999999996362,
+            "active": 0
+          },
+          "charge_integration": {
+            "count": 39,
+            "totalMs": 18.787100000003193,
+            "maxMs": 3.075800000000527,
+            "active": 0
+          },
+          "json_serialize": {
+            "count": 1,
+            "totalMs": 0.09510000000045693,
+            "maxMs": 0.09510000000045693,
+            "active": 0
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 63,
+          "weather_session_cache_hits": 57,
+          "weather_sample_queries": 90,
+          "weather_forecast_query_items": 69,
+          "weather_sample_evaluations": 68,
+          "energy_evaluations": 69,
+          "charge_integrations": 39,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 108,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 69,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11907,
+          "response_wire_bytes": 11907,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 15,
+          "state_shadow_observations": 15,
+          "state_shadow_pairs": 36,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 36,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 15,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        }
+      },
+      "status": "planned",
+      "wallMs": 66.1939999999995,
+      "planWallMs": 65.10629999999946,
+      "cpuUserMs": 156,
+      "cpuSystemMs": 0,
+      "heapBefore": 407557864,
+      "heapAfter": 402083704,
+      "decodedBytes": 11907,
+      "wireBytes": 11907,
+      "window": {
+        "start": 4264.4709,
+        "end": 4330.6649
+      }
+    },
+    {
+      "process": 0,
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "enabled": true,
+      "block": 0,
+      "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+      "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 7,
+        "station_port": 1,
+        "weather_port": 51,
+        "energy_physical": 69,
+        "charging_physical": 39
+      },
+      "metrics": {
+        "event": "planning_metrics",
+        "version": "planning-metrics/1.0.0",
+        "requestId": "11111111-1111-4111-8111-111111111111",
+        "scope": "benchmark",
+        "algorithms": {
+          "optimizer": "chargeroad-optimizer/1.2.0",
+          "energy": "chargeroad-energy/1.3.3",
+          "charging": "dc-curve-integration/1.2.0"
+        },
+        "durationMs": 66.22339999999986,
+        "outcome": "planned",
+        "incomplete": false,
+        "stages": {
+          "vehicle_profile": {
+            "count": 2,
+            "totalMs": 0.04379999999946449,
+            "maxMs": 0.03509999999914726,
+            "active": 0
+          },
+          "base_road": {
+            "count": 1,
+            "totalMs": 0.04340000000047439,
+            "maxMs": 0.04340000000047439,
+            "active": 0
+          },
+          "station_corridor": {
+            "count": 1,
+            "totalMs": 0.01389999999992142,
+            "maxMs": 0.01389999999992142,
+            "active": 0
+          },
+          "candidate_eligibility": {
+            "count": 1,
+            "totalMs": 0.02519999999913125,
+            "maxMs": 0.02519999999913125,
+            "active": 0
+          },
+          "optimizer_search": {
+            "count": 1,
+            "totalMs": 63.60080000000016,
+            "maxMs": 63.60080000000016,
+            "active": 0
+          },
+          "state_shadow": {
+            "count": 15,
+            "totalMs": 0.5088000000005195,
+            "maxMs": 0.10050000000046566,
+            "active": 0
+          },
+          "weather_sampling": {
+            "count": 69,
+            "totalMs": 1.27440000000297,
+            "maxMs": 0.2092000000002372,
+            "active": 0
+          },
+          "weather_acquisition": {
+            "count": 51,
+            "totalMs": 2.588299999996707,
+            "maxMs": 0.1239000000005035,
+            "active": 0
+          },
+          "energy_evaluation": {
+            "count": 69,
+            "totalMs": 28.453999999999724,
+            "maxMs": 1.3622999999997774,
+            "active": 0
+          },
+          "plan_compile": {
+            "count": 3,
+            "totalMs": 4.6271999999999025,
+            "maxMs": 2.088999999999942,
+            "active": 0
+          },
+          "candidate_call_shadow": {
+            "count": 55,
+            "totalMs": 0.35389999999824795,
+            "maxMs": 0.044499999999970896,
+            "active": 0
+          },
+          "road_leg_acquisition": {
+            "count": 6,
+            "totalMs": 0.9337999999997919,
+            "maxMs": 0.29869999999937136,
+            "active": 0
+          },
+          "charge_integration": {
+            "count": 39,
+            "totalMs": 17.421800000000076,
+            "maxMs": 3.124399999999696,
+            "active": 0
+          },
+          "json_serialize": {
+            "count": 1,
+            "totalMs": 0.0996000000004642,
+            "maxMs": 0.0996000000004642,
+            "active": 0
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 7,
+          "road_session_cache_hits": 63,
+          "weather_session_cache_hits": 57,
+          "weather_sample_queries": 90,
+          "weather_forecast_query_items": 69,
+          "weather_sample_evaluations": 68,
+          "energy_evaluations": 69,
+          "charge_integrations": 39,
+          "frontier_peak": 11,
+          "expanded_states": 15,
+          "transitions": 108,
+          "road_queries_budgeted": 7,
+          "weather_queries_budgeted": 69,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 11907,
+          "response_wire_bytes": 11907,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 15,
+          "state_shadow_observations": 15,
+          "state_shadow_pairs": 36,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 36,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 15,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        }
+      },
+      "status": "planned",
+      "wallMs": 66.30079999999998,
+      "planWallMs": 65.41939999999977,
+      "cpuUserMs": 109,
+      "cpuSystemMs": 0,
+      "heapBefore": 403771808,
+      "heapAfter": 397817816,
+      "decodedBytes": 11907,
+      "wireBytes": 11907,
+      "window": {
+        "start": 4333.3389,
+        "end": 4399.6397
+      }
+    },
+    {
+      "process": 0,
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "enabled": false,
+      "block": 0,
+      "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+      "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 7,
+        "station_port": 1,
+        "weather_port": 51,
+        "energy_physical": 69,
+        "charging_physical": 39
+      },
+      "metrics": null,
+      "status": "planned",
+      "wallMs": 55.81410000000051,
+      "planWallMs": 55.130200000000514,
+      "cpuUserMs": 78,
+      "cpuSystemMs": 0,
+      "heapBefore": 399116416,
+      "heapAfter": 392708600,
+      "decodedBytes": 11907,
+      "wireBytes": 11907,
+      "window": {
+        "start": 4401.8883,
+        "end": 4457.7024
+      }
+    },
+    {
+      "process": 0,
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "enabled": false,
+      "block": 0,
+      "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+      "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 6,
+        "station_port": 1,
+        "weather_port": 67,
+        "energy_physical": 109,
+        "charging_physical": 74
+      },
+      "metrics": null,
+      "status": "planned",
+      "wallMs": 80.26910000000044,
+      "planWallMs": 79.27750000000015,
+      "cpuUserMs": 266,
+      "cpuSystemMs": 16,
+      "heapBefore": 387354384,
+      "heapAfter": 408207336,
+      "decodedBytes": 16439,
+      "wireBytes": 16439,
+      "window": {
+        "start": 5010.9949,
+        "end": 5091.264
+      }
+    },
+    {
+      "process": 0,
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "enabled": true,
+      "block": 0,
+      "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+      "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 6,
+        "station_port": 1,
+        "weather_port": 67,
+        "energy_physical": 109,
+        "charging_physical": 74
+      },
+      "metrics": {
+        "event": "planning_metrics",
+        "version": "planning-metrics/1.0.0",
+        "requestId": "11111111-1111-4111-8111-111111111111",
+        "scope": "benchmark",
+        "algorithms": {
+          "optimizer": "chargeroad-optimizer/1.2.0",
+          "energy": "chargeroad-energy/1.3.3",
+          "charging": "dc-curve-integration/1.2.0"
+        },
+        "durationMs": 68.17770000000019,
+        "outcome": "planned",
+        "incomplete": false,
+        "stages": {
+          "vehicle_profile": {
+            "count": 2,
+            "totalMs": 0.03379999999924621,
+            "maxMs": 0.028599999999642023,
+            "active": 0
+          },
+          "base_road": {
+            "count": 1,
+            "totalMs": 0.034600000000864384,
+            "maxMs": 0.034600000000864384,
+            "active": 0
+          },
+          "station_corridor": {
+            "count": 1,
+            "totalMs": 0.009799999999813735,
+            "maxMs": 0.009799999999813735,
+            "active": 0
+          },
+          "candidate_eligibility": {
+            "count": 1,
+            "totalMs": 0.015000000000327418,
+            "maxMs": 0.015000000000327418,
+            "active": 0
+          },
+          "optimizer_search": {
+            "count": 1,
+            "totalMs": 66.11499999999978,
+            "maxMs": 66.11499999999978,
+            "active": 0
+          },
+          "state_shadow": {
+            "count": 10,
+            "totalMs": 0.12479999999868596,
+            "maxMs": 0.021999999999934516,
+            "active": 0
+          },
+          "weather_sampling": {
+            "count": 109,
+            "totalMs": 0.8377000000045882,
+            "maxMs": 0.021000000000640284,
+            "active": 0
+          },
+          "weather_acquisition": {
+            "count": 67,
+            "totalMs": 1.6590000000078362,
+            "maxMs": 0.04510000000027503,
+            "active": 0
+          },
+          "energy_evaluation": {
+            "count": 109,
+            "totalMs": 30.784300000000258,
+            "maxMs": 0.47890000000006694,
+            "active": 0
+          },
+          "candidate_call_shadow": {
+            "count": 107,
+            "totalMs": 0.39170000000103755,
+            "maxMs": 0.032199999999647844,
+            "active": 0
+          },
+          "road_leg_acquisition": {
+            "count": 5,
+            "totalMs": 0.2316000000009808,
+            "maxMs": 0.0702000000001135,
+            "active": 0
+          },
+          "charge_integration": {
+            "count": 74,
+            "totalMs": 19.072799999999006,
+            "maxMs": 1.372400000000198,
+            "active": 0
+          },
+          "plan_compile": {
+            "count": 3,
+            "totalMs": 2.6162999999987733,
+            "maxMs": 0.9668000000001484,
+            "active": 0
+          },
+          "json_serialize": {
+            "count": 1,
+            "totalMs": 0.07710000000042783,
+            "maxMs": 0.07710000000042783,
+            "active": 0
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 104,
+          "weather_session_cache_hits": 126,
+          "weather_sample_queries": 126,
+          "weather_forecast_query_items": 81,
+          "weather_sample_evaluations": 80,
+          "energy_evaluations": 109,
+          "charge_integrations": 74,
+          "frontier_peak": 8,
+          "expanded_states": 12,
+          "transitions": 193,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 81,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 16439,
+          "response_wire_bytes": 16439,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 10,
+          "state_shadow_observations": 10,
+          "state_shadow_pairs": 22,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 22,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 10,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        }
+      },
+      "status": "planned",
+      "wallMs": 68.26030000000083,
+      "planWallMs": 67.24150000000009,
+      "cpuUserMs": 63,
+      "cpuSystemMs": 0,
+      "heapBefore": 409657536,
+      "heapAfter": 398407056,
+      "decodedBytes": 16439,
+      "wireBytes": 16439,
+      "window": {
+        "start": 5093.8303,
+        "end": 5162.0906
+      }
+    },
+    {
+      "process": 0,
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "enabled": true,
+      "block": 0,
+      "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+      "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 6,
+        "station_port": 1,
+        "weather_port": 67,
+        "energy_physical": 109,
+        "charging_physical": 74
+      },
+      "metrics": {
+        "event": "planning_metrics",
+        "version": "planning-metrics/1.0.0",
+        "requestId": "11111111-1111-4111-8111-111111111111",
+        "scope": "benchmark",
+        "algorithms": {
+          "optimizer": "chargeroad-optimizer/1.2.0",
+          "energy": "chargeroad-energy/1.3.3",
+          "charging": "dc-curve-integration/1.2.0"
+        },
+        "durationMs": 71.58199999999943,
+        "outcome": "planned",
+        "incomplete": false,
+        "stages": {
+          "vehicle_profile": {
+            "count": 2,
+            "totalMs": 0.026200000000244472,
+            "maxMs": 0.021200000000135333,
+            "active": 0
+          },
+          "base_road": {
+            "count": 1,
+            "totalMs": 0.03129999999964639,
+            "maxMs": 0.03129999999964639,
+            "active": 0
+          },
+          "station_corridor": {
+            "count": 1,
+            "totalMs": 0.005199999999604188,
+            "maxMs": 0.005199999999604188,
+            "active": 0
+          },
+          "candidate_eligibility": {
+            "count": 1,
+            "totalMs": 0.009200000000419095,
+            "maxMs": 0.009200000000419095,
+            "active": 0
+          },
+          "optimizer_search": {
+            "count": 1,
+            "totalMs": 69.84739999999965,
+            "maxMs": 69.84739999999965,
+            "active": 0
+          },
+          "state_shadow": {
+            "count": 10,
+            "totalMs": 0.12449999999989814,
+            "maxMs": 0.01929999999993015,
+            "active": 0
+          },
+          "weather_sampling": {
+            "count": 109,
+            "totalMs": 0.901399999997011,
+            "maxMs": 0.06279999999969732,
+            "active": 0
+          },
+          "weather_acquisition": {
+            "count": 67,
+            "totalMs": 1.7824000000100568,
+            "maxMs": 0.07160000000021682,
+            "active": 0
+          },
+          "energy_evaluation": {
+            "count": 109,
+            "totalMs": 32.909399999995,
+            "maxMs": 1.0011999999996988,
+            "active": 0
+          },
+          "candidate_call_shadow": {
+            "count": 107,
+            "totalMs": 0.358500000001186,
+            "maxMs": 0.018200000000433647,
+            "active": 0
+          },
+          "road_leg_acquisition": {
+            "count": 5,
+            "totalMs": 0.2371000000002823,
+            "maxMs": 0.09310000000004948,
+            "active": 0
+          },
+          "charge_integration": {
+            "count": 74,
+            "totalMs": 20.384899999999107,
+            "maxMs": 1.7337999999999738,
+            "active": 0
+          },
+          "plan_compile": {
+            "count": 3,
+            "totalMs": 2.649600000000646,
+            "maxMs": 1.1087999999999738,
+            "active": 0
+          },
+          "json_serialize": {
+            "count": 1,
+            "totalMs": 0.08340000000043801,
+            "maxMs": 0.08340000000043801,
+            "active": 0
+          }
+        },
+        "counters": {
+          "road_leg_acquisitions": 6,
+          "road_session_cache_hits": 104,
+          "weather_session_cache_hits": 126,
+          "weather_sample_queries": 126,
+          "weather_forecast_query_items": 81,
+          "weather_sample_evaluations": 80,
+          "energy_evaluations": 109,
+          "charge_integrations": 74,
+          "frontier_peak": 8,
+          "expanded_states": 12,
+          "transitions": 193,
+          "road_queries_budgeted": 6,
+          "weather_queries_budgeted": 81,
+          "road_pg_cache_hits": 0,
+          "road_pg_cache_misses": 0,
+          "road_cache_coalesced_hits": 0,
+          "weather_pg_cache_hits": 0,
+          "weather_pg_cache_misses": 0,
+          "weather_cache_coalesced": 0,
+          "road_http_acquisitions": 0,
+          "weather_http_acquisitions": 0,
+          "response_decoded_bytes": 16439,
+          "response_wire_bytes": 16439,
+          "cancelled": 0,
+          "timeout": 0,
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 0,
+          "candidate_eligibility_uncertain": 2,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0,
+          "states_seen": 10,
+          "state_shadow_observations": 10,
+          "state_shadow_pairs": 22,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 22,
+          "unsafe_or_unproven_pairs": 0,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 10,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        }
+      },
+      "status": "planned",
+      "wallMs": 71.6243000000004,
+      "planWallMs": 70.81500000000051,
+      "cpuUserMs": 78,
+      "cpuSystemMs": 0,
+      "heapBefore": 399862712,
+      "heapAfter": 416827960,
+      "decodedBytes": 16439,
+      "wireBytes": 16439,
+      "window": {
+        "start": 5164.5872,
+        "end": 5236.2115
+      }
+    },
+    {
+      "process": 0,
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "enabled": false,
+      "block": 0,
+      "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+      "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+      "traceHash": null,
+      "calls": {
+        "vehicle_id": 1,
+        "vehicle_profile": 1,
+        "road_port": 6,
+        "station_port": 1,
+        "weather_port": 67,
+        "energy_physical": 109,
+        "charging_physical": 74
+      },
+      "metrics": null,
+      "status": "planned",
+      "wallMs": 64.65190000000075,
+      "planWallMs": 63.91640000000007,
+      "cpuUserMs": 62,
+      "cpuSystemMs": 0,
+      "heapBefore": 418266168,
+      "heapAfter": 399603696,
+      "decodedBytes": 16439,
+      "wireBytes": 16439,
+      "window": {
+        "start": 5238.4355,
+        "end": 5303.0874
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "equivalence": "PASS",
+      "off": {
+        "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+        "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+        "traceHash": "3076a17a594bc9990a9d37a7bb865591fbf17ba25d0ded07687e745d7aeefe2f",
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road_port": 7,
+          "station_port": 1,
+          "transition_drive": 69,
+          "weather_port": 51,
+          "energy_physical": 69,
+          "transition_charge": 39,
+          "charging_physical": 39
+        },
+        "metrics": null,
+        "status": "planned",
+        "wallMs": 220.9634000000001,
+        "planWallMs": 217.88660000000027,
+        "cpuUserMs": 688,
+        "cpuSystemMs": 31,
+        "heapBefore": 455133376,
+        "heapAfter": 399047328,
+        "decodedBytes": 11908,
+        "wireBytes": 11908,
+        "window": {
+          "start": 3690.8944,
+          "end": 3911.8578
+        }
+      },
+      "on": {
+        "fixtureHash": "4a8d7a7aa1f234bb7f5568778c0e7b2dec6cb6d228d3b3fb5f94d2e5fea5e1ca",
+        "outputHash": "27a07c6d2c26e46f6110a319a7f21f849250502791ec26747e6d31a1cd4ae026",
+        "traceHash": "3076a17a594bc9990a9d37a7bb865591fbf17ba25d0ded07687e745d7aeefe2f",
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road_port": 7,
+          "station_port": 1,
+          "transition_drive": 69,
+          "weather_port": 51,
+          "energy_physical": 69,
+          "transition_charge": 39,
+          "charging_physical": 39
+        },
+        "metrics": {
+          "event": "planning_metrics",
+          "version": "planning-metrics/1.0.0",
+          "requestId": "11111111-1111-4111-8111-111111111111",
+          "scope": "benchmark",
+          "algorithms": {
+            "optimizer": "chargeroad-optimizer/1.2.0",
+            "energy": "chargeroad-energy/1.3.3",
+            "charging": "dc-curve-integration/1.2.0"
+          },
+          "durationMs": 86.5573000000004,
+          "outcome": "planned",
+          "incomplete": false,
+          "stages": {
+            "vehicle_profile": {
+              "count": 2,
+              "totalMs": 0.11040000000002692,
+              "maxMs": 0.0886000000000422,
+              "active": 0
+            },
+            "base_road": {
+              "count": 1,
+              "totalMs": 0.06330000000025393,
+              "maxMs": 0.06330000000025393,
+              "active": 0
+            },
+            "station_corridor": {
+              "count": 1,
+              "totalMs": 0.04539999999997235,
+              "maxMs": 0.04539999999997235,
+              "active": 0
+            },
+            "candidate_eligibility": {
+              "count": 1,
+              "totalMs": 0.3607999999999265,
+              "maxMs": 0.3607999999999265,
+              "active": 0
+            },
+            "optimizer_search": {
+              "count": 1,
+              "totalMs": 83.17880000000014,
+              "maxMs": 83.17880000000014,
+              "active": 0
+            },
+            "state_shadow": {
+              "count": 15,
+              "totalMs": 0.5705000000007203,
+              "maxMs": 0.16030000000000655,
+              "active": 0
+            },
+            "weather_sampling": {
+              "count": 69,
+              "totalMs": 1.0024000000016713,
+              "maxMs": 0.03900000000021464,
+              "active": 0
+            },
+            "weather_acquisition": {
+              "count": 51,
+              "totalMs": 8.13090000000011,
+              "maxMs": 0.2276000000001659,
+              "active": 0
+            },
+            "energy_evaluation": {
+              "count": 69,
+              "totalMs": 34.524100000001,
+              "maxMs": 0.915599999999813,
+              "active": 0
+            },
+            "plan_compile": {
+              "count": 3,
+              "totalMs": 2.9299999999998363,
+              "maxMs": 1.0360999999998057,
+              "active": 0
+            },
+            "candidate_call_shadow": {
+              "count": 55,
+              "totalMs": 0.36750000000029104,
+              "maxMs": 0.025500000000192813,
+              "active": 0
+            },
+            "road_leg_acquisition": {
+              "count": 6,
+              "totalMs": 0.3728999999993903,
+              "maxMs": 0.06739999999990687,
+              "active": 0
+            },
+            "charge_integration": {
+              "count": 39,
+              "totalMs": 17.58779999999979,
+              "maxMs": 4.125700000000052,
+              "active": 0
+            },
+            "json_serialize": {
+              "count": 1,
+              "totalMs": 0.06770000000005894,
+              "maxMs": 0.06770000000005894,
+              "active": 0
+            }
+          },
+          "counters": {
+            "road_leg_acquisitions": 7,
+            "road_session_cache_hits": 63,
+            "weather_session_cache_hits": 57,
+            "weather_sample_queries": 90,
+            "weather_forecast_query_items": 69,
+            "weather_sample_evaluations": 68,
+            "energy_evaluations": 69,
+            "charge_integrations": 39,
+            "frontier_peak": 11,
+            "expanded_states": 15,
+            "transitions": 108,
+            "road_queries_budgeted": 7,
+            "weather_queries_budgeted": 69,
+            "road_pg_cache_hits": 0,
+            "road_pg_cache_misses": 0,
+            "road_cache_coalesced_hits": 0,
+            "weather_pg_cache_hits": 0,
+            "weather_pg_cache_misses": 0,
+            "weather_cache_coalesced": 0,
+            "road_http_acquisitions": 0,
+            "weather_http_acquisitions": 0,
+            "response_decoded_bytes": 11907,
+            "response_wire_bytes": 11907,
+            "cancelled": 0,
+            "timeout": 0,
+            "candidate_eligibility_total": 2,
+            "candidate_selected_total": 2,
+            "candidate_eligibility_eligible": 0,
+            "candidate_eligibility_uncertain": 2,
+            "candidate_eligibility_provably_ineligible": 0,
+            "candidate_reject_public_access": 0,
+            "candidate_reject_membership": 0,
+            "candidate_reject_lifecycle": 0,
+            "candidate_potential_drive_calls": 0,
+            "candidate_potential_charge_calls": 0,
+            "states_seen": 15,
+            "state_shadow_observations": 15,
+            "state_shadow_pairs": 36,
+            "exact_duplicate_candidates": 0,
+            "potential_dominance_pairs": 0,
+            "not_equivalent_pairs": 36,
+            "unsafe_or_unproven_pairs": 0,
+            "state_shadow_budget_skipped": 0,
+            "state_shadow_entries_peak": 15,
+            "state_shadow_capture_failures": 0,
+            "actual_pruned_states": 0
+          }
+        },
+        "status": "planned",
+        "wallMs": 86.75370000000021,
+        "planWallMs": 85.71929999999975,
+        "cpuUserMs": 125,
+        "cpuSystemMs": 0,
+        "heapBefore": 402909880,
+        "heapAfter": 412331272,
+        "decodedBytes": 11907,
+        "wireBytes": 11907,
+        "window": {
+          "start": 3919.2598,
+          "end": 4006.0135
+        }
+      }
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "equivalence": "PASS",
+      "off": {
+        "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+        "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+        "traceHash": "3da07a5caf6433f53afe389831a9c884caec68116f2bc93487c1138a63777fed",
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road_port": 6,
+          "station_port": 1,
+          "transition_drive": 109,
+          "weather_port": 67,
+          "energy_physical": 109,
+          "transition_charge": 84,
+          "charging_physical": 74
+        },
+        "metrics": null,
+        "status": "planned",
+        "wallMs": 130.1902,
+        "planWallMs": 129.0632999999998,
+        "cpuUserMs": 141,
+        "cpuSystemMs": 16,
+        "heapBefore": 394008064,
+        "heapAfter": 410327960,
+        "decodedBytes": 16440,
+        "wireBytes": 16440,
+        "window": {
+          "start": 4460.1934,
+          "end": 4590.3836
+        }
+      },
+      "on": {
+        "fixtureHash": "01a98e686a18cd0adaadcf4f1a10c08caad9ca84fd60141cee71b972e93af16f",
+        "outputHash": "233d566527f137ad64682c4210fb66cffd1ed8383c5e1410956ab20afda6e36c",
+        "traceHash": "3da07a5caf6433f53afe389831a9c884caec68116f2bc93487c1138a63777fed",
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road_port": 6,
+          "station_port": 1,
+          "transition_drive": 109,
+          "weather_port": 67,
+          "energy_physical": 109,
+          "transition_charge": 84,
+          "charging_physical": 74
+        },
+        "metrics": {
+          "event": "planning_metrics",
+          "version": "planning-metrics/1.0.0",
+          "requestId": "11111111-1111-4111-8111-111111111111",
+          "scope": "benchmark",
+          "algorithms": {
+            "optimizer": "chargeroad-optimizer/1.2.0",
+            "energy": "chargeroad-energy/1.3.3",
+            "charging": "dc-curve-integration/1.2.0"
+          },
+          "durationMs": 128.16719999999987,
+          "outcome": "planned",
+          "incomplete": false,
+          "stages": {
+            "vehicle_profile": {
+              "count": 2,
+              "totalMs": 0.08170000000063737,
+              "maxMs": 0.06670000000030996,
+              "active": 0
+            },
+            "base_road": {
+              "count": 1,
+              "totalMs": 0.05410000000028958,
+              "maxMs": 0.05410000000028958,
+              "active": 0
+            },
+            "station_corridor": {
+              "count": 1,
+              "totalMs": 0.06370000000060827,
+              "maxMs": 0.06370000000060827,
+              "active": 0
+            },
+            "candidate_eligibility": {
+              "count": 1,
+              "totalMs": 0.016899999999623105,
+              "maxMs": 0.016899999999623105,
+              "active": 0
+            },
+            "optimizer_search": {
+              "count": 1,
+              "totalMs": 125.5576000000001,
+              "maxMs": 125.5576000000001,
+              "active": 0
+            },
+            "state_shadow": {
+              "count": 10,
+              "totalMs": 0.14310000000023138,
+              "maxMs": 0.023699999999735155,
+              "active": 0
+            },
+            "weather_sampling": {
+              "count": 109,
+              "totalMs": 1.1465000000052896,
+              "maxMs": 0.03209999999944557,
+              "active": 0
+            },
+            "weather_acquisition": {
+              "count": 67,
+              "totalMs": 11.327399999998306,
+              "maxMs": 0.3559000000004744,
+              "active": 0
+            },
+            "energy_evaluation": {
+              "count": 109,
+              "totalMs": 46.80620000000454,
+              "maxMs": 1.1611000000002605,
+              "active": 0
+            },
+            "candidate_call_shadow": {
+              "count": 107,
+              "totalMs": 0.5463999999992666,
+              "maxMs": 0.02099999999973079,
+              "active": 0
+            },
+            "road_leg_acquisition": {
+              "count": 5,
+              "totalMs": 0.2644000000009328,
+              "maxMs": 0.06190000000060536,
+              "active": 0
+            },
+            "charge_integration": {
+              "count": 74,
+              "totalMs": 27.4458999999988,
+              "maxMs": 1.0773999999992157,
+              "active": 0
+            },
+            "plan_compile": {
+              "count": 3,
+              "totalMs": 2.886900000001333,
+              "maxMs": 1.0164000000004307,
+              "active": 0
+            },
+            "json_serialize": {
+              "count": 1,
+              "totalMs": 0.10939999999936845,
+              "maxMs": 0.10939999999936845,
+              "active": 0
+            }
+          },
+          "counters": {
+            "road_leg_acquisitions": 6,
+            "road_session_cache_hits": 104,
+            "weather_session_cache_hits": 126,
+            "weather_sample_queries": 126,
+            "weather_forecast_query_items": 81,
+            "weather_sample_evaluations": 80,
+            "energy_evaluations": 109,
+            "charge_integrations": 74,
+            "frontier_peak": 8,
+            "expanded_states": 12,
+            "transitions": 193,
+            "road_queries_budgeted": 6,
+            "weather_queries_budgeted": 81,
+            "road_pg_cache_hits": 0,
+            "road_pg_cache_misses": 0,
+            "road_cache_coalesced_hits": 0,
+            "weather_pg_cache_hits": 0,
+            "weather_pg_cache_misses": 0,
+            "weather_cache_coalesced": 0,
+            "road_http_acquisitions": 0,
+            "weather_http_acquisitions": 0,
+            "response_decoded_bytes": 16440,
+            "response_wire_bytes": 16440,
+            "cancelled": 0,
+            "timeout": 0,
+            "candidate_eligibility_total": 2,
+            "candidate_selected_total": 2,
+            "candidate_eligibility_eligible": 0,
+            "candidate_eligibility_uncertain": 2,
+            "candidate_eligibility_provably_ineligible": 0,
+            "candidate_reject_public_access": 0,
+            "candidate_reject_membership": 0,
+            "candidate_reject_lifecycle": 0,
+            "candidate_potential_drive_calls": 0,
+            "candidate_potential_charge_calls": 0,
+            "states_seen": 10,
+            "state_shadow_observations": 10,
+            "state_shadow_pairs": 22,
+            "exact_duplicate_candidates": 0,
+            "potential_dominance_pairs": 0,
+            "not_equivalent_pairs": 22,
+            "unsafe_or_unproven_pairs": 0,
+            "state_shadow_budget_skipped": 0,
+            "state_shadow_entries_peak": 10,
+            "state_shadow_capture_failures": 0,
+            "actual_pruned_states": 0
+          }
+        },
+        "status": "planned",
+        "wallMs": 128.2483000000002,
+        "planWallMs": 127.1848,
+        "cpuUserMs": 156,
+        "cpuSystemMs": 15,
+        "heapBefore": 416245464,
+        "heapAfter": 426971312,
+        "decodedBytes": 16440,
+        "wireBytes": 16440,
+        "window": {
+          "start": 4603.3894,
+          "end": 4731.6377
+        }
+      }
+    }
+  ],
+  "physicalHttpRequests": 0,
+  "pgAccesses": 0,
+  "traceInHeadline": false,
+  "productionPath": "native_sort_shift_no_reuse_no_pruning",
+  "wallScope": "service.plan + runtime API envelope validation + production encoder + decode/check; not network/socket latency. Fixture/hash/trace outside headline timing."
+}

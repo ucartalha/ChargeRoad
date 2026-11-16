@@ -1,0 +1,190 @@
+{
+  "generatedAt": "2026-11-15T23:54:12.368Z",
+  "groups": [
+    {
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 4
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 3
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 3
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 3
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 3
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 4
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_total_duration",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_charging_stops",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_energy",
+      "samples": 120,
+      "fixtureHashCount": 1,
+      "outputHashCount": 1,
+      "traceHashCount": 1,
+      "physicalCallsHashCount": 1,
+      "metricsCountersHashCount": 1
+    }
+  ],
+  "crossProcessEquivalence": "FAIL",
+  "sourcesStillMatch": true,
+  "existingUnchanged": true,
+  "initialFileCount": 565,
+  "finalDiffCheck": "PASS"
+}

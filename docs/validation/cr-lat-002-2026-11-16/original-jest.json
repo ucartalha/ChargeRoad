@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-11-16T12:46:25.861Z",
+  "sources": {
+    "apps/api/src/planning/__tests__/state-shadow-equivalence.spec.ts": "25bf688b2f108e6f2bb13af56e6af981b723ded02c5560d5e620c74d076d2a2d",
+    "apps/api/src/planning/validation/state-dominance-validation.ts": "15cad1c78150eca9ce6b1364717bb21a9f34612b3a763a3b6c1995b9d04f2fe4",
+    "apps/api/src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "apps/api/src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "apps/api/src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "apps/api/scripts/diagnose-weather-regression.cjs": "bbb4f8d8d2ea1d670f316ef05f9e2dbf2b969ae446b6d0ba300f4cc191cfb872"
+  },
+  "status": "FAIL",
+  "exitCode": 1,
+  "watchdog": null,
+  "command": "node --cpu-prof --trace-gc jest --runInBand --runTestsByPath state-shadow-equivalence.spec.ts --testNamePattern=equal_alternatives --detectOpenHandles",
+  "testTimeoutChanged": false,
+  "aggregate": [
+    "Test Suites: 1 failed, 1 total",
+    "Tests:       3 failed, 159 skipped, 162 total",
+    "Time:        23.871 s"
+  ],
+  "logSha256": "7e0e0018ef4d0dc4618d073222ce15d991e77026a93876fd34670b4ff34caae0"
+}

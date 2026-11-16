@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-11-16T12:22:35.404Z",
+  "checks": [
+    {
+      "id": "db-probe",
+      "command": "SELECT 1 (credential quiet)",
+      "status": "PASS"
+    },
+    {
+      "id": "shared",
+      "command": "pnpm.cmd --filter @chargeroad/shared test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 10018.0455,
+      "logSha256": "fdd2bebdfaec04aa239621ce76a789803ac1ca4bcbdfdea8ba69a1f4c628226f",
+      "aggregate": [
+        "ℹ tests 41",
+        "ℹ pass 41",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "id": "mobile",
+      "command": "pnpm.cmd --filter @chargeroad/mobile test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 5030.6602,
+      "logSha256": "4bed61e2a1701fc1ebcf7ff2812fbf1f494e0ab7ede9b7a22249e4d6a31e8f3c",
+      "aggregate": [
+        "ℹ tests 80",
+        "ℹ pass 80",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "id": "api-db",
+      "command": "pnpm.cmd --filter @chargeroad/api test:db",
+      "status": "FAIL",
+      "exitCode": 1,
+      "elapsedMs": 603379.2113000001,
+      "logSha256": "28341a1c80bd865aad3b606d6c5cd0b162a6781e03a313673f6d9d608beef91d",
+      "aggregate": [
+        "Test Suites: 1 failed, 72 passed, 73 total",
+        "Tests:       3 failed, 1179 passed, 1182 total"
+      ]
+    },
+    {
+      "id": "typecheck",
+      "command": "pnpm.cmd -r typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 10880.992800000007,
+      "logSha256": "bff28a0f3de306ab3ec4fd91b76ddc49ad1813eb8f53a0bd5f83b5ea1eb2259c",
+      "aggregate": []
+    },
+    {
+      "id": "api-build",
+      "command": "pnpm.cmd --filter @chargeroad/api build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 17047.277699999977,
+      "logSha256": "90839d037a86590fe047bf593a438f6a0b920ab1465d09b86752f4ceca3a4497",
+      "aggregate": []
+    },
+    {
+      "id": "mobile-build",
+      "command": "pnpm.cmd --filter @chargeroad/mobile build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 34750.1888,
+      "logSha256": "33e944c85589f5c2bccd03f9caf0db2ff09054e2e331688c1f96c73e2bf8a288",
+      "aggregate": []
+    },
+    {
+      "id": "diff",
+      "command": "git diff --check",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 234.39870000001974,
+      "logSha256": "28395581f11f7d3814be838e7ed2ab74cddf30a5de5f194a0cb6ae91ada69f2f",
+      "aggregate": []
+    }
+  ]
+}

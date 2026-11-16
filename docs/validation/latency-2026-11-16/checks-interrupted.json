@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-11-16T12:11:13.297Z",
+  "status": "NOT_COMPLETED",
+  "shared": "PASS",
+  "mobile": "PASS",
+  "apiDb": "NOT_RUN_TO_COMPLETION",
+  "reason": "Owned full-check process interrupted after sustained noncompletion. Test-only virtual scheduler/dynamic module bridge was being invoked inside Jest VM. Subsequent semantic tests use bounded native child processes; production sources unchanged.",
+  "preserved": [
+    "check-shared.log",
+    "check-mobile.log"
+  ],
+  "normalizationOrGoldenChanged": false
+}

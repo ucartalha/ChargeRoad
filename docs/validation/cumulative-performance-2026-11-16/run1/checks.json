@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-11-15T23:51:53.333Z",
+  "checks": [
+    {
+      "command": "SELECT 1 (credential-quiet)",
+      "status": "PASS"
+    },
+    {
+      "id": "shared",
+      "command": "pnpm.cmd --filter @chargeroad/shared test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 3394.5278000000003,
+      "logSha256": "d64df62240b667f19659b59e671146be577bf164045d98b16d3539cb73137f53",
+      "aggregateLines": []
+    },
+    {
+      "id": "mobile",
+      "command": "pnpm.cmd --filter @chargeroad/mobile test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 871.8411000000001,
+      "logSha256": "dd9fe36fddc9fbd789fc5cc11698e1b435acb83dbcccaf67b194a6c8c1c85092",
+      "aggregateLines": []
+    },
+    {
+      "id": "db",
+      "command": "pnpm.cmd --filter @chargeroad/api test:db",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 197395.5808,
+      "logSha256": "81a937b61db4af588385d091cc816511b0ae32f45bfc36f6f6cfef3fa48dbd3b",
+      "aggregateLines": [
+        "Test Suites: 72 passed, 72 total",
+        "Tests:       1168 passed, 1168 total"
+      ]
+    },
+    {
+      "id": "typecheck",
+      "command": "pnpm.cmd -r typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 3833.7502000000095,
+      "logSha256": "1b2e053b58f1530b5efb1f0d8567192b71f1b154d36cda56be7a05e89814584c",
+      "aggregateLines": []
+    },
+    {
+      "id": "build",
+      "command": "pnpm.cmd --filter @chargeroad/api build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4910.517900000006,
+      "logSha256": "90839d037a86590fe047bf593a438f6a0b920ab1465d09b86752f4ceca3a4497",
+      "aggregateLines": []
+    },
+    {
+      "id": "diff",
+      "command": "git diff --check",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 62.12140000000363,
+      "logSha256": "28395581f11f7d3814be838e7ed2ab74cddf30a5de5f194a0cb6ae91ada69f2f",
+      "aggregateLines": []
+    }
+  ]
+}

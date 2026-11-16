@@ -13,6 +13,12 @@ import {httpPlanningWorld} from './planning-http.fixtures';
 import {PlanningJobsStore} from '../http/planning-jobs.store';
 import {PlanningJobsWorker} from '../http/planning-jobs.worker';
 import {Logger} from '@nestjs/common';
+import {readFileSync,writeFileSync,existsSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import * as ts from 'typescript';
+import {withPlanningMetrics} from '../../observability/planning-metrics';
 const integration=process.env.TEST_DATABASE_URL?describe:describe.skip;
 integration('Planning jobs: HTTP, PostgreSQL ownership, solver, cancellation and recovery',()=>{
  const schema='planning_jobs_'+randomBytes(8).toString('hex'),secretBefore=process.env.RATE_LIMIT_IP_HASH_SECRET;
@@ -102,4 +108,33 @@ integration('Planning jobs: HTTP, PostgreSQL ownership, solver, cancellation and
   samples.sort((a,b)=>a-b);console.log(JSON.stringify({planningJobStatusLoad:{requests:100,concurrency:20,p95Ms:samples[94],p99Ms:samples[98],responseBytes:bytes,externalCalls:0}}));
   await store.finish(job,null,'CONTROLLED_END');expect(planner.plan).not.toHaveBeenCalled();
  });
+ it('CR-LAT-001 measures native mobile delivery through isolated HTTP/PG/worker/real solver without external preview',async()=>{
+  const rows:{stage:string;atMs:number}[]=[],start=performance.now(),stamp=(stage:string)=>rows.push({stage,atMs:performance.now()-start});
+  const originalFinish=store.finish.bind(store);const finish=jest.spyOn(store,'finish').mockImplementation(async(...args)=>{stamp('finish_sql_start');await originalFinish(...args);stamp('finish_commit');});
+  const realFetch=fetch;let statusGets=0,resultGets=0,previewCalls=0,metrics:any;let work:Promise<void>|undefined;
+  const transport:typeof fetch=async(input,init)=>{const address=String(input);
+   if(address.endsWith('/roads/preview')){previewCalls++;return new Response('{}',{status:503});} // No Valhalla/weather/external access.
+   const role=address.endsWith('/result')?'result':init?.method==='POST'?'ack':'status';stamp(role+'_start');
+   if(role==='status')statusGets++;if(role==='result')resultGets++;
+   const response=await realFetch(input,init);stamp(role+'_headers');
+   const json=response.json.bind(response);response.json=async()=>{stamp(role+'_body_parse_start');const value=await json();stamp(role+'_body_parse_end');return value;};
+   if(role==='ack'&&response.ok)work=Promise.resolve().then(()=>withPlanningMetrics(world.body.requestId,()=>worker.tick(),{enabled:true,scope:'benchmark',sink:s=>{const {requestId,...safe}=s;metrics=safe;}}));
+   return response;
+  };
+  const filename=resolve(__dirname,'../../../../mobile/src/api/planning.ts'),source=readFileSync(filename,'utf8'),module={exports:{} as any};
+  const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+  new Function('exports','module','require','fetch','process',js)(module.exports,module,createRequire(filename),transport,{env:{EXPO_PUBLIC_API_URL:url+'/v1'}});
+  try{const response=await module.exports.planningApi.planAsync(world.body,new AbortController().signal,token,()=>{});stamp('client_response_accepted');await work;
+   expect(response.status).toBe('planned');expect(response.requestId).toBe(world.body.requestId);expect(statusGets).toBe(1);expect(resultGets).toBe(1);expect(previewCalls).toBe(1);
+   const ready=rows.find(r=>r.stage==='finish_commit')!.atMs,accepted=rows.at(-1)!.atMs;expect(accepted).toBeGreaterThanOrEqual(ready);
+   // A late DELETE after completion must not erase or replace the owner's result.
+   expect((await store.cancel(world.body.requestId,store.owner('Bearer '+token))).status).toBe('completed');
+   expect((await store.result(world.body.requestId,store.owner('Bearer '+token))).requestId).toBe(world.body.requestId);
+   const artifact=resolve(__dirname,'../../../../../artifacts/latency-2026-11-16/native-isolated-chain.json');
+   if(!existsSync(artifact))writeFileSync(artifact,JSON.stringify({generatedAt:new Date().toISOString(),n:1,status:'planned',sourceSha256:createHash('sha256').update(source).digest('hex'),
+    clock:'single Node monotonic performance.now, client + ephemeral local HTTP + unique test schema worker',stages:rows,jobReadyToClientAcceptedMs:accepted-ready,
+    statusGets,resultGets,previewCalls,workerMetrics:metrics,physicalExternalProviderRequests:0,workerClaim:'manual tick after POST; not 500ms periodic wait',actualPaint:'NOT_RUN',
+    limitations:['In-memory route/weather/vehicle/station providers; actual solver + HTTP controller + PG owner/lease + worker + mobile code.','Preview transport intentionally 503 to avoid external requests. Not a preview on/off comparison.','n=1 baseline only, not native user geography or load/cold-warm test.']},null,2)+'\n',{flag:'wx'});
+  }finally{finish.mockRestore();}
+ },15000);
 });

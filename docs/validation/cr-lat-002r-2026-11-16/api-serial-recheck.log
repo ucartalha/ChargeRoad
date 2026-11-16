@@ -1,0 +1,72 @@
+
+> @chargeroad/api@0.1.0 test C:\Projects\ChargeRoad\apps\api
+> jest --runInBand
+
+PASS src/planning/__tests__/session-repeat-equivalence.spec.ts (59.253 s)
+PASS src/planning/__tests__/state-shadow-equivalence.spec.ts (41.613 s)
+PASS src/planning/__tests__/eligibility-equivalence.spec.ts (35.046 s)
+PASS src/planning/__tests__/state-shadow-isolation.spec.ts (15.947 s)
+PASS src/planning/__tests__/latency-polling.spec.ts (16.319 s)
+PASS src/weather/__tests__/planning-weather.spec.ts (7.657 s)
+PASS src/planning/validation/frontier-performance-harness.spec.ts (5.392 s)
+PASS src/planning/__tests__/stable-priority-queue.spec.ts
+PASS src/planning/__tests__/energy-reuse-proof.spec.ts
+PASS src/planning/__tests__/optimizer.spec.ts
+PASS src/planning/__tests__/frontier-equivalence.spec.ts
+PASS src/energy/__tests__/long-route-budget.spec.ts
+PASS src/observability/planning-equivalence.spec.ts
+PASS src/planning/__tests__/charge-target-search.spec.ts
+PASS src/planning/__tests__/optimizer-reference.spec.ts
+PASS src/app.controller.spec.ts
+PASS src/roads/__tests__/geoapify.spec.ts
+PASS src/planning/__tests__/planning-coordinator.spec.ts
+PASS src/planning/__tests__/planning-execution.spec.ts
+PASS src/weather/__tests__/weather.spec.ts
+PASS src/observability/planning-metrics.spec.ts
+PASS src/planning/__tests__/catalogue-plan.spec.ts
+PASS src/planning/__tests__/state-objective-validation.spec.ts
+PASS src/planning/__tests__/planning-response.spec.ts
+PASS src/charging/__tests__/charging-engine.spec.ts
+PASS src/weather/__tests__/planning-weather-provider.spec.ts
+PASS src/planning/__tests__/continuation.spec.ts
+PASS src/roads/__tests__/road-coalescing.spec.ts
+PASS src/energy/__tests__/hyundai-baselines.spec.ts
+PASS src/weather/__tests__/weather-window.spec.ts
+PASS src/planning/__tests__/candidate-shadow.spec.ts
+PASS src/vehicles/__tests__/catalogue-sampling-range.spec.ts
+[Nest] 17852  - 16.11.2026 17:08:46   ERROR [RateLimitGuard] Shared rate limit state unavailable
+PASS src/security/__tests__/rate-limit.guard.spec.ts
+PASS src/planning/__tests__/session-repeat-audit.spec.ts
+PASS src/charging/__tests__/charging-service.spec.ts
+PASS src/planning/__tests__/candidate-eligibility.spec.ts
+PASS src/roads/__tests__/roads.spec.ts
+PASS src/roads/__tests__/elevation-hardening.spec.ts
+PASS src/energy/__tests__/energy-service.spec.ts
+PASS src/roads/__tests__/road-preview.spec.ts
+PASS src/planning/__tests__/state-shadow.spec.ts
+PASS src/energy/__tests__/energy-engine.spec.ts
+PASS src/energy/__tests__/battery-thermal.spec.ts
+PASS src/planning/validation/reference-validation.spec.ts
+PASS src/energy/__tests__/feedback-learner.spec.ts
+PASS src/energy/__tests__/reference-resolution.spec.ts
+PASS src/vehicles/__tests__/knowledge.spec.ts
+PASS src/stations/__tests__/ocm-source.spec.ts
+PASS src/stations/__tests__/stations.spec.ts
+PASS src/energy/__tests__/observation-review.spec.ts
+PASS src/charging/__tests__/catalogue-scenario.spec.ts
+PASS src/locations/__tests__/photon.spec.ts
+PASS src/validation/workbook-evidence.spec.ts
+PASS src/stations/__tests__/epdk-transport.spec.ts
+PASS src/security/__tests__/rate-limit.config.spec.ts
+PASS src/vehicles/__tests__/kilowatt.spec.ts
+PASS src/vehicles/__tests__/open-ev.provider.spec.ts
+PASS src/vehicles/__tests__/vehicle-snapshot.spec.ts
+PASS src/roads/__tests__/valhalla-artifacts.spec.ts
+PASS src/roads/__tests__/road-source-policy.spec.ts
+PASS src/planning/__tests__/state-dominance.spec.ts
+
+Test Suites: 14 skipped, 61 passed, 61 of 75 total
+Tests:       154 skipped, 1032 passed, 1186 total
+Snapshots:   0 total
+Time:        243.932 s, estimated 588 s
+Ran all test suites.

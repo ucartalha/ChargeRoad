@@ -69,6 +69,7 @@ function world(kind:StateCase){
 }
 async function run(kind:StateCase,objective:Objective,after:boolean,enabled=true){
  const w=world(kind),trace:[string,string][]=[],counts:Record<string,number>={},cancel=new AbortController();
+ w.request.policy.objective=objective;
  const wrap=<T extends(...args:any[])=>any>(role:string,operation:T)=>(...args:Parameters<T>):ReturnType<T>=>{counts[role]=(counts[role]??0)+1;trace.push([role,digest(normalized(args))]);return operation(...args);};
  const vehicles={resolveId:wrap('vehicle_id',w.vehicles.resolveId),profile:wrap('vehicle_profile',w.vehicles.profile)};
  let road=w.roads.routes;
@@ -83,17 +84,34 @@ async function run(kind:StateCase,objective:Objective,after:boolean,enabled=true
  if(kind==='cancel')cancel.abort(new Error('synthetic_cancel'));let metrics:PlanningMetricSnapshot|undefined;
  const operation=async()=>{try{return await service.plan(w.request,w.preparation,w.options,cancel.signal);}catch(error){if(error!==cancel.signal.reason)throw error;return {cancelled:true};}};
  const outcome=normalized(await withPlanningMetrics(w.request.requestId,operation,{enabled,scope:'benchmark',sink:s=>{metrics=s;}}));
- return {outcome,inputHash,trace,counts,metrics};
+ if(outcome.search&&outcome.search.objective!==objective)throw new Error('STATE_OBJECTIVE_NOT_APPLIED');
+ return {outcome,inputHash,trace,counts,metrics,actualObjective:w.request.policy.objective};
+}
+// Diagnostic pointers contain field names/indices only, never fixture values.
+function firstDifference(a:any,b:any,path=''):string|null {
+ if(isDeepStrictEqual(a,b))return null;
+ if(!a||!b||typeof a!=='object'||typeof b!=='object')return path||'/';
+ for(const key of new Set([...Object.keys(a),...Object.keys(b)])){
+  const next=path+'/'+key.replace(/~/g,'~0').replace(/\//g,'~1');
+  if(!Object.prototype.hasOwnProperty.call(a,key)||!Object.prototype.hasOwnProperty.call(b,key))return next;
+  const different=firstDifference(a[key],b[key],next);if(different)return different;
+ }
+ return path||'/';
 }
 export async function validateStateCase(kind:StateCase,objective:Objective){
- const before=await run(kind,objective,false),after=await run(kind,objective,true),off=await run(kind,objective,true,false);
- for(const value of [after,off])if(!isDeepStrictEqual(before.outcome,value.outcome)||!isDeepStrictEqual(before.trace,value.trace)||!isDeepStrictEqual(before.counts,value.counts)||before.inputHash!==value.inputHash)throw new Error('STATE_SHADOW_BEHAVIOR_CHANGED/'+kind+'/'+objective);
+ const phases:Record<string,number>={};
+ const timed=async(name:string,after:boolean,enabled=true)=>{const start=performance.now();try{return await run(kind,objective,after,enabled);}finally{phases[name]=performance.now()-start;}};
+ const before=await timed('before',false),after=await timed('after',true),off=await timed('off',true,false);
+ for(const [phase,value] of [['after',after],['off',off]] as const){
+  const pointer=firstDifference({outcome:before.outcome,trace:before.trace,counts:before.counts,inputHash:before.inputHash},{outcome:value.outcome,trace:value.trace,counts:value.counts,inputHash:value.inputHash});
+  if(pointer)throw Object.assign(new Error('STATE_SHADOW_BEHAVIOR_CHANGED/'+kind+'/'+objective+'/'+phase+pointer),{validationPhases:phases});
+ }
  if(off.metrics!==undefined)throw new Error('DISABLED_STATE_METRICS');
  const original=before.metrics!.counters,current=after.metrics!.counters,newKeys=new Set<string>(STATE_SHADOW_COUNTERS);
  for(const key of Object.keys(original))if(!newKeys.has(key)&&original[key as keyof typeof original]!==current[key as keyof typeof current])throw new Error('ORIGINAL_OR_ELIGIBILITY_COUNTER_CHANGED');
  if(current.actual_pruned_states!==0)throw new Error('ACTIVE_PRUNING_FORBIDDEN');
  if(['incumbent_state','incumbent_frontier','direct','sole_station','normal','many_stations','long_route'].includes(kind)&&before.outcome.result?.status!=='planned')throw new Error('EXPECTED_VALIDATED_PLAN/'+kind);
- return {kind,objective,inputHash:before.inputHash,outcomeHash:digest(before.outcome),traceHash:digest(before.trace),equivalent:true,status:before.outcome.result?.status??'cancelled',
+ return {baselineVersion:'state-objective-real/v2',kind,objective,actualObjectives:[before.actualObjective,after.actualObjective,off.actualObjective],phaseInputHashes:[before.inputHash,after.inputHash,off.inputHash],phases,inputHash:before.inputHash,outcomeHash:digest(before.outcome),traceHash:digest(before.trace),equivalent:true,status:before.outcome.result?.status??'cancelled',
   stoppedReason:before.outcome.search?.stoppedReason??null,reasonCodes:before.outcome.result?.reasons?.map((r:{code:string})=>r.code)??[],calls:before.counts,
   previousEligibilityCounters:Object.fromEntries(Object.entries(current).filter(([key])=>key.startsWith('candidate_'))),
   shadow:Object.fromEntries(STATE_SHADOW_COUNTERS.map(key=>[key,current[key]])),shadowEvaluationMs:after.metrics!.stages.state_shadow?.totalMs??null,

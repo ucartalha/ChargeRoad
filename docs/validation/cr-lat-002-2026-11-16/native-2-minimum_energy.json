@@ -1,0 +1,571 @@
+{
+  "generatedAt": "2026-11-16T12:47:05.273Z",
+  "mode": "opt-in native process, same original exported invariant function, fixed same wall clock; bootstrap excluded",
+  "sources": {
+    "apps/api/src/planning/__tests__/state-shadow-equivalence.spec.ts": "25bf688b2f108e6f2bb13af56e6af981b723ded02c5560d5e620c74d076d2a2d",
+    "apps/api/src/planning/validation/state-dominance-validation.ts": "15cad1c78150eca9ce6b1364717bb21a9f34612b3a763a3b6c1995b9d04f2fe4",
+    "apps/api/src/planning/charge-stop-optimizer.ts": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+    "apps/api/src/energy/energy-engine.ts": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+    "apps/api/src/charging/charging-engine.ts": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+    "apps/api/scripts/diagnose-weather-regression.cjs": "bbb4f8d8d2ea1d670f316ef05f9e2dbf2b969ae446b6d0ba300f4cc191cfb872"
+  },
+  "objective": "minimum_energy",
+  "repeat": 2,
+  "original5000msGate": "PASS",
+  "wallMs": 4609.953600000001,
+  "cpuUserMs": 5704,
+  "cpuSystemMs": 172,
+  "heapBefore": 83043872,
+  "heapAfter": 92799384,
+  "gc": [
+    {
+      "start": 3428.4268,
+      "duration": 7.354499995708466,
+      "kind": 1
+    },
+    {
+      "start": 3547.966,
+      "duration": 0.6875999569892883,
+      "kind": 8
+    },
+    {
+      "start": 3570.7177,
+      "duration": 9.442600011825562,
+      "kind": 4
+    },
+    {
+      "start": 3746.7109,
+      "duration": 2.0443999767303467,
+      "kind": 1
+    },
+    {
+      "start": 3869.975,
+      "duration": 2.340500056743622,
+      "kind": 1
+    },
+    {
+      "start": 4005.0508,
+      "duration": 1.4266000390052795,
+      "kind": 1
+    },
+    {
+      "start": 4097.2867,
+      "duration": 1.5654000043869019,
+      "kind": 1
+    },
+    {
+      "start": 4198.6883,
+      "duration": 2.064199984073639,
+      "kind": 1
+    },
+    {
+      "start": 4314.5742,
+      "duration": 1.801800012588501,
+      "kind": 1
+    },
+    {
+      "start": 4440.2287,
+      "duration": 2.3295000195503235,
+      "kind": 1
+    },
+    {
+      "start": 4532.0871,
+      "duration": 2.7029000520706177,
+      "kind": 1
+    },
+    {
+      "start": 4618.7712,
+      "duration": 3.45169997215271,
+      "kind": 1
+    },
+    {
+      "start": 4714.8079,
+      "duration": 1.571399986743927,
+      "kind": 1
+    },
+    {
+      "start": 4788.9036,
+      "duration": 1.3704000115394592,
+      "kind": 1
+    },
+    {
+      "start": 4881.9453,
+      "duration": 1.6452000141143799,
+      "kind": 1
+    },
+    {
+      "start": 4991.3227,
+      "duration": 2.319000005722046,
+      "kind": 1
+    },
+    {
+      "start": 5097.0893,
+      "duration": 1.7886000275611877,
+      "kind": 1
+    },
+    {
+      "start": 5223.62,
+      "duration": 1.786300003528595,
+      "kind": 1
+    },
+    {
+      "start": 5360.208,
+      "duration": 2.009599983692169,
+      "kind": 1
+    },
+    {
+      "start": 5482.4051,
+      "duration": 2.4573000073432922,
+      "kind": 1
+    },
+    {
+      "start": 5602.6212,
+      "duration": 1.5963000059127808,
+      "kind": 1
+    },
+    {
+      "start": 5730.5435,
+      "duration": 1.6039000153541565,
+      "kind": 1
+    },
+    {
+      "start": 5829.7173,
+      "duration": 1.6425999999046326,
+      "kind": 1
+    },
+    {
+      "start": 5957.2702,
+      "duration": 1.922100007534027,
+      "kind": 1
+    },
+    {
+      "start": 6084.092,
+      "duration": 1.9733999967575073,
+      "kind": 1
+    },
+    {
+      "start": 6217.6256,
+      "duration": 2.1586999893188477,
+      "kind": 1
+    },
+    {
+      "start": 6329.1185,
+      "duration": 1.6495000123977661,
+      "kind": 1
+    },
+    {
+      "start": 6445.9598,
+      "duration": 1.6833999752998352,
+      "kind": 1
+    },
+    {
+      "start": 6558.1032,
+      "duration": 2.0810999870300293,
+      "kind": 1
+    },
+    {
+      "start": 6735.4412,
+      "duration": 2.567199945449829,
+      "kind": 1
+    },
+    {
+      "start": 6855.8363,
+      "duration": 1.4000999927520752,
+      "kind": 1
+    },
+    {
+      "start": 6962.2928,
+      "duration": 1.7616999745368958,
+      "kind": 1
+    },
+    {
+      "start": 7106.0801,
+      "duration": 1.4560999870300293,
+      "kind": 1
+    },
+    {
+      "start": 7215.8407,
+      "duration": 1.4968000054359436,
+      "kind": 1
+    },
+    {
+      "start": 7301.0492,
+      "duration": 1.2347999811172485,
+      "kind": 1
+    },
+    {
+      "start": 7406.0242,
+      "duration": 1.3998000025749207,
+      "kind": 1
+    },
+    {
+      "start": 7495.7339,
+      "duration": 1.4697999954223633,
+      "kind": 1
+    },
+    {
+      "start": 7583.9486,
+      "duration": 1.406599998474121,
+      "kind": 1
+    },
+    {
+      "start": 7678.0484,
+      "duration": 1.2875999808311462,
+      "kind": 1
+    },
+    {
+      "start": 7767.6727,
+      "duration": 1.2567999958992004,
+      "kind": 1
+    }
+  ],
+  "eventLoop": {
+    "meanMs": 31.35801223529412,
+    "maxMs": 121.569279
+  },
+  "pendingSamples": [
+    {
+      "elapsedMs": 345.60220000000027,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 508.1970000000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 666.0523000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 766.9832000000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 895.0121000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 996.3816000000002,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1112.2563999999998,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1237.8553000000006,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1353.8986,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1463.1560000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1578.6924000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1679.6776000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1791.5834,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1894.8346000000006,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2021.3411,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2162.1356,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2280.1034000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2384.6844000000006,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2502.8296000000005,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2603.4013,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2721.4271000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2859.3249,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2962.2977000000005,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3092.9470000000006,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3194.4332,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3346.6618000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3500.1063,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3619.3151000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3732.1515000000004,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3861.6262,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3967.5128,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4090.3030000000003,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4207.393400000001,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4314.1839,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4440.116599999999,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4551.9085,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Immediate"
+      ]
+    }
+  ],
+  "endResources": [
+    "PipeWrap",
+    "PipeWrap"
+  ],
+  "externalCalls": 0,
+  "dbPoolWait": "NOT_APPLICABLE: original synthetic ports, no DB",
+  "workerThreads": "none created",
+  "result": {
+    "kind": "equal_alternatives",
+    "objective": "minimum_energy",
+    "inputHash": "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+    "outcomeHash": "ef7ae064af8dc6b16a260defc5db9e0764ed1963d77d8c59a393a6ded9b0b83c",
+    "traceHash": "3274d4d95403fc6d30ab664129805b11c8c99afba55bf42bacb71906d48698e6",
+    "equivalent": true,
+    "status": "planned",
+    "stoppedReason": "frontier_exhausted",
+    "reasonCodes": [],
+    "calls": {
+      "vehicle_id": 1,
+      "vehicle_profile": 1,
+      "road": 6,
+      "stations": 1,
+      "weather": 125,
+      "energy": 626,
+      "charging": 219
+    },
+    "previousEligibilityCounters": {
+      "candidate_eligibility_total": 2,
+      "candidate_selected_total": 2,
+      "candidate_eligibility_eligible": 2,
+      "candidate_eligibility_uncertain": 0,
+      "candidate_eligibility_provably_ineligible": 0,
+      "candidate_reject_public_access": 0,
+      "candidate_reject_membership": 0,
+      "candidate_reject_lifecycle": 0,
+      "candidate_potential_drive_calls": 0,
+      "candidate_potential_charge_calls": 0
+    },
+    "shadow": {
+      "states_seen": 35,
+      "state_shadow_observations": 35,
+      "state_shadow_pairs": 119,
+      "exact_duplicate_candidates": 0,
+      "potential_dominance_pairs": 0,
+      "not_equivalent_pairs": 102,
+      "unsafe_or_unproven_pairs": 17,
+      "state_shadow_budget_skipped": 0,
+      "state_shadow_entries_peak": 35,
+      "state_shadow_capture_failures": 0,
+      "actual_pruned_states": 0
+    },
+    "shadowEvaluationMs": 2.013499999998203,
+    "actualSavedProviderCalls": 0,
+    "actualSavedEngineCalls": 0
+  }
+}

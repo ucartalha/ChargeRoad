@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-11-16T12:26:29.900Z",
+  "status": "FAIL",
+  "exitCode": 1,
+  "elapsedMs": 23128.819199999998,
+  "originalTestTimeoutUnchanged": true,
+  "aggregate": [
+    "Test Suites: 1 failed, 1 total",
+    "Tests:       3 failed, 159 skipped, 162 total"
+  ],
+  "scope": "Only 3 failed equal_alternatives cases, original 5000ms limit; does not turn failed full suite into PASS"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "api-serial-recheck",
+  "command": "pnpm.cmd --filter @chargeroad/api test",
+  "status": "PASS",
+  "exitCode": 0,
+  "elapsedMs": 245455.81620000003,
+  "logSha256": "ca145c42a2284dc6f95b7ad61472bf74439bee0c3a681ceea14524607fe8f8ff",
+  "aggregate": [
+    "Test Suites: 14 skipped, 61 passed, 61 of 75 total",
+    "Tests:       154 skipped, 1032 passed, 1186 total",
+    "Time:        243.932 s, estimated 588 s"
+  ]
+}

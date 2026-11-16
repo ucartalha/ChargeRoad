@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-11-15T23:26:59.286Z",
+  "gate": "FAIL",
+  "decision": "NO_GO",
+  "case": "crafted-null-parent-prototype-with-native-constructor-and-inherited-fields",
+  "keyCollision": true,
+  "equivalent": false,
+  "physicalCalls": 1,
+  "hits": 1,
+  "retainedAfterDispose": 0,
+  "scope": "Crafted non-JSON input. Ordinary JSON plan matrix is unaffected. Prototype guard is not a complete input contract proof; production integration forbidden.",
+  "sourceHashes": {
+    "src/planning/validation/energy-reuse-proof.ts": "7c35591e6775e6e821db86a393d81726091c135d4f04fadf88e7e7d0c4869203",
+    "scripts/validate-energy-reuse-boundaries.ts": "4abe06c9362f9b71ab150f5585856dbf7de0fdf1dce902dce435fb0424dcfd54"
+  },
+  "productionReuse": false
+}

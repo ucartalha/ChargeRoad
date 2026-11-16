@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-11-16T11:47:44.256Z",
+  "scope": "Read-only DB aggregate history, not client-visible latency or stage attribution",
+  "status": "PASS",
+  "history": [],
+  "current": [],
+  "logs": [
+    {
+      "status": "planned",
+      "n": 2,
+      "p50": 28554,
+      "p95": 84832,
+      "p99": 84832
+    },
+    {
+      "status": "insufficient_data",
+      "n": 2,
+      "p50": 447,
+      "p95": 617,
+      "p99": 617
+    },
+    {
+      "status": "provider_error",
+      "n": 4,
+      "p50": 288,
+      "p95": 473,
+      "p99": 473
+    }
+  ]
+}

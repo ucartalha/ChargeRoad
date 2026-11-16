@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-11-16T13:06:28.922Z",
+  "status": "PASS",
+  "explicitTestUrl": false,
+  "readOnly": true,
+  "newProviderCalls": 0,
+  "connectionAcquireMs": 225.1413,
+  "missQueryRoundtripMs": {
+    "n": 9,
+    "p50": 1.7812000000000126,
+    "p95": 133.50160000000005,
+    "p99": 133.50160000000005
+  },
+  "plan": {
+    "node": "Nested Loop",
+    "index": null,
+    "rows": 0,
+    "totalMs": 0.476,
+    "sharedHits": 2,
+    "sharedReads": 0,
+    "children": [
+      {
+        "node": "Index Scan",
+        "index": "weather_forecast_cache_pkey",
+        "rows": 0,
+        "totalMs": 0.474,
+        "sharedHits": 2,
+        "sharedReads": 0,
+        "children": []
+      },
+      {
+        "node": "Seq Scan",
+        "index": null,
+        "rows": 0,
+        "totalMs": 0,
+        "sharedHits": 0,
+        "sharedReads": 0,
+        "children": []
+      }
+    ]
+  },
+  "executionMs": 0.955,
+  "planningMs": 0.272,
+  "aggregate": {
+    "rows": 435,
+    "representations": 435,
+    "fresh": 0,
+    "active_leases": 0
+  },
+  "limits": [
+    "No new schema/table/migration/seed/truncate/drop/cache write.",
+    "Missing-key SELECT only; not fresh document decode, claim/lease/wait/pacing or loaded pool proof.",
+    "Acquire includes first connection handshake; no contention measurement.",
+    "No cold-cache claim, n9 p95/p99 sample maximum."
+  ]
+}

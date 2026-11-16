@@ -1,0 +1,246 @@
+{
+  "generatedAt": "2026-11-16T11:56:59.480Z",
+  "n": 1,
+  "status": "planned",
+  "sourceSha256": "95ea03aeb5bdb635df020b30d7579143cf4ef9c284e35e6d6868f1a1a2b81cff",
+  "clock": "single Node monotonic performance.now, client + ephemeral local HTTP + unique test schema worker",
+  "stages": [
+    {
+      "stage": "ack_start",
+      "atMs": 140.04669999999896
+    },
+    {
+      "stage": "ack_headers",
+      "atMs": 167.22359999999753
+    },
+    {
+      "stage": "ack_body_parse_start",
+      "atMs": 167.55659999999625
+    },
+    {
+      "stage": "ack_body_parse_end",
+      "atMs": 168.00400000000081
+    },
+    {
+      "stage": "finish_sql_start",
+      "atMs": 862.8241999999955
+    },
+    {
+      "stage": "finish_commit",
+      "atMs": 872.068499999994
+    },
+    {
+      "stage": "status_start",
+      "atMs": 5183.479499999994
+    },
+    {
+      "stage": "status_headers",
+      "atMs": 5201.762899999994
+    },
+    {
+      "stage": "status_body_parse_start",
+      "atMs": 5201.785400000001
+    },
+    {
+      "stage": "status_body_parse_end",
+      "atMs": 5202.083099999996
+    },
+    {
+      "stage": "result_start",
+      "atMs": 5202.329699999995
+    },
+    {
+      "stage": "result_headers",
+      "atMs": 5219.480499999998
+    },
+    {
+      "stage": "result_body_parse_start",
+      "atMs": 5219.5000999999975
+    },
+    {
+      "stage": "result_body_parse_end",
+      "atMs": 5220.195599999999
+    },
+    {
+      "stage": "client_response_accepted",
+      "atMs": 5222.687699999995
+    }
+  ],
+  "jobReadyToClientAcceptedMs": 4350.619200000001,
+  "statusGets": 1,
+  "resultGets": 1,
+  "previewCalls": 1,
+  "workerMetrics": {
+    "event": "planning_metrics",
+    "version": "planning-metrics/1.0.0",
+    "scope": "benchmark",
+    "algorithms": {
+      "optimizer": "chargeroad-optimizer/1.2.0",
+      "energy": "chargeroad-energy/1.3.3",
+      "charging": "dc-curve-integration/1.2.0"
+    },
+    "durationMs": 704.643799999998,
+    "outcome": "planned",
+    "incomplete": false,
+    "stages": {
+      "job_execute": {
+        "count": 1,
+        "totalMs": 697.7909999999974,
+        "maxMs": 697.7909999999974,
+        "active": 0
+      },
+      "job_wait": {
+        "count": 1,
+        "totalMs": 19,
+        "maxMs": 19,
+        "active": 0
+      },
+      "http_plan": {
+        "count": 1,
+        "totalMs": 688.1097999999984,
+        "maxMs": 688.1097999999984,
+        "active": 0
+      },
+      "vehicle_profile": {
+        "count": 2,
+        "totalMs": 0.21699999998963904,
+        "maxMs": 0.1735999999946216,
+        "active": 0
+      },
+      "base_road": {
+        "count": 1,
+        "totalMs": 0.2154999999984284,
+        "maxMs": 0.2154999999984284,
+        "active": 0
+      },
+      "station_corridor": {
+        "count": 1,
+        "totalMs": 0.03919999999925494,
+        "maxMs": 0.03919999999925494,
+        "active": 0
+      },
+      "candidate_eligibility": {
+        "count": 1,
+        "totalMs": 0.04890000000159489,
+        "maxMs": 0.04890000000159489,
+        "active": 0
+      },
+      "optimizer_search": {
+        "count": 1,
+        "totalMs": 667.4584999999934,
+        "maxMs": 667.4584999999934,
+        "active": 0
+      },
+      "state_shadow": {
+        "count": 14,
+        "totalMs": 0.8319999999948777,
+        "maxMs": 0.26169999999547144,
+        "active": 0
+      },
+      "weather_sampling": {
+        "count": 230,
+        "totalMs": 9.971799999962968,
+        "maxMs": 0.18969999999535503,
+        "active": 0
+      },
+      "weather_acquisition": {
+        "count": 120,
+        "totalMs": 14.627599999977974,
+        "maxMs": 0.3198000000047614,
+        "active": 0
+      },
+      "energy_evaluation": {
+        "count": 230,
+        "totalMs": 340.1193000000567,
+        "maxMs": 3.0390000000043074,
+        "active": 0
+      },
+      "candidate_call_shadow": {
+        "count": 225,
+        "totalMs": 3.7409999999945285,
+        "maxMs": 0.08840000000054715,
+        "active": 0
+      },
+      "road_leg_acquisition": {
+        "count": 5,
+        "totalMs": 0.9469000000026426,
+        "maxMs": 0.301500000001397,
+        "active": 0
+      },
+      "charge_integration": {
+        "count": 179,
+        "totalMs": 203.8661999999822,
+        "maxMs": 5.21140000000014,
+        "active": 0
+      },
+      "plan_compile": {
+        "count": 5,
+        "totalMs": 20.51469999999972,
+        "maxMs": 5.44090000000142,
+        "active": 0
+      },
+      "response_preflight_serialize": {
+        "count": 1,
+        "totalMs": 0.13229999999748543,
+        "maxMs": 0.13229999999748543,
+        "active": 0
+      }
+    },
+    "counters": {
+      "road_leg_acquisitions": 6,
+      "road_session_cache_hits": 225,
+      "weather_session_cache_hits": 308,
+      "weather_sample_queries": 261,
+      "weather_forecast_query_items": 142,
+      "weather_sample_evaluations": 141,
+      "energy_evaluations": 230,
+      "charge_integrations": 179,
+      "frontier_peak": 12,
+      "expanded_states": 16,
+      "transitions": 428,
+      "road_queries_budgeted": 6,
+      "weather_queries_budgeted": 142,
+      "road_pg_cache_hits": 0,
+      "road_pg_cache_misses": 0,
+      "road_cache_coalesced_hits": 0,
+      "weather_pg_cache_hits": 0,
+      "weather_pg_cache_misses": 0,
+      "weather_cache_coalesced": 0,
+      "road_http_acquisitions": 0,
+      "weather_http_acquisitions": 0,
+      "response_decoded_bytes": 0,
+      "response_wire_bytes": 0,
+      "cancelled": 0,
+      "timeout": 0,
+      "candidate_eligibility_total": 2,
+      "candidate_selected_total": 2,
+      "candidate_eligibility_eligible": 0,
+      "candidate_eligibility_uncertain": 2,
+      "candidate_eligibility_provably_ineligible": 0,
+      "candidate_reject_public_access": 0,
+      "candidate_reject_membership": 0,
+      "candidate_reject_lifecycle": 0,
+      "candidate_potential_drive_calls": 0,
+      "candidate_potential_charge_calls": 0,
+      "states_seen": 14,
+      "state_shadow_observations": 14,
+      "state_shadow_pairs": 38,
+      "exact_duplicate_candidates": 0,
+      "potential_dominance_pairs": 0,
+      "not_equivalent_pairs": 38,
+      "unsafe_or_unproven_pairs": 0,
+      "state_shadow_budget_skipped": 0,
+      "state_shadow_entries_peak": 14,
+      "state_shadow_capture_failures": 0,
+      "actual_pruned_states": 0
+    }
+  },
+  "physicalExternalProviderRequests": 0,
+  "workerClaim": "manual tick after POST; not 500ms periodic wait",
+  "actualPaint": "NOT_RUN",
+  "limitations": [
+    "In-memory route/weather/vehicle/station providers; actual solver + HTTP controller + PG owner/lease + worker + mobile code.",
+    "Preview transport intentionally 503 to avoid external requests. Not a preview on/off comparison.",
+    "n=1 baseline only, not native user geography or load/cold-warm test."
+  ]
+}

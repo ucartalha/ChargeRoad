@@ -1,0 +1,13 @@
+{
+  "id": "optimizer-isolated-recheck",
+  "command": "pnpm.cmd --filter @chargeroad/api exec jest --runInBand --runTestsByPath src/planning/__tests__/optimizer.spec.ts",
+  "status": "PASS",
+  "exitCode": 0,
+  "elapsedMs": 13903.461599999999,
+  "logSha256": "4bbe0c0abf1676973e0d5c76a8851e1d0e18ddcfa57e1098d515e3baf65e53b2",
+  "aggregate": [
+    "Test Suites: 1 passed, 1 total",
+    "Tests:       21 passed, 21 total",
+    "Time:        9.547 s, estimated 11 s"
+  ]
+}

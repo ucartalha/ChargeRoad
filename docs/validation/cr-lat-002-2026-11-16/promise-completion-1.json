@@ -1,0 +1,691 @@
+{
+  "generatedAt": "2026-11-16T13:24:58.924Z",
+  "scope": "opt-in observer overhead; not acceptance timing",
+  "caseNumber": 1,
+  "kind": "equal_alternatives",
+  "objective": "minimum_total_duration",
+  "status": "resolved",
+  "samples": [
+    {
+      "elapsedMs": 820.6396999999997,
+      "pendingValidations": 1,
+      "cpuUserMs": 1094,
+      "cpuSystemMs": 63,
+      "eventLoopMaxMs": 154.271743,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1408.717999999999,
+      "pendingValidations": 1,
+      "cpuUserMs": 1735,
+      "cpuSystemMs": 79,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 1990.6448999999993,
+      "pendingValidations": 1,
+      "cpuUserMs": 2469,
+      "cpuSystemMs": 79,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 2558.7091,
+      "pendingValidations": 1,
+      "cpuUserMs": 3016,
+      "cpuSystemMs": 110,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3064.244499999999,
+      "pendingValidations": 1,
+      "cpuUserMs": 3641,
+      "cpuSystemMs": 141,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 3578.4236999999994,
+      "pendingValidations": 1,
+      "cpuUserMs": 4250,
+      "cpuSystemMs": 172,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4083.3323,
+      "pendingValidations": 1,
+      "cpuUserMs": 4735,
+      "cpuSystemMs": 188,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 4695.8452,
+      "pendingValidations": 1,
+      "cpuUserMs": 5391,
+      "cpuSystemMs": 219,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5227.249199999998,
+      "pendingValidations": 2,
+      "cpuUserMs": 5922,
+      "cpuSystemMs": 266,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5270.5978,
+      "pendingValidations": 2,
+      "cpuUserMs": 5969,
+      "cpuSystemMs": 266,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 5760.6795999999995,
+      "pendingValidations": 2,
+      "cpuUserMs": 6453,
+      "cpuSystemMs": 282,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 6289.8737,
+      "pendingValidations": 2,
+      "cpuUserMs": 6938,
+      "cpuSystemMs": 329,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 6873.6361,
+      "pendingValidations": 2,
+      "cpuUserMs": 7485,
+      "cpuSystemMs": 360,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 7432.1569,
+      "pendingValidations": 2,
+      "cpuUserMs": 8078,
+      "cpuSystemMs": 375,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 7946.3925,
+      "pendingValidations": 2,
+      "cpuUserMs": 8469,
+      "cpuSystemMs": 469,
+      "eventLoopMaxMs": 217.579519,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 8453.491799999998,
+      "pendingValidations": 2,
+      "cpuUserMs": 8953,
+      "cpuSystemMs": 500,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 9003.188,
+      "pendingValidations": 2,
+      "cpuUserMs": 9500,
+      "cpuSystemMs": 500,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 9595.934299999999,
+      "pendingValidations": 2,
+      "cpuUserMs": 10063,
+      "cpuSystemMs": 516,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 10111.9596,
+      "pendingValidations": 2,
+      "cpuUserMs": 10516,
+      "cpuSystemMs": 532,
+      "eventLoopMaxMs": 254.279679,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 10746.6376,
+      "pendingValidations": 3,
+      "cpuUserMs": 11125,
+      "cpuSystemMs": 547,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 11523.281399999998,
+      "pendingValidations": 3,
+      "cpuUserMs": 11844,
+      "cpuSystemMs": 610,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 12038.133499999998,
+      "pendingValidations": 3,
+      "cpuUserMs": 12328,
+      "cpuSystemMs": 641,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 12597.471,
+      "pendingValidations": 3,
+      "cpuUserMs": 12938,
+      "cpuSystemMs": 688,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 13111.17,
+      "pendingValidations": 3,
+      "cpuUserMs": 13531,
+      "cpuSystemMs": 688,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 13688.152,
+      "pendingValidations": 3,
+      "cpuUserMs": 14094,
+      "cpuSystemMs": 688,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate",
+        "Immediate"
+      ]
+    },
+    {
+      "elapsedMs": 13908.045099999998,
+      "pendingValidations": 3,
+      "cpuUserMs": 14297,
+      "cpuSystemMs": 688,
+      "eventLoopMaxMs": 384.040959,
+      "resources": [
+        "PipeWrap",
+        "PipeWrap",
+        "Timeout",
+        "Timeout",
+        "Timeout",
+        "Immediate",
+        "Immediate"
+      ]
+    }
+  ],
+  "wallMs": 13908.194699999998,
+  "gc": [
+    {
+      "duration": 8.279300034046173,
+      "start": 9397.7023
+    },
+    {
+      "duration": 4.9111000299453735,
+      "start": 9676.5194
+    },
+    {
+      "duration": 1.8513999581336975,
+      "start": 9946.9773
+    },
+    {
+      "duration": 3.3983999490737915,
+      "start": 10214.7417
+    },
+    {
+      "duration": 2.5497999787330627,
+      "start": 10443.6809
+    },
+    {
+      "duration": 2.6836000084877014,
+      "start": 10785.3942
+    },
+    {
+      "duration": 2.131500005722046,
+      "start": 11116.5742
+    },
+    {
+      "duration": 2.5878999829292297,
+      "start": 11432.6826
+    },
+    {
+      "duration": 3.1456000208854675,
+      "start": 11684.7203
+    },
+    {
+      "duration": 2.813099980354309,
+      "start": 11938.9528
+    },
+    {
+      "duration": 2.7764999866485596,
+      "start": 12190.1962
+    },
+    {
+      "duration": 1.8631999492645264,
+      "start": 12407.9493
+    },
+    {
+      "duration": 1.6530999541282654,
+      "start": 12586.0966
+    },
+    {
+      "duration": 1.8435999751091003,
+      "start": 12739.9032
+    },
+    {
+      "duration": 1.8708999752998352,
+      "start": 12971.8831
+    },
+    {
+      "duration": 2.963599979877472,
+      "start": 13163.6195
+    },
+    {
+      "duration": 1.6348999738693237,
+      "start": 13371.205
+    },
+    {
+      "duration": 2.0825999975204468,
+      "start": 13598.1459
+    },
+    {
+      "duration": 2.976199984550476,
+      "start": 13821.7664
+    },
+    {
+      "duration": 1.7888000011444092,
+      "start": 14035.5196
+    },
+    {
+      "duration": 1.7267000079154968,
+      "start": 14308.5165
+    },
+    {
+      "duration": 2.1733999848365784,
+      "start": 14547.9276
+    },
+    {
+      "duration": 1.8007000088691711,
+      "start": 14763.6751
+    },
+    {
+      "duration": 1.7620999813079834,
+      "start": 14985.4962
+    },
+    {
+      "duration": 2.592899978160858,
+      "start": 15225.1798
+    },
+    {
+      "duration": 2.605400025844574,
+      "start": 15527.2613
+    },
+    {
+      "duration": 1.6678000092506409,
+      "start": 15832.992
+    },
+    {
+      "duration": 1.9893999695777893,
+      "start": 16047.3466
+    },
+    {
+      "duration": 1.185200035572052,
+      "start": 16210.2159
+    },
+    {
+      "duration": 1.161799967288971,
+      "start": 16410.1052
+    },
+    {
+      "duration": 1.3498000502586365,
+      "start": 16616.8391
+    },
+    {
+      "duration": 1.6439000368118286,
+      "start": 16825.3715
+    },
+    {
+      "duration": 1.347000002861023,
+      "start": 17000.9072
+    },
+    {
+      "duration": 1.11489999294281,
+      "start": 17157.2668
+    },
+    {
+      "duration": 2.521399974822998,
+      "start": 17381.8368
+    },
+    {
+      "duration": 1.6830999851226807,
+      "start": 17579.4089
+    },
+    {
+      "duration": 2.2716999650001526,
+      "start": 17821.3606
+    },
+    {
+      "duration": 2.0602999925613403,
+      "start": 17996.4101
+    },
+    {
+      "duration": 1.6699000000953674,
+      "start": 18225.1048
+    },
+    {
+      "duration": 1.4839999675750732,
+      "start": 18433.196
+    },
+    {
+      "duration": 1.5948999524116516,
+      "start": 18594.6192
+    },
+    {
+      "duration": 1.272700011730194,
+      "start": 18780.0346
+    },
+    {
+      "duration": 1.2193999886512756,
+      "start": 18935.0585
+    },
+    {
+      "duration": 2.633500039577484,
+      "start": 19142.6308
+    },
+    {
+      "duration": 1.9428000450134277,
+      "start": 19364.2195
+    },
+    {
+      "duration": 1.6563999652862549,
+      "start": 19522.9115
+    },
+    {
+      "duration": 1.1506999731063843,
+      "start": 19692.4901
+    },
+    {
+      "duration": 1.3668999671936035,
+      "start": 19872.5211
+    },
+    {
+      "duration": 2.0722000002861023,
+      "start": 20071.6025
+    },
+    {
+      "duration": 2.3436999917030334,
+      "start": 20334.4965
+    },
+    {
+      "duration": 2.2481000423431396,
+      "start": 20588.3754
+    },
+    {
+      "duration": 1.3895000219345093,
+      "start": 20824.3425
+    },
+    {
+      "duration": 1.626800000667572,
+      "start": 21040.1361
+    },
+    {
+      "duration": 1.375,
+      "start": 21238.7321
+    },
+    {
+      "duration": 2.0924999713897705,
+      "start": 21411.1476
+    },
+    {
+      "duration": 1.1769999861717224,
+      "start": 21597.9172
+    },
+    {
+      "duration": 1.112500011920929,
+      "start": 21723.3431
+    },
+    {
+      "duration": 1.1086999773979187,
+      "start": 21837.7811
+    },
+    {
+      "duration": 2.115899980068207,
+      "start": 21951.9495
+    },
+    {
+      "duration": 1.105299949645996,
+      "start": 22087.857
+    },
+    {
+      "duration": 1.5644999742507935,
+      "start": 22237.2631
+    },
+    {
+      "duration": 1.2835000157356262,
+      "start": 22424.5421
+    },
+    {
+      "duration": 1.2972000241279602,
+      "start": 22635.6991
+    },
+    {
+      "duration": 1.270900011062622,
+      "start": 22803.4987
+    },
+    {
+      "duration": 1.3694999814033508,
+      "start": 22949.5044
+    }
+  ]
+}

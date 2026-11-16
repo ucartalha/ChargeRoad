@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-11-16T13:21:03.787Z",
+  "status": "PASS",
+  "sourceSha256": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+  "mode": "Stage A negative fixture, actual Cache.get/claim budget guard; synthetic SQL boundary, no PG mutation",
+  "repeatedGets": 5,
+  "distinctSeriesKey": 1,
+  "counters": {
+    "lookups": 5,
+    "hits": 0,
+    "misses": 5,
+    "coalesced": 0,
+    "externalCalls": 0
+  },
+  "cacheSelectIntents": 5,
+  "providerLockIntents": 5,
+  "fixtureSqlCalls": 40,
+  "realHttpCalls": 0,
+  "failureKinds": [
+    "budget_exhausted",
+    "budget_exhausted",
+    "budget_exhausted",
+    "budget_exhausted",
+    "budget_exhausted"
+  ],
+  "inference": "PG miss counter increments once per acquire, not once per retry or distinct global key. Exhausted per-job budget may repeat misses across calls without HTTP. Not proof this caused all historical misses."
+}

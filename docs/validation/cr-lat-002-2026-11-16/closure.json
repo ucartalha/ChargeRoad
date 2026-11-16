@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-11-16T13:33:43.168Z",
+  "decision": "NO_GO",
+  "stageA": "DIAGNOSTIC_ONLY",
+  "stageB": "NOT_RUN",
+  "originalJestGate": "FAIL",
+  "nativeFunctionalGate": "9/9 PASS",
+  "native5000msGate": "8/9 PASS",
+  "instrumentationOrderGate": "FAIL",
+  "actualSavings": 0,
+  "protectedInitialFiles": 627,
+  "existingChanged": [],
+  "historicalEvidenceUnchanged": true,
+  "productionWeatherAndAllApplicationSourcesUnchanged": true,
+  "noNewPgMutationFixture": true,
+  "newExternalProviderRequests": 0,
+  "nextTaskStarted": false,
+  "finalDiffCheck": "PASS",
+  "reportSha256": "165cdf429a478ef680046206cae4d27398f7aa4f3ec84f20197fece64f4a1081",
+  "sources": {
+    "apps/api/src/weather/weather-cache.ts": "04c275f940ecfe402c14c195918e13a9e3f64be62a2da4dcb13e158a77e43868",
+    "apps/api/src/weather/weather.service.ts": "1bb3f4f3435738def95680721bb302bf3fb964322a28c931707782071e277cc4",
+    "apps/api/src/weather/met-norway.adapter.ts": "59e52354d4b7c373d68fd287c093381b7bbfec1d98911a691533bae2f6e4addf",
+    "apps/api/src/weather/weather-policy.ts": "713c0517db87bef3fe65bcc5fdf51e2cbf5669d1aec66a04dfbcaa9300b130fb",
+    "apps/api/scripts/diagnose-weather-acquisition.cjs": "606314d16ae63355f05feead8a0c1f5426a286ea9609831ac22f984ca856c7fc"
+  },
+  "newDiagnosticSourceHashes": {
+    "apps/api/scripts/diagnose-weather-acquisition.cjs": "606314d16ae63355f05feead8a0c1f5426a286ea9609831ac22f984ca856c7fc",
+    "apps/api/scripts/diagnose-weather-regression.cjs": "bbb4f8d8d2ea1d670f316ef05f9e2dbf2b969ae446b6d0ba300f4cc191cfb872",
+    "apps/api/scripts/read-weather-pg-diagnostic.cjs": "8b07032a39c33562913fbf615c7d63423dc1a437b610270de2157cd9d70f7c72",
+    "apps/api/scripts/summarize-weather-acquisition.cjs": "3546e72cdbadddc9ce52e78a56ea64f057beccba47a6b23afe9d45fbaa5945ee",
+    "apps/api/scripts/summarize-weather-coverage.cjs": "2380234ca3f166801a205bd305e40071f5df4117c3638b284461d11b15860554",
+    "apps/api/scripts/trace-weather-budget.cjs": "172225bc1aba25141d3e9d0c173adf2df94a8af1feb072fdfa713ddf15391948",
+    "apps/api/scripts/trace-weather-sampling.cjs": "93b64239258390ad2ec8993997cc83e4afd9ebc31c6d2a3c40f25c2807a24536"
+  }
+}

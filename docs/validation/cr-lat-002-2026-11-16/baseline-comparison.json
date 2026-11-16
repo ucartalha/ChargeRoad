@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-11-16T13:33:42.976Z",
+  "reference": "CR-PERF-005 B initial manifest; no historical sources executed/replaced",
+  "sources": [
+    {
+      "path": "apps/api/src/planning/__tests__/state-shadow-equivalence.spec.ts",
+      "beforeLat001": "25bf688b2f108e6f2bb13af56e6af981b723ded02c5560d5e620c74d076d2a2d",
+      "current": "25bf688b2f108e6f2bb13af56e6af981b723ded02c5560d5e620c74d076d2a2d",
+      "equal": true
+    },
+    {
+      "path": "apps/api/src/planning/validation/state-dominance-validation.ts",
+      "beforeLat001": "15cad1c78150eca9ce6b1364717bb21a9f34612b3a763a3b6c1995b9d04f2fe4",
+      "current": "15cad1c78150eca9ce6b1364717bb21a9f34612b3a763a3b6c1995b9d04f2fe4",
+      "equal": true
+    },
+    {
+      "path": "apps/api/src/planning/validation/eligibility-fixtures.ts",
+      "beforeLat001": "ce7e4fbc906cd696827e400a120d746e135b850d1f4ba84ecedf163df9f4e8cb",
+      "current": "ce7e4fbc906cd696827e400a120d746e135b850d1f4ba84ecedf163df9f4e8cb",
+      "equal": true
+    },
+    {
+      "path": "apps/api/src/planning/charge-stop-optimizer.ts",
+      "beforeLat001": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+      "current": "576379e177ab840515a777818935b0167c666dd1cb67a9b6396a8a71b9a4928d",
+      "equal": true
+    },
+    {
+      "path": "apps/api/src/energy/energy-engine.ts",
+      "beforeLat001": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+      "current": "260caa57ee7c4f896fb633e5b12476050f2ffd5c0d19d4f6f146a1d34208f7d9",
+      "equal": true
+    },
+    {
+      "path": "apps/api/src/charging/charging-engine.ts",
+      "beforeLat001": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+      "current": "807cdffd074d9c2a53ef462a28e9571d731134c6e7e890062919307a7ca68a6d",
+      "equal": true
+    }
+  ]
+}

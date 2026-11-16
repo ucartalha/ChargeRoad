@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-11-15T23:53:20.233Z",
+  "currentOfflineProfile": "PASS",
+  "observedEquivalence": "PASS",
+  "commandChecks": "PASS",
+  "cumulativeSpeedupAcceptance": "NO_GO",
+  "historicalBaseline": "NOT_COMPARABLE",
+  "localProviderPilot": "NOT_RUN",
+  "externalProviderLoad": "NOT_RUN",
+  "nativeHookCoverageGaps": {
+    "frontierPushPop": "NOT_MEASURED: no production hook; no inferred counts from seed-inclusive expandedStates",
+    "seedIncumbentUpdates": "NOT_MEASURED: no separate hook; full transition trace equivalence and final incumbent presence only",
+    "httpBodyAndTraceAttributes": "NOT_RUN: local provider pilot not run",
+    "pgLeaseWaitQuota": "NOT_RUN: in-memory ports only"
+  },
+  "productionChanges": 0,
+  "activeEnergyReuse": 0,
+  "actualAlgorithmicSavings": 0,
+  "nextTaskStarted": false,
+  "normalization": [
+    "elapsedMilliseconds"
+  ],
+  "reportSha256": "1a9e5f908b0b7afe67f4b2637cdb563c8c288e5cb27b0b0b6f956ca589fc7ab3",
+  "evidenceHashes": {
+    "summary.json": "b7e7970596e35b274e44a8273f925dd7607704a131384e4a65e6d9b7583db297",
+    "process-1.json": "412a07c92beabe9abfeb640dd57818fb5c4e00be130582b1950c1f9f5d8f349a",
+    "process-2.json": "8b7868f78eb072cea5b9a45301a2eb1c76171a49ee92420f36f85853f60a713c",
+    "process-3.json": "86b3d8ed395af2910f8fa73c4627a73d876a087a6f85398fb2246db78650de50",
+    "checks.json": "1c8173c87ab4d0a55f3fcd995cdaffb9ac22a4406542cb9183af233d242d61e3",
+    "preservation.json": "c572db1f20f68b2cd45509dcc05de37c2fd9a82466d150c23aea15fcb4b0db11"
+  }
+}

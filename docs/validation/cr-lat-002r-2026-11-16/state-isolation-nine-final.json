@@ -1,0 +1,707 @@
+{
+  "baselineVersion": "state-objective-real/v2",
+  "sources": {
+    "../src/planning/validation/state-dominance-validation.ts": "5daeaee986a5c8542a69d33b252e4d67c497b0d84c8a66b300cb0499dd5e53c5",
+    "validation/state-isolated-runner.cjs": "df4fffa2105da3d58efdf732359e50f964288cf12e81698c2a5909c119576da6",
+    "validation/state-isolated-worker.cjs": "f9a1f5c0fb188d16f2cebef34d43a0ba10c5f053a5972c56bb887cfeb12ce121"
+  },
+  "rows": [
+    {
+      "repeat": 1,
+      "objective": "minimum_total_duration",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_total_duration",
+        "actualObjectives": [
+          "minimum_total_duration",
+          "minimum_total_duration",
+          "minimum_total_duration"
+        ],
+        "phaseInputHashes": [
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8"
+        ],
+        "phases": {
+          "before": 1959.6813999999995,
+          "after": 1416.6248999999998,
+          "off": 1256.1521999999995
+        },
+        "inputHash": "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+        "outcomeHash": "ef7ae064af8dc6b16a260defc5db9e0764ed1963d77d8c59a393a6ded9b0b83c",
+        "traceHash": "3274d4d95403fc6d30ab664129805b11c8c99afba55bf42bacb71906d48698e6",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 125,
+          "energy": 626,
+          "charging": 219
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.0315000000009604,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 4646.2263,
+      "cpuUserMs": 5250,
+      "cpuSystemMs": 250,
+      "externalCalls": 0,
+      "historical5000msGate": "PASS",
+      "heapUsed": 99447832,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 1,
+      "objective": "minimum_charging_stops",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_charging_stops",
+        "actualObjectives": [
+          "minimum_charging_stops",
+          "minimum_charging_stops",
+          "minimum_charging_stops"
+        ],
+        "phaseInputHashes": [
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022"
+        ],
+        "phases": {
+          "before": 1899.9993,
+          "after": 1606.067,
+          "off": 1792.9161000000004
+        },
+        "inputHash": "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+        "outcomeHash": "165b437fbcb1afec6e53061732928397674f01958d4eb254a1b993118c3c0175",
+        "traceHash": "31069c162f80de45da5f2d8b377d58a1955d8f694355c79de937a478a9a0bb1e",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 131,
+          "energy": 656,
+          "charging": 229
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.0232000000014523,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 5315.4984,
+      "cpuUserMs": 5969,
+      "cpuSystemMs": 266,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 92726888,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 1,
+      "objective": "minimum_energy",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_energy",
+        "actualObjectives": [
+          "minimum_energy",
+          "minimum_energy",
+          "minimum_energy"
+        ],
+        "phaseInputHashes": [
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238"
+        ],
+        "phases": {
+          "before": 2647.0715,
+          "after": 1733.8447999999999,
+          "off": 1349.8282
+        },
+        "inputHash": "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+        "outcomeHash": "acb79797b13bf9ade6135fc0fd68a91e415b13a90510d0a5a85d1f9406763f97",
+        "traceHash": "8f021a918b4b273289b3c3cde7bd99ba1d9b34fd3c97d9f3d00932f0e1208f4a",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 134,
+          "energy": 674,
+          "charging": 235
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.737199999999575,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 5742.4329,
+      "cpuUserMs": 6734,
+      "cpuSystemMs": 265,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 92454592,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 2,
+      "objective": "minimum_total_duration",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_total_duration",
+        "actualObjectives": [
+          "minimum_total_duration",
+          "minimum_total_duration",
+          "minimum_total_duration"
+        ],
+        "phaseInputHashes": [
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8"
+        ],
+        "phases": {
+          "before": 1696.8505000000005,
+          "after": 1454.1883000000007,
+          "off": 1224.1369999999997
+        },
+        "inputHash": "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+        "outcomeHash": "ef7ae064af8dc6b16a260defc5db9e0764ed1963d77d8c59a393a6ded9b0b83c",
+        "traceHash": "3274d4d95403fc6d30ab664129805b11c8c99afba55bf42bacb71906d48698e6",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 125,
+          "energy": 626,
+          "charging": 219
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.2272000000020853,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 4386.7255,
+      "cpuUserMs": 5047,
+      "cpuSystemMs": 109,
+      "externalCalls": 0,
+      "historical5000msGate": "PASS",
+      "heapUsed": 99642552,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 2,
+      "objective": "minimum_charging_stops",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_charging_stops",
+        "actualObjectives": [
+          "minimum_charging_stops",
+          "minimum_charging_stops",
+          "minimum_charging_stops"
+        ],
+        "phaseInputHashes": [
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022"
+        ],
+        "phases": {
+          "before": 2302.7222,
+          "after": 1770.4646000000002,
+          "off": 1546.9442000000008
+        },
+        "inputHash": "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+        "outcomeHash": "165b437fbcb1afec6e53061732928397674f01958d4eb254a1b993118c3c0175",
+        "traceHash": "31069c162f80de45da5f2d8b377d58a1955d8f694355c79de937a478a9a0bb1e",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 131,
+          "energy": 656,
+          "charging": 229
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.645899999998619,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 5638.3673,
+      "cpuUserMs": 6328,
+      "cpuSystemMs": 281,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 92586104,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 2,
+      "objective": "minimum_energy",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_energy",
+        "actualObjectives": [
+          "minimum_energy",
+          "minimum_energy",
+          "minimum_energy"
+        ],
+        "phaseInputHashes": [
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238"
+        ],
+        "phases": {
+          "before": 2103.592,
+          "after": 1660.2455,
+          "off": 1587.8719999999994
+        },
+        "inputHash": "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+        "outcomeHash": "acb79797b13bf9ade6135fc0fd68a91e415b13a90510d0a5a85d1f9406763f97",
+        "traceHash": "8f021a918b4b273289b3c3cde7bd99ba1d9b34fd3c97d9f3d00932f0e1208f4a",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 134,
+          "energy": 674,
+          "charging": 235
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.3064000000022133,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 5363.816,
+      "cpuUserMs": 6391,
+      "cpuSystemMs": 282,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 93249768,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 3,
+      "objective": "minimum_total_duration",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_total_duration",
+        "actualObjectives": [
+          "minimum_total_duration",
+          "minimum_total_duration",
+          "minimum_total_duration"
+        ],
+        "phaseInputHashes": [
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+          "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8"
+        ],
+        "phases": {
+          "before": 2676.3086000000003,
+          "after": 1462.6118999999999,
+          "off": 1195.5213000000003
+        },
+        "inputHash": "3c165ffcec77248a05901041e0767b583ad577124d6b7f7f6b8c019c6d0189a8",
+        "outcomeHash": "ef7ae064af8dc6b16a260defc5db9e0764ed1963d77d8c59a393a6ded9b0b83c",
+        "traceHash": "3274d4d95403fc6d30ab664129805b11c8c99afba55bf42bacb71906d48698e6",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 125,
+          "energy": 626,
+          "charging": 219
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.5808999999962907,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 5347.3787,
+      "cpuUserMs": 6125,
+      "cpuSystemMs": 265,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 99668936,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 3,
+      "objective": "minimum_charging_stops",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_charging_stops",
+        "actualObjectives": [
+          "minimum_charging_stops",
+          "minimum_charging_stops",
+          "minimum_charging_stops"
+        ],
+        "phaseInputHashes": [
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+          "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022"
+        ],
+        "phases": {
+          "before": 1918.2511,
+          "after": 1333.7025999999996,
+          "off": 1320.9317999999994
+        },
+        "inputHash": "3d890e523f1c89bd478993209281cc506965b85c2485c0e6ee7b569675bd2022",
+        "outcomeHash": "165b437fbcb1afec6e53061732928397674f01958d4eb254a1b993118c3c0175",
+        "traceHash": "31069c162f80de45da5f2d8b377d58a1955d8f694355c79de937a478a9a0bb1e",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 131,
+          "energy": 656,
+          "charging": 229
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.0341999999982363,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 4585.6076,
+      "cpuUserMs": 5172,
+      "cpuSystemMs": 250,
+      "externalCalls": 0,
+      "historical5000msGate": "PASS",
+      "heapUsed": 92819912,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    },
+    {
+      "repeat": 3,
+      "objective": "minimum_energy",
+      "result": {
+        "baselineVersion": "state-objective-real/v2",
+        "kind": "equal_alternatives",
+        "objective": "minimum_energy",
+        "actualObjectives": [
+          "minimum_energy",
+          "minimum_energy",
+          "minimum_energy"
+        ],
+        "phaseInputHashes": [
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+          "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238"
+        ],
+        "phases": {
+          "before": 2826.7871999999998,
+          "after": 1914.8685000000005,
+          "off": 1260.3921999999993
+        },
+        "inputHash": "1636fcb93dbabd69f716a9e04977e8c3781e76477033545ff5cb0004f2617238",
+        "outcomeHash": "acb79797b13bf9ade6135fc0fd68a91e415b13a90510d0a5a85d1f9406763f97",
+        "traceHash": "8f021a918b4b273289b3c3cde7bd99ba1d9b34fd3c97d9f3d00932f0e1208f4a",
+        "equivalent": true,
+        "status": "planned",
+        "stoppedReason": "frontier_exhausted",
+        "reasonCodes": [],
+        "calls": {
+          "vehicle_id": 1,
+          "vehicle_profile": 1,
+          "road": 6,
+          "stations": 1,
+          "weather": 134,
+          "energy": 674,
+          "charging": 235
+        },
+        "previousEligibilityCounters": {
+          "candidate_eligibility_total": 2,
+          "candidate_selected_total": 2,
+          "candidate_eligibility_eligible": 2,
+          "candidate_eligibility_uncertain": 0,
+          "candidate_eligibility_provably_ineligible": 0,
+          "candidate_reject_public_access": 0,
+          "candidate_reject_membership": 0,
+          "candidate_reject_lifecycle": 0,
+          "candidate_potential_drive_calls": 0,
+          "candidate_potential_charge_calls": 0
+        },
+        "shadow": {
+          "states_seen": 35,
+          "state_shadow_observations": 35,
+          "state_shadow_pairs": 119,
+          "exact_duplicate_candidates": 0,
+          "potential_dominance_pairs": 0,
+          "not_equivalent_pairs": 102,
+          "unsafe_or_unproven_pairs": 17,
+          "state_shadow_budget_skipped": 0,
+          "state_shadow_entries_peak": 35,
+          "state_shadow_capture_failures": 0,
+          "actual_pruned_states": 0
+        },
+        "shadowEvaluationMs": 2.8791000000019267,
+        "actualSavedProviderCalls": 0,
+        "actualSavedEngineCalls": 0
+      },
+      "wallMs": 6013.5464999999995,
+      "cpuUserMs": 6719,
+      "cpuSystemMs": 235,
+      "externalCalls": 0,
+      "historical5000msGate": "FAIL",
+      "heapUsed": 92870128,
+      "exitCode": 0,
+      "exitSignal": null,
+      "closed": true
+    }
+  ],
+  "functionalGate": "PASS",
+  "historical5000msGate": "FAIL",
+  "processes": 9,
+  "externalProviderRequests": 0
+}

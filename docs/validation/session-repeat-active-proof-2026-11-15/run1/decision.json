@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-11-15T23:28:20.716Z",
+  "decision": "NO_GO",
+  "b1": "FAIL",
+  "b2NormalMatrix": "PASS",
+  "b2GeneralEquivalence": "FAIL",
+  "b2NetPerformance": "NO_GO",
+  "b3": "NOT_RUN",
+  "productionReuse": false,
+  "historicalEvidenceUnchanged": true,
+  "reportSha256": "a7c297db5d183dd1b2304b6337152099e3e1c680fd3e5e6d536ac9ecd4b63c7f",
+  "evidenceHashes": {
+    "matrix.json": "d5f89cb97b13c5b72acee48f8f414b7327fdf4bf2d3c6ca6f7835ff9d68cb797",
+    "summary.json": "5a119f5b62bbbccc63ff7e63c5531646acdb229c817ef03eb107a7db6531c441",
+    "boundaries.json": "ec87163c257ae20132b80c4c00794e374238d4ace871213ec18e8c9bce08ba1a",
+    "checks.json": "862ee816e4dde611aec4aa983c261dc135c10f4191f00ee412584bff9e9477af",
+    "preservation.json": "b7adc0553159deae7faae394b8c74e62ead794697d49677e33f4c47b4c98748b"
+  }
+}

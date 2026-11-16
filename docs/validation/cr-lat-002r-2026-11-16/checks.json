@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-11-16T14:04:45.833Z",
+  "checks": [
+    {
+      "id": "shared",
+      "command": "pnpm.cmd --filter @chargeroad/shared test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 13152.9162,
+      "logSha256": "92d3e7ac1f3dd8f8c1186dc1f4e7e32f69ca9d008c4a092b30f51501415d28cc",
+      "aggregate": []
+    },
+    {
+      "id": "mobile",
+      "command": "pnpm.cmd --filter @chargeroad/mobile test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 5023.192300000001,
+      "logSha256": "3239674aa27deef642c9c54953ca271d4aea093c649e00585cc13f2b419c2f2b",
+      "aggregate": []
+    },
+    {
+      "id": "api",
+      "command": "pnpm.cmd --filter @chargeroad/api test",
+      "status": "FAIL",
+      "exitCode": 1,
+      "elapsedMs": 556132.576,
+      "logSha256": "57b26900bb2d28d0e64c41c593b7ee3060d084e14983898a1b33e738826af917",
+      "aggregate": [
+        "Test Suites: 1 failed, 14 skipped, 60 passed, 61 of 75 total",
+        "Tests:       2 failed, 154 skipped, 1030 passed, 1186 total"
+      ]
+    },
+    {
+      "id": "typecheck",
+      "command": "pnpm.cmd -r typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 12320.630800000043,
+      "logSha256": "1b2e053b58f1530b5efb1f0d8567192b71f1b154d36cda56be7a05e89814584c",
+      "aggregate": []
+    },
+    {
+      "id": "api-build",
+      "command": "pnpm.cmd --filter @chargeroad/api build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 16794.921500000055,
+      "logSha256": "90839d037a86590fe047bf593a438f6a0b920ab1465d09b86752f4ceca3a4497",
+      "aggregate": []
+    },
+    {
+      "id": "mobile-build",
+      "command": "pnpm.cmd --filter @chargeroad/mobile build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 30416.197799999965,
+      "logSha256": "a0bfbd557d25eace1c71c05b97aebe04c09e2096c1c56942f1b1c9820205a905",
+      "aggregate": []
+    },
+    {
+      "id": "diff",
+      "command": "git diff --check",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 270.30919999990147,
+      "logSha256": "28395581f11f7d3814be838e7ed2ab74cddf30a5de5f194a0cb6ae91ada69f2f",
+      "aggregate": []
+    },
+    {
+      "id": "api-db",
+      "command": "pnpm --filter @chargeroad/api test:db",
+      "status": "NOT_RUN",
+      "reason": "No explicit separate TEST_DATABASE_URL; task forbids new migration/reset/drop. No DATABASE_URL mutation fallback used. API non-DB regression run instead."
+    }
+  ]
+}

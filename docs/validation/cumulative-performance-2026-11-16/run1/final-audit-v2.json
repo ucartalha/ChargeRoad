@@ -1,0 +1,158 @@
+{
+  "generatedAt": "2026-11-15T23:55:22.438Z",
+  "status": "PASS",
+  "priorStrictAudit": "FAIL_RETAINED",
+  "explanation": "Initial strict check also required response byte counters to be identical. Serialized allowed elapsedMilliseconds varies in length. Only those two derived byte counters vary; actual size accounting still matches every run. No fixture, output, trace, semantic counter or historical artifact was rewritten.",
+  "groups": [
+    {
+      "kind": "no_charge",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "no_charge",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "two_partial_charges",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [
+        "response_decoded_bytes",
+        "response_wire_bytes"
+      ],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "missing_profile",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "provider_quota",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "abort",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_total_duration",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_charging_stops",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    },
+    {
+      "kind": "timeout",
+      "objective": "minimum_energy",
+      "semanticCounterHashCount": 1,
+      "variableCounters": [],
+      "physicalByteAccountingMatches": true
+    }
+  ],
+  "priorAuditSha256": "151e050e15e275b6cdcc1c95fd48c957e947f5bd0a9a5d1383f4c74814ba1691",
+  "summarySha256": "b7e7970596e35b274e44a8273f925dd7607704a131384e4a65e6d9b7583db297",
+  "fullCrossProcessFixtureOutcomeTracePhysicalCallsAndSemanticCounters": "PASS",
+  "speedupAcceptance": "NO_GO",
+  "historical": "NOT_COMPARABLE",
+  "productionChanges": 0
+}

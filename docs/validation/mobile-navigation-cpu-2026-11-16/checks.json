@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-11-16T00:32:21.984Z",
+  "checks": [
+    {
+      "id": "shared-test",
+      "command": "pnpm.cmd --filter @chargeroad/shared test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 3188.471,
+      "logSha256": "053a764f00dc5302b853e455353be1cf24e4b7af14805ec0dc4868740b4e804c",
+      "aggregate": [
+        "ℹ tests 41",
+        "ℹ pass 41",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "id": "mobile-test",
+      "command": "pnpm.cmd --filter @chargeroad/mobile test",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1725.4033999999997,
+      "logSha256": "61f309850e9ce7bb1c1f741042b897fdb2e20048e2c0311a607a3b4b0e14d1bc",
+      "aggregate": [
+        "ℹ tests 80",
+        "ℹ pass 80",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "id": "mobile-typecheck",
+      "command": "pnpm.cmd --filter @chargeroad/mobile typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 2257.8105000000005,
+      "logSha256": "423d5a111d8e15f4a4337990e2a80a063ab1aeed60be509fd3aaba1f85eaaf08",
+      "aggregate": []
+    },
+    {
+      "id": "shared-typecheck",
+      "command": "pnpm.cmd --filter @chargeroad/shared typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 1263.0844000000006,
+      "logSha256": "617e3c8ad9f3748a157f8da078272ffc70957eee6ad6514805927e4df6956361",
+      "aggregate": []
+    },
+    {
+      "id": "api-typecheck",
+      "command": "pnpm.cmd --filter @chargeroad/api typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 2184.6938999999984,
+      "logSha256": "c9aad4762f15e2d580a2efa31f9c903eb49fa0dc02ac573738e6bdf403987048",
+      "aggregate": []
+    },
+    {
+      "id": "api-build",
+      "command": "pnpm.cmd --filter @chargeroad/api build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4943.247299999999,
+      "logSha256": "90839d037a86590fe047bf593a438f6a0b920ab1465d09b86752f4ceca3a4497",
+      "aggregate": []
+    },
+    {
+      "id": "mobile-build",
+      "command": "pnpm.cmd --filter @chargeroad/mobile build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 36942.982599999996,
+      "logSha256": "e89990bdc9806e543e921fd089026e7677c5d0755f7642890c1bb3d09a69e818",
+      "aggregate": []
+    },
+    {
+      "id": "api-db",
+      "command": "pnpm --filter @chargeroad/api test:db",
+      "status": "NOT_RUN",
+      "reason": "No backend/storage/provider/contract changes; optional per user scope. Current task does not reuse earlier DB PASS."
+    }
+  ]
+}

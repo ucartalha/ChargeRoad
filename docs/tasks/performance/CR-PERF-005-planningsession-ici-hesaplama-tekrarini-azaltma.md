@@ -4,9 +4,11 @@
 **Öncelik:** P0  
 **Risk:** Orta  
 **Bağımlılıklar:** 01, 03  
-**Durum:** BLOCKED — Aşama A DONE / Aşama B kanıt bekliyor (2026-11-15)
+**Durum:** BLOCKED — Aşama A DONE / Aşama B offline proof DONE, aktif reuse NO-GO (2026-11-16)
 
 Son kullanıcı ekindeki güvenlik kapıları bu eski promptu daraltır. [Teslim raporu](../../validation/session-repeat-analysis-2026-11-15.md): 69 sentetik vaka/amaç eşdeğer; son DB regresyonu 1121/1121 PASS. Aktif tekrar kullanımı uygulanmadı; sampler referans sahipliği, tam semantik key/deadline ve net CPU kazanımı kanıtlanmadan açılmayacak. Eski baseline ve 001–004 değişiklikleri korunur; 006 başlamadı.
+
+Aşama B: [yeni kanıt raporu](../../validation/session-repeat-active-proof-2026-11-15.md). 207 normal A/B ve 69 native ankraj PASS; ek crafted-prototype eşdeğerlik kontrolü FAIL ve üç süreçte net performans kapısı NO-GO. Üretime cache eklenmedi; B3 NOT_RUN. Önceki Aşama A kanıtları korunur, CR-PERF-006 başlamadı.
 
 ## Amaç
 
