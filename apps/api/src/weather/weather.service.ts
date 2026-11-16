@@ -2,6 +2,7 @@ import {routeWeatherRequestSchema,weatherQuerySchema,weatherSampleDistanceLimit}
 import type {WeatherQuery,WeatherForecast,RouteWeatherRequest} from '@chargeroad/shared';
 import {z} from 'zod';
 import {WeatherProvider} from '../providers/weather-provider';
+import type {WeatherForecastContext} from '../providers/weather-provider';
 import {meters} from '../roads/geometry';
 import {WEATHER_POLICY} from './weather-policy';
 import type {WeatherConfig} from './weather-policy';
@@ -25,7 +26,7 @@ export class WeatherService extends WeatherProvider {
   private readonly budgets=new WeakMap<object,WeatherCallBudget>();
   constructor(private readonly config:WeatherConfig,readonly registry:WeatherAdapterRegistry,private readonly cache:WeatherCacheStore){super();}
   cleanup(){return this.cache.cleanup();}
-  async forecast(raw:WeatherQuery[],callerSignal:AbortSignal,context?:{budgetScope:object;maxExternalCalls?:number}){
+  async forecast(raw:WeatherQuery[],callerSignal:AbortSignal,context?:WeatherForecastContext){
     const queries=z.array(weatherQuerySchema).max(WEATHER_POLICY.maxQueries).parse(raw);
     if(new Set(queries.map(q=>q.id)).size!==queries.length)throw new Error('Duplicate weather query');
     const adapter=this.registry.get(this.config.providerId),signal=AbortSignal.any([callerSignal,AbortSignal.timeout(WEATHER_POLICY.deadlineMs)]);
@@ -46,6 +47,17 @@ export class WeatherService extends WeatherProvider {
     const seriesByUrl=new Map<string,Promise<ReturnType<WeatherAdapter['parse']>>>();
     const seriesAt=(location:WeatherQuery['location'])=>{
       const url=adapter.url(location);let pending=seriesByUrl.get(url);
+      if(context?.seriesScope){
+        if(!pending){pending=context.seriesScope.resolve(JSON.stringify([adapter.id,adapter.version,url]),signal,async ownerSignal=>{
+          let parsed:ReturnType<WeatherAdapter['parse']>|undefined;
+          const document=await this.cache.get(adapter.id,adapter.version,url,ownerSignal,budget,d=>{
+            parsed=adapter.parse(d);if(meters(parsed.location,location)>30)throw new Error('Weather provider returned wrong location');
+          });
+          const series=parsed??adapter.parse(document);if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');
+          return {series,expiresAt:Date.parse(document.expiresAt)};
+        }).then(series=>{if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');return series;});seriesByUrl.set(url,pending);}
+        return pending;
+      }
       if(!pending){pending=(async()=>{
         const document=await this.cache.get(adapter.id,adapter.version,url,signal,budget,d=>{
           if(meters(adapter.parse(d).location,location)>30)throw new Error('Weather provider returned wrong location');
@@ -65,7 +77,9 @@ export class WeatherService extends WeatherProvider {
           for(const query of group){
             const original=query.sampleLocation??query.location,chosen=weatherSampleLocation(query);
             const exact=chosen.latitude===original.latitude&&chosen.longitude===original.longitude;
-            const selected=exact||terrainSharingIsSafe(query,series.elevation)?series:await seriesAt(original);
+            const adaptive=query.samplingResolution?.policyVersion==='range-adaptive/2.0.0';
+            const selected=adaptive&&meters(query.location,series.location)>30&&!terrainSharingIsSafe(query,series.elevation)?await seriesAt(query.location):
+              exact||terrainSharingIsSafe(query,series.elevation)?series:await seriesAt(original);
             const forecast=meters(query.location,selected.location)>weatherSampleDistanceLimit(query.samplingResolution)+30?
               unavailableForecast(query,'outside_horizon',adapter.id):normalizeWeather(selected,query,adapter.id,Date.now());
             if(!exact&&forecast.metadata)forecast.metadata.warnings.push(selected===series?'weather_spatial_cell_shared':'weather_cell_rejected_elevation_mismatch');

@@ -30,7 +30,10 @@ export async function replayOptimizer(raw:unknown,road:PreparationOptions['road'
   }} as WeatherProvider;
   const base=recording.roads.find(r=>r.from==='origin'&&r.to==='destination'&&r.at===context.request.departureAt)?.response.data?.routes??[];
   context.baseRoutes??=base;
-  const session=new PlanningSession(context,routing,weather,new EnergyConsumptionEngine(),new ChargingCurveEngine(),road,performance.now()+60000,base);
+  // Sampling v2 is explicit in recorded queries. Never use the server's current flag
+  // when replaying an older plan; atlas/v1 recordings retain legacy reconstruction.
+  const mode=recording.weather.some(w=>Array.isArray(w.queries)&&w.queries.some(q=>q?.samplingResolution?.policyVersion==='range-adaptive/2.0.0'))?'atlas_adaptive':'legacy';
+  const session=new PlanningSession(context,routing,weather,new EnergyConsumptionEngine(),new ChargingCurveEngine(),road,performance.now()+60000,base,mode);
   session.counters.roadQueries=base.length?1:0;
-  return new ChargeStopOptimizer(()=>0).solve(context,session,signal);
+  try{return await new ChargeStopOptimizer(()=>0).solve(context,session,signal);}finally{session.dispose();}
 }

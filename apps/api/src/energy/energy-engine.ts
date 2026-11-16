@@ -112,6 +112,14 @@ export class EnergyConsumptionEngine {
           Date.parse(weather.validAt)<Date.parse(weather.metadata.intervalStart)||Date.parse(weather.validAt)>Date.parse(weather.metadata.intervalEnd)))
           throw new EnergyDataMissing('WEATHER_TIME_PROVENANCE_MISMATCH');
         if(weather.metadata&&weather.metadata.sampleDistanceMeters>weatherSampleDistanceLimit(weather.metadata.samplingResolution)+(weather.metadata.samplingResolution?30:0))throw new EnergyDataMissing('WEATHER_SAMPLE_TOO_FAR');
+        if(weather.metadata?.samplingResolution?.policyVersion==='range-adaptive/2.0.0'&&weather.metadata.sampleDistanceMeters>30){
+          const elevations=segment.elevationProfile?.map(p=>p.elevationMeters),sampleElevation=weather.metadata.sampledElevationMeters;
+          if(weather.metadata.samplingResolution.intervalMeters>25000&&(!['motorway','primary'].includes(segment.roadClass)||
+            !['verified','modelled'].includes(segment.elevationQuality??'unknown')||segment.startsAtChargingAccess||segment.endsAtChargingAccess||
+            (segment.elevationGainMeters??Infinity)+(segment.elevationLossMeters??Infinity)>segment.distanceMeters*.02))throw new EnergyDataMissing('WEATHER_ADAPTIVE_RISK_UNVERIFIED');
+          if(!elevations||sampleElevation===null||Math.max(...elevations)-Math.min(...elevations)>100||
+            Math.max(...elevations.map(h=>Math.abs(h-sampleElevation)))>100)throw new EnergyDataMissing('WEATHER_ADAPTIVE_TERRAIN_UNVERIFIED');
+        }
         if(weather.metadata?.samplingResolution?.phase==='future')warnings.add('coarse_future_weather_scenario');
         if(weather.temperatureCelsius!<model.ambientRangeC.min||weather.temperatureCelsius!>model.ambientRangeC.max)throw new EnergyDataMissing('AMBIENT_OUTSIDE_CALIBRATION');
         if(batteryTemperature===null&&allowEstimates&&model.unknowns.initialBatteryTemperature==='ambient_equilibrium'){

@@ -22,6 +22,8 @@ import {energyInputUsage} from '../energy/energy-input-budget';
 import {RoadProviderError} from '../roads/road-client';
 import {measureAsync,measureSync,countMetric} from '../observability/planning-metrics';
 import {observeCandidateCall} from './candidate-eligibility-shadow';
+import {WeatherAtlas,type WeatherExecutionMode} from '../weather/weather-atlas';
+import {sampleAdaptiveWeather,adaptiveWeatherNeedsRefinement} from '../weather/adaptive-weather-sampler';
 
 export interface SessionReplay {roads:{from:string;to:string;at:string;response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>}[];
   weather:{queries:WeatherQuery[];response:ProviderResponse<WeatherForecast[]>}[];}
@@ -32,13 +34,16 @@ export class PlanningSession implements TransitionPort {
   private readonly climateSamples=new Map<string,WeatherQuery['location']>();
   private hardwareEvaluations=0;
   private weatherSampleEvaluations=0;
+  private readonly atlas?:WeatherAtlas;
   constructor(readonly context:PlanningContext,private readonly routing:RoutingProvider,private readonly climate:WeatherProvider,
     private readonly energy:EnergyConsumptionEngine,private readonly charging:ChargingCurveEngine,private readonly roadOptions:PreparationOptions['road'],
-    private readonly deadline:number,baseRoutes:RoadRoute[]=[]){
+    private readonly deadline:number,baseRoutes:RoadRoute[]=[],private readonly weatherMode:WeatherExecutionMode='legacy'){
+    if(weatherMode!=='legacy')this.atlas=new WeatherAtlas(deadline);
     if(baseRoutes.length){this.roads.set('origin>destination@'+context.request.departureAt,baseRoutes);
       if(baseRoutes.every(r=>r.metadata?.traffic==='none'))this.roads.set('origin>destination@static',baseRoutes);}
   }
   remainingMilliseconds(){return this.deadline-performance.now();}
+  dispose(){this.atlas?.dispose();}
   private async call<T>(operation:(signal:AbortSignal)=>Promise<T>,caller:AbortSignal):Promise<T>{
     caller.throwIfAborted();const remaining=this.remainingMilliseconds();if(remaining<=0)throw new PlanningDataLimit('PLANNING_DEADLINE');
     const limit=AbortSignal.timeout(Math.max(1,Math.ceil(remaining))),signal=AbortSignal.any([caller,limit]);
@@ -82,7 +87,7 @@ export class PlanningSession implements TransitionPort {
       this.context.weatherSampling&&this.counters.weatherQueries+queries.length>segmentLimit)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
     this.weatherSampleEvaluations+=units;countMetric('weather_sample_evaluations',units);
     this.counters.weatherQueries+=queries.length;let response:ProviderResponse<WeatherForecast[]>;
-    try{response=await measureAsync('weather_acquisition',()=>this.call(s=>{countMetric('weather_forecast_query_items',queries.length);return this.climate.forecast(queries,s,{budgetScope:this.context});},signal));}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
+    try{response=await measureAsync('weather_acquisition',()=>this.call(s=>{countMetric('weather_forecast_query_items',queries.length);return this.climate.forecast(queries,s,{budgetScope:this.context,...(this.atlas?{seriesScope:this.atlas}:{})});},signal));}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
     let result:WeatherForecast[];try{result=response.data.map(v=>weatherForecastSchema.parse(v));}catch{throw new PlanningProviderFailure('WEATHER_PROVIDER_INVALID_DATA');}
     const requested=new Map(queries.map(q=>[q.id,q]));
     if(result.length!==queries.length||new Set(result.map(r=>r.queryId)).size!==queries.length||result.some(f=>{const q=requested.get(f.queryId);
@@ -98,14 +103,24 @@ export class PlanningSession implements TransitionPort {
     const routes=await this.route(state.nodeId,to,state.at,signal),legs:DriveLeg[]=[];
     for(const route of routes??[]){
       let queries:WeatherQuery[];
-      try{queries=measureSync('weather_sampling',()=>sampleRouteWeather({route,departureAt:state.at,stops:[]},this.context.weatherSampling,state.distance).queries);countMetric('weather_sample_queries',queries.length);}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
+      const adaptive=this.weatherMode==='atlas_adaptive';
+      const sample=(critical=false)=>adaptive?sampleAdaptiveWeather({route,departureAt:state.at,stops:[]},this.context.weatherSampling,state.distance,state.soc,this.context.request.constraints.minimumReserveChargePercent,critical):
+        sampleRouteWeather({route,departureAt:state.at,stops:[]},this.context.weatherSampling,state.distance);
+      try{queries=measureSync('weather_sampling',()=>sample().queries);countMetric('weather_sample_queries',queries.length);}catch{this.issues.add('WEATHER_SAMPLING_INCOMPLETE');continue;}
+      if(adaptive)this.issues.add('adaptive_weather_accuracy_unverified');
       if(this.context.weatherSampling&&this.context.weatherSampling.rangeBasis!=='catalogue')this.issues.add('weather_sampling_range_is_estimated');
       if(queries.some(q=>q.samplingResolution?.phase==='future'))this.issues.add('coarse_future_weather_scenario');
-      const weather=await this.weather(queries,signal);
-      countMetric('energy_evaluations');const result=await measureAsync('energy_evaluation',()=>this.energy.evaluate({request:this.context.request,vehicle:this.context.vehicle,route,weather,evaluatedAt:this.context.evaluatedAt,
+      let weather=await this.weather(queries,signal);
+      const evaluate=()=>{countMetric('energy_evaluations');return measureAsync('energy_evaluation',()=>this.energy.evaluate({request:this.context.request,vehicle:this.context.vehicle,route,weather,evaluatedAt:this.context.evaluatedAt,
         ...(state.capacity?{capacitySnapshot:state.capacity}:{}),continuation:{kind:preview?'upper_charge_preview':'modelled_leg',departureAt:state.at,
           startingChargePercent:preview?100:state.soc,batteryTemperatureC:state.temperature,targetArrivalChargePercent:preview?0:to.id==='destination'?
-            this.context.request.constraints.targetArrivalChargePercent:this.context.request.constraints.minimumReserveChargePercent}},signal));
+            this.context.request.constraints.targetArrivalChargePercent:this.context.request.constraints.minimumReserveChargePercent}},signal));};
+      let result=await evaluate();
+      if(adaptive&&(adaptiveWeatherNeedsRefinement(weather)||result.status==='estimated'&&result.segments.some(s=>s.minimumChargePercent<this.context.request.constraints.minimumReserveChargePercent+5))){
+        // Exactly one bounded refinement; no preliminary energy result escapes before this completes.
+        queries=sample(true).queries;weather=await this.weather(queries,signal);result=await evaluate();
+        this.issues.add('adaptive_weather_refined_once');
+      }
       if(result.status==='computation_limit'){
         if(result.reasons.some(r=>r.code==='ENERGY_INPUT_BUDGET'))new Logger('PlanningSession').warn(JSON.stringify({event:'energy_input_limit',requestId:this.context.request.requestId,...energyInputUsage(route)}));
         for(const reason of result.reasons)this.issues.add(reason.code);throw new PlanningDataLimit('ENERGY_COMPUTATION_BUDGET');}

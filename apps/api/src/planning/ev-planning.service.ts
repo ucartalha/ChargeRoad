@@ -23,6 +23,7 @@ import {RoadProviderError} from '../roads/road-client';
 import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
 import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
 import {samplingRange,buildPlanningWeather} from '../weather/planning-weather-policy';
+import {weatherExecutionMode} from '../weather/weather-atlas';
 
 @Injectable()
 export class EvPlanningService {
@@ -46,6 +47,7 @@ export class EvPlanningService {
         if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure(role+'_PROVIDER_FAILED');}
       finally{end();}
     };
+    let weatherSession:PlanningSession|undefined;
     try{
       const departureDelta=Date.parse(request.departureAt)-Date.parse(evaluatedAt);
       if(departureDelta<0||departureDelta>ENERGY_POLICY.departureWindowSeconds*1000)return failure('insufficient_data','DEPARTURE_OUTSIDE_72_HOUR_WINDOW');
@@ -70,7 +72,8 @@ export class EvPlanningService {
       const context:PlanningContext={request,vehicle,evaluatedAt,options:{...options},candidates:null as unknown as StationCandidateSet,nodes:[],baseRoutes:base.routes};
       const catalogueRange=this.vehicles.catalogueRange?await read('VEHICLE',s=>this.vehicles.catalogueRange!(id,s)):null;
       context.weatherSampling=buildPlanningWeather(base.routes[0],samplingRange(vehicle,catalogueRange));
-      const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes);
+      const mode=weatherExecutionMode();
+      const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes,mode);weatherSession=session;
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;
       const pinned=new Map<string,StationCandidateSet['candidates'][number]>();
@@ -109,5 +112,6 @@ export class EvPlanningService {
     }catch(error){if(caller.aborted)throw caller.reason;
       if(error instanceof PlanningDataLimit)return failure('computation_limit',error.message);
       if(error instanceof PlanningProviderFailure)return {...failure('provider_error',error.message),retryAfterSeconds:error.retryAfterSeconds};throw error;}
+    finally{weatherSession?.dispose();}
   }
 }

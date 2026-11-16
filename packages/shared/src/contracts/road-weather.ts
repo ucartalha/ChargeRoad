@@ -138,13 +138,21 @@ export const roadRoutingResultSchema = z.object({
   routes: z.array(roadRouteSchema).min(1),
 }).strict();
 
-export const weatherSamplingResolutionSchema=z.object({
+const legacyWeatherSamplingResolutionSchema=z.object({
   policyVersion:z.literal('range-adaptive/1.0.0'),phase:z.enum(['near_term','future']),
   intervalMeters:positiveSchema.max(800000),
 }).strict().superRefine((v,ctx)=>{
   if(v.phase==='near_term'&&v.intervalMeters!==15000)ctx.addIssue({code:'custom',message:'Near-term spacing must be 15 km'});
 });
-export const weatherSampleDistanceLimit=(resolution?:z.infer<typeof weatherSamplingResolutionSchema>)=>resolution?resolution.intervalMeters:10000;
+export const weatherSamplingResolutionSchema=z.union([legacyWeatherSamplingResolutionSchema,z.object({
+  policyVersion:z.literal('range-adaptive/2.0.0'),phase:z.enum(['near_term','future']),
+  intervalMeters:z.union([z.literal(5000),z.literal(10000),z.literal(15000),z.literal(25000),z.literal(35000)]),
+  maxSampleDistanceMeters:positiveSchema.max(17500),risk:z.enum(['homogeneous','normal','critical']),
+}).strict().superRefine((v,ctx)=>{
+  if(v.maxSampleDistanceMeters>v.intervalMeters/2||v.intervalMeters>25000&&v.risk!=='homogeneous'||v.risk==='critical'&&v.intervalMeters>15000||v.phase==='future'&&v.intervalMeters>25000)
+    ctx.addIssue({code:'custom',message:'Unsafe adaptive weather resolution'});
+})]);
+export const weatherSampleDistanceLimit=(resolution?:z.infer<typeof weatherSamplingResolutionSchema>)=>resolution?.policyVersion==='range-adaptive/2.0.0'?resolution.maxSampleDistanceMeters:resolution?resolution.intervalMeters:10000;
 
 export const weatherQuerySchema = z.object({
   id: idSchema,

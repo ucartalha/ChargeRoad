@@ -1,4 +1,4 @@
-import {locationSearchResponseSchema,planningApiResponseSchema,roadPreviewResponseSchema,planningJobStatusSchema} from '@chargeroad/shared';
+import {locationSearchResponseSchema,planningApiResponseSchema,roadPreviewResponseSchema,planningJobStatusSchema,planningApiErrorSchema} from '@chargeroad/shared';
 import type {PlanningApiRequest,RoadPreviewRequest} from '@chargeroad/shared';
 export class PlanningApiError extends Error {
   constructor(message:string,readonly retryAfterSeconds=0,readonly status=0){super(message);}
@@ -34,7 +34,20 @@ export const planningApi={
       const bounded=new AbortController(),abort=()=>bounded.abort(),timer=setTimeout(abort,method==='DELETE'?5000:address.endsWith('/result')?35000:15000);
       if(!independent){signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();}
       try{const response=await fetch(address,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:bounded.signal});
-       const data=await response.json();if(!response.ok)throw new PlanningApiError(response.status===429?'İstek sınırına ulaştın; belirtilen süre sonunda tekrar deneyebilirsin.':response.status===503?'Planlama sırası şu anda dolu veya kullanılamıyor.':'Plan işi alınamadı; tekrar deneyebilirsin.',Number(response.headers.get('Retry-After'))||0,response.status);
+       const data=await response.json();
+       if(!response.ok){
+        if(__DEV__&&method==='POST'&&address===base+'/planning-jobs'){
+         const parsed=planningApiErrorSchema.safeParse(data),serverTime=Date.parse(response.headers.get('Date')??'');
+         const observedTime=Date.parse(request.startingChargeObservedAt);
+         // No body/headers/raw timestamps: only bounded diagnostic codes and clock delta.
+         console.info('planning_rejected',{requestId:request.requestId,httpStatus:response.status,
+          errorCode:parsed.success?parsed.data.error.code:'UNRECOGNIZED_ERROR_RESPONSE',
+          fields:parsed.success?parsed.data.error.fields?.map(f=>({path:f.path,code:f.code}))??[]:[],
+          observedAheadOfServerHeaderMs:Number.isFinite(serverTime)&&Number.isFinite(observedTime)?observedTime-serverTime:null,
+          retryAfterSeconds:Number(response.headers.get('Retry-After'))||0});
+        }
+        throw new PlanningApiError(response.status===429?'İstek sınırına ulaştın; belirtilen süre sonunda tekrar deneyebilirsin.':response.status===503?'Planlama sırası şu anda dolu veya kullanılamıyor.':'Plan işi alınamadı; tekrar deneyebilirsin.',Number(response.headers.get('Retry-After'))||0,response.status);
+       }
        return data;
       }finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
     };
