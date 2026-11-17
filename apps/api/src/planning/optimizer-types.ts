@@ -1,8 +1,9 @@
 import type {RoutePlanRequest,VehicleEnergyProfile,OptimizerOptions,NumericObservation,UsableCapacitySnapshot,StationCandidateSet,
-  RoadRoute,EnergyEvaluationResult,WeatherForecast,PlannedChargingStop,Coordinate,PlanningResult,PlanningInput} from '@chargeroad/shared';
+  RoadRoute,WeatherForecast,PlannedChargingStop,Coordinate,PlanningResult,PlanningInput} from '@chargeroad/shared';
 import type {PlanningWeather} from '../weather/planning-weather-policy';
+import type {SearchEnergyEvaluationResult} from '../energy/energy-engine';
 export interface PlanningNode {id:string;location:Coordinate;stationId:string|null;}
-export interface DriveLeg {from:string;to:string;route:RoadRoute;energy:EnergyEvaluationResult;weather:WeatherForecast[];departureAt:string;arrivalAt:string;}
+export interface DriveLeg {from:string;to:string;route:RoadRoute;energy:SearchEnergyEvaluationResult;weather:WeatherForecast[];departureAt:string;arrivalAt:string;}
 export interface OptimizerState {nodeId:string;soc:number;temperature:NumericObservation;capacity:UsableCapacitySnapshot|null;at:string;
   legs:DriveLeg[];stops:{stop:PlannedChargingStop;arrivalAt:string;departureAt:string}[];visited:string[];netKwh:number;seconds:number;distance:number;}
 export interface PlanningContext {request:RoutePlanRequest;vehicle:VehicleEnergyProfile;evaluatedAt:string;options:OptimizerOptions;

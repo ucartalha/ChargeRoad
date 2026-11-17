@@ -1,8 +1,7 @@
-import {createHash} from 'node:crypto';
 import {setImmediate as yieldEventLoop} from 'node:timers/promises';
 import {energyEvaluationRequestSchema,energyEvaluationResultSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
 import type {EnergyEvaluationResult,EnergyAudit,EnergyModel,EnergySegment,RoadSegment,WeatherForecast} from '@chargeroad/shared';
-import {canonicalJson} from '../vehicles/knowledge/knowledge-package';
+import {canonicalJsonSha256} from '../vehicles/knowledge/knowledge-package';
 import {ENERGY_ALGORITHM_VERSION,ENERGY_POLICY,EnergyDataMissing} from './energy-policy';
 import {airDensity,cabinPower,capacityFactor,elevationAt,aerodynamicForce,hasPhysics,integratePieces,distanceToRoad} from './energy-physics';
 import {meters} from '../roads/geometry';
@@ -17,17 +16,30 @@ function audit(segment:RoadSegment,model:EnergyModel):EnergyAudit{return {segmen
   wheelPositiveKwh:0,driveLossKwh:0,recoveryLossKwh:0,discardedRecoveryKwh:0,
   meanSpeedKph:segment.expectedSpeedKph,airDensityKgPerM3:null,integrationSteps:0,referenceIds:[]};}
 
+/** Search-time result: identical to EnergyEvaluationResult except that the unpublished input checksum is not computed. */
+export type SearchEnergyEvaluationResult=Omit<EnergyEvaluationResult,'inputChecksumSha256'>;
+export interface EnergyEvaluationOptions {inputChecksum:false;}
+// Only shape-checks the result; the placeholder never leaves evaluate().
+const CHECKSUM_NOT_COMPUTED='0'.repeat(64);
+
 // Pure arithmetic/data evaluation. No HTTP, DB, LLM, charging solver or implicit calibration.
 export class EnergyConsumptionEngine {
   constructor(private readonly clock:()=>number=()=>performance.now()){}
-  async evaluate(raw:unknown,signal:AbortSignal):Promise<EnergyEvaluationResult>{
+  evaluate(raw:unknown,signal:AbortSignal):Promise<EnergyEvaluationResult>;
+  evaluate(raw:unknown,signal:AbortSignal,options:EnergyEvaluationOptions):Promise<SearchEnergyEvaluationResult>;
+  async evaluate(raw:unknown,signal:AbortSignal,options?:EnergyEvaluationOptions):Promise<EnergyEvaluationResult|SearchEnergyEvaluationResult>{
+    const result=await this.run(raw,signal,options?.inputChecksum!==false);
+    if(options?.inputChecksum!==false)return result;
+    const {inputChecksumSha256:_omitted,...search}=result;return search;
+  }
+  private async run(raw:unknown,signal:AbortSignal,withChecksum:boolean):Promise<EnergyEvaluationResult>{
     signal.throwIfAborted();
     const input=energyEvaluationRequestSchema.parse(raw),{vehicle,route}=input,continuation=input.continuation;
     const request=continuation?{...input.request,departureAt:continuation.departureAt,startingChargePercent:continuation.startingChargePercent,
       initialBatteryTemperatureC:continuation.batteryTemperatureC,constraints:{minimumReserveChargePercent:continuation.kind==='upper_charge_preview'?0:input.request.constraints.minimumReserveChargePercent,
         targetArrivalChargePercent:continuation.targetArrivalChargePercent}}:input.request;
     const result:EnergyEvaluationResult={status:'estimated',requestId:request.requestId,routeId:route.id,
-      algorithmVersion:ENERGY_ALGORITHM_VERSION,inputChecksumSha256:createHash('sha256').update(canonicalJson(input)).digest('hex'),
+      algorithmVersion:ENERGY_ALGORITHM_VERSION,inputChecksumSha256:withChecksum?canonicalJsonSha256(input):CHECKSUM_NOT_COMPUTED,
       vehicleProfileId:vehicle.id,vehicleProfileVersion:vehicle.version,modelId:vehicle.energyModel?.id??null,modelVersion:vehicle.energyModel?.version??null,
       capacityKwh:null,segments:[],audit:[],netBatteryEnergyKwh:0,finalChargePercent:null,minimumChargePercent:null,
       completedDistanceMeters:0,partialSegmentId:null,referenceIds:[],reasons:[],assumptions:[],warnings:[]};
@@ -58,7 +70,7 @@ export class EnergyConsumptionEngine {
         throw new EnergyDataMissing('TIRE_CALIBRATION_MISMATCH');
       if(request.operatingConditions.tireSetupId===null)assumptions.add('tire_setup_assumed_from_calibration');
       for(const item of model.assumptions)assumptions.add(item);
-      const versionKey=ENERGY_ALGORITHM_VERSION+':'+createHash('sha256').update(canonicalJson(model)).digest('hex').slice(0,24);
+      const versionKey=ENERGY_ALGORITHM_VERSION+':'+canonicalJsonSha256(model).slice(0,24);
       if(model.quality==='engineering_estimate'||vehicle.dataQuality?.quality==='engineering_estimate')warnings.add('engineering_calibration_not_field_validated');
       const payload=request.operatingConditions.payloadKg.value??model.unknowns.payloadKg;
       if(payload===null)throw new EnergyDataMissing('PAYLOAD_MISSING');

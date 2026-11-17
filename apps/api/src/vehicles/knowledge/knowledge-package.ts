@@ -69,3 +69,41 @@ export function canonicalJson(value:unknown):string {
     .map(key=>JSON.stringify(key)+':'+canonicalJson((value as Record<string,unknown>)[key])).join(',')+'}';
   return JSON.stringify(value);
 }
+
+/**
+ * Equivalent to sha256(canonicalJson(value)) without materialising the canonical string.
+ * Tokens are emitted whole (never split inside a JSON string), so the UTF-8 byte stream is identical.
+ * Mirrors canonicalJson's join/concatenation semantics: an unencodable array item becomes '',
+ * an unencodable object property value becomes the literal text 'undefined'.
+ */
+export function canonicalJsonSha256(value:unknown):string {
+  const hash=createHash('sha256');let buffer='';
+  const out=(text:string)=>{buffer+=text;if(buffer.length>=65536){hash.update(buffer);buffer='';}};
+  const scalar=(item:unknown)=>JSON.stringify(item) as string|undefined;
+  const write=(item:unknown):void=>{
+    if (Array.isArray(item)) {
+      out('[');
+      for (let i=0;i<item.length;i++) {
+        if (i) out(',');
+        if (!(i in item)) continue;
+        const child=item[i];
+        if (child!==null&&typeof child==='object') write(child); else out(scalar(child)??'');
+      }
+      out(']');return;
+    }
+    if (item!==null&&typeof item==='object') {
+      const keys=Object.keys(item).sort();out('{');
+      for (let i=0;i<keys.length;i++) {
+        if (i) out(',');
+        out(JSON.stringify(keys[i])+':');
+        const child=(item as Record<string,unknown>)[keys[i]];
+        if (child!==null&&typeof child==='object') write(child); else out(String(scalar(child)));
+      }
+      out('}');return;
+    }
+    const text=scalar(item);
+    if (text===undefined) throw new TypeError('Value has no canonical JSON representation');
+    out(text);
+  };
+  write(value);hash.update(buffer);return hash.digest('hex');
+}

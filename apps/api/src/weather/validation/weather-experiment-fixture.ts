@@ -2,7 +2,7 @@
 import {optimizerWorld} from '../../planning/__tests__/optimizer.fixtures';
 import {EvPlanningService} from '../../planning/ev-planning.service';
 import {ChargeStopOptimizer} from '../../planning/charge-stop-optimizer';
-import {EnergyConsumptionEngine} from '../../energy/energy-engine';
+import {EnergyConsumptionEngine,type SearchEnergyEvaluationResult} from '../../energy/energy-engine';
 import {ChargingCurveEngine} from '../../charging/charging-engine';
 import {document} from '../__tests__/fixtures';
 import type {WeatherProvider} from '../../providers/weather-provider';
@@ -48,8 +48,8 @@ export function weatherExperimentWorld(kind:WeatherExperimentCase,weather:Weathe
  for(const c of w.candidates.candidates){const p=positions[c.station.id]*km;
   c.routeMatches=[{routeId:road(w.request.origin,w.request.destination).id,segmentId:'s-0-'+Math.min(km-1,Math.floor(p)),segmentProgress:p%1,distanceMeters:0}];
  }
- const evaluations:EnergyEvaluationResult[]=[],energy=new EnergyConsumptionEngine(),evaluate=energy.evaluate.bind(energy);
- energy.evaluate=async(...args)=>{const result=await evaluate(...args);evaluations.push(result);return result;};
+ const evaluations:SearchEnergyEvaluationResult[]=[],energy=new EnergyConsumptionEngine(),evaluate=energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<EnergyEvaluationResult>;
+ energy.evaluate=(async(...args:unknown[])=>{const result=await evaluate(...args);evaluations.push(result);return result;}) as typeof energy.evaluate;
  const service=new EvPlanningService(w.vehicles as never,roads as never,w.stations as never,weather,energy,new ChargingCurveEngine(),new ChargeStopOptimizer());
  return {...w,service,evaluations,km};
 }

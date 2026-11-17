@@ -76,7 +76,7 @@ async function run(kind:StateCase,objective:Objective,after:boolean,enabled=true
  if(kind==='quota')road=async()=>{throw new RoadProviderError('synthetic',429,60,'ROAD_PROVIDER_RATE_LIMITED');};
  if(kind==='timeout')road=async()=>{throw new RoadProviderError('synthetic',503,60,'ROAD_PROVIDER_TIMEOUT');};
  const routing={routes:wrap('road',road)},stations={findAlongRoutes:wrap('stations',w.stations.findAlongRoutes)},weather={forecast:wrap('weather',w.weather.forecast)};
- const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=wrap('energy',energy.evaluate.bind(energy));charging.evaluate=wrap('charging',charging.evaluate.bind(charging));
+ const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=wrap('energy',energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<unknown>) as typeof energy.evaluate;charging.evaluate=wrap('charging',charging.evaluate.bind(charging));
  const Optimizer=after?ChargeStopOptimizer:previousStateOptimizer();let ticks=0;
  const optimizer=kind==='deadline'?new Optimizer(()=>++ticks>3?1e9:0):new Optimizer();
  const service=new EvPlanningService(vehicles as never,routing as never,stations as never,weather as never,energy,charging,optimizer);
