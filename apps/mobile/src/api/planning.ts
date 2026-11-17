@@ -36,7 +36,8 @@ export const planningApi={
       try{const response=await fetch(address,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:bounded.signal});
        const data=await response.json();
        if(!response.ok){
-        if(__DEV__&&method==='POST'&&address===base+'/planning-jobs'){
+        // __DEV__ exists only in React Native; this client is also exercised from Node (API/Jest) tests.
+        if(typeof __DEV__!=='undefined'&&__DEV__&&method==='POST'&&address===base+'/planning-jobs'){
          const parsed=planningApiErrorSchema.safeParse(data),serverTime=Date.parse(response.headers.get('Date')??'');
          const observedTime=Date.parse(request.startingChargeObservedAt);
          // No body/headers/raw timestamps: only bounded diagnostic codes and clock delta.
