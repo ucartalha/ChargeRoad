@@ -8,6 +8,12 @@ import {CATALOGUE_SCENARIO_POLICY as seedPolicy,candidateProgress} from './catal
 import {maxMetric} from '../observability/planning-metrics';
 import {createStateShadow} from './state-dominance-shadow';
 import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets,distinctChargedStates} from './charge-target-search';
+import {SOC_STOP_RULES} from './optimizer-policy';
+
+/** True when no planned stop is reached at or above the no-charge SOC (SOC_STOP_RULES). */
+export function respectsStopRules(state:OptimizerState,noChargeAtOrAbove:number=SOC_STOP_RULES.noChargeAtOrAboveArrivalPercent){
+  return state.stops.every(s=>s.stop.arrivalChargePercent<noChargeAtOrAbove);
+}
 
 export function compareStates(a:OptimizerState,b:OptimizerState,objective:PlanningContext['request']['policy']['objective']){
   const key=(s:OptimizerState)=>objective==='minimum_charging_stops'?[s.stops.length,s.seconds,s.distance]:
@@ -28,8 +34,22 @@ export function seedFallbackCandidates<C extends {station:{id:string}}>(ranked:r
 /** Application-owned search. All roads/weather/energy transitions cross a bounded session port. */
 export class ChargeStopOptimizer {
   constructor(private readonly clock:()=>number=()=>performance.now()){}
+  /** Searches under SOC_STOP_RULES first. Only when that finds no plan and the rule actually blocked a charge, the search
+   *  is repeated once without the rule (same deadline) and the plan says so: a plan must exist whenever one is possible. */
   async solve(context:PlanningContext,port:TransitionPort,signal:AbortSignal):Promise<OptimizerOutcome>{
-    const began=this.clock(),deadline=began+context.request.policy.maxComputationMilliseconds,options=context.options,objective=context.request.policy.objective;
+    const began=this.clock(),trace={stopRuleBlocked:false};
+    const strict=await this.search(context,port,signal,false,began,trace);
+    if(strict.result.status==='planned'||!trace.stopRuleBlocked||strict.result.status==='provider_error')return strict;
+    const relaxed=await this.search(context,port,signal,true,began,{stopRuleBlocked:false});
+    if(relaxed.result.status!=='planned')return strict;
+    relaxed.result.plan.warnings.push({code:'soc_stop_rule_relaxed',explanation:'No plan exists without a charging stop reached at or above '+
+      SOC_STOP_RULES.noChargeAtOrAboveArrivalPercent+' %; this plan relaxes that comfort rule.'});
+    return relaxed;
+  }
+  private async search(context:PlanningContext,port:TransitionPort,signal:AbortSignal,relaxStopRules:boolean,began:number,trace:{stopRuleBlocked:boolean}):Promise<OptimizerOutcome>{
+    const deadline=began+context.request.policy.maxComputationMilliseconds,options=context.options,objective=context.request.policy.objective;
+    const noChargeAbove=relaxStopRules?Infinity:SOC_STOP_RULES.noChargeAtOrAboveArrivalPercent;
+    const blocked=()=>{trace.stopRuleBlocked=true;};
     const initial:OptimizerState={nodeId:'origin',soc:context.request.startingChargePercent,temperature:context.request.initialBatteryTemperatureC,capacity:null,
       at:context.request.departureAt,legs:[],stops:[],visited:['origin'],netKwh:0,seconds:0,distance:0};
     const frontier=[initial];
@@ -70,16 +90,21 @@ export class ChargeStopOptimizer {
           const previous=incumbent.state;incumbent.state=next;try{incumbent.outcome=compilePlan(context,next,metadata(),port);}
           catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');}
         }
+        // Optimizer 1.5.0: one seed chain per reach strategy. A strategy stops at its first complete chain; a later
+        // strategy may only replace the incumbent with a strictly better plan.
+        const chains:OptimizerState[]=[];
+        const makeSeed=(reachFraction:number)=>{let done=false;
         const seed=async(state:OptimizerState,progress:number):Promise<boolean>=>{
-          if(incumbent.outcome)return true;
+          if(done)return true;
           if(state.stops.length){await budget();for(const tail of await port.drive(state,context.nodes.find(n=>n.id==='destination')!,false,signal)){
             if(tail.energy.status!=='estimated'||tail.energy.partialSegmentId)continue;
-            const next=append(state,tail),previous=incumbent.state;incumbent.state=next;
-            try{incumbent.outcome=compilePlan(context,next,metadata(),port);return true;}
+            const next=append(state,tail);chains.push(next);if(incumbent.state&&compareStates(next,incumbent.state,objective)>=0){done=true;return true;}
+            const previous=incumbent.state;incumbent.state=next;
+            try{incumbent.outcome=compilePlan(context,next,metadata(),port);done=true;return true;}
             catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');}
           }}
           if(state.stops.length>=options.maxStops)return false;
-          const target=progress+fullBatteryProgress*(state.soc-context.request.constraints.minimumReserveChargePercent)/100*seedPolicy.seedReachFraction;
+          const target=progress+fullBatteryProgress*(state.soc-context.request.constraints.minimumReserveChargePercent)/100*reachFraction;
           const ranked=context.candidates.candidates.filter(c=>!state.visited.includes(c.station.id)&&candidateProgress(c,context.baseRoutes!)>progress)
             .sort((a,b)=>(reachFromDrive?Math.abs(candidateProgress(a,context.baseRoutes!)-target)-Math.abs(candidateProgress(b,context.baseRoutes!)-target):
               candidateProgress(a,context.baseRoutes!)-candidateProgress(b,context.baseRoutes!))||a.station.id.localeCompare(b.station.id));
@@ -97,6 +122,7 @@ export class ChargeStopOptimizer {
               }
               if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
               const atStation=append(state,leg);
+              if(atStation.soc>=noChargeAbove){blocked();continue;}
               for(const targetSoc of seedChargeTargets(context,atStation.soc)){
                 await budget();for(const charged of distinctChargedStates(await port.charge(atStation,targetSoc,signal))){
                   if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
@@ -110,15 +136,20 @@ export class ChargeStopOptimizer {
           for(const candidate of fallback){const result=await attempt(candidate);if(result===null)return false;if(result)return true;}
           return false;
         };
-        if(!incumbent.outcome)await seed(initial,0);
+        return seed;};
+        const [farReach,...otherReaches]=seedPolicy.seedReachFractions;
+        if(!incumbent.outcome)await makeSeed(farReach)(initial,0);
+        if(incumbent.state?.stops.length)for(const reach of otherReaches)await makeSeed(reach)(initial,0);
+        // Improve every seed chain (best first), not only the winner: a weaker chain can improve past it.
+        // Improve the known itineraries before broad branching can exhaust road/weather budgets.
+        for(const chain of [...new Set(chains)].filter(c=>c.stops.length).sort((a,b)=>compareStates(a,b,objective)))
+          await improveFixedStopTargets(context,chain,port,signal,(a,b)=>compareStates(a,b,objective),budget,state=>{
+            if(!respectsStopRules(state,noChargeAbove)||incumbent.state&&compareStates(state,incumbent.state,objective)>=0)return false;
+            const previous=incumbent.state;incumbent.state=state;
+            try{incumbent.outcome=compilePlan(context,state,metadata(),port);return true;}
+            catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');return false;}
+          },this.clock);
       }
-      // Improve the known itinerary before broad branching can exhaust road/weather budgets.
-      if(incumbent.state?.stops.length)await improveFixedStopTargets(context,incumbent.state,port,signal,
-        (a,b)=>compareStates(a,b,objective),budget,state=>{
-          const previous=incumbent.state;incumbent.state=state;
-          try{incumbent.outcome=compilePlan(context,state,metadata(),port);return true;}
-          catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');return false;}
-        },this.clock);
       while(frontier.length){
         signal.throwIfAborted();if(expanded>=options.maxStates){stopped='state_budget';break;}
         frontier.sort((a,b)=>compareStates(a,b,objective));const current=frontier.shift()!;expanded++;
@@ -146,6 +177,7 @@ export class ChargeStopOptimizer {
         };
         await advance(current);
         if(current.nodeId==='origin'||current.stops.length>=options.maxStops)continue;
+        if(current.soc>=noChargeAbove){blocked();continue;}
         const anchors:number[]=[];
         // Conservative access/arrival anchors from full-charge previews; every selected transition is re-evaluated at its actual scenario time/SOC.
         for(const target of outgoing){await budget();for(const leg of await port.drive(current,target,true,signal))if(leg.energy.status==='estimated'&&leg.energy.capacityKwh){

@@ -1,6 +1,7 @@
 import type {StationCandidateSet,RoadRoute} from '@chargeroad/shared';
 // 1.2.0 (2026-11-17): candidate selection is access-aware (selectAccessibleCandidates, STATION_ACCESS_POLICY).
-export const CATALOGUE_SCENARIO_POLICY={version:'catalogue-scenario/1.2.0',seedAttempts:3,seedProgress:.55,seedReachFraction:.9,maxWeatherQueries:30000} as const;
+// seedReachFractions (optimizer 1.5.0): far strategy first (= seedReachFraction), then a nearer one.
+export const CATALOGUE_SCENARIO_POLICY={version:'catalogue-scenario/1.2.0',seedAttempts:3,seedProgress:.55,seedReachFraction:.9,seedReachFractions:[.9,.6],maxWeatherQueries:30000} as const;
 export function candidateProgress(candidate:StationCandidateSet['candidates'][number],routes:RoadRoute[]){
   const match=[...candidate.routeMatches].sort((a,b)=>a.distanceMeters-b.distanceMeters)[0],route=routes.find(r=>r.id===match?.routeId),segment=route?.segments.find(s=>s.id===match.segmentId);
   return route&&segment?(segment.startDistanceMeters+segment.distanceMeters*match.segmentProgress)/route.distanceMeters:0;

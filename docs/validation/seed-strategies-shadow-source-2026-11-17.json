@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.5.0",
+  "scope": "Two seed reach strategies + SOC stop rule (1.5.0) vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "4c9fd384b4fdc80cfa15f45eacab425eb4f70a8d7e9d1a71af08b1d79985f2d2"
+}
