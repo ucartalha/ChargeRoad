@@ -1,8 +1,11 @@
 import { z } from 'zod';
 import type { SegmentationPolicy } from '@chargeroad/shared';
 
-export const ROAD_SEGMENTATION:SegmentationPolicy={id:'road-segments',version:'1.0.0',maxDistanceMeters:1000,maxDurationSeconds:60,
-  splitAtSpeedChangeKph:10,splitAtGradeChangePercent:3,splitAtBearingChangeDegrees:45,maxWeatherTimeStepSeconds:900,
+// 1.1.0 (2026-11-17): grade-change splitting is effectively off. 30 m DEM steps of ~1 m are already 3.3 % grade
+// changes, so 3 % split real routes ~9x on noise; the energy engine integrates the in-segment elevation profile,
+// so net energy/regeneration/SOC were unchanged (docs/validation/dem-segmentation-2026-11-17.md).
+export const ROAD_SEGMENTATION:SegmentationPolicy={id:'road-segments',version:'1.1.0',maxDistanceMeters:1000,maxDurationSeconds:60,
+  splitAtSpeedChangeKph:10,splitAtGradeChangePercent:1000,splitAtBearingChangeDegrees:45,maxWeatherTimeStepSeconds:900,
   splitAtRoadClassChanges:true,splitAtChargingAccess:true};
 const endpoint=z.string().url().refine(v=>{const u=new URL(v);return !u.username&&!u.password&&!u.search&&!u.hash&&
   (u.protocol==='https:'||(u.protocol==='http:'&&['localhost','127.0.0.1'].includes(u.hostname)));},'Use a credential-free HTTPS service endpoint');

@@ -69,7 +69,9 @@ export function normalizeRoadTrip(trip:RoadTripInput,request:RoadRoutingRequest,
         return span>0?a+(b-a)*(d-distances[low])/span:a;
       }
       if(!leg.elevation||leg.elevation.values.length<2)return null;
-      const e=leg.elevation;if(Math.ceil(leg.distanceMeters/e.intervalMeters)+1!==e.values.length)return null;
+      // Provider leg length is rounded (Valhalla: 1 m), so the sample count may differ by one; the last used
+      // interval then ends at the leg end. Larger mismatches still discard the leg's elevation.
+      const e=leg.elevation;if(Math.abs(Math.ceil(leg.distanceMeters/e.intervalMeters)+1-e.values.length)>1)return null;
       const index=Math.min(Math.floor(d/e.intervalMeters),e.values.length-2),x=index*e.intervalMeters,
         end=index===e.values.length-2?leg.distanceMeters:(index+1)*e.intervalMeters;
       const a=e.values[index],b=e.values[index+1];

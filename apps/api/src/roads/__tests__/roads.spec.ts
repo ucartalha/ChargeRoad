@@ -46,7 +46,8 @@ describe('Free map-reusable road normalization',()=>{
     expect(normalizeRoadTrip(input,roadRequest(),config,new Map()).segments.every(s=>s.elevationGainMeters===null)).toBe(true);
   });
   it('splits duration and grade boundaries while preserving totals and continuous geometry',()=>{
-    const request=roadRequest();request.segmentationPolicy.maxDurationSeconds=1000;
+    // Grade splitting is off by default since road-segments/1.1.0; the mechanism stays available per policy.
+    const request=roadRequest();request.segmentationPolicy.maxDurationSeconds=1000;request.segmentationPolicy.splitAtGradeChangePercent=3;
     const route=normalizeRoadTrip(trip(),request,config,new Map());
     expect(route.segments).toHaveLength(2);expect(route.distanceMeters).toBeCloseTo(1000);expect(route.drivingDurationSeconds).toBeCloseTo(120);
     expect(route.segments[0].endDistanceMeters).toBeCloseTo(500);
