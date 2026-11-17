@@ -8,7 +8,9 @@ import type {PreparationOptions} from '../planning-coordinator';
 export const PLANNING_HTTP_OPTIONS=Symbol('PLANNING_HTTP_OPTIONS');
 export const PLANNING_HTTP_POLICY={id:'public-planning',version:'1.2.0',maxBodyBytes:16*1024,maxResponseBytes:16*1024*1024,
   maxWireResponseBytes:2*1024*1024,compressResponseAtBytes:32*1024,
-  maxStraightLineMeters:2000000,availabilityMaxAgeSeconds:300,forecastMaxAgeSeconds:WEATHER_POLICY.maxAgeSeconds} as const;
+  maxStraightLineMeters:2000000,availabilityMaxAgeSeconds:300,forecastMaxAgeSeconds:WEATHER_POLICY.maxAgeSeconds,
+  // Client/server clock skew accepted for "now" observations (e.g. a phone slightly ahead of the server). Values are kept as sent.
+  clockSkewToleranceMs:10000} as const;
 export const planningHttpOptionsSchema=z.object({budgetMs:z.number().int().min(100).max(30000),localConcurrency:z.number().int().min(1).max(16)}).strict();
 export type PlanningHttpOptions=z.infer<typeof planningHttpOptionsSchema>;
 export function planningHttpOptions():PlanningHttpOptions{return planningHttpOptionsSchema.parse({
