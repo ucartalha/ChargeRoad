@@ -9,6 +9,7 @@ import {colors as c} from '../../theme';
 import {LocationPicker} from './LocationPicker';
 import {ChargeSlider} from './ChargeSlider';
 import type {MapState} from '../map/MapCanvas';
+import {RouteHighlight} from '../map/RouteVisuals';
 import type {RoadPreviewResponse} from '@chargeroad/shared';
 import {buildPlanningRequest,initialPlanningForm,LatestPlanningRequest,roadEndpointAdjustment} from './planning-flow';
 import type {PlanningForm as Form,PlanningViewResult} from './planning-flow';
@@ -93,13 +94,13 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     {!!error&&<Text accessibilityRole="alert" style={s.error}>{error}</Text>}
     <Pressable testID="plan-route-button" accessibilityRole="button" accessibilityLabel="Planla" accessibilityState={{disabled:busy||cooldown>0}} disabled={busy||cooldown>0} onPress={()=>void submit()} style={[s.primary,(busy||cooldown>0)&&s.disabled]}>
       <Text style={s.primaryText}>{cooldown>0?`${cooldown} sn sonra tekrar dene`:busy?(jobPhase==='queued'?'Planın hesaplama sırasında…':'Enerji ve şarj planın hesaplanıyor…'):vehicle?'Rotamı planla':'Araç seç ve planla'}</Text></Pressable>
-    {busy&&pendingPreview?.route&&<View style={s.card}><Text style={s.title}>Yol önizlemen hazır</Text><Text style={s.text}>{(pendingPreview.route.distanceMeters/1000).toFixed(1)} km · {minutes(pendingPreview.route.drivingDurationSeconds)}</Text>
+    {busy&&pendingPreview?.route&&<View style={s.card}><RouteHighlight title="Yol önizlemen hazır" subtitle={`${(pendingPreview.route.distanceMeters/1000).toFixed(1)} km · ${minutes(pendingPreview.route.drivingDurationSeconds)}`}/>
       {pendingPreview.route.attributions.map(a=><Pressable key={a.url} accessibilityRole="link" onPress={()=>void Linking.openURL(a.url)}><Text style={s.small}>{a.text}</Text></Pressable>)}
       <Text style={s.small}>Şarj durakları ve enerji hesabı sürüyor. İşlemi iptal edebilirsin.</Text></View>}
     {busy&&<View style={s.row}><ActivityIndicator color={c.green}/><Pressable accessibilityRole="button" onPress={cancel}><Text style={s.link}>İptal et</Text></Pressable></View>}
     {output&&<View style={s.card} accessibilityLiveRegion="polite">
       {output.status==='planned'?<>
-        <Text style={s.title}>Planın hazır</Text>
+        <RouteHighlight title="Planın hazır" subtitle={`${output.plan.chargingStops.length} şarj durağı · Varış %${output.plan.estimatedArrivalChargePercent.toFixed(1)}`}/>
         {output.plan.warnings.some(w=>w.code==='coarse_future_weather_scenario')&&<Text testID="planning-future-weather" style={s.notice}>Rotanın ilerisi daha seyrek hava örnekleriyle tahmin edildi. Şarj sonrası koşullar ve rota yeniden değerlendirilmelidir.</Text>}
         {output.plan.search&&!output.plan.search.searchComplete&&<Text testID="planning-search-limited" style={s.notice}>Arama sınırları içinde doğrulanan plan. Seçtiğin hedef için daha iyi bir seçenek bulunabilir; en iyi sonuç garanti edilmez.</Text>}
         {output.metadata.requestedDepartureAt&&output.plan.scenario&&<Text style={s.small}>Hesaplanan hareket: {new Date(output.plan.scenario.departureAt).toLocaleTimeString('tr-TR')}</Text>}
@@ -117,7 +118,7 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
         {output.reasons.map((r,i)=><Text key={i} style={s.text}>{r.explanation}</Text>)}
         {output.status==='insufficient_data'&&<Text style={s.notice}>Varış şarjı ve otomatik şarj durağı önerisi sunulamıyor. Bu sonuç yolculuğun yapılamayacağı anlamına gelmez.</Text>}
       </>}
-      {result.preview?.route&&<View style={s.preview}><Text style={s.title}>Yol önizlemesi</Text><Text style={s.text}>{(result.preview.route.distanceMeters/1000).toFixed(1)} km · Sürüş {minutes(result.preview.route.drivingDurationSeconds)}</Text>
+      {result.preview?.route&&<View style={s.preview}><RouteHighlight title="Yol önizlemesi" subtitle={`${(result.preview.route.distanceMeters/1000).toFixed(1)} km · Sürüş ${minutes(result.preview.route.drivingDurationSeconds)}`}/>
         <Text style={s.small}>Seçilen konumdan yol noktasına eşleme: başlangıç {Math.ceil(result.preview.route.originSnapMeters)} m, varış {Math.ceil(result.preview.route.destinationSnapMeters)} m. Bu erişim mesafelerinin süreleri dahil değildir.</Text>
         <Text style={s.small}>{result.preview.route.traffic==='live'?'Canlı trafik içerir.':'Süre canlı trafik içermez.'} Şarj ve bekleme süreleri dahil değildir.</Text>
         {result.preview.route.warnings.length>0&&<Text style={s.notice}>Yol verilerinde eksikler veya belirsizlikler var; süre ve yol bilgileri yaklaşık olabilir.</Text>}

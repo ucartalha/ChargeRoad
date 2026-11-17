@@ -1,13 +1,15 @@
 import {useEffect,useRef,useState} from 'react';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import {ActivityIndicator,Linking,Modal,Platform,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
 import * as Location from 'expo-location';
-import MapView,{Marker,Polyline} from 'react-native-maps';
+import MapView,{Marker} from 'react-native-maps';
 import type {Region} from 'react-native-maps';
 import type {Coordinate,LocationResult,PlannedChargingStop} from '@chargeroad/shared';
 import {stationPin,socketSummary,connectorLabel} from './station-presentation';
 import {catalogueRequest} from '../../api/catalogue';
 import {colors as c} from '../../theme';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {ChargingStopSummary,RouteLine} from './RouteVisuals';
 import type {NavigationProgress} from '../navigation/navigation-core';
 export type MapState={origin:LocationResult|null;destination:LocationResult|null;geometry:Coordinate[];navigationLocation?:Coordinate|null;
   navigationProgress?:NavigationProgress|null;navigationAttributions?:{text:string;url:string;license:string}[];stops:{id:string;location:Coordinate;label:string;plan?:PlannedChargingStop}[]};
@@ -18,6 +20,9 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
   const map=useRef<MapView>(null),[region,setRegion]=useState<Region>(initial),[pins,setPins]=useState<Pin[]>([]),[error,setError]=useState(''),[loading,setLoading]=useState(false),[revision,setRevision]=useState(0);
   const [permission,setPermission]=useState(false),[locating,setLocating]=useState(false),[locationError,setLocationError]=useState(''),[position,setPosition]=useState<Coordinate|null>(null),[ready,setReady]=useState(false);
   const [selected,setSelected]=useState<Pin|null>(null),[selectedStop,setSelectedStop]=useState<PlannedChargingStop|null>(null);
+  const [detailLoading,setDetailLoading]=useState(false),[detailError,setDetailError]=useState('');
+  const detailRequest=useRef(0);
+  function closeDetail(){detailRequest.current++;setSelected(null);setSelectedStop(null);setDetailLoading(false);setDetailError('');}
   const centered=useRef(false),panned=useRef(false),alive=useRef(true),routeVisible=useRef(false),forceCenter=useRef(false);
   routeVisible.current=!!(state.origin||state.destination||state.geometry.length);
   useEffect(()=>{if(ready&&state.navigationLocation&&!panned.current)map.current?.animateToRegion({...state.navigationLocation,latitudeDelta:.012,longitudeDelta:.012},500);},[state.navigationLocation,ready]);
@@ -35,10 +40,12 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
   useEffect(()=>{if(ready&&position&&!centered.current&&!panned.current&&(!routeVisible.current||forceCenter.current)){
     map.current?.animateToRegion({...position,latitudeDelta:.045,longitudeDelta:.045},500);centered.current=true;forceCenter.current=false;}
   },[ready,position]);
-  async function openStop(stop:MapState['stops'][number]){setSelectedStop(stop.plan??null);
+  async function openStop(stop:MapState['stops'][number]){const request=++detailRequest.current;setSelected(null);setSelectedStop(stop.plan??null);setDetailError('');setDetailLoading(false);
     const known=pins.find(p=>p.id===stop.plan?.stationId);if(known){setSelected(known);return;}
-    if(!stop.plan)return;try{const item=await catalogueRequest<{id:string;payload:{station:unknown;connectorClaims?:unknown[]}}>('/stations/'+stop.plan.stationId);
-      if(alive.current)setSelected(stationPin(item.id,item.payload));}catch{if(alive.current)setError('Durak ayrıntısı alınamadı');}}
+    if(!stop.plan)return;setDetailLoading(true);try{const item=await catalogueRequest<{id:string;payload:{station:unknown;connectorClaims?:unknown[]}}>('/stations/'+stop.plan.stationId);
+      if(alive.current&&request===detailRequest.current){const pin=stationPin(item.id,item.payload);setSelected(pin);if(!pin)setDetailError('İstasyon ayrıntısı şu anda gösterilemiyor.');}}
+    catch{if(alive.current&&request===detailRequest.current)setDetailError('İstasyon ayrıntısı yüklenemedi. Şarj planını aşağıda görebilirsin.');}
+    finally{if(alive.current&&request===detailRequest.current)setDetailLoading(false);}}
   useEffect(()=>{const coords=state.geometry.length?state.geometry:[state.origin?.coordinate,state.destination?.coordinate].filter((v):v is Coordinate=>!!v);
     if(state.navigationLocation)return;
     if(coords.length>1)map.current?.fitToCoordinates(coords,{edgePadding:{top:130,bottom:330,left:45,right:45},animated:true});
@@ -60,13 +67,15 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
       onMapReady={()=>setReady(true)} onPanDrag={()=>{panned.current=true;}} onUserLocationChange={event=>{
         const point=event.nativeEvent.coordinate;if(point)setPosition({latitude:point.latitude,longitude:point.longitude});}}
       showsCompass showsPointsOfInterests={false} showsBuildings={false} toolbarEnabled={false}>
-      {pins.map(pin=><Marker key={pin.id} coordinate={pin.coordinate} title={pin.name} description={socketSummary(pin)+' · canlı durum bilinmiyor'}
-        onPress={()=>{setSelectedStop(null);setSelected(pin);}} tracksViewChanges={false}>
-        <View style={s.pin}><Text style={s.bolt}>ϟ</Text></View></Marker>)}
+      {pins.filter(pin=>!state.stops.some(stop=>stop.plan?.stationId===pin.id)).map(pin=><Marker key={pin.id} coordinate={pin.coordinate} title={pin.name} description={socketSummary(pin)+' · canlı durum bilinmiyor'}
+        onPress={()=>{closeDetail();setSelected(pin);}} tracksViewChanges={false}>
+        <View style={s.pin}><Ionicons name="flash" size={17} color="white"/></View></Marker>)}
       {state.origin&&<Marker coordinate={state.origin.coordinate} title="Başlangıç" pinColor={c.green}/>}
       {state.destination&&<Marker coordinate={state.destination.coordinate} title="Varış" pinColor={c.orange}/>}
-      {state.geometry.length>1&&<Polyline coordinates={state.geometry} strokeColor={c.green} strokeWidth={6}/>}
-      {state.stops.map(stop=><Marker key={stop.id} coordinate={stop.location} title={stop.label} pinColor={c.green} onPress={()=>void openStop(stop)}/>)}
+      {state.geometry.length>1&&<RouteLine coordinates={state.geometry}/>}
+      {state.stops.map((stop,index)=><Marker key={stop.id+':'+index} coordinate={stop.location} title={stop.label} anchor={{x:.5,y:1}} zIndex={20} tracksViewChanges={false} onPress={()=>void openStop(stop)}>
+        <View collapsable={false} style={s.stopMarker}><View style={s.stopBadge}><View style={s.stopBolt}><Ionicons name="flash" size={19} color={c.ink}/></View><Text style={s.stopNumber}>{index+1}</Text></View><View style={s.stopTip}/></View>
+      </Marker>)}
     </MapView>
     {state.navigationProgress&&<View style={{position:'absolute',top:insets.top+116,left:18,right:18,padding:14,borderRadius:18,backgroundColor:'white',gap:5}}>
       <Pressable accessibilityRole="button" accessibilityLabel="Navigasyon ayrıntılarını aç" onPress={onOpenNavigation}>
@@ -85,16 +94,17 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
       if(position){map.current?.animateToRegion({...position,latitudeDelta:.045,longitudeDelta:.045},500);}else void locate(true);
     }} style={[s.locate,{bottom:insets.bottom+280}]}>{locating?<ActivityIndicator color={c.green}/>:<Text style={s.locateIcon}>◎</Text>}</Pressable>
     {!!locationError&&<Pressable onPress={()=>void locate(true)} style={[s.locationNotice,{bottom:insets.bottom+335}]}><Text style={s.caption}>{locationError}</Text></Pressable>}
-    <Modal visible={!!selected} transparent animationType="slide" onRequestClose={()=>setSelected(null)}>
-      <View style={s.modal}><Pressable style={s.backdrop} accessibilityLabel="İstasyon ayrıntısını kapat" onPress={()=>setSelected(null)}/>
+    <Modal visible={!!selected||!!selectedStop} transparent animationType="slide" onRequestClose={closeDetail}>
+      <View style={s.modal}><Pressable style={s.backdrop} accessibilityLabel="İstasyon ayrıntısını kapat" onPress={closeDetail}/>
         <View style={[s.detail,{paddingBottom:insets.bottom+20}]}><View style={s.handle}/><ScrollView>
-          <View style={s.detailTitle}><Text style={s.heading}>{selected?.name}</Text><Pressable onPress={()=>setSelected(null)} accessibilityLabel="Kapat"><Text style={s.locateIcon}>×</Text></Pressable></View>
-          {selectedStop&&<View style={s.stopInfo}><Text style={s.heading}>%{Math.round(selectedStop.arrivalChargePercent)} → %{Math.round(selectedStop.targetChargePercent)}</Text>
-            <Text style={s.body}>Şarj: {Math.ceil(selectedStop.chargingDurationSeconds/60)} dk · Bağlantı: {Math.ceil(selectedStop.connectionDurationSeconds/60)} dk</Text>
-            <Text style={s.body}>Bekleme süresi bilinmiyor; kesin varış saati verilemiyor.</Text></View>}
+          <View style={s.detailTitle}><View style={s.stationIcon}><Ionicons name="flash" size={24} color={c.green}/></View><View style={{flex:1,gap:4}}><Text style={s.caption}>{selectedStop?'ROTANDAKİ ŞARJ NOKTASI':'ŞARJ NOKTASI'}</Text><Text style={s.heading}>{selected?.name??'Planlanan şarj durağı'}</Text></View><Pressable style={s.close} onPress={closeDetail} accessibilityRole="button" accessibilityLabel="Kapat"><Ionicons name="close" size={22} color={c.green}/></Pressable></View>
+          <View style={s.availability}><Ionicons name="information-circle-outline" size={16} color={c.muted}/><Text style={s.availabilityText}>Canlı müsaitlik doğrulanmadı</Text></View>
+          {selectedStop&&<ChargingStopSummary stop={selectedStop}/>}
+          {detailLoading&&<View style={s.loadingDetail}><ActivityIndicator color={c.green}/><Text style={s.body}>Soket bilgileri yükleniyor…</Text></View>}
+          {!!detailError&&<Text accessibilityRole="alert" style={s.body}>{detailError}</Text>}
           <Text style={s.section}>SOKETLER VE GÜÇ</Text>
-          {selected?.station.evses.flatMap(e=>e.connectors.map(p=><View key={e.id+':'+p.id} style={s.socket}><Text style={s.body}>{connectorLabel(p)}</Text></View>))}
-          {selected?.claims.map(claim=><View key={claim.sourceConnectorId} style={s.socket}><Text style={s.body}>{connectorLabel(claim)}</Text>
+          {selected?.station.evses.flatMap(e=>e.connectors.map(p=><View key={e.id+':'+p.id} style={s.socket}><View style={s.socketHeading}><View style={s.connectorIcon}><Ionicons name="flash-outline" size={20} color={c.green}/></View><Text style={[s.body,s.connectorText]}>{connectorLabel(p)}</Text></View></View>))}
+          {selected?.claims.map(claim=><View key={claim.sourceConnectorId} style={s.socket}><View style={s.socketHeading}><View style={s.connectorIcon}><Ionicons name="flash-outline" size={20} color={c.green}/></View><Text style={[s.body,s.connectorText]}>{connectorLabel(claim)}</Text></View>
             {(claim.maxCurrentA||claim.nominalVoltageV)&&<Text style={s.caption}>{claim.maxCurrentA?`${claim.maxCurrentA} A `:''}{claim.nominalVoltageV?`${claim.nominalVoltageV} V (kaynak beyanı)`:''}</Text>}
             <Text style={s.caption}>{claim.granularity==='equipment_summary'?'Ekipman özeti; bağımsız EVSE gruplaması bilinmiyor':'Kaynak soket kaydı'}</Text></View>)}
           {!!selected&&!selected.claims.length&&!selected.station.evses.length&&<Text style={s.body}>Kaynakta soket ayrıntısı bulunmuyor.</Text>}
@@ -105,8 +115,10 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
     </Modal>
   </View>;
 }
-const s=StyleSheet.create({web:{position:'absolute',top:0,left:0,right:0,bottom:0,alignItems:'center',justifyContent:'center',backgroundColor:'#DFE8DF'},pin:{width:29,height:29,borderRadius:10,backgroundColor:c.green,borderWidth:2,borderColor:'white',alignItems:'center',justifyContent:'center'},bolt:{color:'white',fontSize:20,fontWeight:'900'},
+const s=StyleSheet.create({web:{position:'absolute',top:0,left:0,right:0,bottom:0,alignItems:'center',justifyContent:'center',backgroundColor:'#DFE8DF'},pin:{width:31,height:31,borderRadius:12,backgroundColor:c.green,borderWidth:2,borderColor:'white',alignItems:'center',justifyContent:'center'},
+  stopMarker:{width:72,height:59,alignItems:'center'},stopBadge:{height:44,paddingHorizontal:8,flexDirection:'row',gap:7,alignItems:'center',backgroundColor:c.ink,borderRadius:17,borderWidth:2,borderColor:'white'},stopBolt:{width:28,height:28,borderRadius:10,backgroundColor:c.lime,alignItems:'center',justifyContent:'center'},stopNumber:{color:'white',fontSize:16,fontWeight:'800'},stopTip:{width:12,height:12,backgroundColor:c.ink,transform:[{rotate:'45deg'}],marginTop:-7,zIndex:-1},
+  stationIcon:{width:46,height:46,borderRadius:16,backgroundColor:c.softGreen,alignItems:'center',justifyContent:'center'},close:{padding:10,borderRadius:22,backgroundColor:c.softGreen},availability:{flexDirection:'row',alignItems:'center',gap:6,marginTop:14},availabilityText:{fontSize:12,color:c.muted},loadingDetail:{flexDirection:'row',alignItems:'center',gap:10,marginTop:16},socketHeading:{flexDirection:'row',alignItems:'center',gap:10},connectorIcon:{width:36,height:36,borderRadius:12,backgroundColor:'#DEEBDD',alignItems:'center',justifyContent:'center'},connectorText:{flex:1,fontWeight:'700'},
   status:{position:'absolute',top:110,left:18,right:18,alignItems:'flex-start'},chip:{backgroundColor:'white',borderRadius:22,paddingHorizontal:12,paddingVertical:8,flexDirection:'row',alignItems:'center',gap:7,elevation:2},caption:{color:c.green,fontSize:10,fontWeight:'600'},dot:{height:6,width:6,borderRadius:3,backgroundColor:c.green},
   locate:{position:'absolute',right:18,width:48,height:48,borderRadius:24,backgroundColor:'white',alignItems:'center',justifyContent:'center',elevation:4},locateIcon:{fontSize:28,color:c.green},locationNotice:{position:'absolute',right:18,padding:10,borderRadius:15,backgroundColor:'white'},
-  modal:{flex:1,justifyContent:'flex-end'},backdrop:{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#0006'},detail:{maxHeight:'65%',backgroundColor:'white',borderTopLeftRadius:26,borderTopRightRadius:26,padding:22,gap:12},handle:{alignSelf:'center',width:36,height:4,borderRadius:3,backgroundColor:c.line},
-  detailTitle:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:15},heading:{fontSize:18,fontWeight:'700',color:c.ink,flexShrink:1},body:{fontSize:13,color:c.ink,lineHeight:21},section:{fontSize:11,fontWeight:'700',color:c.green,marginTop:18,marginBottom:8},socket:{paddingVertical:10,borderBottomWidth:1,borderBottomColor:c.line,gap:5},stopInfo:{padding:14,marginTop:12,borderRadius:16,backgroundColor:c.softGreen}});
+  modal:{flex:1,justifyContent:'flex-end'},backdrop:{position:'absolute',top:0,left:0,right:0,bottom:0,backgroundColor:'#10241C88'},detail:{maxHeight:'78%',backgroundColor:c.background,borderTopLeftRadius:30,borderTopRightRadius:30,padding:22,gap:18},handle:{alignSelf:'center',width:36,height:4,borderRadius:3,backgroundColor:c.line},
+  detailTitle:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:12},heading:{fontSize:20,fontWeight:'800',color:c.ink,flexShrink:1},body:{fontSize:13,color:c.ink,lineHeight:21},section:{fontSize:11,fontWeight:'800',letterSpacing:.7,color:c.green,marginTop:22,marginBottom:12},socket:{padding:14,borderWidth:1,borderColor:c.line,borderRadius:17,backgroundColor:'white',marginBottom:8,gap:7}});
