@@ -7,7 +7,9 @@ export interface DriveLeg {from:string;to:string;route:RoadRoute;energy:SearchEn
 export interface OptimizerState {nodeId:string;soc:number;temperature:NumericObservation;capacity:UsableCapacitySnapshot|null;at:string;
   legs:DriveLeg[];stops:{stop:PlannedChargingStop;arrivalAt:string;departureAt:string}[];visited:string[];netKwh:number;seconds:number;distance:number;}
 export interface PlanningContext {request:RoutePlanRequest;vehicle:VehicleEnergyProfile;evaluatedAt:string;options:OptimizerOptions;
-  candidates:StationCandidateSet;nodes:PlanningNode[];baseRoutes?:RoadRoute[];weatherSampling?:PlanningWeather;}
+  candidates:StationCandidateSet;nodes:PlanningNode[];baseRoutes?:RoadRoute[];weatherSampling?:PlanningWeather;
+  /** Measured access detour per station id (station-access/1.0.0); null = could not be measured. */
+  stationAccess?:Record<string,{additionalMeters:number;additionalSeconds:number}|null>;}
 export interface TransitionPort {
   drive(state:OptimizerState,to:PlanningNode,preview:boolean,signal:AbortSignal):Promise<DriveLeg[]>;
   charge(state:OptimizerState,target:number,signal:AbortSignal):Promise<OptimizerState[]>;

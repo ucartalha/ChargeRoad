@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {routePlanRequestSchema,optimizerOptionsSchema,roadRoutingResultSchema,vehicleEnergyProfileSchema,stationCandidateSetSchema,planningEvaluationSchema} from '@chargeroad/shared';
-import type {RoutePlanRequest,OptimizerOptions,PlanningResult,StationCandidateSet} from '@chargeroad/shared';
+import type {RoutePlanRequest,OptimizerOptions,PlanningResult,StationCandidateSet,Coordinate} from '@chargeroad/shared';
 import {VehicleEnergyProvider} from '../providers/vehicle-energy-provider';
 import {RoutingProvider} from '../providers/routing-provider';
 import {StationDataProvider} from '../providers/station-data-provider';
@@ -18,7 +18,9 @@ import {OPTIMIZER_VERSION} from './optimizer-policy';
 import {ENERGY_ALGORITHM_VERSION} from '../energy/energy-policy';
 import {ENERGY_POLICY} from '../energy/energy-policy';
 import {CHARGING_ALGORITHM_VERSION} from '../charging/charging-engine';
-import {catalogueStationScenario,selectCatalogueCandidates} from './catalogue-station-scenario';
+import {catalogueStationScenario,selectAccessibleCandidates,STATION_ACCESS_POLICY} from './catalogue-station-scenario';
+import type {StationAccessMeasure} from './catalogue-station-scenario';
+import {pointAt,timeAt} from '../roads/road-service';
 import {RoadProviderError} from '../roads/road-client';
 import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
 import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
@@ -79,6 +81,28 @@ export class EvPlanningService {
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;
       const pinned=new Map<string,StationCandidateSet['candidates'][number]>();
+      // Station access detour in travel direction (station-access/1.0.0), measured once per station per plan.
+      const accessCache=new Map<string,Promise<StationAccessMeasure|null>>();
+      const accessLeg=async(origin:Coordinate,destination:Coordinate,departureAt:string)=>{
+        const r=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,alternatives:1,schemaVersion:'1.0.0',origin,destination,departureAt},s);});
+        const parsed=roadRoutingResultSchema.nullable().safeParse(r.data);return parsed.success?parsed.data?.routes[0]??null:null;};
+      const measureAccess=(candidate:StationCandidateSet['candidates'][number])=>{
+        let pending=accessCache.get(candidate.station.id);
+        if(!pending){pending=(async()=>{
+          const match=[...candidate.routeMatches].sort((a,b)=>a.distanceMeters-b.distanceMeters)[0],route=base.routes.find(r=>r.id===match?.routeId),
+            segment=route?.segments.find(s=>s.id===match.segmentId);if(!route||!segment)return null;
+          const at=segment.startDistanceMeters+segment.distanceMeters*match.segmentProgress,approach=STATION_ACCESS_POLICY.approachMeters,
+            entry=Math.max(0,at-approach),exit=Math.min(route.distanceMeters,at+approach),entrySeconds=timeAt(route,entry);
+          try{
+            const departureAt=new Date(Date.parse(request.departureAt)+entrySeconds*1000).toISOString();
+            const first=await accessLeg(pointAt(route,entry),candidate.station.location,departureAt);if(!first)return null;
+            const second=await accessLeg(candidate.station.location,pointAt(route,exit),new Date(Date.parse(departureAt)+first.drivingDurationSeconds*1000).toISOString());if(!second)return null;
+            return {additionalMeters:first.distanceMeters+second.distanceMeters-(exit-entry),
+              additionalSeconds:first.drivingDurationSeconds+second.drivingDurationSeconds-(timeAt(route,exit)-entrySeconds)};
+          }catch(error){if(error instanceof PlanningProviderFailure){session.issues.add('STATION_ACCESS_UNMEASURED');return null;}throw error;}
+        })();accessCache.set(candidate.station.id,pending);}
+        return pending;
+      };
       for(const corridor of options.corridorMeters){
         const found=await read('STATION',s=>this.stations.findAlongRoutes(base.routes,corridor,s,vehicle.supportedConnectors));
         const setResult=stationCandidateSetSchema.safeParse(found.data);if(!setResult.success)throw new PlanningProviderFailure('STATION_PROVIDER_INVALID_DATA');
@@ -91,7 +115,12 @@ export class EvPlanningService {
         const physical=all.filter(c=>c.station.evses.some(e=>e.connectors.some(p=>p.powerType==='dc'&&vehicle.supportedConnectors.includes(p.standard))));
         if(physical.length<all.length)session.issues.add('PHYSICAL_DC_EVSE_DATA_MISSING');
         const limit=Math.min(options.maxStations,set.metadata.search.maxCandidates),limited=physical.length>limit;
-        context.candidates={candidates:request.policy.stationDataQuality==='catalogue_power_scenario'?selectCatalogueCandidates(physical,base.routes,limit):physical.slice(0,limit),metadata:structuredClone(set.metadata)};
+        let selected=physical.slice(0,limit);
+        if(request.policy.stationDataQuality==='catalogue_power_scenario'){
+          const accessible=await selectAccessibleCandidates(physical,base.routes,limit,measureAccess);
+          selected=accessible.chosen;context.stationAccess={...context.stationAccess,...accessible.access};
+        }
+        context.candidates={candidates:selected,metadata:structuredClone(set.metadata)};
         if(physical.length<all.length)context.candidates.metadata.coverage.completeForQuery=false;
         if(limited){context.candidates.metadata.search.truncated=true;context.candidates.metadata.coverage.completeForQuery=false;session.issues.add('STATION_CANDIDATE_LIMIT');}
         observeCandidateEligibility(all,context);

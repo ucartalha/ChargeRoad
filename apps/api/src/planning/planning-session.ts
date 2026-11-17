@@ -181,7 +181,10 @@ export class PlanningSession implements TransitionPort {
           const stop:PlannedChargingStop={id:'stop-'+createHash('sha256').update(checksum([station.id,state.at,target,evse.id,connector.id,curve.id])).digest('hex').slice(0,24),
             hardwareBasis:evse.identityBasis==='catalogue_scenario'?'catalogue_power_scenario':'verified_hardware',
             stationId:station.id,evseId:evse.id,connectorId:connector.id,chargingPathId:curve.chargingPathId,location:station.location,routeDistanceMeters:state.distance,
-            detourDistanceMeters:null,detourDrivingSeconds:null,detourBasis:'included_in_road_not_separately_quantified',arrivalChargePercent:state.soc,chargeStartPercent:startSoc,
+            // Measured access detour (station-access/1.0.0); the driving time is already part of the planned road legs.
+            ...(this.context.stationAccess?.[station.id]?{detourDistanceMeters:Math.max(0,this.context.stationAccess[station.id]!.additionalMeters),
+              detourDrivingSeconds:Math.max(0,this.context.stationAccess[station.id]!.additionalSeconds)}:
+              {detourDistanceMeters:null,detourDrivingSeconds:null,detourBasis:'included_in_road_not_separately_quantified' as const}),arrivalChargePercent:state.soc,chargeStartPercent:startSoc,
             connectionBatteryEnergyKwh:connectionKwh,targetChargePercent:target,effectiveBatteryCapacityKwh:state.capacity.effectiveKwh,
             energyDeliveredAtInletKwh:result.energyDeliveredAtInletKwh!,energyStoredKwh:result.energyStoredKwh!,auxiliaryEnergyKwh:result.auxiliaryEnergyKwh!,conversionLossKwh:result.conversionLossKwh!,
             curveReference:{id:curve.id,version:curve.version,coveredSocPercent:{min:curve.curve.points[0].socPercent,max:curve.curve.points.at(-1)!.socPercent},extrapolation:'forbidden'},
