@@ -4,6 +4,14 @@ import type {DriveLeg,OptimizerState,PlanningContext,TransitionPort} from './opt
 export const CHARGE_TARGET_SEARCH_POLICY={version:'charge-target-search/1.0.0',maxCalls:32,maxPasses:2,maxTargetRounds:5,
   remainingBudgetFraction:.4,beamWidth:2} as const;
 
+/** Optimizer 1.4.0: a charge returns one state per EVSE/connector. States that are numerically identical for every
+ *  later drive (node, SOC, departure time, battery temperature, capacity) are collapsed to the first one. Ties already
+ *  keep the first-found state, so with non-binding budgets the plan is unchanged; only redundant expansion disappears. */
+export function distinctChargedStates(states:readonly OptimizerState[]):OptimizerState[]{
+  const seen=new Set<string>(),out:OptimizerState[]=[];
+  for(const s of states){const key=JSON.stringify([s.nodeId,s.soc,s.at,s.temperature,s.capacity]);if(!seen.has(key)){seen.add(key);out.push(s);}}
+  return out;
+}
 export function appendDrivingState(state:OptimizerState,leg:DriveLeg,context:PlanningContext):OptimizerState|null{
   const e=leg.energy,row=e.segments.at(-1),reserve=context.request.constraints.minimumReserveChargePercent;
   if(e.status!=='estimated'||e.partialSegmentId||!e.capacitySnapshot||!row||e.segments.length!==leg.route.segments.length||
@@ -62,7 +70,7 @@ export async function improveFixedStopTargets(context:PlanningContext,baseline:O
       const charged:OptimizerState[]=[];
       for(const state of states){const wanted=i===index?target:base.stops[i].stop.targetChargePercent;
         if(state.soc>=wanted){charged.push(state);continue;}
-        await guard(1);charged.push(...await port.charge(state,wanted,signal));}
+        await guard(1);charged.push(...distinctChargedStates(await port.charge(state,wanted,signal)));}
       const nodeId=i+1<base.stops.length?base.stops[i+1].stop.stationId:'destination',node=context.nodes.find(n=>n.id===nodeId);
       if(!node)return [];
       const driven:OptimizerState[]=[],oldLeg=base.legs.find(l=>l.from===base.stops[i].stop.stationId&&l.to===nodeId);

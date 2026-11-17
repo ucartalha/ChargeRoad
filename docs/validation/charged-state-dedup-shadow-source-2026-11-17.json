@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.4.0",
+  "scope": "Charged-state dedup search (1.4.0) vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "60156dbdaff51aadc02cf135d871609ddd061b581d6e61a9f440e55ec2d6c021"
+}

@@ -7,7 +7,7 @@ import {compilePlan} from './plan-compiler';
 import {CATALOGUE_SCENARIO_POLICY as seedPolicy,candidateProgress} from './catalogue-station-scenario';
 import {maxMetric} from '../observability/planning-metrics';
 import {createStateShadow} from './state-dominance-shadow';
-import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets} from './charge-target-search';
+import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets,distinctChargedStates} from './charge-target-search';
 
 export function compareStates(a:OptimizerState,b:OptimizerState,objective:PlanningContext['request']['policy']['objective']){
   const key=(s:OptimizerState)=>objective==='minimum_charging_stops'?[s.stops.length,s.seconds,s.distance]:
@@ -15,6 +15,7 @@ export function compareStates(a:OptimizerState,b:OptimizerState,objective:Planni
   const x=key(a),y=key(b);for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];
   const ax=a.visited.join('|'),by=b.visited.join('|');return ax<by?-1:ax>by?1:0;
 }
+export {distinctChargedStates};
 /** Seed fallback (optimizer 1.3.0): after every range-hint seed attempt from a state depleted the battery, try untried
  *  stations inside the reach those failed legs actually showed, farthest first. Ordering only; every transition is still
  *  fully evaluated, nothing is certified or pruned. */
@@ -97,7 +98,7 @@ export class ChargeStopOptimizer {
               if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
               const atStation=append(state,leg);
               for(const targetSoc of seedChargeTargets(context,atStation.soc)){
-                await budget();for(const charged of await port.charge(atStation,targetSoc,signal)){
+                await budget();for(const charged of distinctChargedStates(await port.charge(atStation,targetSoc,signal))){
                   if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
                 }
               }
@@ -153,7 +154,7 @@ export class ChargeStopOptimizer {
           anchors.push(Math.ceil(Math.max(reserve,arrival)*100-1e-8)/100);
         }}
         for(const soc of chargeTargetCandidates(context,current.soc,anchors)){
-          await budget();for(const charged of await port.charge(current,soc,signal))await advance(charged);
+          await budget();for(const charged of distinctChargedStates(await port.charge(current,soc,signal)))await advance(charged);
         }
       }
     }catch(error){if(signal.aborted)throw signal.reason;

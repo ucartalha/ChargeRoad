@@ -27,7 +27,7 @@ export function previousStateOptimizer(){
  const hash=createHash('sha256').update(source).digest('hex');
  // The old checkpoint stays immutable. Product v1.1 intentionally changes search; compare its
  // current algorithm with the same algorithm minus shadow, bound to a separate reviewed checkpoint.
- const checkpoint=({'chargeroad-optimizer/1.3.0':'seed-fallback-shadow-source-2026-11-17.json','chargeroad-optimizer/1.2.0':'adaptive-weather-shadow-source-2026-11-16.json'} as Record<string,string>)[OPTIMIZER_VERSION]??'charge-target-shadow-source-2026-11-15.json';
+ const checkpoint=({'chargeroad-optimizer/1.4.0':'charged-state-dedup-shadow-source-2026-11-17.json','chargeroad-optimizer/1.3.0':'seed-fallback-shadow-source-2026-11-17.json','chargeroad-optimizer/1.2.0':'adaptive-weather-shadow-source-2026-11-16.json'} as Record<string,string>)[OPTIMIZER_VERSION]??'charge-target-shadow-source-2026-11-15.json';
  const current=JSON.parse(readFileSync(resolve(__dirname,'../../../../../docs/validation/'+checkpoint),'utf8'));
  if(hash!==baseline.optimizerBeforeRawSha256&&(current.optimizerVersion!==OPTIMIZER_VERSION||hash!==current.optimizerWithoutShadowSha256))throw new Error('Before optimizer source hash mismatch');
  const javascript=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
