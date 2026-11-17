@@ -3,6 +3,7 @@ import {interpolate,meters} from '../roads/geometry';
 import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY as policy} from './weather-policy';
 import {WeatherUnavailable} from './weather-ports';
 import type {PlanningWeather} from './planning-weather-policy';
+import {gridCellCenter,WEATHER_GRID_POLICY} from './weather-grid';
 import {weatherSampleDistanceLimit} from '@chargeroad/shared';
 
 // Stops apply immediately BEFORE the named segment. Null means unknown waiting time.
@@ -36,12 +37,24 @@ export function sampleRouteWeather(input:RouteWeatherRequest,planning?:PlanningW
   const candidates=planning?planning.anchors.map(a=>a.location):samples;
   const unique=[...new Map(candidates.map(p=>[p.latitude+','+p.longitude,p])).values()];
   if(unique.length>WEATHER_POLICY.maxSamples)throw new WeatherUnavailable('budget_exhausted','Weather sample budget');
+  const grid=planning?.gridDegrees,byId=grid===undefined?null:new Map(segments.map(s=>[s.id,s]));
   for(const query of queries){
     query.sampleLocation=unique.reduce((best,p)=>meters(query.location,p)<meters(query.location,best)?p:best,unique[0]);
     // An off-corridor alternative cannot inherit a distant base-road forecast. Fall back
     // to this exact midpoint; provider acquisition limits still bound these exceptions.
     if(meters(query.location,query.sampleLocation)>weatherSampleDistanceLimit(query.samplingResolution))query.sampleLocation=query.location;
+    // W4: the segment's own global cell; terrain context lets the service reject a cell >100 m off the road,
+    // in which case the route-relative sample above is used (no extra per-segment request).
+    const heights=byId?.get(query.segmentId)?.elevationProfile?.map(p=>p.elevationMeters);
+    if(grid!==undefined&&heights?.length&&heights.every(h=>h>WEATHER_GRID_POLICY.minPlausibleElevationMeters)){
+      const cell=gridCellCenter(query.location,grid);
+      if(meters(query.location,cell)<=weatherSampleDistanceLimit(query.samplingResolution)){
+        query.sampleFallbackLocation=query.sampleLocation;query.sampleLocation=cell;query.sampleGridDegrees=grid;
+        query.sampleElevationMeters=(Math.min(...heights)+Math.max(...heights))/2;}
+    }
   }
+  if(grid!==undefined&&new Set(queries.map(q=>q.sampleLocation!.latitude+','+q.sampleLocation!.longitude)).size>WEATHER_POLICY.maxSamples)
+    throw new WeatherUnavailable('budget_exhausted','Weather sample budget');
   return {queries,samples:planning?[...new Map(queries.map(q=>[q.sampleLocation!.latitude+','+q.sampleLocation!.longitude,q.sampleLocation!])).values()]:unique,unknownTimingSegmentIds:unknownTiming};
 }
 

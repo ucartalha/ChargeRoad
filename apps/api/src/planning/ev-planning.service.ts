@@ -24,6 +24,7 @@ import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
 import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
 import {samplingRange,buildPlanningWeather} from '../weather/planning-weather-policy';
 import {weatherExecutionMode} from '../weather/weather-atlas';
+import {weatherGridEnabled} from '../weather/weather-grid';
 
 @Injectable()
 export class EvPlanningService {
@@ -71,8 +72,9 @@ export class EvPlanningService {
       base={...base,routes:matched};
       const context:PlanningContext={request,vehicle,evaluatedAt,options:{...options},candidates:null as unknown as StationCandidateSet,nodes:[],baseRoutes:base.routes};
       const catalogueRange=this.vehicles.catalogueRange?await read('VEHICLE',s=>this.vehicles.catalogueRange!(id,s)):null;
-      context.weatherSampling=buildPlanningWeather(base.routes[0],samplingRange(vehicle,catalogueRange));
       const mode=weatherExecutionMode();
+      // W4 grid is an opt-in for the default (legacy) weather mode only; the experimental adaptive modes keep their own anchors.
+      context.weatherSampling=buildPlanningWeather(base.routes[0],samplingRange(vehicle,catalogueRange),{grid:mode==='legacy'&&weatherGridEnabled()});
       const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes,mode);weatherSession=session;
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;

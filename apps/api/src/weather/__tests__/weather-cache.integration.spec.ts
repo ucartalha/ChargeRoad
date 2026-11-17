@@ -56,7 +56,11 @@ integration('Weather shared PostgreSQL acquisition and HTTP',()=>{
     const transport=jest.fn().mockResolvedValueOnce(first).mockResolvedValueOnce(second);
     const cache=store(transport);await cache.get('fake','1',url,signal,budget(),validate);
     await cache.get('fake','1',url,signal,budget(),validate);expect(transport).toHaveBeenCalledTimes(1);
+    // Past Expires but validated within the serve window: still served, no request (W5).
     await pool.query("UPDATE weather_forecast_cache SET expires_at=now()-interval '1 second'");
+    await cache.get('fake','1',url,signal,budget(),validate);expect(transport).toHaveBeenCalledTimes(1);
+    // Past the serve window: revalidated with Last-Modified.
+    await pool.query("UPDATE weather_forecast_cache SET document=jsonb_set(document,'{validatedAt}',to_jsonb((now()-$1*interval '1 second')::text))",[WEATHER_POLICY.cacheServeSeconds+1]);
     await pool.query('UPDATE weather_provider_state SET next_allowed_at=now()');
     const result=await cache.get('fake','1',url,signal,budget(),validate);
     expect(transport.mock.calls[1][1]).toBe(first.lastModified);expect(result.fetchedAt).toBe(first.validatedAt);

@@ -54,7 +54,8 @@ export class WeatherService extends WeatherProvider {
             parsed=adapter.parse(d);if(meters(parsed.location,location)>30)throw new Error('Weather provider returned wrong location');
           });
           const series=parsed??adapter.parse(document);if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');
-          return {series,expiresAt:Date.parse(document.expiresAt)};
+          // Mirror the PG serve window (W5) so the job-local atlas does not re-read a still-servable document.
+          return {series,expiresAt:Math.max(Date.parse(document.expiresAt),Date.parse(document.validatedAt)+WEATHER_POLICY.cacheServeSeconds*1000)};
         }).then(series=>{if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');return series;});seriesByUrl.set(url,pending);}
         return pending;
       }
@@ -78,11 +79,15 @@ export class WeatherService extends WeatherProvider {
             const original=query.sampleLocation??query.location,chosen=weatherSampleLocation(query);
             const exact=chosen.latitude===original.latitude&&chosen.longitude===original.longitude;
             const adaptive=query.samplingResolution?.policyVersion==='range-adaptive/2.0.0';
-            const selected=adaptive&&meters(query.location,series.location)>30&&!terrainSharingIsSafe(query,series.elevation)?await seriesAt(query.location):
+            // W4: a shared grid cell is used only when its model elevation is within 100 m of the road; otherwise the road point itself.
+            const grid=query.sampleGridDegrees!==undefined,gridShared=grid&&terrainSharingIsSafe(query,series.elevation);
+            const selected=grid?gridShared?series:await seriesAt(query.sampleFallbackLocation??query.location):
+              adaptive&&meters(query.location,series.location)>30&&!terrainSharingIsSafe(query,series.elevation)?await seriesAt(query.location):
               exact||terrainSharingIsSafe(query,series.elevation)?series:await seriesAt(original);
             const forecast=meters(query.location,selected.location)>weatherSampleDistanceLimit(query.samplingResolution)+30?
               unavailableForecast(query,'outside_horizon',adapter.id):normalizeWeather(selected,query,adapter.id,Date.now());
-            if(!exact&&forecast.metadata)forecast.metadata.warnings.push(selected===series?'weather_spatial_cell_shared':'weather_cell_rejected_elevation_mismatch');
+            if(grid&&forecast.metadata)forecast.metadata.warnings.push(gridShared?'weather_grid_cell_shared':'weather_cell_rejected_elevation_mismatch');
+            else if(!exact&&forecast.metadata)forecast.metadata.warnings.push(selected===series?'weather_spatial_cell_shared':'weather_cell_rejected_elevation_mismatch');
             result.set(query.id,forecast);
           }
         }catch(error){

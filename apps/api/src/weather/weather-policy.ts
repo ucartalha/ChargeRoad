@@ -4,7 +4,10 @@ export const WEATHER_POLICY={version:'weather/1.2.0',maxSamples:128,maxExternalC
   sampleDistanceMeters:15000,sampleSeconds:900,maxAgeSeconds:43200,maxGapSeconds:21600,
   // Shared (PG) pacing: <=10 req/s for the whole deployment, half of MET's 20 req/s total limit (ToS rev. 2026-11-05).
   minIntervalMs:100,maxConcurrency:4,dailyLimit:1000,fetchTimeoutMs:5000,deadlineMs:30000,leaseSeconds:15,
-  fallbackCacheSeconds:3600,retentionSeconds:86400,departureWindowSeconds:259200} as const;
+  fallbackCacheSeconds:3600,retentionSeconds:86400,departureWindowSeconds:259200,
+  // W5: after MET's Expires (~31 min) a validated document keeps being served for up to 8 h; only then may that
+  // location be requested again. A served model run must still pass the 12 h forecast-age rule (1 h margin).
+  cacheServeSeconds:28800,cacheServeMaxSourceAgeSeconds:39600} as const;
 // Separate from detailed energy validation: coarse weather never certifies a charging decision.
 export const WEATHER_SAMPLING_POLICY={version:'weather-sampling/2.0.0',previewLocations:5,
   shortRouteMeters:150000,shortStepMeters:10000,longStepMeters:20000,riskStepMeters:5000,

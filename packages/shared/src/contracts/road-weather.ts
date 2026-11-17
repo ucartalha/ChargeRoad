@@ -164,6 +164,10 @@ export const weatherQuerySchema = z.object({
   // Sharing is allowed only with an explicit, locally bounded terrain context.
   sampleElevationMeters:finiteSchema.optional(),
   sampleReliefMeters:nonnegativeSchema.optional(),
+  // W4: sampleLocation is the centre of a global lat/lon cell of this size (degrees); shared across routes.
+  sampleGridDegrees:z.number().positive().max(1).optional(),
+  // W4: route-relative sample used when the grid cell is rejected (terrain), so a rejection never adds a per-segment request.
+  sampleFallbackLocation:coordinateSchema.optional(),
 }).strict();
 
 export const weatherForecastSchema = z.object({

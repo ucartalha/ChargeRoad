@@ -7,6 +7,14 @@ import type {WeatherDocument,WeatherTransport} from './weather-ports';
 import {countMetric,startStage} from '../observability/planning-metrics';
 
 export interface WeatherCallBudget {used:number;limit:number;}
+/** A cached document is usable before Expires, or for cacheServeSeconds after its last successful validation
+ *  while the model run is still young enough for planning. Policy values are integer constants, not input. */
+export function weatherCacheUsableSql(alias:string){
+  const c=alias?alias+'.':'';
+  return `(${c}expires_at>now() OR (${c}document IS NOT NULL`+
+    ` AND (${c}document->>'validatedAt')::timestamptz>now()-${WEATHER_POLICY.cacheServeSeconds}*interval '1 second'`+
+    ` AND (${c}document#>>'{body,properties,meta,updated_at}')::timestamptz>now()-${WEATHER_POLICY.cacheServeMaxSourceAgeSeconds}*interval '1 second'))`;
+}
 function waitFor<T>(work:Promise<T>,signal:AbortSignal):Promise<T>{
   return new Promise((resolve,reject)=>{const cancel=()=>reject(signal.reason);signal.addEventListener('abort',cancel,{once:true});
     work.then(resolve,reject).finally(()=>signal.removeEventListener('abort',cancel));if(signal.aborted)cancel();});
@@ -35,7 +43,7 @@ export class WeatherCacheStore {
     validate:(document:WeatherDocument)=>void):Promise<WeatherDocument>{
     for(let attempt=0;attempt<210;attempt++){
       signal.throwIfAborted();
-      const row=(await this.database.pool.query(`SELECT c.document,c.expires_at>now() AS fresh,c.retry_at>now() AS retry,s.blocked_kind
+      const row=(await this.database.pool.query(`SELECT c.document,${weatherCacheUsableSql('c')} AS fresh,c.retry_at>now() AS retry,s.blocked_kind
         FROM weather_forecast_cache c LEFT JOIN weather_provider_state s USING(provider_id) WHERE c.request_key=$1`,[key])).rows[0];
       if(row?.fresh&&row.document){this.counters.hits++;countMetric('weather_pg_cache_hits');return row.document;}
       if(attempt===0){this.counters.misses++;countMetric('weather_pg_cache_misses');}
@@ -63,7 +71,7 @@ export class WeatherCacheStore {
       if(state.blocked)throw new WeatherUnavailable(state.blocked_kind,'Weather provider backoff');
       if(state.today&&state.used>=WEATHER_POLICY.dailyLimit)throw new WeatherUnavailable('budget_exhausted','Weather daily quota');
       // Recheck freshness/ownership under provider lock before charging any budget.
-      const existing=(await client.query(`SELECT expires_at>now() AS fresh,token IS NOT NULL AND lease_until>now() AS leased FROM weather_forecast_cache WHERE request_key=$1`,[key])).rows[0];
+      const existing=(await client.query(`SELECT ${weatherCacheUsableSql('')} AS fresh,token IS NOT NULL AND lease_until>now() AS leased FROM weather_forecast_cache WHERE request_key=$1`,[key])).rows[0];
       if(existing?.fresh||existing?.leased){await client.query('ROLLBACK');return null;}
       if(budget.used>=budget.limit)throw new WeatherUnavailable('budget_exhausted','Weather acquisition budget');
       const active=(await client.query(`SELECT count(*)::int AS n FROM weather_forecast_cache WHERE provider_id=$1 AND token IS NOT NULL AND lease_until>now()`,[provider])).rows[0].n;

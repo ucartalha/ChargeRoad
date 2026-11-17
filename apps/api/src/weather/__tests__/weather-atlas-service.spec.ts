@@ -1,6 +1,7 @@
 import {WeatherService,WeatherAdapterRegistry} from '../weather.service';
 import {WeatherAtlas} from '../weather-atlas';
 import {WeatherCacheStore} from '../weather-cache';
+import {WEATHER_POLICY} from '../weather-policy';
 import {MetNorwayAdapter} from '../met-norway.adapter';
 import {weatherTransport} from '../weather-http';
 import {experimentDocument} from '../validation/weather-experiment-fixture';
@@ -48,16 +49,22 @@ describe('Atlas through native service/cache/adapter/HTTP parser (MODEL SQL)',()
    headers:{Expires:new Date(epoch+3600000).toUTCString(),'Last-Modified':modified}}));
   const cache=new WeatherCacheStore({pool:db} as never,weatherTransport(config),'synthetic-atlas-service-secret-at-least-32-characters');
   const service=new WeatherService(config,new WeatherAdapterRegistry([adapter]),cache),atlas=new WeatherAtlas(performance.now()+10000),context={budgetScope:{},seriesScope:atlas};
-  const queries=[{id:'q',segmentId:'s',location:{latitude:35,longitude:32.8},validAt:new Date(epoch+1800000).toISOString()}];
+  // validAt lies beyond the 8 h serve window so the same query stays answerable after revalidation (W5).
+  const queries=[{id:'q',segmentId:'s',location:{latitude:35,longitude:32.8},validAt:new Date(epoch+9*3600000).toISOString()}];
+  const served=epoch+WEATHER_POLICY.cacheServeSeconds*1000;
   try{
    const first=await service.forecast(queries,new AbortController().signal,context);
+   // Past Expires but inside the serve window: the job-local atlas keeps serving, no request.
    jest.setSystemTime(epoch+2000);for(const row of db.rows.values())row.expires=0;
+   await service.forecast(queries,new AbortController().signal,context);expect(wire).toHaveBeenCalledTimes(1);
+   // Past the serve window: revalidated once with If-Modified-Since.
+   jest.setSystemTime(served+2000);
    const second=await service.forecast(queries,new AbortController().signal,context);
    expect(wire).toHaveBeenCalledTimes(2);expect(cache.counters.externalCalls).toBe(2);
    expect((wire.mock.calls[1][1]?.headers as Record<string,string>)['If-Modified-Since']).toBe(modified);
    expect(second.data[0].fetchedAt).toBe(first.data[0].fetchedAt);expect(second.data[0].sourceUpdatedAt).toBe(first.data[0].sourceUpdatedAt);
    expect(second.data[0].temperatureCelsius).toBe(first.data[0].temperatureCelsius);
-   expect(second.data[0].metadata!.lastValidatedAt).toBe(new Date(epoch+2000).toISOString());
+   expect(second.data[0].metadata!.lastValidatedAt).toBe(new Date(served+2000).toISOString());
   }finally{atlas.dispose();wire.mockRestore();jest.setSystemTime(epoch);}
  });
 });
