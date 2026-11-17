@@ -8,6 +8,7 @@ import {meters} from '../roads/geometry';
 import {createReferenceSelector} from './reference-selector';
 import {batteryThermalStep} from './battery-thermal';
 import {energyInputUsage} from './energy-input-budget';
+import {windowedElevation} from './elevation-window';
 
 const unknownTemperature={origin:'unknown' as const,value:null};
 function audit(segment:RoadSegment,model:EnergyModel):EnergyAudit{return {segmentId:segment.id,mode:model.mode,
@@ -107,6 +108,9 @@ export class EnergyConsumptionEngine {
       if(new Set(input.weather.map(w=>w.queryId)).size!==input.weather.length)throw new EnergyDataMissing('DUPLICATE_WEATHER_QUERY');
       for(const weather of input.weather){const group=forecasts.get(weather.segmentId)??[];group.push(weather);forecasts.set(weather.segmentId,group);}
       let elapsed=0,previousTraceEnd:number|null=null,halt=false;
+      // Physical terrain for integration only; raw segments still drive every data/quality gate.
+      const terrain=windowedElevation(route,ENERGY_POLICY.elevationWindowMeters);
+      if(terrain.size)assumptions.add('modelled_elevation_distance_window_'+ENERGY_POLICY.elevationWindowMeters+'m');
       for(const segment of route.segments){
         currentSegment=segment.id;signal.throwIfAborted();
         if(segment.roadClass==='ferry')throw new EnergyDataMissing('FERRY_STANDBY_ENERGY_MODEL_REQUIRED');
@@ -159,11 +163,12 @@ export class EnergyConsumptionEngine {
         const mass=physics?p.curbMassKg!+payload:0,segmentReferences=new Set<string>();
         const a=audit(segment,model),startBattery=battery;
         let segmentMin=battery,segmentSeconds=0,segmentDistance=0,densityDistanceSum=0;
-        for(const piece of integratePieces(segment)){
+        const physical=terrain.get(segment.id)??segment;
+        for(const piece of integratePieces(physical)){
           signal.throwIfAborted();
           if(++steps>ENERGY_POLICY.maxSteps||this.clock()>=deadline){result.status='computation_limit';reason('ENERGY_INTEGRATION_BUDGET');halt=true;break;}
           if(steps%ENERGY_POLICY.yieldEvery===0){await yieldEventLoop();signal.throwIfAborted();}
-          const beginHeight=elevationAt(segment,piece.startDistance),endHeight=elevationAt(segment,piece.endDistance),dh=beginHeight===null||endHeight===null?0:endHeight-beginHeight;
+          const beginHeight=elevationAt(physical,piece.startDistance),endHeight=elevationAt(physical,piece.endDistance),dh=beginHeight===null||endHeight===null?0:endHeight-beginHeight;
           const speed=(piece.startSpeed+piece.endSpeed)/2;
           const baseline=model.mode==='reference_corrected'&&piece.distance>1e-10?selectReference(speed*3.6,weather.temperatureCelsius!,batteryTemperature):null;
           if(baseline){for(const id of baseline.ids){referenceIds.add(id);segmentReferences.add(id);}

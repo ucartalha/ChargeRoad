@@ -496,3 +496,11 @@ Aşağıdaki görev ifadesi bu dosya repo içine eklendikten sonra Codex'e veril
 - **Kaynak 2 — GitHub `main` incelemesi (2026-11-12):** `road-policy.ts` sabit 100/gün, `valhalla-adapter.ts` `elevation_interval:30`, `normalize-road.ts` içinde kalite alanı set edilmiyor ve `a<=-32000` kontrolü var; `EnergyConsumptionEngine` `elevationQuality` ve quality policy'ye bağlı. GitHub dosya ağacında `infra/valhalla` ve ADR-009 yok. **Codex güncel çalışma ağacını ayrıca inceleyecek.**
 - **Kaynak 3 — ADR-009 önceki metin:** Kararlar DEC-009-A–H ve P0–P5 sıralaması korunmuştur. Bu revizyon mevcut kararları geriye dönük olarak tamamlandı saymaz.
 - **Takip:** `docs/tasks/valhalla-dem-integration-hardening.md`; çıktı ve test durumu `docs/validation/` altında küçük, metinsel rapor/fixture olarak kaydedilebilir. Rota optimizasyonu ayrıca planlanacak.
+
+---
+
+## 17. Ek karar notu — enerji için 300 m yükseklik penceresi (2026-11-17)
+
+- **Bağlam:** Madde 4 "30 m ham DEM + 300 m mesafe bazlı hareketli eğim analizi" diyor ve otomatik rastgele yumuşatmayı yasaklıyor. İstanbul→İzmir planında kullanıcı kısa bacakta gerçekçi olmayan tüketim bildirdi. Ölçüm: 30 m DEM tırmanışı 1 km ölçeğinin ~2,5 katı; %20 üzeri 152 şüpheli eğimin 0'ı köprü/tünel içinde (köprü/tünel enterpolasyonu hipotezi çürüdü). Tam batarya menzili aynı hava ile ham 211,7 km, 300 m pencere 226,4 km.
+- **Karar (kullanıcı onayı):** Yalnız enerji motorunun fiziksel entegrasyonunda, yalnız `modelled` arazi için sabit, sürümlü 300 m mesafe penceresi (`chargeroad-energy/1.4.0`). Rastgele değil, uçlarda net kotu koruyan deterministik pencere; eğim üst sınırı yok. Ham DEM, QA (`elevation-qa.ts`) ve yol sözleşmesi değişmez.
+- **Açık risk:** Pencere boyu saha ölçümüyle seçilmedi; gerçek tüketim ham veriye yakınsa tahmin iyimser olur. Saha SOC gözlemleriyle yeniden değerlendirilecek.
