@@ -22,8 +22,11 @@ export const planningEvaluationSchema = z.object({
       plan.vehicleProfileId !== input.vehicle.id || plan.vehicleProfileVersion !== input.vehicle.version ||
       plan.policyId !== request.policy.id || plan.policyVersion !== request.policy.version)
     issue('Plan identity, profile or policy differs from input');
+  // An unreachable arrival target may be lowered (never raised, never below the reserve) only when the plan says so.
+  const arrivalLowered = plan.targetArrivalChargePercent < request.constraints.targetArrivalChargePercent &&
+    plan.warnings.some((warning) => warning.code === 'arrival_target_lowered');
   if (plan.minimumReserveChargePercent !== request.constraints.minimumReserveChargePercent ||
-      plan.targetArrivalChargePercent !== request.constraints.targetArrivalChargePercent)
+      plan.targetArrivalChargePercent !== request.constraints.targetArrivalChargePercent && !arrivalLowered)
     issue('Plan changed requested reserve or arrival constraints');
   const candidate = input.roadCandidates.find((route) => route.id === plan.roadRoute.id);
   if (!candidate || JSON.stringify(candidate) !== JSON.stringify(plan.roadRoute))

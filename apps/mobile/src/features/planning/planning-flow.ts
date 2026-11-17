@@ -5,9 +5,20 @@ export type PlanningForm={origin:LocationResult|null;destination:LocationResult|
   allowEstimates:boolean;allowCatalogueStations?:boolean;avoidTolls:boolean;avoidFerries:boolean};
 export const initialPlanningForm:PlanningForm={origin:null,destination:null,vehicleId:null,startingCharge:'',reserve:'',arrival:'',departure:'now',scheduled:'',
   objective:'minimum_total_duration',allowEstimates:false,allowCatalogueStations:false,avoidTolls:false,avoidFerries:true};
+/** User decision (2026-11-17): app-side limits; the API keeps accepting 0-100 for older clients. */
+export const CHARGE_LIMITS={reserveMax:25,arrivalMax:80} as const;
+/** Turkish notices for plan warnings the user must see without opening the details. */
+export function planNotices(plan:{targetArrivalChargePercent:number;warnings:readonly {code:string}[]},requestedArrival:number|null):string[]{
+  const notices:string[]=[],has=(code:string)=>plan.warnings.some(w=>w.code===code),pct=(n:number)=>'%'+Math.round(n*10)/10;
+  if(has('arrival_target_lowered'))notices.push(`Bu rotada varışta ${requestedArrival===null?'seçtiğin hedefe':pct(requestedArrival)+' hedefine'} ulaşılamıyor; plan ${pct(plan.targetArrivalChargePercent)} varış hedefiyle kuruldu.`);
+  if(has('soc_stop_rule_relaxed'))notices.push('Bu rotada batarya %50 üzerindeyken bir şarj durağı gerekiyor; başka bir uygun plan bulunamadı.');
+  return notices;
+}
 export function buildPlanningRequest(form:PlanningForm,requestId:string,now=new Date()):PlanningApiRequest{
   if(!form.origin||!form.destination||!form.vehicleId)throw new Error('Başlangıç ve varış sonuçlarını seçip aracını belirle.');
   const percentage=(value:string)=>{if(!/^\d{1,3}(?:[.,]\d{1,2})?$/.test(value.trim()))throw new Error('Şarj yüzdelerini 0–100 arasında gir.');return Number(value.replace(',','.'));};
+  if(percentage(form.reserve)>CHARGE_LIMITS.reserveMax)throw new Error(`Minimum yol rezervi en fazla %${CHARGE_LIMITS.reserveMax} olabilir.`);
+  if(percentage(form.arrival)>CHARGE_LIMITS.arrivalMax)throw new Error(`Hedef varış şarjı en fazla %${CHARGE_LIMITS.arrivalMax} olabilir.`);
   let departureAt:string;
   if(form.departure==='now')departureAt=new Date(now.getTime()+60000).toISOString();
   else {const match=/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/.exec(form.scheduled);

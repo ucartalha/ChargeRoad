@@ -52,6 +52,15 @@ test('approved planning mode defaults to duration but reserve and arrival SOC st
   assert.equal(schemas.routePlanRequestSchema.safeParse(input.request).success,false);
 });
 
+test('a plan may lower an unreachable arrival target only with the arrival_target_lowered warning',()=>{
+  const lowered=()=>{const e=makeExample();e.input.request.constraints.targetArrivalChargePercent=e.result.plan.targetArrivalChargePercent+10;return e;};
+  rejects(lowered());
+  const warned=lowered();warned.result.plan.warnings.push({code:'arrival_target_lowered',explanation:'Requested arrival target was not reachable.'});
+  const parsed=evaluate(warned);assert.equal(parsed.success,true,parsed.error?.message);
+  const raised=makeExample();raised.result.plan.warnings.push({code:'arrival_target_lowered',explanation:'x'});
+  raised.input.request.constraints.targetArrivalChargePercent=raised.result.plan.targetArrivalChargePercent-1;rejects(raised);
+});
+
 test('a complete synthetic envelope round-trips through the runtime contracts', () => {
   const example = makeExample();
   const parsed = evaluate(example);

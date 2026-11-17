@@ -10,7 +10,9 @@ Tarih: 2026-11-12. CR-014 teknik teslimi tamamlandı. `POST /v1/plans`, CR-013 d
 
 - `schemaVersion:"1.0.0"`, UUID `requestId`, `origin`/`destination` koordinatları ve UUID veya eski katalog ID'si `vehicleVariantId`.
 - Saat dilimli ISO `departureAt`, `startingChargePercent`, `startingChargeObservedAt`.
-- `constraints.minimumReserveChargePercent` ve `constraints.targetArrivalChargePercent`: her istekte kullanıcıdan alınır; otomatik SOC varsayılanı yoktur. Hedef rezervden düşük olamaz.
+- `constraints.minimumReserveChargePercent` ve `constraints.targetArrivalChargePercent`: her istekte kullanıcıdan alınır; otomatik SOC varsayılanı yoktur. Hedef rezervden düşük olamaz. API 0–100 kabul etmeye devam eder; mobil uygulama rezervi en fazla %25, varış hedefini en fazla %80 ile sınırlar (2026-11-17 kullanıcı kararı, sessiz backend kırpması yok).
+- Varış hedefine ulaşılamazsa (`chargeroad-optimizer/1.6.0`, `arrival-target-fallback/1.0.0`): istenen hedefte plan yoksa ve varışa rezervle ulaşan ama hedefi tutturamayan bir bacak görüldüyse, hedef 5'er puan düşürülerek (rezervin altına inmeden) yeniden planlanır. Planın `targetArrivalChargePercent` alanı kullanılan hedefi gösterir ve plan `arrival_target_lowered` uyarısını taşır; değerlendirme sözleşmesi (`planningEvaluationSchema`) istenenden düşük hedefi yalnız bu uyarıyla kabul eder, yükseltmeyi hiç kabul etmez. Hiçbir hedefte plan yoksa istenen hedefin hata sonucu döner.
+- `soc_stop_rule_relaxed` uyarısı (1.5.0): plan ancak %50 üzerinde varılan bir şarj durağıyla mümkün oldu.
 
 `objective` varsayılanı `minimum_total_duration`; diğer seçenekler `minimum_charging_stops` ve `minimum_energy`. Her istek seçilen modu çalıştırır. `vehicleDataQuality` varsayılanı `verified_only`; mühendislik tahminleri için açık `allow_engineering_estimates` seçimi gerekir.
 

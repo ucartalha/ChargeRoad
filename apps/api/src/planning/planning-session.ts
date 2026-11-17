@@ -30,6 +30,8 @@ export interface SessionReplay {roads:{from:string;to:string;at:string;response:
 
 export class PlanningSession implements TransitionPort {
   readonly issues=new Set<string>();readonly counters={roadQueries:0,weatherQueries:0};readonly replay:SessionReplay={roads:[],weather:[]};
+  /** A fully evaluated leg reached the destination above the reserve but below the arrival target (ARRIVAL_TARGET_FALLBACK gate). */
+  arrivalTargetMissed=false;
   private readonly roads=new Map<string,RoadRoute[]|null>();private readonly weatherCache=new Map<string,WeatherForecast[]>();
   private readonly climateSamples=new Map<string,WeatherQuery['location']>();
   private hardwareEvaluations=0;
@@ -127,6 +129,8 @@ export class PlanningSession implements TransitionPort {
         if(result.reasons.some(r=>r.code==='ENERGY_INPUT_BUDGET'))new Logger('PlanningSession').warn(JSON.stringify({event:'energy_input_limit',requestId:this.context.request.requestId,...energyInputUsage(route)}));
         for(const reason of result.reasons)this.issues.add(reason.code);throw new PlanningDataLimit('ENERGY_COMPUTATION_BUDGET');}
       if(result.status==='insufficient_data'){for(const reason of result.reasons)this.issues.add(reason.code);}
+      if(!preview&&to.id==='destination'&&result.status==='charge_required'&&!result.partialSegmentId&&result.reasons.some(r=>r.code==='ARRIVAL_TARGET_NOT_MET')&&
+        result.minimumChargePercent!==null&&result.minimumChargePercent>=this.context.request.constraints.minimumReserveChargePercent-1e-8)this.arrivalTargetMissed=true;
       legs.push({from:state.nodeId,to:to.id,route,energy:result,weather,departureAt:state.at,
         arrivalAt:new Date(Date.parse(state.at)+route.drivingDurationSeconds*1000).toISOString()});
     }return legs;

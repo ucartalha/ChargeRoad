@@ -14,7 +14,7 @@ import {PlanningSession} from './planning-session';
 import {observeCandidateEligibility} from './candidate-eligibility-shadow';
 import {PlanningProviderFailure,PlanningDataLimit} from './optimizer-types';
 import {meters} from '../roads/geometry';
-import {OPTIMIZER_VERSION} from './optimizer-policy';
+import {OPTIMIZER_VERSION,arrivalTargetSteps} from './optimizer-policy';
 import {ENERGY_ALGORITHM_VERSION} from '../energy/energy-policy';
 import {ENERGY_POLICY} from '../energy/energy-policy';
 import {CHARGING_ALGORITHM_VERSION} from '../charging/charging-engine';
@@ -103,6 +103,15 @@ export class EvPlanningService {
         })();accessCache.set(candidate.station.id,pending);}
         return pending;
       };
+      // ARRIVAL_TARGET_FALLBACK: only after the requested target found no plan while a destination leg met the reserve.
+      const requested=request,steps=arrivalTargetSteps(request.constraints.targetArrivalChargePercent,request.constraints.minimumReserveChargePercent);
+      let firstFailure:OptimizerOutcome|undefined;
+      for(const [attempt,target] of steps.entries()){
+      if(attempt>0){
+        if(!session.arrivalTargetMissed||last?.result.status==='provider_error')break;
+        session.arrivalTargetMissed=false;previousStates=0;previousTransitions=0;
+        context.request={...requested,constraints:{...requested.constraints,targetArrivalChargePercent:target}};
+      }
       for(const corridor of options.corridorMeters){
         const found=await read('STATION',s=>this.stations.findAlongRoutes(base.routes,corridor,s,vehicle.supportedConnectors));
         const setResult=stationCandidateSetSchema.safeParse(found.data);if(!setResult.success)throw new PlanningProviderFailure('STATION_PROVIDER_INVALID_DATA');
@@ -134,11 +143,20 @@ export class EvPlanningService {
         if(last.search){last.search.expandedStates+=previousStates;last.search.evaluatedTransitions+=previousTransitions;last.search.elapsedMilliseconds=performance.now()-began;}
         previousStates+=stageStates;previousTransitions+=stageTransitions;
         if(last.result.status==='planned'){
+          if(attempt>0){
+            last.result.plan.warnings.push({code:'arrival_target_lowered',explanation:'Requested arrival charge '+requested.constraints.targetArrivalChargePercent+
+              ' % is not reachable on this route; the plan targets '+target+' %.'});
+            // The evaluation checks the plan against what the user asked for, not the lowered working target.
+            if(last.validationInput)last.validationInput={...last.validationInput,request:requested};
+          }
           if(last.validationInput)planningEvaluationSchema.parse({input:last.validationInput,result:last.result});
           return {...last,replay:{versions:{optimizer:OPTIMIZER_VERSION,energy:ENERGY_ALGORITHM_VERSION,charging:CHARGING_ALGORITHM_VERSION},context,providers:session.replay}};
         }
         if(last.result.status==='provider_error'||last.result.status==='computation_limit')break;
       }
+      firstFailure??=last;
+      }
+      if(firstFailure){last=firstFailure;context.request=requested;}
       return {...(last??failure('computation_limit','NO_SEARCH_BUDGET')),replay:{versions:{optimizer:OPTIMIZER_VERSION,energy:ENERGY_ALGORITHM_VERSION,charging:CHARGING_ALGORITHM_VERSION},context,providers:session.replay}};
     }catch(error){if(caller.aborted)throw caller.reason;
       if(error instanceof PlanningDataLimit)return failure('computation_limit',error.message);

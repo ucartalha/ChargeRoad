@@ -9,5 +9,16 @@ export const DEFAULT_OPTIMIZER_OPTIONS:OptimizerOptions={id:'bounded-ev-search',
  *  If no plan exists under the rule, the search is repeated once without it and the plan carries a warning. */
 export const SOC_STOP_RULES={version:'soc-stop-rules/1.0.0',noChargeAtOrAboveArrivalPercent:50} as const;
 // 1.4.0 (2026-11-17): numerically identical charged states (one per EVSE/connector) are expanded once (distinctChargedStates).
+/** User rule (2026-11-17): when no plan reaches the requested arrival SOC and a destination leg met the reserve but not the
+ *  target, plan again with the target lowered in stepPercent steps (never below the reserve). The plan carries
+ *  the arrival_target_lowered warning; the evaluation accepts a lower target only with it. */
+export const ARRIVAL_TARGET_FALLBACK={version:'arrival-target-fallback/1.0.0',stepPercent:5} as const;
+/** Requested target first, then lower multiples of stepPercent above the reserve, then the reserve itself. */
+export function arrivalTargetSteps(target:number,reserve:number,step:number=ARRIVAL_TARGET_FALLBACK.stepPercent):number[]{
+  const steps=[target];if(target<=reserve)return steps;
+  for(let next=Math.ceil(target/step)*step-step;next>reserve;next-=step)if(next<target)steps.push(next);
+  steps.push(reserve);return steps;
+}
 // 1.5.0 (2026-11-17): two seed reach strategies (each chain improved separately) and SOC_STOP_RULES.
-export const OPTIMIZER_VERSION='chargeroad-optimizer/1.5.0';
+// 1.6.0 (2026-11-17): ARRIVAL_TARGET_FALLBACK (planning service; search itself unchanged).
+export const OPTIMIZER_VERSION='chargeroad-optimizer/1.6.0';

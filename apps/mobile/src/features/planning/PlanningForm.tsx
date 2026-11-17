@@ -11,7 +11,7 @@ import {ChargeSlider} from './ChargeSlider';
 import type {MapState} from '../map/MapCanvas';
 import {RouteHighlight} from '../map/RouteVisuals';
 import type {RoadPreviewResponse} from '@chargeroad/shared';
-import {buildPlanningRequest,initialPlanningForm,LatestPlanningRequest,roadEndpointAdjustment} from './planning-flow';
+import {buildPlanningRequest,initialPlanningForm,LatestPlanningRequest,roadEndpointAdjustment,CHARGE_LIMITS,planNotices} from './planning-flow';
 import type {PlanningForm as Form,PlanningViewResult} from './planning-flow';
 const modes=[['minimum_total_duration','En kısa süre'],['minimum_charging_stops','Daha az şarj durağı'],['minimum_energy','Düşük sürüş tüketimi']] as const;
 const minutes=(seconds:number)=>`${Math.round(seconds/60)} dk`;
@@ -66,9 +66,10 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     </Pressable>
     <View style={s.card}>
       <Text style={s.title}>Şarj tercihlerin</Text>
-      {([['startingCharge','Başlangıç şarjı','Yola çıkarken'],['reserve','Minimum yol rezervi','Yolda korumak istediğin'],['arrival','Hedef varış şarjı','Varışta kalmasını istediğin']] as const).map(([key,label,hint])=>
-        <ChargeSlider key={key} label={label} value={form[key]} hint={hint} onChange={value=>update({[key]:value})}/>)}
-      <Text style={s.small}>Rezerv, yol boyunca korumak istediğin alt sınırdır. Hedef varış şarjı bu değerden düşük olamaz.</Text>
+      {([['startingCharge','Başlangıç şarjı','Yola çıkarken',100],['reserve','Minimum yol rezervi','Yolda korumak istediğin',CHARGE_LIMITS.reserveMax],
+        ['arrival','Hedef varış şarjı','Varışta kalmasını istediğin',CHARGE_LIMITS.arrivalMax]] as const).map(([key,label,hint,max])=>
+        <ChargeSlider key={key} label={label} value={form[key]} hint={hint} max={max} onChange={value=>update({[key]:value})}/>)}
+      <Text style={s.small}>Rezerv, yol boyunca korumak istediğin alt sınırdır (en fazla %{CHARGE_LIMITS.reserveMax}). Hedef varış şarjı bu değerden düşük olamaz (en fazla %{CHARGE_LIMITS.arrivalMax}); bu hedefe ulaşılamazsa plan ulaşılabilen en yüksek hedefle kurulur.</Text>
     </View>
     <View style={s.card}><Text style={s.title}>Önceliğin</Text>
       {modes.map(([key,label])=><Pressable key={key} accessibilityRole="radio" accessibilityState={{checked:form.objective===key}} onPress={()=>update({objective:key})} style={[s.choice,form.objective===key&&s.chosen]}>
@@ -101,6 +102,7 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     {output&&<View style={s.card} accessibilityLiveRegion="polite">
       {output.status==='planned'?<>
         <RouteHighlight title="Planın hazır" subtitle={`${output.plan.chargingStops.length} şarj durağı · Varış %${output.plan.estimatedArrivalChargePercent.toFixed(1)}`}/>
+        {planNotices(output.plan,lastRequest?.constraints.targetArrivalChargePercent??null).map((notice,i)=><Text key={'plan-notice-'+i} testID={'planning-notice-'+i} style={s.notice}>{notice}</Text>)}
         {output.plan.warnings.some(w=>w.code==='coarse_future_weather_scenario')&&<Text testID="planning-future-weather" style={s.notice}>Rotanın ilerisi daha seyrek hava örnekleriyle tahmin edildi. Şarj sonrası koşullar ve rota yeniden değerlendirilmelidir.</Text>}
         {output.plan.search&&!output.plan.search.searchComplete&&<Text testID="planning-search-limited" style={s.notice}>Arama sınırları içinde doğrulanan plan. Seçtiğin hedef için daha iyi bir seçenek bulunabilir; en iyi sonuç garanti edilmez.</Text>}
         {output.metadata.requestedDepartureAt&&output.plan.scenario&&<Text style={s.small}>Hesaplanan hareket: {new Date(output.plan.scenario.departureAt).toLocaleTimeString('tr-TR')}</Text>}

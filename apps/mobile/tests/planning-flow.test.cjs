@@ -73,3 +73,17 @@ test('HTTP 503 domain outcomes are preserved while protocol errors respect Retry
     await assert.rejects(planningApi.plan(buildPlanningRequest(form(),id,now),new AbortController().signal),/bu plan isteğine ait değil/);
   }finally{global.fetch=originalFetch;if(originalUrl===undefined)delete process.env.EXPO_PUBLIC_API_URL;else process.env.EXPO_PUBLIC_API_URL=originalUrl;}
 });
+test('charge limits (2026-11-17): reserve at most 25 %, arrival target at most 80 %',()=>{
+  const {CHARGE_LIMITS}=require('../src/features/planning/planning-flow.ts');
+  assert.deepEqual(CHARGE_LIMITS,{reserveMax:25,arrivalMax:80});
+  assert.equal(buildPlanningRequest({...form(),reserve:'25',arrival:'80'},id,now).constraints.targetArrivalChargePercent,80);
+  assert.throws(()=>buildPlanningRequest({...form(),reserve:'26',arrival:'40'},id,now),/rezerv/i);
+  assert.throws(()=>buildPlanningRequest({...form(),arrival:'81'},id,now),/varış/i);
+});
+test('plan notices explain a lowered arrival target and a relaxed SOC stop rule',()=>{
+  const {planNotices}=require('../src/features/planning/planning-flow.ts');
+  const plan={targetArrivalChargePercent:60,warnings:[{code:'arrival_target_lowered',explanation:'x'},{code:'soc_stop_rule_relaxed',explanation:'y'}]};
+  const notices=planNotices(plan,80);
+  assert.equal(notices.length,2);assert.match(notices[0],/%80/);assert.match(notices[0],/%60/);assert.match(notices[1],/%50/);
+  assert.deepEqual(planNotices({targetArrivalChargePercent:20,warnings:[]},20),[]);
+});
