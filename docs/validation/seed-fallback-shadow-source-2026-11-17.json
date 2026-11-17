@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.3.0",
+  "scope": "Seed fallback search (1.3.0) vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "4bdd514c51e6172810e0e98c5e7bc74d9aac0473fbb0effac693c5ad52fe2ba8"
+}

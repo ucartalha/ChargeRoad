@@ -15,6 +15,15 @@ export function compareStates(a:OptimizerState,b:OptimizerState,objective:Planni
   const x=key(a),y=key(b);for(let i=0;i<x.length;i++)if(x[i]!==y[i])return x[i]-y[i];
   const ax=a.visited.join('|'),by=b.visited.join('|');return ax<by?-1:ax>by?1:0;
 }
+/** Seed fallback (optimizer 1.3.0): after every range-hint seed attempt from a state depleted the battery, try untried
+ *  stations inside the reach those failed legs actually showed, farthest first. Ordering only; every transition is still
+ *  fully evaluated, nothing is certified or pruned. */
+export function seedFallbackCandidates<C extends {station:{id:string}}>(ranked:readonly C[],tried:ReadonlySet<string>,reachProgress:number,
+  progressOf:(candidate:C)=>number,limit:number):C[]{
+  if(!Number.isFinite(reachProgress))return [];
+  return ranked.filter(c=>!tried.has(c.station.id)&&progressOf(c)<=reachProgress)
+    .sort((a,b)=>progressOf(b)-progressOf(a)||a.station.id.localeCompare(b.station.id)).slice(0,limit);
+}
 /** Application-owned search. All roads/weather/energy transitions cross a bounded session port. */
 export class ChargeStopOptimizer {
   constructor(private readonly clock:()=>number=()=>performance.now()){}
@@ -70,21 +79,35 @@ export class ChargeStopOptimizer {
           }}
           if(state.stops.length>=options.maxStops)return false;
           const target=progress+fullBatteryProgress*(state.soc-context.request.constraints.minimumReserveChargePercent)/100*seedPolicy.seedReachFraction;
-          const seeds=context.candidates.candidates.filter(c=>!state.visited.includes(c.station.id)&&candidateProgress(c,context.baseRoutes!)>progress)
+          const ranked=context.candidates.candidates.filter(c=>!state.visited.includes(c.station.id)&&candidateProgress(c,context.baseRoutes!)>progress)
             .sort((a,b)=>(reachFromDrive?Math.abs(candidateProgress(a,context.baseRoutes!)-target)-Math.abs(candidateProgress(b,context.baseRoutes!)-target):
-              candidateProgress(a,context.baseRoutes!)-candidateProgress(b,context.baseRoutes!))||a.station.id.localeCompare(b.station.id))
-            .slice(0,seedPolicy.seedAttempts);
-          for(const candidate of seeds){if(expanded>=options.maxStates){stopped='state_budget';return false;}
-          await budget();const node=context.nodes.find(n=>n.id===candidate.station.id)!;expanded++;
-          for(const leg of await port.drive(state,node,false,signal)){
-            if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
-            const atStation=append(state,leg);
-            for(const targetSoc of seedChargeTargets(context,atStation.soc)){
-              await budget();for(const charged of await port.charge(atStation,targetSoc,signal)){
-                if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
+              candidateProgress(a,context.baseRoutes!)-candidateProgress(b,context.baseRoutes!))||a.station.id.localeCompare(b.station.id));
+          const seeds=ranked.slice(0,seedPolicy.seedAttempts);
+          // Furthest base-route progress any failed (reserve/depletion) leg from this state still covered safely.
+          let observedReach=Number.NEGATIVE_INFINITY;
+          const attempt=async(candidate:typeof seeds[number]):Promise<boolean|null>=>{
+            if(expanded>=options.maxStates){stopped='state_budget';return null;}
+            await budget();const node=context.nodes.find(n=>n.id===candidate.station.id)!;expanded++;
+            for(const leg of await port.drive(state,node,false,signal)){
+              if(leg.energy.status==='charge_required'){
+                const rows=leg.energy.segments,firstUnsafe=rows.findIndex(r=>r.minimumChargePercent<context.request.constraints.minimumReserveChargePercent);
+                const last=rows[(firstUnsafe<0?rows.length:firstUnsafe)-1],segment=leg.route.segments.find(s=>s.id===last?.segmentId);
+                if(segment)observedReach=Math.max(observedReach,progress+segment.endDistanceMeters/context.baseRoutes![0].distanceMeters);
+              }
+              if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
+              const atStation=append(state,leg);
+              for(const targetSoc of seedChargeTargets(context,atStation.soc)){
+                await budget();for(const charged of await port.charge(atStation,targetSoc,signal)){
+                  if(await seed(charged,candidateProgress(candidate,context.baseRoutes!)))return true;
+                }
               }
             }
-          }}return false;
+            return false;
+          };
+          for(const candidate of seeds){const result=await attempt(candidate);if(result===null)return false;if(result)return true;}
+          const fallback=seedFallbackCandidates(ranked,new Set(seeds.map(c=>c.station.id)),observedReach,c=>candidateProgress(c,context.baseRoutes!),seedPolicy.seedAttempts);
+          for(const candidate of fallback){const result=await attempt(candidate);if(result===null)return false;if(result)return true;}
+          return false;
         };
         if(!incumbent.outcome)await seed(initial,0);
       }
