@@ -1,7 +1,7 @@
 import {createHmac,randomUUID} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {DatabaseService} from '../database/database.service';
-import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY} from './weather-policy';
+import {WEATHER_POLICY,WEATHER_SAMPLING_POLICY,weatherProviderLimits,SELF_HOSTED_WEATHER_PROVIDERS} from './weather-policy';
 import {WeatherUnavailable} from './weather-ports';
 import type {WeatherDocument,WeatherTransport} from './weather-ports';
 import {countMetric,startStage} from '../observability/planning-metrics';
@@ -69,13 +69,14 @@ export class WeatherCacheStore {
       const state=(await client.query(`SELECT *,day=(now() AT TIME ZONE 'UTC')::date AS today,blocked_until>now() AS blocked,
         next_allowed_at>now() AS paced FROM weather_provider_state WHERE provider_id=$1 FOR UPDATE`,[provider])).rows[0];
       if(state.blocked)throw new WeatherUnavailable(state.blocked_kind,'Weather provider backoff');
-      if(state.today&&state.used>=WEATHER_POLICY.dailyLimit)throw new WeatherUnavailable('budget_exhausted','Weather daily quota');
+      const limits=weatherProviderLimits(provider);
+      if(state.today&&state.used>=limits.dailyLimit)throw new WeatherUnavailable('budget_exhausted','Weather daily quota');
       // Recheck freshness/ownership under provider lock before charging any budget.
       const existing=(await client.query(`SELECT ${weatherCacheUsableSql('')} AS fresh,token IS NOT NULL AND lease_until>now() AS leased FROM weather_forecast_cache WHERE request_key=$1`,[key])).rows[0];
       if(existing?.fresh||existing?.leased){await client.query('ROLLBACK');return null;}
       if(budget.used>=budget.limit)throw new WeatherUnavailable('budget_exhausted','Weather acquisition budget');
       const active=(await client.query(`SELECT count(*)::int AS n FROM weather_forecast_cache WHERE provider_id=$1 AND token IS NOT NULL AND lease_until>now()`,[provider])).rows[0].n;
-      if(state.paced||active>=WEATHER_POLICY.maxConcurrency){await client.query('ROLLBACK');return null;}
+      if(state.paced||active>=limits.maxConcurrency){await client.query('ROLLBACK');return null;}
       const token=randomUUID();
       const lease=await client.query(`INSERT INTO weather_forecast_cache(request_key,provider_id,token,generation,lease_until)
         VALUES($1,$2,$3,1,now()+$4*interval '1 second') ON CONFLICT(request_key) DO UPDATE
@@ -85,7 +86,7 @@ export class WeatherCacheStore {
       if(!lease.rowCount){await client.query('ROLLBACK');return null;}
       await client.query(`UPDATE weather_provider_state SET day=(now() AT TIME ZONE 'UTC')::date,
         used=CASE WHEN day=(now() AT TIME ZONE 'UTC')::date THEN used+1 ELSE 1 END,
-        next_allowed_at=now()+$2*interval '1 millisecond' WHERE provider_id=$1`,[provider,WEATHER_POLICY.minIntervalMs]);
+        next_allowed_at=now()+$2*interval '1 millisecond' WHERE provider_id=$1`,[provider,limits.minIntervalMs]);
       budget.used++;
       await client.query('COMMIT');return {token,generation:lease.rows[0].generation};
     }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
@@ -114,7 +115,10 @@ export class WeatherCacheStore {
       const released=await this.database.pool.query(`UPDATE weather_forecast_cache SET token=NULL,lease_until=NULL,
         retry_at=now()+$4*interval '1 second',retain_until=GREATEST(retain_until,now()+interval '1 day')
         WHERE request_key=$1 AND token=$2 AND generation=$3 RETURNING 1`,[key,lease.token,lease.generation,failure.retrySeconds]);
-      if(released.rowCount)await this.database.pool.query(`UPDATE weather_provider_state SET blocked_until=GREATEST(blocked_until,now()+$2*interval '1 second'),
+      // A self-hosted server answering one location badly is a per-key problem, not a reason to stop the provider;
+      // external providers (MET) keep the provider-wide backoff unchanged.
+      const providerWide=!(SELF_HOSTED_WEATHER_PROVIDERS.includes(provider)&&!(error instanceof WeatherUnavailable));
+      if(released.rowCount&&providerWide)await this.database.pool.query(`UPDATE weather_provider_state SET blocked_until=GREATEST(blocked_until,now()+$2*interval '1 second'),
         blocked_kind=CASE WHEN blocked_until>now() AND blocked_kind='budget_exhausted' THEN blocked_kind ELSE $3 END
         WHERE provider_id=$1`,[provider,failure.retrySeconds,failure.kind]);
       throw failure;

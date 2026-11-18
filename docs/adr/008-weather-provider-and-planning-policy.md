@@ -45,3 +45,11 @@ Türkiye gerçek yanıtı, cache başlıkları, koşullu GET/304, birim/zaman d�
 ## Yeniden değerlendirme
 
 Türkiye pilotunda alan/kapsam sorunu, ölçülen doğruluk ihtiyacı, erişim kısıtı, SLA gereksinimi veya maliyet politikası değişirse provider seçimi yeniden açılır. Sayısal örnekleme ve tazelik eşikleri gerçek veri sonrasında değerlendirilir.
+
+## Ek karar — kendi barındırdığımız Open-Meteo (2026-11-18)
+
+- **Bağlam:** 2026-11-17'de MET günlük 1.000 isteklik bütçesi doldu; önbellek süresi geçince Bursa→Ankara `NO_VALID_PLAN_WITHIN_DATA_BUDGET` ile plan üretemedi (asıl neden `WEATHER_CORE_OR_FRESHNESS_MISSING`). Ticari, çok kullanıcılı üründe bu kota yetmez.
+- **Karar (kullanıcı):** Open-Meteo sunucusu yerelde çalıştırılır (`infra/open-meteo`), model DWD ICON (küresel, saatlik, ~7,5 gün), yalnız Türkiye kutusu ve enerji modelinin okuduğu değişkenler eşitlenir; API'ye `OpenMeteoAdapter` bayrakla (`WEATHER_PROVIDER_ID=open-meteo-local`) eklenir. Bu, 1. maddedeki "ikinci adapter yok" kararını günceller; **otomatik fallback yoktur**, süreç başına tek etkin sağlayıcı vardır ve varsayılan MET'tir.
+- **Korunanlar:** gerçek model zamanı ve 12 saatlik tazelik, eksik temel veride plan yerine "veri yetersiz", 72 saatlik pencere, MET kota/pacing/backoff.
+- **Lisans:** sunucu AGPL-3.0 (değiştirilmeden), veri CC BY 4.0 (DWD/Open-Meteo atfı zorunlu). Barındırılan ücretsiz Open-Meteo API'si ticari olmadığı için kullanılmaz.
+- **Açık:** MET ve saha ile doğruluk karşılaştırması, üretim dağıtımı ve mobil atıf. Kanıt: [validation/open-meteo-local-2026-11-18.md](../validation/open-meteo-local-2026-11-18.md).

@@ -17,7 +17,7 @@ describe('Weather budgets across route legs',()=>{
   it('deduplicates 5003 segment forecasts and shares the external-call budget across leg signals',async()=>{
     const clock=jest.spyOn(Date,'now').mockReturnValue(now);
     try{
-      const cache={get:jest.fn(async()=>document())},service=new WeatherService(config,new WeatherAdapterRegistry([new MetNorwayAdapter(config)]),cache as any);
+      const cache={get:jest.fn(async()=>document())},service=new WeatherService(config,new WeatherAdapterRegistry([new MetNorwayAdapter(config)]),cache as any,{seriesCacheEntries:0});
       const scope={budgetScope:{}},queries=Array.from({length:5003},(_,i)=>query('dense-'+i));
       const result=await service.forecast(queries,new AbortController().signal,scope);
       expect(result.data).toHaveLength(5003);expect(result.data.every(f=>f.status==='available')).toBe(true);
@@ -27,6 +27,22 @@ describe('Weather budgets across route legs',()=>{
       expect(calls[0][4]).toBe(calls[1][4]);expect(calls[0][4]).toMatchObject({limit:WEATHER_POLICY.maxExternalCalls});
       await service.forecast([query('other-trip')],new AbortController().signal,{budgetScope:{}});
       expect(calls[0][4]).not.toBe((cache.get.mock.calls as unknown as unknown[][])[2][4]);
+    }finally{clock.mockRestore();}
+  });
+});
+
+describe('Process series cache (L1)',()=>{
+  it('reads PG once while the document is unexpired, returns identical forecasts, and re-reads after expiry',async()=>{
+    let clockNow=now;const clock=jest.spyOn(Date,'now').mockImplementation(()=>clockNow);
+    try{
+      const cache={get:jest.fn(async()=>document())},service=new WeatherService(config,new WeatherAdapterRegistry([new MetNorwayAdapter(config)]),cache as any);
+      const uncached=new WeatherService(config,new WeatherAdapterRegistry([new MetNorwayAdapter(config)]),{get:jest.fn(async()=>document())} as any,{seriesCacheEntries:0});
+      const first=await service.forecast([query('a')],new AbortController().signal),second=await service.forecast([query('b')],new AbortController().signal);
+      expect(cache.get).toHaveBeenCalledTimes(1);
+      const reference=await uncached.forecast([query('b')],new AbortController().signal);
+      expect(second.data).toEqual(reference.data.map(f=>({...f,fetchedAt:second.data[0].fetchedAt,source:{...f.source,retrievedAt:second.data[0].source.retrievedAt}})));
+      expect(first.data[0].temperatureCelsius).toBe(second.data[0].temperatureCelsius);
+      clockNow=now+3600001;await service.forecast([query('c','2026-11-11T15:00:00Z')],new AbortController().signal);expect(cache.get).toHaveBeenCalledTimes(2);
     }finally{clock.mockRestore();}
   });
 });

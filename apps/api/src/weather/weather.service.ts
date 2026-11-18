@@ -4,7 +4,7 @@ import {z} from 'zod';
 import {WeatherProvider} from '../providers/weather-provider';
 import type {WeatherForecastContext} from '../providers/weather-provider';
 import {meters} from '../roads/geometry';
-import {WEATHER_POLICY} from './weather-policy';
+import {WEATHER_POLICY,weatherProviderLimits} from './weather-policy';
 import type {WeatherConfig} from './weather-policy';
 import {WeatherCacheStore} from './weather-cache';
 import type {WeatherCallBudget} from './weather-cache';
@@ -24,7 +24,19 @@ export class WeatherAdapterRegistry {
 export class WeatherService extends WeatherProvider {
   readonly departureWindowSeconds=WEATHER_POLICY.departureWindowSeconds;
   private readonly budgets=new WeakMap<object,WeatherCallBudget>();
-  constructor(private readonly config:WeatherConfig,readonly registry:WeatherAdapterRegistry,private readonly cache:WeatherCacheStore){super();}
+  /** Process L1 of parsed series, each kept only until its document's own `expiresAt`: inside that time the PG row
+   *  (authoritative L2) would return the same document, so reads are output-identical while skipping the PG round trip
+   *  and the re-parse. Freshness/age rules still run in normalizeWeather. Bounded LRU. */
+  private readonly series=new Map<string,{series:ReturnType<WeatherAdapter['parse']>;expiresAt:number}>();
+  static readonly SERIES_CACHE_ENTRIES=4096;
+  private readonly seriesLimit:number;
+  constructor(private readonly config:WeatherConfig,readonly registry:WeatherAdapterRegistry,private readonly cache:WeatherCacheStore,
+    options:{seriesCacheEntries?:number}={}){super();this.seriesLimit=options.seriesCacheEntries??WeatherService.SERIES_CACHE_ENTRIES;}
+  private cachedSeries(key:string){const hit=this.series.get(key);if(!hit)return undefined;
+    if(hit.expiresAt<=Date.now()){this.series.delete(key);return undefined;}this.series.delete(key);this.series.set(key,hit);return hit.series;}
+  private keepSeries(key:string,series:ReturnType<WeatherAdapter['parse']>,expiresAt:string){const at=Date.parse(expiresAt);if(!(at>Date.now())||this.seriesLimit<1)return;
+    this.series.delete(key);this.series.set(key,{series,expiresAt:at});
+    while(this.series.size>this.seriesLimit)this.series.delete(this.series.keys().next().value!);}
   cleanup(){return this.cache.cleanup();}
   async forecast(raw:WeatherQuery[],callerSignal:AbortSignal,context?:WeatherForecastContext){
     const queries=z.array(weatherQuerySchema).max(WEATHER_POLICY.maxQueries).parse(raw);
@@ -35,18 +47,20 @@ export class WeatherService extends WeatherProvider {
     if(!Number.isSafeInteger(limit)||limit<0)throw new Error('Invalid weather call budget');
     const budget=this.budgets.get(scope)??{used:0,limit};budget.limit=Math.min(budget.limit,limit);this.budgets.set(scope,budget);
     const now=Date.now();
-    const result=new Map<string,WeatherForecast>(),groups=new Map<string,WeatherQuery[]>();
+    const result=new Map<string,WeatherForecast>(),groups=new Map<string,WeatherQuery[]>(),urls=new Map<string,string>();
+    // adapter.url is a pure function of the coordinate; build each URL once per batch.
+    const urlOf=(l:WeatherQuery['location'])=>{const k=l.latitude+','+l.longitude;let u=urls.get(k);if(u===undefined){u=adapter.url(l);urls.set(k,u);}return u;};
     for(const query of queries){
       if(Date.parse(query.validAt)<now){result.set(query.id,unavailableForecast(query,'outside_horizon',adapter.id));continue;}
       if(!this.config.enabled){result.set(query.id,unavailableForecast(query,'provider_unavailable',adapter.id));continue;}
       const sample=query.sampleLocation??query.location;
       if(meters(query.location,sample)>weatherSampleDistanceLimit(query.samplingResolution)){result.set(query.id,unavailableForecast(query,'outside_horizon',adapter.id));continue;}
-      const url=adapter.url(weatherSampleLocation(query)),group=groups.get(url)??[];group.push(query);groups.set(url,group);
+      const url=urlOf(weatherSampleLocation(query)),group=groups.get(url)??[];group.push(query);groups.set(url,group);
     }
     // Per-batch dedup also covers exact-coordinate fallbacks from a rejected terrain cell.
     const seriesByUrl=new Map<string,Promise<ReturnType<WeatherAdapter['parse']>>>();
     const seriesAt=(location:WeatherQuery['location'])=>{
-      const url=adapter.url(location);let pending=seriesByUrl.get(url);
+      const url=urlOf(location);let pending=seriesByUrl.get(url);
       if(context?.seriesScope){
         if(!pending){pending=context.seriesScope.resolve(JSON.stringify([adapter.id,adapter.version,url]),signal,async ownerSignal=>{
           let parsed:ReturnType<WeatherAdapter['parse']>|undefined;
@@ -59,16 +73,19 @@ export class WeatherService extends WeatherProvider {
         }).then(series=>{if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');return series;});seriesByUrl.set(url,pending);}
         return pending;
       }
-      if(!pending){pending=(async()=>{
+      if(!pending){const key=adapter.id+'\0'+adapter.version+'\0'+url,known=this.cachedSeries(key);
+        pending=known?Promise.resolve(known):(async()=>{
+        let parsed:ReturnType<WeatherAdapter['parse']>|undefined;
         const document=await this.cache.get(adapter.id,adapter.version,url,signal,budget,d=>{
-          if(meters(adapter.parse(d).location,location)>30)throw new Error('Weather provider returned wrong location');
+          parsed=adapter.parse(d);if(meters(parsed.location,location)>30)throw new Error('Weather provider returned wrong location');
         });
-        const series=adapter.parse(document);if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');
+        const series=parsed??adapter.parse(document);if(meters(series.location,location)>30)throw new Error('Weather provider returned wrong location');
+        this.keepSeries(key,series,document.expiresAt);
         return series;
       })();seriesByUrl.set(url,pending);}return pending;
     };
     let next=0;const entries=[...groups.entries()];
-    await Promise.all(Array.from({length:WEATHER_POLICY.maxConcurrency},async()=>{
+    await Promise.all(Array.from({length:weatherProviderLimits(adapter.id).maxConcurrency},async()=>{
       while(next<entries.length){const index=next++,[url,group]=entries[index];
         if(index>=WEATHER_POLICY.maxSamples){for(const q of group)result.set(q.id,unavailableForecast(q,'budget_exhausted',adapter.id));continue;}
         try{

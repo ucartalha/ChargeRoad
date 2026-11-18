@@ -1,0 +1,61 @@
+# Self-hosted Open-Meteo for ChargeRoad (development pilot). See README.md in this folder.
+# Server: AGPL-3.0, run unmodified. Data: DWD ICON via Open-Meteo open data (CC BY 4.0, attribution required).
+name: chargeroad-open-meteo
+
+x-image: &image ghcr.io/open-meteo/open-meteo@sha256:bf94e8b39761b59a91bd04bb926b3834cad00eaf71f1aa64b2fd17fbe987846a
+
+services:
+  api:
+    image: *image
+    container_name: chargeroad-open-meteo-api
+    command: ["serve", "--hostname", "0.0.0.0", "--port", "8080"]
+    environment:
+      CACHE_SIZE: 2GB
+    ports:
+      - "127.0.0.1:8090:8080"   # local only; never exposed on the LAN
+    volumes:
+      - open-meteo-data:/app/data
+    restart: unless-stopped
+
+  sync:
+    image: *image
+    container_name: chargeroad-open-meteo-sync
+    # Turkey box (lat 35.5-42.5, lon 25.5-45.0), only the variables the energy model reads, last 2 days kept.
+    # 2026-11-18: the built-in --repeat-interval loop hung for ~22 h after the host slept (a stalled download never
+    # timed out). Each pass is now a separate process bounded by `timeout`, then a 10 min pause.
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        while true; do
+        timeout 900 ./openmeteo-api sync dwd_icon_global_native
+        temperature_2m,wind_u_component_10m,wind_v_component_10m,precipitation,pressure_msl,snow_depth
+        --bounding-box 35.5,25.5,42.5,45.0 --past-days 2
+        || echo "[ WARN ] sync pass failed or timed out (exit $$?)";
+        sleep 600;
+        done
+    # Visible in `docker ps`: unhealthy when the newest local ICON run landed more than 12 h ago (planning would
+    # then refuse the data as stale anyway; this only makes the cause obvious).
+    healthcheck:
+      test: ["CMD-SHELL", "test $$(( $$(date +%s) - $$(stat -c %Y /app/data/dwd_icon_global_native/static/meta.json) )) -lt 43200"]
+      interval: 5m
+      timeout: 10s
+      start_period: 2m
+    volumes:
+      - open-meteo-data:/app/data
+    restart: unless-stopped
+
+  # The API does not publish model run times; the forecast freshness rule needs them. Serve the synced
+  # */static/meta.json files read-only on localhost (the whole data dir is visible, local only).
+  meta:
+    image: busybox:1.37.0
+    container_name: chargeroad-open-meteo-meta
+    command: ["httpd", "-f", "-p", "8080", "-h", "/srv"]
+    ports:
+      - "127.0.0.1:8091:8080"
+    volumes:
+      - open-meteo-data:/srv:ro
+    restart: unless-stopped
+
+volumes:
+  open-meteo-data:
+    name: chargeroad-open-meteo-data

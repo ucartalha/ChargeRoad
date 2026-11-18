@@ -4,6 +4,8 @@ export interface WeatherHttpResponse {status:number;body:unknown|null;expiresAt:
 export interface WeatherDocument extends WeatherHttpResponse {fetchedAt:string;body:unknown;}
 export type WeatherTransport=(url:string,lastModified:string|null,signal:AbortSignal)=>Promise<WeatherHttpResponse>;
 export interface ForecastPoint {time:string;temperature:number|null;windKph:number|null;windFrom:number|null;pressure:number|null;
+  /** Snow depth in metres when the provider supplies it (MET compact does not). */
+  snowDepthM?:number|null;
   periods:{hours:number;totalMm:number|null;probability:number|null}[];}
 export interface ForecastSeries {location:Coordinate;elevation:number|null;sourceUpdatedAt:string;issuedAt:string|null;
   points:ForecastPoint[];fetchedAt:string;validatedAt:string;warnings:string[];sourceUrl:string;license:string;attribution:string;pressureKind:'sea_level'|'surface'|'unknown';}

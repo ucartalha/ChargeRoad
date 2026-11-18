@@ -21,11 +21,11 @@ export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provid
   let wind:number|null=null,from:number|null=null;
   if(av&&bv){const x=av[0]+(bv[0]-av[0])*f,y=av[1]+(bv[1]-av[1])*f;wind=Math.hypot(x,y);
     if(wind<1e-9)wind=0;else from=(Math.atan2(-x,-y)*180/Math.PI+360)%360;}
-  const temperature=blend(a.temperature,b.temperature,f),pressure=blend(a.pressure,b.pressure,f);
+  const temperature=blend(a.temperature,b.temperature,f),pressure=blend(a.pressure,b.pressure,f),snowM=blend(a.snowDepthM??null,b.snowDepthM??null,f);
   const period=[...a.periods].sort((x,y)=>x.hours-y.hours).find(p=>target<start+p.hours*3600000&&start+p.hours*3600000<=Date.parse(points.at(-1)!.time));
   const age=(now-Date.parse(series.sourceUpdatedAt))/1000;
   const core=temperature!==null&&wind!==null&&(wind===0||from!==null);
-  const warnings=[...series.warnings,'wind_is_modelled_at_10m','battery_temperature_is_not_ambient_temperature','snow_depth_unavailable'];
+  const warnings=[...series.warnings,'wind_is_modelled_at_10m','battery_temperature_is_not_ambient_temperature',...(snowM===null?['snow_depth_unavailable']:[])];
   if(!exact)warnings.push('weather_temporally_interpolated');
   if(query.samplingResolution?.phase==='future')warnings.push('coarse_future_weather_scenario');
   if(!period)warnings.push('precipitation_unavailable');else if(period.hours!==1)warnings.push('precipitation_is_period_average');
@@ -36,7 +36,7 @@ export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provid
   return weatherForecastSchema.parse({queryId:query.id,segmentId:query.segmentId,location:query.location,validAt:query.validAt,
     status,forecastIssuedAt:series.issuedAt,sourceUpdatedAt:series.sourceUpdatedAt,fetchedAt:series.fetchedAt,
     temperatureCelsius:temperature,windSpeedKph:wind,windFromDegrees:from,precipitationMmPerHour:period?.totalMm==null?null:period.totalMm/period.hours,
-    precipitationProbabilityPercent:period?.probability??null,snowDepthCm:null,airPressureHpa:pressure,source,
+    precipitationProbabilityPercent:period?.probability??null,snowDepthCm:snowM===null?null:Math.max(0,snowM*100),airPressureHpa:pressure,source,
     metadata:{sampledLocation:series.location,sampledElevationMeters:series.elevation,sampleDistanceMeters:meters(query.location,series.location),
       ...(query.samplingResolution?{samplingResolution:query.samplingResolution}:{}),
       coverageStart:points[0].time,coverageEnd:points.at(-1)!.time,lastValidatedAt:series.validatedAt,intervalStart:a.time,intervalEnd:b.time,

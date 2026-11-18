@@ -20,7 +20,8 @@ describe('Atlas through native service/cache/adapter/HTTP parser (MODEL SQL)',()
    return new Response(invalid?'not-json':JSON.stringify(body),{status,headers:{Expires:new Date(epoch+3600000).toUTCString(),'Last-Modified':new Date(epoch).toUTCString()}});
   });
   const cache=new WeatherCacheStore({pool:db} as never,weatherTransport(config),'synthetic-atlas-service-secret-at-least-32-characters');
-  const service=new WeatherService(config,new WeatherAdapterRegistry([adapter]),cache),atlas=new WeatherAtlas(performance.now()+10000),scope={};
+  // PG-read counting compares the job atlas with the uncached legacy path (process L1 off).
+  const service=new WeatherService(config,new WeatherAdapterRegistry([adapter]),cache,{seriesCacheEntries:0}),atlas=new WeatherAtlas(performance.now()+10000),scope={};
   try{const results:Awaited<ReturnType<WeatherService['forecast']>>[]=[];
    for(let i=0;i<3;i++)results.push(await service.forecast([{id:'q'+i,segmentId:'s'+i,location:{latitude:35,longitude:32.8},validAt:new Date(epoch+1800000+i*60000).toISOString()}],new AbortController().signal,{budgetScope:scope,...(useAtlas?{seriesScope:atlas}:{})}));
    return {results,gets:cache.counters.lookups,parses:parse.mock.calls.length,physical:wire.mock.calls.length};
