@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {StatusBar} from 'expo-status-bar';
-import {useCallback,useState} from 'react';
+import {useCallback,useRef,useState} from 'react';
 import {ActivityIndicator,Linking,Modal,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
 import {SafeAreaProvider,SafeAreaView,useSafeAreaInsets} from 'react-native-safe-area-context';
 import {VehiclesScreen} from './src/features/vehicles/VehiclesScreen';
@@ -11,31 +11,41 @@ import {MapCanvas} from './src/features/map/MapCanvas';
 import type {MapState} from './src/features/map/MapCanvas';
 import {RouteSheet} from './src/features/map/RouteSheet';
 import {colors as c} from './src/theme';
+import {TripCard} from './src/features/planning/TripCard';
+import {PressableScale} from './src/ui/PressableScale';
+import type {TripActions,TripState} from './src/features/planning/trip-summary';
+// Resting heights of the collapsed sheet per trip phase (card content), before the safe-area inset.
+const PEEK={idle:215,planning:310,planned:345,failed:235} as const;
 export default function App(){return <SafeAreaProvider><ChargeRoad/></SafeAreaProvider>;}
 function ChargeRoad(){
   const insets=useSafeAreaInsets(),selection=useActiveVehicle();
   const [expanded,setExpanded]=useState(false),[profile,setProfile]=useState(false),[vehicles,setVehicles]=useState(false),[fromPlan,setFromPlan]=useState(false);
   const [mapState,setMapState]=useState<MapState>({origin:null,destination:null,geometry:[],stops:[]});
   const onMapChange=useCallback((next:MapState)=>setMapState(next),[]);
+  const [trip,setTrip]=useState<TripState>({phase:'idle'}),tripActions=useRef<TripActions>({cancel:()=>{},reset:()=>{}});
+  const onTripChange=useCallback((next:TripState,actions:TripActions)=>{tripActions.current=actions;setTrip(next);},[]);
+  const onPlanningStart=useCallback(()=>setExpanded(false),[]);
+  const live=trip.phase!=='idle',peek=PEEK[trip.phase]+(live?insets.bottom:0)+(trip.phase==='planned'&&trip.plan.warnings.some(w=>['arrival_target_lowered','soc_stop_rule_relaxed'].includes(w.code))?24:0);
   function chooseVehicle(required=false){setFromPlan(required);setProfile(false);setVehicles(true);}
   return <View style={s.screen}>
     <StatusBar style="dark"/>
-    <MapCanvas state={mapState} onOpenNavigation={()=>setExpanded(true)}/>
+    <MapCanvas state={mapState} onOpenNavigation={()=>setExpanded(true)} bottomInset={peek+20}/>
     <View pointerEvents="box-none" style={[s.header,{paddingTop:insets.top+10}]}>
       <Pressable accessibilityRole="button" accessibilityLabel="Harita ana ekranı" onPress={()=>setExpanded(false)} style={s.brand}>
         <View style={s.mark}><Ionicons name="flash" size={19} color={c.lime}/></View><Text style={s.brandText}>chargeroad<Text style={{color:c.orange}}>.</Text></Text>
       </Pressable>
       <Pressable testID="profile-button" accessibilityRole="button" accessibilityLabel="Profil" onPress={()=>setProfile(true)} style={s.avatar}><Ionicons name="person-outline" size={20} color={c.green}/></Pressable>
     </View>
-    <RouteSheet expanded={expanded} onExpand={setExpanded}>
-      {!expanded&&<View style={s.peek}>
-        <Pressable testID="open-route-planner" accessibilityRole="button" accessibilityLabel="Rota planlamayı aç" onPress={()=>setExpanded(true)} style={s.search}>
+    <RouteSheet expanded={expanded} onExpand={setExpanded} peek={peek} header={!live}>
+      {!expanded&&live&&<TripCard trip={trip} actions={tripActions.current} onOpen={()=>setExpanded(true)}/>}
+      {!expanded&&!live&&<View style={s.peek}>
+        <PressableScale testID="open-route-planner" accessibilityRole="button" accessibilityLabel="Rota planlamayı aç" onPress={()=>setExpanded(true)} style={s.search}>
           <Ionicons name="search-outline" size={20} color={c.green}/><Text style={s.searchText}>Bir yer veya adres ara</Text><View style={s.routeBadge}><Ionicons name="navigate" size={17} color={c.green}/></View>
-        </Pressable>
+        </PressableScale>
         <Text style={s.peekCaption}>{selection.vehicle?`${selection.vehicle.make} ${selection.vehicle.model} · Yolculuğa hazır`:'Haritayı keşfet. Araç seçimini rota başlatırken yapabilirsin.'}</Text>
       </View>}
       <ScrollView style={[s.scroll,!expanded&&{display:'none'}]} contentContainerStyle={{paddingHorizontal:20,paddingBottom:insets.bottom+35}} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <PlanningForm vehicle={selection.vehicle} active={expanded&&!vehicles&&!profile} onRequireVehicle={()=>chooseVehicle(true)} onMapChange={onMapChange}/>
+        <PlanningForm vehicle={selection.vehicle} onRequireVehicle={()=>chooseVehicle(true)} onMapChange={onMapChange} onTripChange={onTripChange} onPlanningStart={onPlanningStart}/>
         {selection.error&&<View style={s.error}><Text style={s.errorText}>{selection.error}</Text><Pressable accessibilityRole="button" onPress={()=>void selection.retry()}><Text style={s.action}>Tekrar dene</Text></Pressable></View>}
       </ScrollView>
     </RouteSheet>
@@ -54,6 +64,9 @@ function ChargeRoad(){
             <Pressable accessibilityRole="link" onPress={()=>void Linking.openURL('https://github.com/KilowattApp/open-ev-data')}><Text style={s.caption}>Open EV Data · MIT with Attribution Requirement ↗</Text></Pressable>
             <Pressable accessibilityRole="link" onPress={()=>void Linking.openURL('https://github.com/open-ev-data/open-ev-data-dataset')}><Text style={s.caption}>OpenEV Data · CDLA-Permissive-2.0 ↗</Text></Pressable>
             <Text style={s.caption}>Yaklaşık profiller ChargeRoad mühendislik modelleridir.</Text>
+            <Pressable accessibilityRole="link" onPress={()=>void Linking.openURL('https://open-meteo.com/en/docs/dwd-api')}><Text style={s.caption}>Hava: Deutscher Wetterdienst (DWD) ICON · Open-Meteo · CC BY 4.0 ↗</Text></Pressable>
+            <Pressable accessibilityRole="link" onPress={()=>void Linking.openURL('https://api.met.no/doc/License')}><Text style={s.caption}>Hava: MET Norway · CC BY 4.0 ↗</Text></Pressable>
+            <Text style={s.caption}>Hava verisi ChargeRoad tarafından zamana göre ara değerlendirilerek kullanılır.</Text>
           </View>
         </SafeAreaView>
       </View>

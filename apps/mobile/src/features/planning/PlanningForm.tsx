@@ -13,20 +13,25 @@ import {RouteHighlight} from '../map/RouteVisuals';
 import type {RoadPreviewResponse} from '@chargeroad/shared';
 import {buildPlanningRequest,initialPlanningForm,LatestPlanningRequest,roadEndpointAdjustment,CHARGE_LIMITS,planNotices} from './planning-flow';
 import type {PlanningForm as Form,PlanningViewResult} from './planning-flow';
-const modes=[['minimum_total_duration','En kısa süre'],['minimum_charging_stops','Daha az şarj durağı'],['minimum_energy','Düşük sürüş tüketimi']] as const;
+import type {TripActions,TripState} from './trip-summary';
+import {PressableScale} from '../../ui/PressableScale';
+const modes=[['minimum_total_duration','En kısa süre','Molalar dahil en erken varış'],['minimum_charging_stops','Daha az şarj durağı','Daha uzun ama daha az mola'],['minimum_energy','Düşük sürüş tüketimi','Bataryayı en az yoran rota']] as const;
 const minutes=(seconds:number)=>`${Math.round(seconds/60)} dk`;
-export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehicle:VehicleCatalogueDetail|null;active:boolean;onRequireVehicle:()=>void;onMapChange:(state:MapState)=>void}){
+export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,onPlanningStart}:{vehicle:VehicleCatalogueDetail|null;active?:boolean;onRequireVehicle:()=>void;onMapChange:(state:MapState)=>void;
+  onTripChange?:(trip:TripState,actions:TripActions)=>void;onPlanningStart?:()=>void}){
   const [form,setForm]=useState<Form>(initialPlanningForm),[busy,setBusy]=useState(false),[error,setError]=useState(''),[result,setResult]=useState<PlanningViewResult|null>(null),[cooldown,setCooldown]=useState(0);
   const runner=useRef(new LatestPlanningRequest()),version=useRef(0),inFlight=useRef(false);
-  const [advanced,setAdvanced]=useState(false),[details,setDetails]=useState(false);
+  const [advanced,setAdvanced]=useState(false),[details,setDetails]=useState(false),[requestError,setRequestError]=useState('');
   const [jobPhase,setJobPhase]=useState('queued'),[pendingPreview,setPendingPreview]=useState<RoadPreviewResponse|null>(null);
   const [lastRequest,setLastRequest]=useState<PlanningApiRequest|null>(null),[navigationRoute,setNavigationRoute]=useState<NavigationRoute|null>(null),[navigationLocation,setNavigationLocation]=useState<import('@chargeroad/shared').Coordinate|null>(null);
   const [navigationProgress,setNavigationProgress]=useState<NavigationProgress|null>(null);
   function cancel(){version.current++;runner.current.cancel();inFlight.current=false;setBusy(false);}
-  function update(patch:Partial<Form>){cancel();setForm(f=>({...f,...patch}));setError('');setResult(null);setPendingPreview(null);}
+  function update(patch:Partial<Form>){cancel();setForm(f=>({...f,...patch}));setError('');setRequestError('');setResult(null);setPendingPreview(null);}
   useEffect(()=>{update({vehicleId:vehicle?.id??null,allowEstimates:false,allowCatalogueStations:false});},[vehicle?.id]);
-  useEffect(()=>{if(!active)cancel();},[active]);
+  // Collapsing the sheet or opening a modal only hides the form; the plan keeps running (cancel is explicit).
   useEffect(()=>()=>{version.current++;runner.current.cancel();},[]);
+  function reset(){cancel();setResult(null);setPendingPreview(null);setError('');setRequestError('');setDetails(false);}
+  const actions=useRef<TripActions>({cancel,reset});actions.current.cancel=cancel;actions.current.reset=reset;
   const mapRoute=useMemo(()=>{const planned=result?.result.status==='planned'?result.result.plan:null;
     return {geometry:navigationRoute?navigationRoute.segments.flatMap(s=>s.geometry):planned?planned.roadRoute.segments.flatMap(s=>s.geometry):result?.preview?.route?.geometry??pendingPreview?.route?.geometry??[],
       stops:planned?planned.chargingStops.map((stop,i)=>({id:stop.id,location:stop.location,label:`${i+1}. şarj · %${Math.round(stop.arrivalChargePercent)} → %${Math.round(stop.targetChargePercent)}`,plan:stop})):[]};
@@ -39,20 +44,29 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     if(!form.allowEstimates&&!allowApproximate&&vehicle.make.toLowerCase()==='hyundai'){
       Alert.alert('Kaynaklı yaklaşık hesap','Yaklaşık araç modeli ve istasyonların katalogdaki DC soket türü/gücüyle koşullu bir plan oluşturabiliriz. İstasyon voltajı, sürekli güç ve canlı müsaitlik doğrulanmış değildir; süreler garanti edilmez. Operatör hesabı gerekebilir.',
         [{text:'Vazgeç',style:'cancel'},{text:'Onayla ve planla',onPress:()=>{update({allowEstimates:true,allowCatalogueStations:true});void submit(true,undefined,true);}}]);return;}
-    setError('');setResult(null);let request;
+    setError('');setRequestError('');setResult(null);let request;
     try{request=buildPlanningRequest({...form,...locations,allowEstimates:allowApproximate||form.allowEstimates,allowCatalogueStations:allowCatalogue||form.allowCatalogueStations,vehicleId:vehicle.id},Crypto.randomUUID());}catch(cause){setError(cause instanceof Error?cause.message:'Bilgileri kontrol et.');return;}
     if(__DEV__){const origin=(locations?.origin??form.origin),accuracy=origin?.id==='device-location'?/±(\d+) m/.exec(origin.label)?.[1]:undefined;
       console.info('planning_started',{requestId:request.requestId,originSource:origin?.id==='device-location'?'device':origin?.id.startsWith('road-point:')?'confirmed_road_point':'address_search',reportedAccuracyMeters:accuracy?Number(accuracy):null});}
-    const current=++version.current;inFlight.current=true;setBusy(true);
+    const current=++version.current;inFlight.current=true;setBusy(true);setJobPhase('queued');setPendingPreview(null);onPlanningStart?.();
     const secret=(Crypto.randomUUID()+Crypto.randomUUID()).replaceAll('-','');
     const ports={...planningApi,plan:(r:typeof request,s:AbortSignal)=>planningApi.planAsync(r,s,secret,
       phase=>{if(version.current===current)setJobPhase(phase);},preview=>{if(version.current===current)setPendingPreview(preview);})};
     try{await runner.current.run(request,ports,next=>{if(__DEV__)console.info('planning_result',{requestId:request.requestId,status:next.result.status,reasons:next.result.status==='planned'?[]:next.result.reasons.map(r=>r.code)});
       setResult(next);setLastRequest(request);setCooldown(Math.max(next.previewRetryAfterSeconds??0,next.result.metadata?.retryAfterSeconds??0,next.result.status==='provider_error'||next.result.status==='computation_limit'?1:0));});}
-    catch(cause){if(version.current===current){if(__DEV__)console.info('planning_failed',{requestId:request.requestId,httpStatus:cause instanceof PlanningApiError?cause.status:null});setError(cause instanceof Error?cause.message:'Plan alınamadı.');if(cause instanceof PlanningApiError)setCooldown(cause.retryAfterSeconds);}}
+    catch(cause){if(version.current===current){if(__DEV__)console.info('planning_failed',{requestId:request.requestId,httpStatus:cause instanceof PlanningApiError?cause.status:null});const message=cause instanceof Error?cause.message:'Plan alınamadı.';setError(message);setRequestError(message);if(cause instanceof PlanningApiError)setCooldown(cause.retryAfterSeconds);}}
     finally{if(version.current===current){inFlight.current=false;setBusy(false);}}}
   const output=result?.result;
   const adjustment=roadEndpointAdjustment(form,result);
+  const trip=useMemo<TripState>(()=>{
+    if(busy)return {phase:'planning',queued:jobPhase==='queued',preview:pendingPreview?.route?{distanceMeters:pendingPreview.route.distanceMeters,drivingSeconds:pendingPreview.route.drivingDurationSeconds}:null};
+    if(output?.status==='planned')return {phase:'planned',plan:output.plan,requestedArrival:lastRequest?.constraints.targetArrivalChargePercent??null};
+    if(output)return {phase:'failed',title:output.status==='insufficient_data'?'Şarj planı çıkarılamadı':output.status==='infeasible'?'Tercihlerini birlikte güncelleyelim':
+      output.status==='provider_error'?'Rotan şu anda hazırlanamadı':'Rota hesabı tamamlanamadı',message:output.reasons[0]?.explanation??'Ayrıntılar için paneli aç.'};
+    if(requestError)return {phase:'failed',title:'Plan alınamadı',message:requestError};
+    return {phase:'idle'};
+  },[busy,jobPhase,pendingPreview,output,lastRequest,requestError]);
+  useEffect(()=>{onTripChange?.(trip,actions.current);},[trip,onTripChange]);
   function confirmRoadPoints(){if(!adjustment||!result?.preview?.route)return;const generation=version.current,road=result.preview.route;
     Alert.alert('Aracının yol noktasını onayla',`Seçilen konumdan başlangıç yoluna ${Math.ceil(road.originSnapMeters)} m, varış yoluna ${Math.ceil(road.destinationSnapMeters)} m eşleme var. Araç yolculuğunu haritadaki bu noktalardan hesaplayalım mı? Aradaki erişim sürüş hesabına dahil değildir.`,
       [{text:'Adresi değiştireceğim',style:'cancel'},{text:'Onayla ve hesapla',onPress:()=>{if(version.current!==generation)return;update(adjustment);void submit(form.allowEstimates,adjustment,form.allowCatalogueStations);}}]);}
@@ -72,14 +86,14 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
       <Text style={s.small}>Rezerv, yol boyunca korumak istediğin alt sınırdır (en fazla %{CHARGE_LIMITS.reserveMax}). Hedef varış şarjı bu değerden düşük olamaz (en fazla %{CHARGE_LIMITS.arrivalMax}); bu hedefe ulaşılamazsa plan ulaşılabilen en yüksek hedefle kurulur.</Text>
     </View>
     <View style={s.card}><Text style={s.title}>Önceliğin</Text>
-      {modes.map(([key,label])=><Pressable key={key} accessibilityRole="radio" accessibilityState={{checked:form.objective===key}} onPress={()=>update({objective:key})} style={[s.choice,form.objective===key&&s.chosen]}>
-        <Text style={s.text}>{form.objective===key?'●':'○'} {label}</Text></Pressable>)}
+      {modes.map(([key,label,hint])=><PressableScale key={key} accessibilityRole="radio" accessibilityState={{checked:form.objective===key}} onPress={()=>update({objective:key})} style={[s.choice,s.choiceRow,form.objective===key&&s.chosen]}>
+        <View style={[s.dot,form.objective===key&&s.dotOn]}/><View style={{flex:1}}><Text style={[s.text,form.objective===key&&s.chosenText]}>{label}</Text><Text style={s.small}>{hint}</Text></View></PressableScale>)}
       <Text style={s.small}>Az durak seçimi %80 üzerinde şarj önerebilir. Düşük tüketim modu net sürüş batarya enerjisini azaltmayı hedefler.</Text>
     </View>
     <Pressable accessibilityRole="button" accessibilityLabel="Diğer rota ayarları" onPress={()=>setAdvanced(v=>!v)} style={s.settings}><Text style={s.text}>Zaman ve yol tercihleri</Text><Text style={s.text}>{advanced?'−':'+'}</Text></Pressable>
     {advanced&&<><View style={s.card}><Text style={s.title}>Hareket zamanı</Text>
-      <View style={s.row}>{(['now','scheduled'] as const).map(key=><Pressable key={key} accessibilityRole="radio" accessibilityState={{checked:form.departure===key}}
-        onPress={()=>update({departure:key})} style={[s.choice,form.departure===key&&s.chosen]}><Text style={s.text}>{key==='now'?'Şimdi':'Tarih seç'}</Text></Pressable>)}</View>
+      <View style={s.row}>{(['now','scheduled'] as const).map(key=><PressableScale key={key} accessibilityRole="radio" accessibilityState={{checked:form.departure===key}}
+        onPress={()=>update({departure:key})} style={[s.choice,{flex:1,alignItems:'center'},form.departure===key&&s.chosen]}><Text style={[s.text,form.departure===key&&s.chosenText]}>{key==='now'?'Şimdi':'Tarih seç'}</Text></PressableScale>)}</View>
       {form.departure==='scheduled'&&<><Text style={s.small}>Telefonun yerel saati · YYYY-AA-GG SS:DD</Text><TextInput accessibilityLabel="Hareket tarihi ve saati" value={form.scheduled}
         onChangeText={scheduled=>update({scheduled})} placeholder="2026-11-13 09:30" placeholderTextColor={c.muted} maxLength={16} style={s.date}/></>}
       <Text style={s.small}>72 saatten sonrası için yalnız yol önizlemesi sunulur. “Şimdi” seçimi hesaplama ve hazırlık payı içerir; plan hazır olduğunda hareket saati gösterilir.</Text>
@@ -93,8 +107,8 @@ export function PlanningForm({vehicle,active,onRequireVehicle,onMapChange}:{vehi
     <View style={s.row}><View style={{flex:1}}><Text style={s.text}>Katalog gücüyle yaklaşık şarj planı</Text><Text style={s.small}>Voltaj ve sürekli güç teyidi gerekir; süreler koşulludur.</Text></View>
       <Switch value={!!form.allowCatalogueStations} onValueChange={allowCatalogueStations=>update({allowCatalogueStations})}/></View>
     {!!error&&<Text accessibilityRole="alert" style={s.error}>{error}</Text>}
-    <Pressable testID="plan-route-button" accessibilityRole="button" accessibilityLabel="Planla" accessibilityState={{disabled:busy||cooldown>0}} disabled={busy||cooldown>0} onPress={()=>void submit()} style={[s.primary,(busy||cooldown>0)&&s.disabled]}>
-      <Text style={s.primaryText}>{cooldown>0?`${cooldown} sn sonra tekrar dene`:busy?(jobPhase==='queued'?'Planın hesaplama sırasında…':'Enerji ve şarj planın hesaplanıyor…'):vehicle?'Rotamı planla':'Araç seç ve planla'}</Text></Pressable>
+    <PressableScale testID="plan-route-button" accessibilityRole="button" accessibilityLabel="Planla" accessibilityState={{disabled:busy||cooldown>0}} disabled={busy||cooldown>0} onPress={()=>void submit()} style={[s.primary,(busy||cooldown>0)&&s.disabled]}>
+      <Text style={s.primaryText}>{cooldown>0?`${cooldown} sn sonra tekrar dene`:busy?(jobPhase==='queued'?'Planın hesaplama sırasında…':'Enerji ve şarj planın hesaplanıyor…'):vehicle?'Rotamı planla':'Araç seç ve planla'}</Text></PressableScale>
     {busy&&pendingPreview?.route&&<View style={s.card}><RouteHighlight title="Yol önizlemen hazır" subtitle={`${(pendingPreview.route.distanceMeters/1000).toFixed(1)} km · ${minutes(pendingPreview.route.drivingDurationSeconds)}`}/>
       {pendingPreview.route.attributions.map(a=><Pressable key={a.url} accessibilityRole="link" onPress={()=>void Linking.openURL(a.url)}><Text style={s.small}>{a.text}</Text></Pressable>)}
       <Text style={s.small}>Şarj durakları ve enerji hesabı sürüyor. İşlemi iptal edebilirsin.</Text></View>}
@@ -138,5 +152,5 @@ const s=StyleSheet.create({container:{gap:12,marginTop:0},heading:{color:c.ink,f
   title:{color:c.ink,fontSize:16,fontWeight:'700'},row:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10},text:{color:c.ink,fontSize:13,lineHeight:20},
   small:{color:c.muted,fontSize:11,lineHeight:18},notice:{color:c.green,fontSize:12,lineHeight:19},error:{color:c.error,fontSize:12,lineHeight:19},
   percent:{flexDirection:'row',alignItems:'center',gap:4,backgroundColor:c.softGreen,paddingHorizontal:8,borderRadius:10},number:{minWidth:50,color:c.ink,fontSize:18,paddingVertical:8,textAlign:'center'},
-  choice:{padding:11,borderWidth:1,borderColor:c.line,borderRadius:12},chosen:{backgroundColor:c.softGreen,borderColor:c.green},date:{color:c.ink,fontSize:15,padding:12,borderWidth:1,borderColor:c.line,borderRadius:12},
+  choice:{padding:11,borderWidth:1,borderColor:c.line,borderRadius:12},chosen:{backgroundColor:c.softGreen,borderColor:c.green},choiceRow:{flexDirection:'row',alignItems:'center',gap:12},chosenText:{fontWeight:'800',color:c.green},dot:{width:18,height:18,borderRadius:9,borderWidth:2,borderColor:'#B9C6BD'},dotOn:{borderColor:c.green,borderWidth:6},date:{color:c.ink,fontSize:15,padding:12,borderWidth:1,borderColor:c.line,borderRadius:12},
   primary:{backgroundColor:c.ink,padding:17,borderRadius:15,alignItems:'center'},primaryText:{color:c.lime,fontSize:14,fontWeight:'700'},disabled:{opacity:0.5},link:{color:c.green,padding:12},preview:{gap:8,borderTopWidth:1,borderColor:c.line,paddingTop:14}});

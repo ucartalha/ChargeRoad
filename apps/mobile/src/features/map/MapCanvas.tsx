@@ -15,7 +15,7 @@ export type MapState={origin:LocationResult|null;destination:LocationResult|null
   navigationProgress?:NavigationProgress|null;navigationAttributions?:{text:string;url:string;license:string}[];stops:{id:string;location:Coordinate;label:string;plan?:PlannedChargingStop}[]};
 type Pin=NonNullable<ReturnType<typeof stationPin>>;
 const initial={latitude:41.02,longitude:29.04,latitudeDelta:.18,longitudeDelta:.18};
-export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigation?:()=>void}){
+export function MapCanvas({state,onOpenNavigation,bottomInset=260}:{state:MapState;onOpenNavigation?:()=>void;bottomInset?:number}){
   const insets=useSafeAreaInsets();
   const map=useRef<MapView>(null),[region,setRegion]=useState<Region>(initial),[pins,setPins]=useState<Pin[]>([]),[error,setError]=useState(''),[loading,setLoading]=useState(false),[revision,setRevision]=useState(0);
   const [permission,setPermission]=useState(false),[locating,setLocating]=useState(false),[locationError,setLocationError]=useState(''),[position,setPosition]=useState<Coordinate|null>(null),[ready,setReady]=useState(false);
@@ -48,9 +48,9 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
     finally{if(alive.current&&request===detailRequest.current)setDetailLoading(false);}}
   useEffect(()=>{const coords=state.geometry.length?state.geometry:[state.origin?.coordinate,state.destination?.coordinate].filter((v):v is Coordinate=>!!v);
     if(state.navigationLocation)return;
-    if(coords.length>1)map.current?.fitToCoordinates(coords,{edgePadding:{top:130,bottom:330,left:45,right:45},animated:true});
+    if(coords.length>1)map.current?.fitToCoordinates(coords,{edgePadding:{top:130,bottom:bottomInset+70,left:45,right:45},animated:true});
     else if(coords[0])map.current?.animateToRegion({...coords[0],latitudeDelta:.07,longitudeDelta:.07},500);
-  },[state.origin,state.destination,state.geometry,ready]);
+  },[state.origin,state.destination,state.geometry,ready,bottomInset]);
   useEffect(()=>{const controller=new AbortController();let live=true;setError('');setLoading(false);
     if(region.latitudeDelta>1||region.longitudeDelta>1){setPins([]);return()=>controller.abort();}
     const timer=setTimeout(()=>{setLoading(true);const q=new URLSearchParams({west:String(region.longitude-region.longitudeDelta/2),east:String(region.longitude+region.longitudeDelta/2),
@@ -63,7 +63,7 @@ export function MapCanvas({state,onOpenNavigation}:{state:MapState;onOpenNavigat
   if(Platform.OS==='web')return <View style={s.web}><Text>Harita görünümü için Expo Go üzerinden aç.</Text></View>;
   return <View style={StyleSheet.absoluteFill}>
     <MapView ref={map} testID="planning-map" style={StyleSheet.absoluteFill} initialRegion={initial} onRegionChangeComplete={setRegion}
-      mapPadding={{top:95,bottom:260,left:0,right:0}} showsUserLocation={permission} showsMyLocationButton={false}
+      mapPadding={{top:95,bottom:bottomInset,left:0,right:0}} showsUserLocation={permission} showsMyLocationButton={false}
       onMapReady={()=>setReady(true)} onPanDrag={()=>{panned.current=true;}} onUserLocationChange={event=>{
         const point=event.nativeEvent.coordinate;if(point)setPosition({latitude:point.latitude,longitude:point.longitude});}}
       showsCompass showsPointsOfInterests={false} showsBuildings={false} toolbarEnabled={false}>
