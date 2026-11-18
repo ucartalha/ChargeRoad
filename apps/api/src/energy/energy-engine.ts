@@ -1,6 +1,6 @@
 import {setImmediate as yieldEventLoop} from 'node:timers/promises';
 import {energyEvaluationRequestSchema,energyEvaluationResultSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
-import type {EnergyEvaluationResult,EnergyAudit,EnergyModel,EnergySegment,RoadSegment,WeatherForecast} from '@chargeroad/shared';
+import type {EnergyEvaluationRequest,EnergyEvaluationResult,EnergyAudit,EnergyModel,EnergySegment,RoadSegment,WeatherForecast} from '@chargeroad/shared';
 import {canonicalJsonSha256} from '../vehicles/knowledge/knowledge-package';
 import {ENERGY_ALGORITHM_VERSION,ENERGY_POLICY,EnergyDataMissing} from './energy-policy';
 import {airDensity,cabinPower,capacityFactor,elevationAt,aerodynamicForce,hasPhysics,integratePieces,distanceToRoad} from './energy-physics';
@@ -19,7 +19,10 @@ function audit(segment:RoadSegment,model:EnergyModel):EnergyAudit{return {segmen
 
 /** Search-time result: identical to EnergyEvaluationResult except that the unpublished input checksum is not computed. */
 export type SearchEnergyEvaluationResult=Omit<EnergyEvaluationResult,'inputChecksumSha256'>;
-export interface EnergyEvaluationOptions {inputChecksum:false;}
+/** trustedComponents: search-time callers (PlanningSession) assemble the request only from parts that were each validated
+ *  at their source (planning request, vehicle profile, road route, normalized weather); the composite re-parse is then
+ *  skipped. Output is unchanged (trusted-input.spec). Public/HTTP callers never set it. */
+export interface EnergyEvaluationOptions {inputChecksum:false;trustedComponents?:true;}
 // Only shape-checks the result; the placeholder never leaves evaluate().
 const CHECKSUM_NOT_COMPUTED='0'.repeat(64);
 
@@ -29,13 +32,14 @@ export class EnergyConsumptionEngine {
   evaluate(raw:unknown,signal:AbortSignal):Promise<EnergyEvaluationResult>;
   evaluate(raw:unknown,signal:AbortSignal,options:EnergyEvaluationOptions):Promise<SearchEnergyEvaluationResult>;
   async evaluate(raw:unknown,signal:AbortSignal,options?:EnergyEvaluationOptions):Promise<EnergyEvaluationResult|SearchEnergyEvaluationResult>{
-    const result=await this.run(raw,signal,options?.inputChecksum!==false);
+    const result=await this.run(raw,signal,options?.inputChecksum!==false,options?.trustedComponents===true);
     if(options?.inputChecksum!==false)return result;
     const {inputChecksumSha256:_omitted,...search}=result;return search;
   }
-  private async run(raw:unknown,signal:AbortSignal,withChecksum:boolean):Promise<EnergyEvaluationResult>{
+  private async run(raw:unknown,signal:AbortSignal,withChecksum:boolean,trusted=false):Promise<EnergyEvaluationResult>{
     signal.throwIfAborted();
-    const input=energyEvaluationRequestSchema.parse(raw),{vehicle,route}=input,continuation=input.continuation;
+    const skip=trusted&&!withChecksum&&Array.isArray((raw as {weather?:unknown})?.weather)&&(raw as {weather:unknown[]}).weather.length<=10000;
+    const input=skip?raw as EnergyEvaluationRequest:energyEvaluationRequestSchema.parse(raw),{vehicle,route}=input,continuation=input.continuation;
     const request=continuation?{...input.request,departureAt:continuation.departureAt,startingChargePercent:continuation.startingChargePercent,
       initialBatteryTemperatureC:continuation.batteryTemperatureC,constraints:{minimumReserveChargePercent:continuation.kind==='upper_charge_preview'?0:input.request.constraints.minimumReserveChargePercent,
         targetArrivalChargePercent:continuation.targetArrivalChargePercent}}:input.request;
@@ -56,7 +60,12 @@ export class EnergyConsumptionEngine {
         if(Date.parse(continuation.departureAt)<Date.parse(input.request.departureAt))throw new EnergyDataMissing('CONTINUATION_PRECEDES_JOURNEY');}
       const departureDelta=(Date.parse(input.request.departureAt)-Date.parse(input.evaluatedAt))/1000;
       if(departureDelta<0||departureDelta>ENERGY_POLICY.departureWindowSeconds)throw new EnergyDataMissing('DEPARTURE_OUTSIDE_72_HOUR_WINDOW');
-      const usage=energyInputUsage(route);
+      // Physical terrain for integration only; raw segments still drive every data/quality gate. Raw DEM knots are only
+      // windowed (linear work, own bound); the integration budget applies to the resampled physical profile (1.5.0).
+      const raw=energyInputUsage(route);
+      if(raw.uniqueElevationPoints>ENERGY_POLICY.maxRawElevationPoints){result.status='computation_limit';reason('ENERGY_INPUT_BUDGET');return finish();}
+      const terrain=windowedElevation(route,ENERGY_POLICY.elevationWindowMeters,ENERGY_POLICY.elevationResampleMeters);
+      const usage=terrain.size?energyInputUsage({...route,segments:route.segments.map(s=>terrain.get(s.id)??s)}):raw;
       if(usage.segments>ENERGY_POLICY.maxSegments||vehicle.consumptionReferences.length>ENERGY_POLICY.maxReferences||
         usage.geometryPoints>ENERGY_POLICY.maxGeometryPoints||usage.uniqueElevationPoints>ENERGY_POLICY.maxElevationPoints||
         usage.elevationPoints>ENERGY_POLICY.maxElevationPoints+Math.max(0,usage.segments-1)||usage.speedPoints>ENERGY_POLICY.maxSpeedPoints){
@@ -108,8 +117,6 @@ export class EnergyConsumptionEngine {
       if(new Set(input.weather.map(w=>w.queryId)).size!==input.weather.length)throw new EnergyDataMissing('DUPLICATE_WEATHER_QUERY');
       for(const weather of input.weather){const group=forecasts.get(weather.segmentId)??[];group.push(weather);forecasts.set(weather.segmentId,group);}
       let elapsed=0,previousTraceEnd:number|null=null,halt=false;
-      // Physical terrain for integration only; raw segments still drive every data/quality gate.
-      const terrain=windowedElevation(route,ENERGY_POLICY.elevationWindowMeters);
       if(terrain.size)assumptions.add('modelled_elevation_distance_window_'+ENERGY_POLICY.elevationWindowMeters+'m');
       for(const segment of route.segments){
         currentSegment=segment.id;signal.throwIfAborted();

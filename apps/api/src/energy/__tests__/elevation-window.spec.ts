@@ -34,6 +34,22 @@ describe('Energy elevation window (chargeroad-energy 1.4.0)',()=>{
     expect(windowedElevation(route(zigzag(3000),'verified'),300).size).toBe(0);
     expect(windowedElevation(route(zigzag(3000)),0).size).toBe(0);
   });
+  it('resamples windowed modelled terrain to at most elevationResampleMeters and keeps segment ends (energy 1.5.0)',()=>{
+    expect(ENERGY_POLICY.elevationResampleMeters).toBe(100);
+    const r=route(zigzag(3000),'modelled',1500),out=windowedElevation(r,300,100);
+    for(const s of r.segments){const p=out.get(s.id)!.elevationProfile!;
+      expect(p[0].distanceFromStartMeters).toBe(0);expect(p.at(-1)!.distanceFromStartMeters).toBe(s.distanceMeters);
+      expect(p.slice(1).every((q,i)=>q.distanceFromStartMeters-p[i].distanceFromStartMeters<=100+1e-9)).toBe(true);
+      expect(p.length).toBeLessThan(s.elevationProfile!.length);}
+    expect(out.get('s1')!.elevationProfile!.at(-1)!.elevationMeters).toBeCloseTo(out.get('s2')!.elevationProfile![0].elevationMeters,10);
+  });
+  it('plans a long modelled route whose raw 30 m knots exceed the integration budget, but not verified terrain',async()=>{
+    const knots=Array.from({length:ENERGY_POLICY.maxElevationPoints+5001},(_,i)=>[i*1000/(ENERGY_POLICY.maxElevationPoints+5000),Math.sin(i)*2] as [number,number]);
+    const run=async(quality:'modelled'|'verified')=>{const input=energyFixture();terrain(input,knots);input.route.segments[0].elevationQuality=quality;
+      return new EnergyConsumptionEngine().evaluate(input,new AbortController().signal);};
+    expect((await run('verified')).reasons.map(r=>r.code)).toContain('ENERGY_INPUT_BUDGET');
+    const modelled=await run('modelled');expect(modelled.reasons.map(r=>r.code)).not.toContain('ENERGY_INPUT_BUDGET');expect(modelled.status).toBe('estimated');
+  });
   it('makes a noisy modelled profile cost about the same as flat road, unlike verified noise',async()=>{
     const energy=async(points:[number,number][],quality:'modelled'|'verified')=>{
       const input=energyFixture();terrain(input,points);const s=input.route.segments[0];s.elevationQuality=quality;

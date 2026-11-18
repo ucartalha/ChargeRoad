@@ -6,7 +6,7 @@ import type {RoadRoute,RoadSegment} from '@chargeroad/shared';
  *  window along the whole route (trapezoid integral, independent of knot spacing). The window shrinks symmetrically at the
  *  route ends, so leg start/end elevations (net climb) are kept. `verified` terrain and the raw road data (QA, gain/loss,
  *  weather gates) are never changed. Returns replacement segments by id; empty when nothing applies. */
-export function windowedElevation(route:RoadRoute,windowMeters:number):Map<string,RoadSegment>{
+export function windowedElevation(route:RoadRoute,windowMeters:number,resampleMeters?:number):Map<string,RoadSegment>{
   const out=new Map<string,RoadSegment>();
   if(!(windowMeters>0)||!route.segments.some(s=>s.elevationQuality==='modelled'&&s.elevationProfile))return out;
   const xs:number[]=[],zs:number[]=[];
@@ -25,7 +25,15 @@ export function windowedElevation(route:RoadRoute,windowMeters:number):Map<strin
     return half>1e-9?(integral(x+half)-integral(x-half))/(2*half):raw;};
   for(const s of route.segments){
     if(s.elevationQuality!=='modelled'||!s.elevationProfile)continue;
-    out.set(s.id,{...s,elevationProfile:s.elevationProfile.map(p=>({...p,elevationMeters:mean(s.startDistanceMeters+p.distanceFromStartMeters,p.elevationMeters)}))});
+    if(!(resampleMeters&&resampleMeters>0)){
+      out.set(s.id,{...s,elevationProfile:s.elevationProfile.map(p=>({...p,elevationMeters:mean(s.startDistanceMeters+p.distanceFromStartMeters,p.elevationMeters)}))});continue;}
+    // energy 1.5.0: after a 300 m window, knots every resampleMeters keep the shape; integration and budgets scale
+    // with distance instead of raw DEM spacing. Segment ends stay exact so adjoining segments remain continuous.
+    const length=s.elevationProfile.at(-1)!.distanceFromStartMeters,start=s.elevationProfile[0].distanceFromStartMeters,count=Math.max(1,Math.ceil((length-start)/resampleMeters));
+    const raw=(d:number)=>{const p=s.elevationProfile!;const j=p.findIndex(q=>q.distanceFromStartMeters>=d);if(j<=0)return p[Math.max(0,j)].elevationMeters;
+      const a=p[j-1],b=p[j];return a.elevationMeters+(b.elevationMeters-a.elevationMeters)*(d-a.distanceFromStartMeters)/(b.distanceFromStartMeters-a.distanceFromStartMeters);};
+    out.set(s.id,{...s,elevationProfile:Array.from({length:count+1},(_,k)=>{const d=k===count?length:start+k*(length-start)/count;
+      return {distanceFromStartMeters:d,elevationMeters:mean(s.startDistanceMeters+d,raw(d))};})});
   }
   return out;
 }

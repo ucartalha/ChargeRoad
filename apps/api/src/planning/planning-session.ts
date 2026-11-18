@@ -118,7 +118,7 @@ export class PlanningSession implements TransitionPort {
           startingChargePercent:preview?100:state.soc,batteryTemperatureC:state.temperature,targetArrivalChargePercent:preview?0:to.id==='destination'?
             this.context.request.constraints.targetArrivalChargePercent:this.context.request.constraints.minimumReserveChargePercent}},signal,
             // Search legs never publish the energy input checksum; skip the full-input canonical hash (E1).
-            {inputChecksum:false}));};
+            {inputChecksum:false,trustedComponents:true}));};
       let result=await evaluate();
       if(adaptive&&(adaptiveWeatherNeedsRefinement(weather)||result.status==='estimated'&&result.segments.some(s=>s.minimumChargePercent<this.context.request.constraints.minimumReserveChargePercent+5))){
         // Exactly one bounded refinement; no preliminary energy result escapes before this completes.
