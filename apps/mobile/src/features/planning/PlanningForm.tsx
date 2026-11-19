@@ -25,19 +25,21 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   const [jobPhase,setJobPhase]=useState('queued'),[pendingPreview,setPendingPreview]=useState<RoadPreviewResponse|null>(null);
   const [lastRequest,setLastRequest]=useState<PlanningApiRequest|null>(null),[navigationRoute,setNavigationRoute]=useState<NavigationRoute|null>(null),[navigationLocation,setNavigationLocation]=useState<import('@chargeroad/shared').Coordinate|null>(null);
   const [navigationProgress,setNavigationProgress]=useState<NavigationProgress|null>(null);
+  const [navigationTrip,setNavigationTrip]=useState<{active:boolean;confirmedStopId:string|null;end:()=>void}|null>(null);
   function cancel(){version.current++;runner.current.cancel();inFlight.current=false;setBusy(false);}
   function update(patch:Partial<Form>){cancel();setForm(f=>({...f,...patch}));setError('');setRequestError('');setResult(null);setPendingPreview(null);}
   useEffect(()=>{update({vehicleId:vehicle?.id??null,allowEstimates:false,allowCatalogueStations:false});},[vehicle?.id]);
   // Collapsing the sheet or opening a modal only hides the form; the plan keeps running (cancel is explicit).
   useEffect(()=>()=>{version.current++;runner.current.cancel();},[]);
   function reset(){cancel();setResult(null);setPendingPreview(null);setError('');setRequestError('');setDetails(false);}
-  const actions=useRef<TripActions>({cancel,reset});actions.current.cancel=cancel;actions.current.reset=reset;
+  const actions=useRef<TripActions>({cancel,reset});actions.current.cancel=cancel;actions.current.reset=reset;actions.current.endNavigation=navigationTrip?.end;
   const mapRoute=useMemo(()=>{const planned=result?.result.status==='planned'?result.result.plan:null;
     return {geometry:navigationRoute?navigationRoute.segments.flatMap(s=>s.geometry):planned?planned.roadRoute.segments.flatMap(s=>s.geometry):result?.preview?.route?.geometry??pendingPreview?.route?.geometry??[],
       stops:planned?planned.chargingStops.map((stop,i)=>({id:stop.id,location:stop.location,label:`${i+1}. şarj · %${Math.round(stop.arrivalChargePercent)} → %${Math.round(stop.targetChargePercent)}`,plan:stop})):[]};
   },[result,pendingPreview,navigationRoute]);
-  useEffect(()=>{onMapChange({origin:form.origin,destination:form.destination,navigationLocation,navigationProgress,navigationAttributions:navigationRoute?.attributions,...mapRoute});
-  },[form.origin,form.destination,mapRoute,onMapChange,navigationLocation,navigationProgress,navigationRoute]);
+  useEffect(()=>{onMapChange({origin:form.origin,destination:form.destination,navigationLocation,navigationProgress,navigationAttributions:navigationRoute?.attributions,
+    navigation:navigationTrip?.active&&navigationRoute?{route:navigationRoute,confirmedStopId:navigationTrip.confirmedStopId}:null,...mapRoute});
+  },[form.origin,form.destination,mapRoute,onMapChange,navigationLocation,navigationProgress,navigationRoute,navigationTrip]);
   useEffect(()=>{if(cooldown<=0)return;const timer=setInterval(()=>setCooldown(v=>Math.max(0,v-1)),1000);return()=>clearInterval(timer);},[cooldown>0]);
   async function submit(allowApproximate=false,locations?:Pick<Form,'origin'|'destination'>,allowCatalogue=false){if(inFlight.current||cooldown>0)return;
     if(!vehicle){onRequireVehicle();return;}
@@ -71,7 +73,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
     Alert.alert('Aracının yol noktasını onayla',`Seçilen konumdan başlangıç yoluna ${Math.ceil(road.originSnapMeters)} m, varış yoluna ${Math.ceil(road.destinationSnapMeters)} m eşleme var. Araç yolculuğunu haritadaki bu noktalardan hesaplayalım mı? Aradaki erişim sürüş hesabına dahil değildir.`,
       [{text:'Adresi değiştireceğim',style:'cancel'},{text:'Onayla ve hesapla',onPress:()=>{if(version.current!==generation)return;update(adjustment);void submit(form.allowEstimates,adjustment,form.allowCatalogueStations);}}]);}
   return <View style={s.container}>
-    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress}
+    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
       onPlan={(result,request)=>{setResult({result,preview:null,previewError:null});setLastRequest(request);}}/>
     <LocationPicker label="BAŞLANGIÇ" value={form.origin} onChange={origin=>update({origin})} deviceLocation/>
     <LocationPicker label="VARIŞ" value={form.destination} onChange={destination=>update({destination})}/>

@@ -5,8 +5,9 @@ export type GpsFix=Coordinate&{timestamp:number;accuracy:number|null;speed:numbe
 export type NavigationRoute={planId:string;revision:number;algorithmVersion:string;distanceMeters:number;
   attributions:{text:string;url:string;license:string}[];
   segments:{start:number;end:number;geometry:Coordinate[];startSoc:number;endSoc:number;seconds:number}[];
-  maneuvers:{instruction:string;startDistanceMeters:number;endDistanceMeters:number}[];
-  stops:{id:string;distance:number;arrivalSoc:number;targetSoc:number}[];reserve:number;arrivalTarget:number};
+  maneuvers:{instruction:string;type?:number;startDistanceMeters:number;endDistanceMeters:number}[];
+  /** seconds (navigation step 1): planned time at the stop (charge+connection+preconditioning+known wait); absent in older saved trips. */
+  stops:{id:string;distance:number;arrivalSoc:number;targetSoc:number;seconds?:number}[];reserve:number;arrivalTarget:number};
 export type NavigationProgress={distance:number;crossTrackMeters:number;soc:number;remainingMeters:number;
   remainingDrivingSeconds:number;instruction:string;instructionDistance:number;offRoute:boolean;arrived:boolean;needsChargeConfirmation:boolean};
 export type SocAnchor={distance:number;percent:number;observedAt:number;stopId:string|null};
@@ -18,8 +19,9 @@ export function compactNavigationRoute(plan:RoutePlan):NavigationRoute{
   attributions:plan.roadRoute.metadata?.attributions??[],
   segments:plan.roadRoute.segments.map((s,i)=>({start:s.startDistanceMeters,end:s.endDistanceMeters,geometry:s.geometry,
    startSoc:plan.energySegments[i].startChargePercent,endSoc:plan.energySegments[i].endChargePercent,seconds:s.drivingDurationSeconds})),
-  maneuvers:(plan.roadRoute.metadata?.maneuvers??[]).filter(m=>m.instruction.trim()).map(({instruction,startDistanceMeters,endDistanceMeters})=>({instruction,startDistanceMeters,endDistanceMeters})),
-  stops:plan.chargingStops.map(s=>({id:s.id,distance:s.routeDistanceMeters,arrivalSoc:s.arrivalChargePercent,targetSoc:s.targetChargePercent})),
+  maneuvers:(plan.roadRoute.metadata?.maneuvers??[]).filter(m=>m.instruction.trim()).map(({instruction,type,startDistanceMeters,endDistanceMeters})=>({instruction,type,startDistanceMeters,endDistanceMeters})),
+  stops:plan.chargingStops.map(s=>({id:s.id,distance:s.routeDistanceMeters,arrivalSoc:s.arrivalChargePercent,targetSoc:s.targetChargePercent,
+   seconds:s.chargingDurationSeconds+s.connectionDurationSeconds+s.blockingPreconditioningSeconds+(s.waiting.seconds??0)})),
   reserve:plan.minimumReserveChargePercent,arrivalTarget:plan.targetArrivalChargePercent};
 }
 export function validFix(fix:GpsFix,now:number){return Number.isFinite(fix.latitude)&&Math.abs(fix.latitude)<=90&&Number.isFinite(fix.longitude)&&Math.abs(fix.longitude)<=180&&

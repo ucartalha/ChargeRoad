@@ -13,7 +13,8 @@ import type {GpsFix,NavigationRoute,NavigationProgress} from './navigation-core'
 import {decodeTrip,TRIP_STORAGE_KEY} from './trip-storage';
 import type {TripSnapshot} from './trip-storage';
 
-export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgress}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
+export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgress,onTrip}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
+ onTrip?:(trip:{active:boolean;confirmedStopId:string|null;end:()=>void}|null)=>void;
  onPlan:(result:PlanningApiResponse,request:PlanningApiRequest)=>void;onLocation:(p:Coordinate|null)=>void;onRoute:(r:NavigationRoute|null)=>void;onProgress:(p:NavigationProgress|null)=>void}){
  const [trip,setTrip]=useState<TripSnapshot|null>(null),[charge,setCharge]=useState(''),[message,setMessage]=useState(''),[loaded,setLoaded]=useState(false),[busy,setBusy]=useState(false);
  const [foreground,setForeground]=useState(AppState.currentState==='active');
@@ -21,6 +22,9 @@ export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgre
  const current=useRef<TripSnapshot|null>(null),fixRef=useRef<GpsFix|null>(null),firstFix=useRef(true),lastWrite=useRef(0),queue=useRef(Promise.resolve()),alive=useRef(true);
  const pending=useRef<AbortController|null>(null),generation=useRef(0),offRouteSince=useRef(0),offRouteFixes=useRef(0),nextReplanAt=useRef(0);
  const onPlanRef=useRef(onPlan);onPlanRef.current=onPlan;
+ // Navigation step 1: the full-screen mode follows the tracked trip (active even while GPS is stale), not the GPS freshness.
+ const onTripRef=useRef(onTrip);onTripRef.current=onTrip;
+ useEffect(()=>{onTripRef.current?.(trip?{active:trip.status==='active',confirmedStopId:trip.anchor.stopId,end:()=>stopRef.current()}:null);},[trip?.status,trip?.anchor.stopId,!!trip]);
  useEffect(()=>{onProgress(trip?.status==='active'&&gpsFresh?trip.progress:null);if(trip?.status!=='active')onLocation(null);},[trip?.progress,trip?.status,gpsFresh,onProgress,onLocation]);
  useEffect(()=>{if(trip?.status!=='active'){setGpsFresh(false);return;}const timer=setInterval(()=>setGpsFresh(!!fixRef.current&&validFix(fixRef.current,Date.now())),3000);return()=>clearInterval(timer);},[trip?.status]);
  function persist(next:TripSnapshot|null){queue.current=queue.current.catch(()=>{}).then(async()=>{if(next){const raw=JSON.stringify({...next,progress:null});
@@ -84,6 +88,7 @@ export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgre
     {id:Crypto.randomUUID(),sequence:(t.events.at(-1)?.sequence??0)+1,at:now,planId:t.route.planId,percent:value,predictedPercent:t.progress.soc,reason:stop?'after_charging' as const:'correction' as const}].slice(-128)};
   publish(next,true);setCharge('');void replan(value);
  }
+ const stopRef=useRef<()=>void>(()=>{});stopRef.current=()=>stop();
  function stop(){generation.current++;pending.current?.abort();pending.current=null;setBusy(false);publish(null,true);onRoute(null);onLocation(null);fixRef.current=null;setMessage('Yolculuk takibi kapatıldı.');}
  if(!loaded||!plan&&!trip)return null;const p=trip?.progress;
  return <View style={styles.card}><Text style={styles.title}>{trip?'Yolculuk takibi':'Navigasyonu başlat'}</Text>

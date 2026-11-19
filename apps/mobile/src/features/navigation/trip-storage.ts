@@ -15,8 +15,8 @@ export function decodeTrip(raw:string,now:number):TripSnapshot|null{
     !Array.isArray(data.events)||data.events.length>128)return null;
   let end=0;for(const s of r.segments){if(!finite(s.start)||!finite(s.end)||Math.abs(s.start-end)>.1||s.end<=s.start||!percent(s.startSoc)||!percent(s.endSoc)||!finite(s.seconds)||s.seconds<=0||
     !Array.isArray(s.geometry)||s.geometry.length<2||s.geometry.some(p=>!finite(p.latitude)||Math.abs(p.latitude)>90||!finite(p.longitude)||Math.abs(p.longitude)>180))return null;end=s.end;}
-  if(Math.abs(end-r.distanceMeters)>.1||r.stops.some(s=>typeof s.id!=='string'||!finite(s.distance)||s.distance<0||s.distance>r.distanceMeters||!percent(s.targetSoc)||!percent(s.arrivalSoc))||
-    r.maneuvers.some(m=>typeof m.instruction!=='string'||!finite(m.startDistanceMeters)||!finite(m.endDistanceMeters))||
+  if(Math.abs(end-r.distanceMeters)>.1||r.stops.some(s=>typeof s.id!=='string'||!finite(s.distance)||s.distance<0||s.distance>r.distanceMeters||!percent(s.targetSoc)||!percent(s.arrivalSoc)||s.seconds!==undefined&&(!finite(s.seconds)||s.seconds<0))||
+    r.maneuvers.some(m=>typeof m.instruction!=='string'||m.type!==undefined&&!Number.isInteger(m.type)||!finite(m.startDistanceMeters)||!finite(m.endDistanceMeters))||
     data.events.some((e,i)=>typeof e.id!=='string'||!percent(e.percent)||!percent(e.predictedPercent)||!finite(e.at)||!Number.isInteger(e.sequence)||i>0&&e.sequence<=data.events[i-1].sequence))return null;
   // A restored trip always requires explicit resume and fresh GPS/SOC confirmation.
   return {...data,status:'paused',progress:null,request:planningApiRequestSchema.parse(data.request)};

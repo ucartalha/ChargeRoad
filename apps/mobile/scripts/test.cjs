@@ -7,3 +7,4 @@ require('../tests/planning-flow.test.cjs');
 require('../tests/trip-summary.test.cjs');
 require('../tests/navigation.test.cjs');
 require('../tests/navigation-index-proof.test.cjs');
+require('../tests/navigation-view.test.cjs');

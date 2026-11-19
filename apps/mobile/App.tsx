@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {StatusBar} from 'expo-status-bar';
-import {useCallback,useRef,useState} from 'react';
-import {ActivityIndicator,Linking,Modal,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
+import {useCallback,useEffect,useRef,useState} from 'react';
+import {ActivityIndicator,Alert,Linking,Modal,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
 import {SafeAreaProvider,SafeAreaView,useSafeAreaInsets} from 'react-native-safe-area-context';
 import {VehiclesScreen} from './src/features/vehicles/VehiclesScreen';
 import {useActiveVehicle} from './src/features/vehicles/useActiveVehicle';
@@ -12,6 +12,8 @@ import type {MapState} from './src/features/map/MapCanvas';
 import {RouteSheet} from './src/features/map/RouteSheet';
 import {colors as c} from './src/theme';
 import {TripCard} from './src/features/planning/TripCard';
+import {NavigationBar,NAVIGATION_BAR_HEIGHT} from './src/features/navigation/NavigationOverlay';
+import {useNow} from './src/features/navigation/useNow';
 import {PressableScale} from './src/ui/PressableScale';
 import type {TripActions,TripState} from './src/features/planning/trip-summary';
 // Resting heights of the collapsed sheet per trip phase (card content), before the safe-area inset.
@@ -25,20 +27,28 @@ function ChargeRoad(){
   const [trip,setTrip]=useState<TripState>({phase:'idle'}),tripActions=useRef<TripActions>({cancel:()=>{},reset:()=>{}});
   const onTripChange=useCallback((next:TripState,actions:TripActions)=>{tripActions.current=actions;setTrip(next);},[]);
   const onPlanningStart=useCallback(()=>setExpanded(false),[]);
-  const live=trip.phase!=='idle',peek=PEEK[trip.phase]+(live?insets.bottom:0)+(trip.phase==='planned'&&trip.plan.warnings.some(w=>['arrival_target_lowered','soc_stop_rule_relaxed'].includes(w.code))?24:0);
+  // Navigation step 1: while a trip is tracked the map is full screen; the sheet rests as the navigation bar.
+  const navigating=!!mapState.navigation,now=useNow(navigating?15000:0);
+  const live=trip.phase!=='idle',peek=navigating?NAVIGATION_BAR_HEIGHT+insets.bottom:PEEK[trip.phase]+(live?insets.bottom:0)+(trip.phase==='planned'&&trip.plan.warnings.some(w=>['arrival_target_lowered','soc_stop_rule_relaxed'].includes(w.code))?24:0);
+  // Starting navigation from the expanded sheet drops straight into the full-screen map.
+  useEffect(()=>{if(navigating)setExpanded(false);},[navigating]);
+  function exitNavigation(){Alert.alert('Navigasyondan çık','Yolculuk takibi kapanır. Plan ekranına dönersin.',[{text:'Devam et',style:'cancel'},
+    {text:'Çık',style:'destructive',onPress:()=>{tripActions.current.endNavigation?.();setExpanded(false);}}]);}
   function chooseVehicle(required=false){setFromPlan(required);setProfile(false);setVehicles(true);}
   return <View style={s.screen}>
     <StatusBar style="dark"/>
     <MapCanvas state={mapState} onOpenNavigation={()=>setExpanded(true)} bottomInset={peek+20}/>
-    <View pointerEvents="box-none" style={[s.header,{paddingTop:insets.top+10}]}>
+    {!navigating&&<View pointerEvents="box-none" style={[s.header,{paddingTop:insets.top+10}]}>
       <Pressable accessibilityRole="button" accessibilityLabel="Harita ana ekranı" onPress={()=>setExpanded(false)} style={s.brand}>
         <View style={s.mark}><Ionicons name="flash" size={19} color={c.lime}/></View><Text style={s.brandText}>chargeroad<Text style={{color:c.orange}}>.</Text></Text>
       </Pressable>
       <Pressable testID="profile-button" accessibilityRole="button" accessibilityLabel="Profil" onPress={()=>setProfile(true)} style={s.avatar}><Ionicons name="person-outline" size={20} color={c.green}/></Pressable>
-    </View>
-    <RouteSheet expanded={expanded} onExpand={setExpanded} peek={peek} header={!live}>
-      {!expanded&&live&&<TripCard trip={trip} actions={tripActions.current} onOpen={()=>setExpanded(true)}/>}
-      {!expanded&&!live&&<View style={s.peek}>
+    </View>}
+    <RouteSheet expanded={expanded} onExpand={setExpanded} peek={peek} header={!live&&!navigating}>
+      {!expanded&&navigating&&mapState.navigation&&<NavigationBar route={mapState.navigation.route} progress={mapState.navigationProgress??null}
+        confirmedStopId={mapState.navigation.confirmedStopId} now={now} onExit={exitNavigation} onDetails={()=>setExpanded(true)}/>}
+      {!expanded&&live&&!navigating&&<TripCard trip={trip} actions={tripActions.current} onOpen={()=>setExpanded(true)}/>}
+      {!expanded&&!live&&!navigating&&<View style={s.peek}>
         <PressableScale testID="open-route-planner" accessibilityRole="button" accessibilityLabel="Rota planlamayı aç" onPress={()=>setExpanded(true)} style={s.search}>
           <Ionicons name="search-outline" size={20} color={c.green}/><Text style={s.searchText}>Bir yer veya adres ara</Text><View style={s.routeBadge}><Ionicons name="navigate" size={17} color={c.green}/></View>
         </PressableScale>

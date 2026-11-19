@@ -6,7 +6,8 @@ export type TripState=
   |{phase:'planning';queued:boolean;preview:{distanceMeters:number;drivingSeconds:number}|null}
   |{phase:'planned';plan:RoutePlan;requestedArrival:number|null}
   |{phase:'failed';title:string;message:string};
-export type TripActions={cancel:()=>void;reset:()=>void};
+/** endNavigation (navigation step 1): set while a trip is tracked; ends tracking exactly like the panel's "Yolculuğu bitir". */
+export type TripActions={cancel:()=>void;reset:()=>void;endNavigation?:()=>void};
 
 export function formatDuration(seconds:number){
   const total=Math.max(0,Math.round(seconds/60)),hours=Math.floor(total/60),minutes=total%60;
