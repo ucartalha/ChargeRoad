@@ -25,7 +25,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   const [jobPhase,setJobPhase]=useState('queued'),[pendingPreview,setPendingPreview]=useState<RoadPreviewResponse|null>(null);
   const [lastRequest,setLastRequest]=useState<PlanningApiRequest|null>(null),[navigationRoute,setNavigationRoute]=useState<NavigationRoute|null>(null),[navigationLocation,setNavigationLocation]=useState<import('@chargeroad/shared').Coordinate|null>(null);
   const [navigationProgress,setNavigationProgress]=useState<NavigationProgress|null>(null);
-  const [navigationTrip,setNavigationTrip]=useState<{active:boolean;confirmedStopId:string|null;end:()=>void}|null>(null);
+  const [navigationTrip,setNavigationTrip]=useState<{active:boolean;confirmedStopId:string|null;end:()=>void;correctSoc:(percent:number)=>string|null}|null>(null);
   const navigating=!!navigationTrip?.active;
   function cancel(){version.current++;runner.current.cancel();inFlight.current=false;setBusy(false);}
   function update(patch:Partial<Form>){cancel();setForm(f=>({...f,...patch}));setError('');setRequestError('');setResult(null);setPendingPreview(null);}
@@ -39,7 +39,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
       stops:planned?planned.chargingStops.map((stop,i)=>({id:stop.id,location:stop.location,label:`${i+1}. şarj · %${Math.round(stop.arrivalChargePercent)} → %${Math.round(stop.targetChargePercent)}`,plan:stop})):[]};
   },[result,pendingPreview,navigationRoute]);
   useEffect(()=>{onMapChange({origin:form.origin,destination:form.destination,navigationLocation,navigationProgress,navigationAttributions:navigationRoute?.attributions,
-    navigation:navigationTrip?.active&&navigationRoute?{route:navigationRoute,confirmedStopId:navigationTrip.confirmedStopId}:null,...mapRoute});
+    navigation:navigationTrip?.active&&navigationRoute?{route:navigationRoute,confirmedStopId:navigationTrip.confirmedStopId,correctSoc:navigationTrip.correctSoc}:null,...mapRoute});
   },[form.origin,form.destination,mapRoute,onMapChange,navigationLocation,navigationProgress,navigationRoute,navigationTrip]);
   useEffect(()=>{if(cooldown<=0)return;const timer=setInterval(()=>setCooldown(v=>Math.max(0,v-1)),1000);return()=>clearInterval(timer);},[cooldown>0]);
   async function submit(allowApproximate=false,locations?:Pick<Form,'origin'|'destination'>,allowCatalogue=false){if(inFlight.current||cooldown>0)return;
@@ -76,7 +76,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   // Read through result (not output) so TS does not narrow output inside the shared result card JSX.
   const planned=result?.result.status==='planned';
   return <View style={s.container}>
-    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
+    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} vehicleLabel={vehicle?`${vehicle.make} ${vehicle.model}`:undefined} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
       onBack={planned?reset:undefined}
       onPlan={(result,request)=>{setResult({result,preview:null,previewError:null});setLastRequest(request);}}/>
     {!navigating&&<>

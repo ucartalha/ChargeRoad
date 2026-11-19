@@ -16,7 +16,7 @@ import {ChargingStopSummary,RouteLine} from './RouteVisuals';
 import type {NavigationProgress,NavigationRoute} from '../navigation/navigation-core';
 /** navigation (step 1): set while a trip is actively tracked; switches the map to the full-screen follow mode. */
 export type MapState={origin:LocationResult|null;destination:LocationResult|null;geometry:Coordinate[];navigationLocation?:(Coordinate&{speed?:number|null})|null;
-  navigation?:{route:NavigationRoute;confirmedStopId:string|null}|null;
+  navigation?:{route:NavigationRoute;confirmedStopId:string|null;correctSoc?:(percent:number)=>string|null}|null;
   navigationProgress?:NavigationProgress|null;navigationAttributions?:{text:string;url:string;license:string}[];stops:{id:string;location:Coordinate;label:string;plan?:PlannedChargingStop}[]};
 type Pin=NonNullable<ReturnType<typeof stationPin>>;
 const initial={latitude:41.02,longitude:29.04,latitudeDelta:.18,longitudeDelta:.18};
@@ -97,7 +97,7 @@ export function MapCanvas({state,onOpenNavigation,bottomInset=260}:{state:MapSta
         <View collapsable={false} style={s.stopMarker}><View style={s.stopBadge}><View style={s.stopBolt}><Ionicons name="flash" size={19} color={c.ink}/></View><Text style={s.stopNumber}>{index+1}</Text></View><View style={s.stopTip}/></View>
       </Marker>)}
     </MapView>
-    {nav&&<NavigationHud route={nav.route} progress={progress} confirmedStopId={nav.confirmedStopId} speed={state.navigationLocation?.speed} top={insets.top+10} bottom={bottomInset+14}/>}
+    {nav&&<NavigationHud route={nav.route} progress={progress} confirmedStopId={nav.confirmedStopId} onCorrectSoc={nav.correctSoc} speed={state.navigationLocation?.speed} top={insets.top+10} bottom={bottomInset+14}/>}
     {nav&&!following&&<Pressable accessibilityRole="button" accessibilityLabel="Haritayı araca ortala" onPress={()=>setFollowing(true)} style={[s.recenter,{bottom:bottomInset+24}]}>
       <MaterialCommunityIcons name="navigation" size={20} color={c.green}/><Text style={s.recenterText}>Ortala</Text></Pressable>}
     {nav&&!!state.navigationAttributions?.length&&<Text style={[s.attribution,{bottom:bottomInset+4}]} onPress={()=>void Linking.openURL(state.navigationAttributions![0].url)}>{state.navigationAttributions[0].text}</Text>}

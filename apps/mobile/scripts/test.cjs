@@ -10,3 +10,4 @@ require('../tests/navigation-index-proof.test.cjs');
 require('../tests/navigation-view.test.cjs');
 require('../tests/navigation-heading.test.cjs');
 require('../tests/dev-log.test.cjs');
+require('../tests/soc-feedback.test.cjs');

@@ -1,8 +1,10 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {useState} from 'react';
 import {Pressable,StyleSheet,Text,View} from 'react-native';
 import {colors as c} from '../../theme';
 import type {NavigationProgress,NavigationRoute} from './navigation-core';
+import {stepSoc} from './soc-feedback';
 import {CLIMB_NOTICE_METERS,climbAhead,formatClock,formatDistance,formatDuration,maneuverIcon,remainingTripSeconds,roadLabel,socOutlook,socStrip,speedLimitAt,speedState,stopCard,upcomingManeuvers} from './navigation-view';
 
 /** Navigation mode step 1 (2026-11-19): top maneuver card. Without fresh GPS it says so instead of guessing a distance. */
@@ -23,16 +25,18 @@ export function ManeuverCard({route,progress}:{route:NavigationRoute;progress:Na
 }
 
 /** Navigation step 1b: top column (maneuver, road/climb chips, next charging stop within 20 km) and bottom-left speed. */
-export function NavigationHud({route,progress,confirmedStopId,speed,top,bottom}:{route:NavigationRoute;progress:NavigationProgress|null;
-  confirmedStopId:string|null;speed:number|null|undefined;top:number;bottom:number}){
+export function NavigationHud({route,progress,confirmedStopId,speed,top,bottom,onCorrectSoc}:{route:NavigationRoute;progress:NavigationProgress|null;
+  confirmedStopId:string|null;speed:number|null|undefined;top:number;bottom:number;onCorrectSoc?:(percent:number)=>string|null}){
   const road=progress?roadLabel(route,progress.distance):null,climb=progress?climbAhead(route,progress.distance):0;
   const card=progress?stopCard(route,progress,confirmedStopId):null,limit=progress?speedLimitAt(route,progress.distance):null,state=speedState(speed,limit);
   return <>
     <View pointerEvents="box-none" style={[s.column,{top}]}>
       <ManeuverCard route={route} progress={progress}/>
-      {(road||climb>=CLIMB_NOTICE_METERS)&&<View style={s.chips}>
+      {(road||climb>=CLIMB_NOTICE_METERS||progress)&&<View style={s.chips}>
         {road&&<View style={s.chip}><MaterialCommunityIcons name={road==='Otoyol'?'highway':'road-variant'} size={14} color={c.green}/><Text style={s.chipText}>{road}</Text></View>}
         {climb>=CLIMB_NOTICE_METERS&&<View style={s.chip}><MaterialCommunityIcons name="trending-up" size={14} color={c.orange}/><Text style={s.chipText}>10 km'de +{climb} m tırmanış · tüketim artar</Text></View>}
+        {/* Top right: estimated SOC chip. */}
+        {progress&&<SocChip soc={progress.soc} onCorrect={onCorrectSoc}/>}
       </View>}
       {card&&<View style={s.stop} accessibilityLabel={`${card.index}. şarj durağına ${formatDistance(card.distance)}`}>
         <View style={s.stopIcon}><MaterialCommunityIcons name="ev-station" size={22} color={c.ink}/></View>
@@ -46,6 +50,32 @@ export function NavigationHud({route,progress,confirmedStopId,speed,top,bottom}:
       {limit!==null&&<View style={s.limit} accessibilityLabel={`Hız limiti ${limit}`}><Text style={s.limitValue}>{limit}</Text></View>}
     </View>}
   </>;
+}
+
+/**
+ * SOC chip (2026-11-19, user request): top right, our ESTIMATED SOC. Tapping opens − / + (long press ±5) to enter the dashboard
+ * value; saving re-anchors the trip, replans from it and records the estimate error (soc-feedback.ts). Never shown as measured.
+ */
+export function SocChip({soc,onCorrect}:{soc:number;onCorrect?:(percent:number)=>string|null}){
+  const [value,setValue]=useState<number|null>(null),[error,setError]=useState('');
+  if(value===null)return <Pressable testID="nav-soc-chip" accessibilityRole="button" disabled={!onCorrect} accessibilityLabel={`Tahmini şarj yüzde ${Math.round(soc)}. Gerçek şarjı girmek için dokun`}
+    onPress={()=>{setError('');setValue(Math.round(soc));}} style={s.socChip}>
+    <MaterialCommunityIcons name="battery-medium" size={15} color={c.green}/><Text style={s.socValue}>%{Math.round(soc)}</Text><Text style={s.socLabel}>tahmini</Text></Pressable>;
+  const step=(delta:number)=>{setError('');setValue(v=>stepSoc(v??soc,delta));};
+  return <View style={s.socEdit} accessibilityLabel="Göstergedeki şarjı gir">
+    <Text style={s.socEditTitle}>Göstergedeki şarj</Text>
+    <View style={s.socRow}>
+      <Pressable testID="nav-soc-minus" accessibilityRole="button" accessibilityLabel="Bir azalt" onPress={()=>step(-1)} onLongPress={()=>step(-5)} style={s.socStep}><Ionicons name="remove" size={22} color={c.ink}/></Pressable>
+      <Text style={s.socEditValue} accessibilityLiveRegion="polite">%{value}</Text>
+      <Pressable testID="nav-soc-plus" accessibilityRole="button" accessibilityLabel="Bir artır" onPress={()=>step(1)} onLongPress={()=>step(5)} style={s.socStep}><Ionicons name="add" size={22} color={c.ink}/></Pressable>
+    </View>
+    <Text style={s.socHint}>Tahmin %{Math.round(soc)} · uzun bas ±5</Text>
+    {!!error&&<Text style={s.socError}>{error}</Text>}
+    <View style={s.socRow}>
+      <Pressable accessibilityRole="button" onPress={()=>{setValue(null);setError('');}} style={s.socCancel}><Text style={s.socCancelText}>Vazgeç</Text></Pressable>
+      <Pressable testID="nav-soc-save" accessibilityRole="button" onPress={()=>{const message=onCorrect?.(value)??null;if(message)setError(message);else setValue(null);}} style={s.socSave}><Text style={s.socSaveText}>Kaydet</Text></Pressable>
+    </View>
+  </View>;
 }
 
 /** Bottom bar (sheet peek in navigation mode): arrival clock, remaining time/distance, next charge or arrival SOC estimate. */
@@ -83,7 +113,14 @@ function SocStrip({route,progress,confirmedStopId}:{route:NavigationRoute;progre
 }
 export const NAVIGATION_BAR_HEIGHT=178;
 const s=StyleSheet.create({
-  column:{position:'absolute',left:12,right:12,gap:8},chips:{flexDirection:'row',flexWrap:'wrap',gap:6},
+  column:{position:'absolute',left:12,right:12,gap:8},chips:{flexDirection:'row',flexWrap:'wrap',gap:6,alignItems:'flex-start'},
+  socChip:{marginLeft:'auto',flexDirection:'row',alignItems:'center',gap:4,paddingHorizontal:10,paddingVertical:6,borderRadius:14,backgroundColor:'white',elevation:3,borderWidth:1,borderColor:c.line},
+  socValue:{color:c.ink,fontSize:15,fontWeight:'800'},socLabel:{color:c.muted,fontSize:10,fontWeight:'700'},
+  socEdit:{marginLeft:'auto',width:210,padding:12,borderRadius:18,backgroundColor:'white',elevation:6,gap:8},socEditTitle:{color:c.ink,fontSize:13,fontWeight:'800'},
+  socRow:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8},socStep:{width:48,height:48,borderRadius:24,backgroundColor:c.softGreen,alignItems:'center',justifyContent:'center'},
+  socEditValue:{color:c.ink,fontSize:28,fontWeight:'800',minWidth:70,textAlign:'center'},socHint:{color:c.muted,fontSize:11,textAlign:'center'},socError:{color:c.error,fontSize:11,lineHeight:16},
+  socCancel:{flex:1,paddingVertical:10,borderRadius:12,alignItems:'center',backgroundColor:c.surface,borderWidth:1,borderColor:c.line},socCancelText:{color:c.ink,fontWeight:'700'},
+  socSave:{flex:1,paddingVertical:10,borderRadius:12,alignItems:'center',backgroundColor:c.lime},socSaveText:{color:c.ink,fontWeight:'800'},
   chip:{flexDirection:'row',alignItems:'center',gap:5,paddingHorizontal:10,paddingVertical:6,borderRadius:14,backgroundColor:'white',elevation:3},chipText:{color:c.ink,fontSize:12,fontWeight:'700'},
   stop:{flexDirection:'row',alignItems:'center',gap:12,padding:12,borderRadius:18,backgroundColor:c.lime,elevation:5},stopIcon:{width:40,height:40,borderRadius:12,backgroundColor:'rgba(255,255,255,.6)',alignItems:'center',justifyContent:'center'},
   stopTitle:{color:c.ink,fontSize:15,fontWeight:'800'},stopText:{color:c.ink,fontSize:12,fontWeight:'600',marginTop:2},

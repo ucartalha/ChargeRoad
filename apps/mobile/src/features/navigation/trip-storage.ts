@@ -1,9 +1,12 @@
 import {planningApiRequestSchema} from '@chargeroad/shared';
 import type {PlanningApiRequest} from '@chargeroad/shared';
 import type {NavigationRoute,SocAnchor,NavigationProgress} from './navigation-core';
+import type {SocBaseline} from './soc-feedback';
 export const TRIP_STORAGE_KEY='chargeroad:foreground-trip:v1';
 export type TripSnapshot={version:1;id:string;updatedAt:number;status:'active'|'paused';request:PlanningApiRequest;route:NavigationRoute;
- anchor:SocAnchor;progress:NavigationProgress|null;events:{id:string;sequence:number;at:number;planId:string;percent:number;predictedPercent:number;reason:'start'|'correction'|'after_charging'}[]};
+ anchor:SocAnchor;progress:NavigationProgress|null;
+ /** SOC feedback (2026-11-19): metres since the last user-entered SOC; vehicle label for readable records. Not restored from storage. */
+ feedback?:SocBaseline;vehicleLabel?:string;events:{id:string;sequence:number;at:number;planId:string;percent:number;predictedPercent:number;reason:'start'|'correction'|'after_charging'}[]};
 const finite=(v:unknown)=>typeof v==='number'&&Number.isFinite(v);
 const percent=(v:unknown)=>finite(v)&&(v as number)>=0&&(v as number)<=100;
 export function decodeTrip(raw:string,now:number):TripSnapshot|null{
@@ -19,6 +22,7 @@ export function decodeTrip(raw:string,now:number):TripSnapshot|null{
     r.maneuvers.some(m=>typeof m.instruction!=='string'||m.type!==undefined&&!Number.isInteger(m.type)||!finite(m.startDistanceMeters)||!finite(m.endDistanceMeters))||
     data.events.some((e,i)=>typeof e.id!=='string'||!percent(e.percent)||!percent(e.predictedPercent)||!finite(e.at)||!Number.isInteger(e.sequence)||i>0&&e.sequence<=data.events[i-1].sequence))return null;
   // A restored trip always requires explicit resume and fresh GPS/SOC confirmation.
-  return {...data,status:'paused',progress:null,request:planningApiRequestSchema.parse(data.request)};
+  // The SOC feedback baseline restarts with that confirmation.
+  return {...data,status:'paused',progress:null,feedback:undefined,vehicleLabel:typeof data.vehicleLabel==='string'&&data.vehicleLabel.length<=120?data.vehicleLabel:undefined,request:planningApiRequestSchema.parse(data.request)};
  }catch{return null;}
 }

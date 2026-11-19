@@ -13,23 +13,25 @@ import type {DeviationState} from './navigation-core';
 import type {GpsFix,NavigationRoute,NavigationProgress} from './navigation-core';
 import {decodeTrip,TRIP_STORAGE_KEY} from './trip-storage';
 import {devLog} from '../../dev/dev-log';
+import {accumulateBaseline,appendJournal,readJournal,SOC_FEEDBACK_POLICY,socCorrection,startBaseline,summarizeJournal} from './soc-feedback';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {formatDistance,formatDuration,stopTimeline} from './navigation-view';
 import type {TripSnapshot} from './trip-storage';
 
-export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgress,onTrip,onBack}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
- onBack?:()=>void;
- onTrip?:(trip:{active:boolean;confirmedStopId:string|null;end:()=>void}|null)=>void;
+export function NavigationPanel({plan,request,vehicleLabel,onPlan,onLocation,onRoute,onProgress,onTrip,onBack}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
+ onBack?:()=>void;vehicleLabel?:string;
+ /** correctSoc: the navigation SOC chip; returns an error message or null when the correction was applied. */
+ onTrip?:(trip:{active:boolean;confirmedStopId:string|null;end:()=>void;correctSoc:(percent:number)=>string|null}|null)=>void;
  onPlan:(result:PlanningApiResponse,request:PlanningApiRequest)=>void;onLocation:(p:Coordinate|null)=>void;onRoute:(r:NavigationRoute|null)=>void;onProgress:(p:NavigationProgress|null)=>void}){
  const [trip,setTrip]=useState<TripSnapshot|null>(null),[charge,setCharge]=useState(''),[message,setMessage]=useState(''),[loaded,setLoaded]=useState(false),[busy,setBusy]=useState(false);
  const [foreground,setForeground]=useState(AppState.currentState==='active');
  const [gpsFresh,setGpsFresh]=useState(false);
  const current=useRef<TripSnapshot|null>(null),fixRef=useRef<GpsFix|null>(null),firstFix=useRef(true),lastWrite=useRef(0),queue=useRef(Promise.resolve()),alive=useRef(true);
  const pending=useRef<AbortController|null>(null),generation=useRef(0),deviation=useRef<DeviationState|null>(null),nextReplanAt=useRef(0),replanned=useRef(false);
- const onPlanRef=useRef(onPlan);onPlanRef.current=onPlan;
+ const onPlanRef=useRef(onPlan);onPlanRef.current=onPlan;const feedbackQueue=useRef(Promise.resolve());
  // Navigation step 1: the full-screen mode follows the tracked trip (active even while GPS is stale), not the GPS freshness.
  const onTripRef=useRef(onTrip);onTripRef.current=onTrip;
- useEffect(()=>{onTripRef.current?.(trip?{active:trip.status==='active',confirmedStopId:trip.anchor.stopId,end:()=>stopRef.current()}:null);},[trip?.status,trip?.anchor.stopId,!!trip]);
+ useEffect(()=>{onTripRef.current?.(trip?{active:trip.status==='active',confirmedStopId:trip.anchor.stopId,end:()=>stopRef.current(),correctSoc:(percent:number)=>correctRef.current(percent)}:null);},[trip?.status,trip?.anchor.stopId,!!trip]);
  useEffect(()=>{onProgress(trip?.status==='active'&&gpsFresh?trip.progress:null);if(trip?.status!=='active')onLocation(null);},[trip?.progress,trip?.status,gpsFresh,onProgress,onLocation]);
  useEffect(()=>{if(trip?.status!=='active'){setGpsFresh(false);return;}const timer=setInterval(()=>setGpsFresh(!!fixRef.current&&validFix(fixRef.current,Date.now())),3000);return()=>clearInterval(timer);},[trip?.status]);
  function persist(next:TripSnapshot|null){queue.current=queue.current.catch(()=>{}).then(async()=>{if(next){const raw=JSON.stringify({...next,progress:null});
@@ -68,7 +70,9 @@ export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgre
     const position=locateOnRoute(t.route,fix);if(position&&position.crossTrackMeters<=100)anchor={...anchor,distance:position.distance};
     initialReplan=!!position&&(position.distance>100||position.crossTrackMeters>50||Math.abs(anchor.percent-t.route.segments[0].startSoc)>1);firstFix.current=false;}
    const progress=navigationProgress(t.route,fix,now,anchor,old&&t.progress?{distance:t.progress.distance,timestamp:old.timestamp}:undefined);if(!progress)return;
-   publish({...t,anchor,progress,updatedAt:now});
+   // SOC feedback: metres since the last user-entered SOC (same route only; a replan starts from progress null).
+   const feedback=t.progress&&old?accumulateBaseline(t.feedback,t.route,t.progress.distance,progress.distance):t.feedback;
+   publish({...t,anchor,progress,feedback,updatedAt:now});
    if(initialReplan&&!pending.current)void replan(anchor.percent);
    if(now-lastWrite.current>=15000){lastWrite.current=now;persist(current.current);}
    const [state,due]=trackDeviation(deviation.current,progress,fix,now);
@@ -87,16 +91,33 @@ export function NavigationPanel({plan,request,onPlan,onLocation,onRoute,onProgre
   if(!Number.isFinite(value)||value<0||value>100||base&&charge===''){setMessage('Araç göstergesindeki güncel şarj yüzdesini doğrula.');return;}
   const now=Date.now(),route=base?.route??compactNavigationRoute(plan!),source=base?.request??request!,next:TripSnapshot={version:1,id:base?.id??Crypto.randomUUID(),status:'active',updatedAt:now,
    route,request:source,anchor:{distance:base?.anchor.distance??0,percent:value,observedAt:now,stopId:null},progress:null,
+   feedback:startBaseline(value,now,'start'),vehicleLabel:base?.vehicleLabel??vehicleLabel,
    events:[...(base?.events??[]),{id:Crypto.randomUUID(),sequence:(base?.events.at(-1)?.sequence??0)+1,at:now,planId:route.planId,percent:value,predictedPercent:base?.anchor.percent??source.startingChargePercent,reason:'start' as const}].slice(-128)};
   fixRef.current=null;firstFix.current=true;nextReplanAt.current=0;publish(next,true);onRoute(route);setCharge('');setMessage('GPS bekleniyor. Bu takip yalnız uygulama ön plandayken çalışır.');
  }
- function correct(afterCharging=false){const t=current.current,fix=fixRef.current;if(!t?.progress||!fix||!validFix(fix,Date.now())||charge===''){setMessage('Güncel GPS ve araç göstergesindeki şarj yüzdesi gerekiyor.');return;}
-  const value=Number(charge);if(!Number.isFinite(value)||value<0||value>100)return;
+ function correct(afterCharging=false){if(charge===''){setMessage('Güncel GPS ve araç göstergesindeki şarj yüzdesi gerekiyor.');return;}
+  const error=applyCorrection(Number(charge),afterCharging);if(error)setMessage(error);}
+ const correctRef=useRef<(percent:number)=>string|null>(()=>null);
+ // The SOC chip counts as the after-charging confirmation while the car is at a planned stop.
+ correctRef.current=percent=>applyCorrection(percent,!!current.current?.progress?.needsChargeConfirmation);
+ function applyCorrection(value:number,afterCharging:boolean):string|null{const t=current.current,fix=fixRef.current;
+  if(!t?.progress||!fix||!validFix(fix,Date.now()))return 'Güncel GPS ve araç göstergesindeki şarj yüzdesi gerekiyor.';
+  if(!Number.isFinite(value)||value<0||value>100)return 'Şarj yüzdesi 0–100 arasında olmalı.';
   const stop=afterCharging?t.route.stops.find(s=>Math.abs(s.distance-t.progress!.distance)<=150):undefined,now=Date.now();
-  if(afterCharging&&!stop){setMessage('Şarj sonrası doğrulama için planlanan durağa yakın konum gerekiyor. Diğer konumlarda şarj düzeltmesini kullan.');return;}
-  const next={...t,updatedAt:now,anchor:{distance:t.progress.distance,percent:value,observedAt:now,stopId:stop?.id??null},events:[...t.events,
+  if(afterCharging&&!stop)return 'Şarj sonrası doğrulama için planlanan durağa yakın konum gerekiyor. Diğer konumlarda şarj düzeltmesini kullan.';
+  recordFeedback(t,value,stop?'after_charging':'correction',now);
+  const next={...t,updatedAt:now,feedback:startBaseline(value,now,stop?'after_charging':'correction'),anchor:{distance:t.progress.distance,percent:value,observedAt:now,stopId:stop?.id??null},events:[...t.events,
     {id:Crypto.randomUUID(),sequence:(t.events.at(-1)?.sequence??0)+1,at:now,planId:t.route.planId,percent:value,predictedPercent:t.progress.soc,reason:stop?'after_charging' as const:'correction' as const}].slice(-128)};
-  publish(next,true);setCharge('');void replan(value);
+  publish(next,true);setCharge('');void replan(value);return null;
+ }
+ /** SOC feedback journal: on this device only (no upload, no automatic learning) plus development logs. */
+ function recordFeedback(t:TripSnapshot,observed:number,reason:'correction'|'after_charging',now:number){
+  const record=socCorrection({vehicleVariantId:t.request.vehicleVariantId,vehicleLabel:t.vehicleLabel,route:t.route,baseline:t.feedback,predicted:t.progress!.soc,observed,at:now,reason});
+  devLog('soc_correction',record);
+  feedbackQueue.current=feedbackQueue.current.catch(()=>{}).then(async()=>{const raw=appendJournal(await AsyncStorage.getItem(SOC_FEEDBACK_POLICY.journalKey),record);
+   await AsyncStorage.setItem(SOC_FEEDBACK_POLICY.journalKey,raw);
+   for(const summary of summarizeJournal(readJournal(raw)))if(summary.vehicleVariantId===record.vehicleVariantId&&summary.energyModel===record.energyModel)devLog('soc_feedback_summary',summary);
+  }).catch(()=>{});
  }
  const stopRef=useRef<()=>void>(()=>{});stopRef.current=()=>stop();
  function stop(){generation.current++;pending.current?.abort();pending.current=null;setBusy(false);publish(null,true);onRoute(null);onLocation(null);fixRef.current=null;setMessage('Yolculuk takibi kapatıldı.');}

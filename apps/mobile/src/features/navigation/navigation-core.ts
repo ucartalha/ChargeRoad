@@ -10,6 +10,8 @@ export const HEADING_MIN_SPEED=2,WRONG_WAY_DEGREES=120,ALIGNED_EXTRA_METERS=60;
 const trustedHeading=(fix:GpsFix)=>typeof fix.heading==='number'&&Number.isFinite(fix.heading)&&fix.heading>=0&&typeof fix.speed==='number'&&fix.speed>=HEADING_MIN_SPEED;
 const angleDiff=(a:number,b:number)=>{const d=Math.abs(((a-b)%360+360)%360);return d>180?360-d:d;};
 export type NavigationRoute={planId:string;revision:number;algorithmVersion:string;distanceMeters:number;
+  /** Energy model version of the plan (SOC feedback, 2026-11-19); absent in older saved trips. */
+  energyModel?:string;
   attributions:{text:string;url:string;license:string}[];
   /** limit: posted speed limit only (km/h); road: plan road class; climb: rounded ascent (m). Optional: older saved trips lack them. */
   segments:{start:number;end:number;geometry:Coordinate[];startSoc:number;endSoc:number;seconds:number;limit?:number;road?:string;climb?:number}[];
@@ -26,6 +28,7 @@ export function distanceMeters(a:Coordinate,b:Coordinate){const lat=radians((a.l
 export function compactNavigationRoute(plan:RoutePlan):NavigationRoute{
  return {planId:plan.planId,revision:plan.revision,algorithmVersion:plan.algorithmVersion,distanceMeters:plan.roadRoute.distanceMeters,
   attributions:plan.roadRoute.metadata?.attributions??[],
+  ...(plan.energySegments[0]?.modelVersion?{energyModel:plan.energySegments[0].modelVersion}:{}),
   segments:plan.roadRoute.segments.map((s,i)=>({start:s.startDistanceMeters,end:s.endDistanceMeters,geometry:s.geometry,
    startSoc:plan.energySegments[i].startChargePercent,endSoc:plan.energySegments[i].endChargePercent,seconds:s.drivingDurationSeconds,
    ...(s.speedLimitKind==='posted'&&typeof s.speedLimitKph==='number'?{limit:s.speedLimitKph}:{}),...(s.roadClass?{road:s.roadClass}:{}),
