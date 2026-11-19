@@ -54,6 +54,12 @@ Gereksinim kadar şarj, tek koridor, geniş arama payı (`chargeroad-optimizer/1
 
 Kanıt ve sınırlar: [planning-b-2026-11-19.md](validation/planning-b-2026-11-19.md). Optimallik hâlâ `not_proven`; İstanbul→Kelkit süreç-içi süresi 5 s hedefinin üzerinde kaldı.
 
+İstasyon uç toleransı ve hava çağrı bütçesi (`chargeroad-optimizer/1.7.1`, 2026-11-19): arama kaynağı 1.7.0 ile aynı (hash aynı).
+- `ROAD_ENDPOINT_POLICY` (`road-endpoint/1.0.0`, `planning-session.ts`): yol bacağı başlangıç/varış noktasına 100 m, istasyon düğümüne 250 m içinde başlamalı/bitmelidir. Katalog koordinatı yoldan ~100 m içeride olan istasyonlar (3ffb3120: 100,0 m) önceden tüm bacaklarda reddediliyordu. Kalan otopark mesafesi enerji modelinde sürülmez; `station_road_endpoint_gap` olarak raporlanır.
+- Self-hosted hava sağlayıcısının plan başına çağrı bütçesi 128 → 1.024 ([WEATHER_PROVIDERS.md](WEATHER_PROVIDERS.md)).
+
+Referans planlar (5 rota) 1.7.0 ile özet + segment SOC hash'inde birebir aynı. [Kanıt](validation/planning-1.7.1-2026-11-19.md).
+
 
 Erişim sapması kontrollü aday seçimi (`catalogue-scenario/1.2.0`, `station-access/1.0.0`, 2026-11-17, kullanıcı kararı: 3 km / 3 dk): rotaya kuş uçuşu çok yakın (≤130 m) istasyonlar bile karşı yöndeki tesiste olduğunda kavşaktan dönüş nedeniyle büyük sapma doğuruyordu (İstanbul→Ankara'da tek durak +36 km). Katalog senaryosunda 16 ilerleme diliminin her biri için adayların erişim sapması gidiş yönünde ölçülür: ana rotada istasyonun 1 km öncesi → istasyon → 1 km sonrası, iki bacak olarak yerel yol sağlayıcısından (`selectAccessibleCandidates`). Dilimde, mevcut sıralamaya (rotaya ≤100 m, sonra DC gücü) göre ilk ≤3 km ve ≤3 dk ek sapmalı aday seçilir; ilk 3 adayda yoksa 6'ya kadar bakılır; hiçbiri kabul edilebilir değilse plan mümkün kalsın diye en az sapmalı aday tutulur. Ölçümler en fazla 4 eşzamanlı, plan başına istasyon başına bir kez yapılır; ölçülemezse `STATION_ACCESS_UNMEASURED`. Planlanan durağın `detourDistanceMeters`/`detourDrivingSeconds` alanları artık bu ölçümle doldurulur (sürüş süresi zaten bacaklarda); ölçüm yoksa eski `included_in_road_not_separately_quantified` kalır. Doğrulanmış donanım (`verified_hardware`) yolunda seçim değişmedi. [Kanıt](validation/station-access-2026-11-17.md).
 

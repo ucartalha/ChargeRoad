@@ -6,7 +6,7 @@ import {WeatherAdapterRegistry,WeatherService} from '../weather.service';
 import {sampleRouteWeather} from '../weather-sampler';
 import {weatherTransport} from '../weather-http';
 import {weatherConfig} from '../weather-policy';
-import {WEATHER_POLICY} from '../weather-policy';
+import {WEATHER_POLICY,weatherProviderLimits} from '../weather-policy';
 import {config,document,query,instant} from './fixtures';
 import {trip,roadRequest,config as roadConfig} from '../../roads/__tests__/fixtures';
 import {normalizeRoadTrip} from '../../roads/normalize-road';
@@ -27,6 +27,23 @@ describe('Weather budgets across route legs',()=>{
       expect(calls[0][4]).toBe(calls[1][4]);expect(calls[0][4]).toMatchObject({limit:WEATHER_POLICY.maxExternalCalls});
       await service.forecast([query('other-trip')],new AbortController().signal,{budgetScope:{}});
       expect(calls[0][4]).not.toBe((cache.get.mock.calls as unknown as unknown[][])[2][4]);
+    }finally{clock.mockRestore();}
+  });
+});
+
+// 2026-11-19: on a cold cache (new ICON run) İstanbul→Kelkit needs more than 128 sample locations; the MET-derived
+// per-plan call budget then answered 768 forecasts budget_exhausted and the plan failed with computation_limit.
+// The self-hosted provider has no external quota, so its per-plan budget comes from its own limits; MET keeps 128.
+describe('Per-provider external call budget',()=>{
+  it('gives self-hosted Open-Meteo its own per-plan budget and leaves MET at the ToS-derived 128',async()=>{
+    const clock=jest.spyOn(Date,'now').mockReturnValue(now);
+    try{
+      const budgetOf=async(providerId:string)=>{const c={...config,providerId},cache={get:jest.fn(async()=>document())};
+        await new WeatherService(c,new WeatherAdapterRegistry([new MetNorwayAdapter(c)]),cache as any,{seriesCacheEntries:0}).forecast([query('a')],new AbortController().signal,{budgetScope:{}});
+        return ((cache.get.mock.calls as unknown as unknown[][])[0][4] as {limit:number}).limit;};
+      expect(await budgetOf('met-norway')).toBe(128);
+      expect(await budgetOf('open-meteo-local')).toBe(weatherProviderLimits('open-meteo-local').maxExternalCalls);
+      expect(weatherProviderLimits('open-meteo-local').maxExternalCalls).toBeGreaterThanOrEqual(1024);
     }finally{clock.mockRestore();}
   });
 });

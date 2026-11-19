@@ -49,7 +49,8 @@ describe('Self-hosted Open-Meteo adapter',()=>{
     expect(()=>a.parse(doc(body({latitude:40.5,longitude:32.875})))).toThrow(/grid/i);
   });
   it('keeps MET limits and gives the local server its own capacity limits',()=>{
-    expect(weatherProviderLimits('met-norway')).toEqual({dailyLimit:WEATHER_POLICY.dailyLimit,minIntervalMs:WEATHER_POLICY.minIntervalMs,maxConcurrency:WEATHER_POLICY.maxConcurrency});
+    expect(weatherProviderLimits('met-norway')).toEqual({dailyLimit:WEATHER_POLICY.dailyLimit,minIntervalMs:WEATHER_POLICY.minIntervalMs,maxConcurrency:WEATHER_POLICY.maxConcurrency,
+      maxExternalCalls:WEATHER_POLICY.maxExternalCalls});
     expect(weatherProviderLimits('met-norway').dailyLimit).toBe(1000);
     const local=weatherProviderLimits(OPEN_METEO_PROVIDER_ID);expect(local.dailyLimit).toBeGreaterThan(1000);expect(local.minIntervalMs).toBe(0);
   });

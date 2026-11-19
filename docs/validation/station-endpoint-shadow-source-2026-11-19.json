@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.7.1",
+  "scope": "Station road endpoint tolerance and self-hosted weather call budget (1.7.1). charge-stop-optimizer.ts is unchanged from 1.7.0 (same hash); compared against the same algorithm without shadow.",
+  "optimizerWithoutShadowSha256": "1ea05e369c477ae0e1260d79d46df6c41dc4efc7d7cc4d8df81b8cd12839ed24"
+}

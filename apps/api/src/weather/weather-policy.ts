@@ -15,12 +15,16 @@ export const WEATHER_SAMPLING_POLICY={version:'weather-sampling/2.0.0',previewLo
   spatialGridDegrees:.005,spatialMaxOffsetMeters:500,spatialMaxElevationDeltaMeters:100,
   maxPendingKeys:128} as const;
 /** Self-hosted Open-Meteo (infra/open-meteo): no external ToS quota; limits protect the local server only. */
-export const SELF_HOSTED_WEATHER_LIMITS={dailyLimit:200000,minIntervalMs:0,maxConcurrency:8} as const;
+/** maxExternalCalls (2026-11-19): per-plan acquisition budget. MET keeps WEATHER_POLICY.maxExternalCalls (ToS quota); the local
+ *  server is protected by maxConcurrency/dailyLimit, and a cold cache on İstanbul→Kelkit needed more than 128 locations
+ *  (739-879 distinct per İstanbul→Kelkit reference plan, most served from PG when warm). */
+export const SELF_HOSTED_WEATHER_LIMITS={dailyLimit:200000,minIntervalMs:0,maxConcurrency:8,maxExternalCalls:1024} as const;
 export const SELF_HOSTED_WEATHER_PROVIDERS:readonly string[]=['open-meteo-local'];
 /** MET Norway keeps WEATHER_POLICY's ToS-derived limits unchanged; only a registered self-hosted provider differs. */
 export function weatherProviderLimits(providerId:string){
   return SELF_HOSTED_WEATHER_PROVIDERS.includes(providerId)?{...SELF_HOSTED_WEATHER_LIMITS}:
-    {dailyLimit:WEATHER_POLICY.dailyLimit,minIntervalMs:WEATHER_POLICY.minIntervalMs,maxConcurrency:WEATHER_POLICY.maxConcurrency};
+    {dailyLimit:WEATHER_POLICY.dailyLimit,minIntervalMs:WEATHER_POLICY.minIntervalMs,maxConcurrency:WEATHER_POLICY.maxConcurrency,
+      maxExternalCalls:WEATHER_POLICY.maxExternalCalls as number};
 }
 export const OPEN_METEO_DEFAULTS={endpoint:'http://127.0.0.1:8090',metaEndpoint:'http://127.0.0.1:8091',model:'dwd_icon',domain:'dwd_icon_global_native'} as const;
 const openMeteoSchema=z.object({endpoint:z.string().url(),metaEndpoint:z.string().url(),model:z.string().regex(/^[a-z0-9_]+$/),domain:z.string().regex(/^[a-z0-9_]+$/)}).strict();

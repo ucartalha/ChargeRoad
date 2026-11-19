@@ -31,4 +31,6 @@ export const BROAD_SEARCH_POLICY={version:'broad-search/1.0.0',maxWeatherProject
 export const SEED_TRIM_POLICY={version:'seed-charge-trim/1.0.0',marginPercent:.05,minGainPercent:1} as const;
 // 1.6.1 (2026-11-19): station/charging weather reuses a sampled series only inside the 10 km provenance bound (planning-session).
 // 1.7.0 (2026-11-19): seed charge-to-need (SEED_TRIM_POLICY), one corridor per search (planning service), BROAD_SEARCH_POLICY.
-export const OPTIMIZER_VERSION='chargeroad-optimizer/1.7.0';
+// 1.7.1 (2026-11-19): station road endpoints within ROAD_ENDPOINT_POLICY.stationMeters (planning-session) and the self-hosted
+//   weather provider's own per-plan call budget (weather-policy); search source unchanged.
+export const OPTIMIZER_VERSION='chargeroad-optimizer/1.7.1';

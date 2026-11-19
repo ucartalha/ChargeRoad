@@ -66,6 +66,8 @@ Cache isabeti dış çağrı bütçesini tüketmez. `weather/1.1.0` politikasın
 
 Migration `010_weather_provider_cache.sql` yerel DB'ye uygulandı. Cache anahtarı HMAC'tir, kullanıcı/rotanın tamamı saklanmaz. Gövde örnek koordinatını içerir; DB erişimi sınırlandırılmalıdır. Temsil, HTTP expiry sonrasına 24 saat fiziksel saklama penceresiyle tutulur. API çalışırken her 15 dakikada bir indeksli temizleme yapılır; uygulama kapalıyken çalıştırmak için `weather:cleanup` komutu vardır. Aktif lease silinmez. Bu bakım hava polling'i değildir; haftalık araç/istasyon job'larına bağlanmaz.
 
+Plan başına dış çağrı bütçesi (2026-11-19, optimizer 1.7.1): `weatherProviderLimits(provider).maxExternalCalls`. MET Norway `WEATHER_POLICY.maxExternalCalls`=128'de kalır (ToS kotası). Self-hosted `open-meteo-local` 1.024 alır; yerel sunucuyu `maxConcurrency` ve günlük sınır korur. Sebep: yeni ICON koşusundan sonra önbellek soğukken İstanbul→Kelkit 128'den fazla konum istedi, 768 tahmin `budget_exhausted` döndü ve plan `computation_limit` ile düştü; önbellek sıcakken aynı istek planlanıyordu. Referans Kelkit planları 739–879 farklı konum istiyor (sıcakken çoğu PG'den). Ayrıntı: [planning-1.7.1-2026-11-19.md](validation/planning-1.7.1-2026-11-19.md).
+
 ## Kullanım
 
 `.env.example` kapalıdır; yerel `.env` kullanıcı kabulü sonrasında etkinleştirildi:

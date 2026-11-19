@@ -43,7 +43,7 @@ export class WeatherService extends WeatherProvider {
     if(new Set(queries.map(q=>q.id)).size!==queries.length)throw new Error('Duplicate weather query');
     const adapter=this.registry.get(this.config.providerId),signal=AbortSignal.any([callerSignal,AbortSignal.timeout(WEATHER_POLICY.deadlineMs)]);
     const scope=context?.budgetScope??callerSignal;
-    const limit=Math.min(WEATHER_POLICY.maxExternalCalls,context?.maxExternalCalls??WEATHER_POLICY.maxExternalCalls);
+    const providerCalls=weatherProviderLimits(adapter.id).maxExternalCalls,limit=Math.min(providerCalls,context?.maxExternalCalls??providerCalls);
     if(!Number.isSafeInteger(limit)||limit<0)throw new Error('Invalid weather call budget');
     const budget=this.budgets.get(scope)??{used:0,limit};budget.limit=Math.min(budget.limit,limit);this.budgets.set(scope,budget);
     const now=Date.now();

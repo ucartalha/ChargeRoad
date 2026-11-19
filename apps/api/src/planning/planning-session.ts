@@ -30,6 +30,11 @@ import {sampleAdaptiveWeather,adaptiveWeatherNeedsRefinement} from '../weather/a
 export interface SessionReplay {roads:{from:string;to:string;at:string;response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>}[];
   weather:{queries:WeatherQuery[];response:ProviderResponse<WeatherForecast[]>}[];}
 
+/** road-endpoint/1.0.0 (optimizer 1.7.1, 2026-11-19, B6): a road leg must start/end within tripMeters of the trip origin and
+ *  destination, but within stationMeters of a station node. Catalogue coordinates often sit inside a service-area lot ~100 m
+ *  off the road (station 3ffb3120 snapped at 100.0 m and every leg to it was rejected). The unrouted lot gap is not driven
+ *  in the energy model and is reported as station_road_endpoint_gap. */
+export const ROAD_ENDPOINT_POLICY={version:'road-endpoint/1.0.0',tripMeters:100,stationMeters:250} as const;
 export class PlanningSession implements TransitionPort {
   readonly issues=new Set<string>();readonly counters={roadQueries:0,weatherQueries:0};readonly replay:SessionReplay={roads:[],weather:[]};
   /** A fully evaluated leg reached the destination above the reserve but below the arrival target (ARRIVAL_TARGET_FALLBACK gate). */
@@ -70,8 +75,11 @@ export class PlanningSession implements TransitionPort {
     if(!parsed.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
     this.replay.roads.push({from,to:to.id,at,response});const routes=parsed.data?.routes??null;
     if(routes&&routes.length>this.roadOptions.alternatives)throw new PlanningProviderFailure('ROAD_ALTERNATIVE_BUDGET_EXCEEDED');
-    if(routes?.some(r=>!r.source.license||meters(r.segments[0].geometry[0],node.location)>100||meters(r.segments.at(-1)!.geometry.at(-1)!,to.location)>100)){
+    const limit=(n:PlanningNode)=>n.stationId?ROAD_ENDPOINT_POLICY.stationMeters:ROAD_ENDPOINT_POLICY.tripMeters;
+    if(routes?.some(r=>!r.source.license||meters(r.segments[0].geometry[0],node.location)>limit(node)||meters(r.segments.at(-1)!.geometry.at(-1)!,to.location)>limit(to))){
       this.issues.add('ROAD_SOURCE_OR_ENDPOINT_INVALID');this.roads.set(key,null);return null;}
+    if(routes?.some(r=>meters(r.segments[0].geometry[0],node.location)>ROAD_ENDPOINT_POLICY.tripMeters||meters(r.segments.at(-1)!.geometry.at(-1)!,to.location)>ROAD_ENDPOINT_POLICY.tripMeters))
+      this.issues.add('station_road_endpoint_gap');
     this.roads.set(key,routes);if(routes?.every(r=>r.metadata?.traffic==='none'))this.roads.set(staticKey,routes);
     return routes;
   }
