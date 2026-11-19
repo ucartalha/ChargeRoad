@@ -18,6 +18,12 @@ export function localDeparture(departureAt:string,timeZone:string){
     .formatToParts(new Date(departureAt));
   const p=Object.fromEntries(parts.map(part=>[part.type,part.value]));return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
 }
+/** road-departure-bucket/1.0.0 (2026-11-19): this adapter has no traffic data (capabilities.traffic 'none'), so the departure
+ *  only feeds Valhalla's time-of-day rules. It is sent floored to the local hour: every request inside one hour has the same
+ *  body and therefore the same road cache key. Probe 2026-11-19 (runtimes 8002/8004, 5 pairs 22-1129 km, 6 times incl.
+ *  night/weekend): shapes, times, elevation and maneuvers identical. Time rules that change inside an hour are not resolved. */
+export const ROAD_DEPARTURE_BUCKET={version:'road-departure-bucket/1.0.0',minutes:60} as const;
+export function bucketedLocalDeparture(departureAt:string,timeZone:string){return localDeparture(departureAt,timeZone).slice(0,14)+'00';}
 export class ValhallaRoadAdapter implements RoadShapeAdapter {
   readonly id:string;
   readonly capabilities={alternatives:true,via:true,traffic:'none' as const,freeMapReuse:true};
@@ -26,7 +32,7 @@ export class ValhallaRoadAdapter implements RoadShapeAdapter {
     const response=await client.post(this.id,this.config.baseUrl+'/route',{
       locations:locations.map(p=>({lat:p.latitude,lon:p.longitude,type:'break'})),costing:'auto',units:'kilometers',language:'tr-TR',
       alternates:locations.length===2?request.alternatives-1:0,elevation_interval:30,
-      date_time:{type:1,value:localDeparture(request.departureAt,request.originTimeZone??'Europe/Istanbul')},
+      date_time:{type:1,value:bucketedLocalDeparture(request.departureAt,request.originTimeZone??'Europe/Istanbul')},
       costing_options:{auto:{speed_types:['freeflow','constrained'],use_tolls:request.avoidTolls?0:0.5,use_ferry:request.avoidFerries?0:0.5}},
     },signal);
     if(response.data&&typeof response.data==='object'&&'error_code'in response.data){
