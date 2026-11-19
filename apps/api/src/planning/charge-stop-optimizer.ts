@@ -7,8 +7,8 @@ import {compilePlan} from './plan-compiler';
 import {CATALOGUE_SCENARIO_POLICY as seedPolicy,candidateProgress} from './catalogue-station-scenario';
 import {maxMetric} from '../observability/planning-metrics';
 import {createStateShadow} from './state-dominance-shadow';
-import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets,distinctChargedStates} from './charge-target-search';
-import {SOC_STOP_RULES} from './optimizer-policy';
+import {chargeTargetCandidates,seedChargeTargets,improveFixedStopTargets,distinctChargedStates,stopArrival,appendDrivingState} from './charge-target-search';
+import {SOC_STOP_RULES,SEED_TRIM_POLICY,BROAD_SEARCH_POLICY} from './optimizer-policy';
 
 /** True when no planned stop is reached at or above the no-charge SOC (SOC_STOP_RULES). */
 export function respectsStopRules(state:OptimizerState,noChargeAtOrAbove:number=SOC_STOP_RULES.noChargeAtOrAboveArrivalPercent){
@@ -93,12 +93,33 @@ export class ChargeStopOptimizer {
         // Optimizer 1.5.0: one seed chain per reach strategy. A strategy stops at its first complete chain; a later
         // strategy may only replace the incumbent with a strictly better plan.
         const chains:OptimizerState[]=[];
+        // Optimizer 1.7.0: charge-to-need. When the last stop of the state charged above the fast band and the validated
+        // leg leaving it shows slack, recharge that stop only to what the leg needs (+margin) and re-drive it. Only an
+        // engine-validated replacement is used; budget exhaustion keeps the untrimmed leg (a plan is never lost here).
+        const fastBand=Math.max(0,...seedChargeTargets(context,0).filter(t=>t<100));
+        const trim=async(state:OptimizerState,leg:import('./optimizer-types').DriveLeg):Promise<{state:OptimizerState;leg:import('./optimizer-types').DriveLeg}|null>=>{
+          if(objective==='minimum_charging_stops'||!state.stops.length)return null;
+          const index=state.stops.length-1,stop=state.stops[index].stop;if(stop.targetChargePercent<=fastBand+1e-7)return null;
+          const rows=leg.energy.segments;if(!rows.length)return null;
+          const reserve=context.request.constraints.minimumReserveChargePercent,required=leg.to==='destination'?context.request.constraints.targetArrivalChargePercent:reserve;
+          const slack=Math.min(Math.min(...rows.map(r=>r.minimumChargePercent))-reserve,rows.at(-1)!.endChargePercent-required);
+          // Same anchor as improveFixedStopTargets/chargeTargetCandidates: needed SOC + 0.05, rounded up to 0.01 %.
+          const target=Math.ceil((stop.targetChargePercent-slack+SEED_TRIM_POLICY.marginPercent)*100-1e-8)/100;
+          if(!(slack>0)||target>stop.targetChargePercent-SEED_TRIM_POLICY.minGainPercent)return null;
+          const arrival=stopArrival(context,state,index);if(!arrival||target<=arrival.soc)return null;
+          const node=context.nodes.find(n=>n.id===leg.to);if(!node)return null;
+          const before=stopped;
+          try{await budget();for(const charged of distinctChargedStates(await port.charge(arrival,target,signal))){
+            await budget();for(const next of await port.drive(charged,node,false,signal))if(appendDrivingState(charged,next,context))return {state:charged,leg:next};}}
+          catch(error){if(!(error instanceof PlanningDataLimit))throw error;stopped=before;}
+          return null;
+        };
         const makeSeed=(reachFraction:number)=>{let done=false;
         const seed=async(state:OptimizerState,progress:number):Promise<boolean>=>{
           if(done)return true;
           if(state.stops.length){await budget();for(const tail of await port.drive(state,context.nodes.find(n=>n.id==='destination')!,false,signal)){
             if(tail.energy.status!=='estimated'||tail.energy.partialSegmentId)continue;
-            const next=append(state,tail);chains.push(next);if(incumbent.state&&compareStates(next,incumbent.state,objective)>=0){done=true;return true;}
+            const trimmed=await trim(state,tail),next=trimmed?append(trimmed.state,trimmed.leg):append(state,tail);chains.push(next);if(incumbent.state&&compareStates(next,incumbent.state,objective)>=0){done=true;return true;}
             const previous=incumbent.state;incumbent.state=next;
             try{incumbent.outcome=compilePlan(context,next,metadata(),port);done=true;return true;}
             catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');}
@@ -121,7 +142,7 @@ export class ChargeStopOptimizer {
                 if(segment)observedReach=Math.max(observedReach,progress+segment.endDistanceMeters/context.baseRoutes![0].distanceMeters);
               }
               if(leg.energy.status!=='estimated'||leg.energy.partialSegmentId)continue;
-              const atStation=append(state,leg);
+              const trimmed=await trim(state,leg),atStation=trimmed?append(trimmed.state,trimmed.leg):append(state,leg);
               if(atStation.soc>=noChargeAbove){blocked();continue;}
               for(const targetSoc of seedChargeTargets(context,atStation.soc)){
                 await budget();for(const charged of distinctChargedStates(await port.charge(atStation,targetSoc,signal))){
@@ -150,8 +171,11 @@ export class ChargeStopOptimizer {
             catch(error){incumbent.state=previous;if(!(error instanceof ZodError))throw error;port.issues.add('FINAL_PLAN_CONTRACT_OR_ROAD_CONNECTION_INVALID');return false;}
           },this.clock);
       }
+      const broadStart=port.counters.weatherQueries;
       while(frontier.length){
         signal.throwIfAborted();if(expanded>=options.maxStates){stopped='state_budget';break;}
+        // Optimizer 1.7.0: once a validated plan exists, the broad improvement search has its own transition allowance.
+        if(incumbent.state&&port.counters.weatherQueries-broadStart>=BROAD_SEARCH_POLICY.maxWeatherProjectionsWithIncumbent){stopped='data_budget';break;}
         frontier.sort((a,b)=>compareStates(a,b,objective));const current=frontier.shift()!;expanded++;
         if(expanded%8===0)await yieldLoop();
         if(incumbent.state&&(objective==='minimum_total_duration'&&current.seconds>incumbent.state.seconds||objective==='minimum_charging_stops'&&current.stops.length>incumbent.state.stops.length))continue;

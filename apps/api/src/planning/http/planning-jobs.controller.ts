@@ -2,7 +2,7 @@ import {Body,Controller,Delete,Get,HttpException,Param,Post,Req,Res} from '@nest
 import type {Request,Response} from 'express';
 import {planningApiRequestSchema} from '@chargeroad/shared';
 import {z} from 'zod';
-import {PlanningJobsStore} from './planning-jobs.store';
+import {PlanningJobsStore,LONG_POLL_MAX_MS} from './planning-jobs.store';
 import {RateLimitPolicy} from '../../security/rate-limit.guard';
 import {encodePlanningResponse} from './planning-response';
 import {validatePlanningRequest} from './planning-request';
@@ -17,7 +17,10 @@ export class PlanningJobsController {
  }
  @Get(':id') @RateLimitPolicy('general')
  async status(@Param('id') id:string,@Req() req:Request,@Res({passthrough:true}) res:Response){res.setHeader('Cache-Control','no-store');
-  return this.store.status(this.id(id),this.store.owner(req.headers.authorization));}
+  // Optional long-poll: ?waitMs=0..LONG_POLL_MAX_MS; the wait ends when the client disconnects.
+  const raw=Array.isArray(req.query.waitMs)?undefined:req.query.waitMs,wait=z.coerce.number().int().min(0).max(LONG_POLL_MAX_MS).catch(0).parse(raw??0);
+  const closed=new AbortController(),gone=()=>{if(!res.writableEnded)closed.abort();};res.once('close',gone);
+  try{return await this.store.status(this.id(id),this.store.owner(req.headers.authorization),wait,closed.signal);}finally{res.removeListener('close',gone);}}
  @Delete(':id') @RateLimitPolicy('planning')
  async cancel(@Param('id') id:string,@Req() req:Request,@Res({passthrough:true}) res:Response){res.setHeader('Cache-Control','no-store');
   return this.store.cancel(this.id(id),this.store.owner(req.headers.authorization));}

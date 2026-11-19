@@ -1,4 +1,8 @@
 import {createHash,createHmac,randomUUID} from 'node:crypto';
+import {EventEmitter} from 'node:events';
+import {setTimeout as sleep} from 'node:timers/promises';
+/** Longest a status read may wait for its job to finish (long-poll). Old clients send no wait and are answered at once. */
+export const LONG_POLL_MAX_MS=20000;
 import {Injectable,HttpException,NotFoundException} from '@nestjs/common';
 import type {PlanningApiRequest,PlanningApiResponse} from '@chargeroad/shared';
 import {planningJobStatusSchema} from '@chargeroad/shared';
@@ -6,7 +10,8 @@ import {DatabaseService} from '../../database/database.service';
 import {canonicalJson} from '../../vehicles/knowledge/knowledge-package';
 @Injectable()
 export class PlanningJobsStore {
- constructor(private readonly db:DatabaseService){}
+ private readonly done=new EventEmitter();
+ constructor(private readonly db:DatabaseService){this.done.setMaxListeners(0);}
  owner(authorization:string|undefined){
   const match=/^Bearer ([a-f0-9]{64})$/.exec(authorization??'');if(!match)throw new NotFoundException('Planning job not found');
   const secret=process.env.RATE_LIMIT_IP_HASH_SECRET;if(!secret||secret.length<32)throw new HttpException('Planning job access unavailable',503);
@@ -31,8 +36,18 @@ export class PlanningJobsStore {
    await client.query('COMMIT');return this.view(row);
   }catch(error){await client.query('ROLLBACK');throw error;}finally{client.release();}
  }
- async status(id:string,owner:string){const row=(await this.db.pool.query('SELECT id,status,created_at,started_at,expires_at,error_code FROM planning_jobs WHERE id=$1 AND owner_hash=$2 AND expires_at>now()',[id,owner])).rows[0];
-  if(!row)throw new NotFoundException('Planning job not found');return this.view(row);}
+ /** waitMs>0: wait until the job leaves queued/running, the wait ends or the caller disconnects. An in-process finish
+  *  event wakes the reader at once; the row is also re-read every second (another process may run the worker). */
+ async status(id:string,owner:string,waitMs=0,signal?:AbortSignal){
+  const read=async()=>{const row=(await this.db.pool.query('SELECT id,status,created_at,started_at,expires_at,error_code FROM planning_jobs WHERE id=$1 AND owner_hash=$2 AND expires_at>now()',[id,owner])).rows[0];
+   if(!row)throw new NotFoundException('Planning job not found');return row;};
+  let row=await read();const end=Date.now()+Math.max(0,Math.min(LONG_POLL_MAX_MS,Math.floor(waitMs)||0));
+  while((row.status==='queued'||row.status==='running')&&Date.now()<end&&!signal?.aborted){
+   const wake=new AbortController(),stop=()=>wake.abort(),aborted=()=>wake.abort();this.done.once(id,stop);signal?.addEventListener('abort',aborted,{once:true});
+   try{await sleep(Math.min(1000,end-Date.now()),undefined,{signal:wake.signal});}catch{/* woken early */}
+   finally{this.done.removeListener(id,stop);signal?.removeEventListener('abort',aborted);}
+   row=await read();}
+  return this.view(row);}
  async result(id:string,owner:string):Promise<PlanningApiResponse>{
   const row=(await this.db.pool.query("SELECT status,result_payload FROM planning_jobs WHERE id=$1 AND owner_hash=$2 AND expires_at>now()",[id,owner])).rows[0];
   if(!row)throw new NotFoundException('Planning job not found');if(row.status!=='completed')throw new HttpException('Planning result not ready',409);return row.result_payload;
@@ -47,7 +62,7 @@ export class PlanningJobsStore {
     finished_at=CASE WHEN planning_jobs.status IN ('queued','running') THEN now() ELSE planning_jobs.finished_at END,
     lease_until=CASE WHEN planning_jobs.status IN ('queued','running') THEN NULL ELSE planning_jobs.lease_until END
    WHERE planning_jobs.owner_hash=$2 AND planning_jobs.expires_at>now() RETURNING *`,[id,owner])).rows[0];
-  if(!row)throw new NotFoundException('Planning job not found');return this.view(row);
+  if(!row)throw new NotFoundException('Planning job not found');this.done.emit(id);return this.view(row);
  }
  async claim(){const token=randomUUID();return (await this.db.pool.query(`WITH next AS (
   SELECT id FROM planning_jobs WHERE expires_at>now() AND (status='queued' OR status='running' AND lease_until<=now())
@@ -60,6 +75,6 @@ export class PlanningJobsStore {
  async finish(job:any,result:PlanningApiResponse|null,error:string|null){await this.db.pool.query(`UPDATE planning_jobs
   SET status=$4,result_payload=$5::jsonb,error_code=$6,request_payload=NULL,finished_at=now(),lease_token=NULL,lease_until=NULL
   WHERE id=$1 AND lease_token=$2 AND generation=$3 AND status='running' AND lease_until>now() AND expires_at>now()`,
-  [job.id,job.lease_token,job.generation,result?'completed':'failed',result?JSON.stringify(result):null,error]);}
+  [job.id,job.lease_token,job.generation,result?'completed':'failed',result?JSON.stringify(result):null,error]);this.done.emit(job.id);}
  async cleanup(){await this.db.pool.query("DELETE FROM planning_jobs WHERE expires_at<=now() AND (lease_until IS NULL OR lease_until<=now())");}
 }

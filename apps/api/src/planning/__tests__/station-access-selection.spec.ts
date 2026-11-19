@@ -27,6 +27,17 @@ describe('Access-aware catalogue candidate selection',()=>{
     const {chosen}=await selectAccessibleCandidates([candidate('a',.51,400),candidate('b',.52,180),candidate('c',.53,400)],[route],2,async x=>detour[x.station.id]);
     expect(ids(chosen)).toContain('b');expect(ids(chosen).indexOf('b')).toBeLessThan(ids(chosen).indexOf('a')===-1?99:ids(chosen).indexOf('a'));
   });
+  // station-access/1.1.0 (2026-11-19, İzmir reference route): a 90 km access detour kept as its bin's fallback was used by the
+  // seed and left a plan 70 min slower than one through on-route stations. Over the fallback ceiling a station only fills
+  // free slots, after every acceptable, near-acceptable and unmeasured candidate.
+  it('does not keep a bin fallback over the detour ceiling while other candidates fill the limit',async()=>{
+    const huge={additionalMeters:90600,additionalSeconds:3900},ok={additionalMeters:200,additionalSeconds:20};
+    const list=[candidate('huge',.55,400),candidate('a',.05,100),candidate('b',.15,100),candidate('c',.25,100)];
+    const {chosen}=await selectAccessibleCandidates(list,[route],3,async c=>c.station.id==='huge'?huge:ok);
+    expect(ids(chosen)).not.toContain('huge');expect(chosen.length).toBe(3);
+    const wide=await selectAccessibleCandidates(list,[route],4,async c=>c.station.id==='huge'?huge:ok);
+    expect(ids(wide.chosen).at(-1)).toBe('huge');
+  });
   it('among acceptable stations keeps the existing ranking (closer to the route, then power)',async()=>{
     const ok={additionalMeters:500,additionalSeconds:40};
     const {chosen}=await selectAccessibleCandidates([candidate('slowkw',.7,120),candidate('fastkw',.71,400)],[route],2,async()=>ok);

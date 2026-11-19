@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.7.0",
+  "scope": "Seed charge-to-need, single corridor, broad-search allowance (1.7.0) vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "f76bec10cf3aebc64ed476200ab1a1d60fd43db518488c179b8cc1c7f5f6623c"
+}

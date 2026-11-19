@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.6.1",
+  "scope": "Station weather sample bound (1.6.1, planning session; optimizer search source unchanged) vs same algorithm without shadow",
+  "optimizerWithoutShadowSha256": "4c9fd384b4fdc80cfa15f45eacab425eb4f70a8d7e9d1a71af08b1d79985f2d2"
+}

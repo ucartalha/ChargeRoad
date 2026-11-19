@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.7.0",
+  "scope": "Seed charge-to-need with 0.05 % anchor, single corridor, broad-search allowance in weather projections (1.7.0, final source) vs same algorithm without shadow. Supersedes charge-to-need-shadow-source-2026-11-19.json, written before the anchor and allowance edits.",
+  "optimizerWithoutShadowSha256": "1ea05e369c477ae0e1260d79d46df6c41dc4efc7d7cc4d8df81b8cd12839ed24"
+}

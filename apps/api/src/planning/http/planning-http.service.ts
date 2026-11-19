@@ -2,7 +2,7 @@ import {Injectable,HttpException,Logger} from '@nestjs/common';
 import {planningApiResponseSchema,planningEvaluationSchema,planningResultSchema} from '@chargeroad/shared';
 import type {PlanningApiRequest,PlanningApiResponse,RoutePlanRequest} from '@chargeroad/shared';
 import {canonicalJson} from '../../vehicles/knowledge/knowledge-package';
-import {EvPlanningService} from '../ev-planning.service';
+import {EvPlanningService,validatedPlanOutcomes} from '../ev-planning.service';
 import {DEFAULT_OPTIMIZER_OPTIONS,OPTIMIZER_VERSION} from '../optimizer-policy';
 import {ENERGY_ALGORITHM_VERSION} from '../../energy/energy-policy';
 import {CHARGING_ALGORITHM_VERSION} from '../../charging/charging-engine';
@@ -21,7 +21,9 @@ export class PlanningHttpService {
     let expected:RoutePlanRequest|undefined;
     const outcome=await this.execution.run((bounded,budget)=>{expected=toInternalRequest(request,budget);const preparation=planningPreparation(request),options=structuredClone(DEFAULT_OPTIMIZER_OPTIONS);
       options.maxWeatherQueries=preparation.maxWeatherQueries;return this.planner.plan(expected,preparation,options,bounded);},signal,serverBudgetMs);
-    if(!planningResultSchema.safeParse(outcome.result).success||outcome.result.status!=='planned'&&outcome.result.requestId!==request.requestId)
+    // A planned result validated by EvPlanningService against this exact input is not parsed a second time.
+    const validated=outcome.result.status==='planned'&&!!outcome.validationInput&&validatedPlanOutcomes.get(outcome.result)===outcome.validationInput;
+    if(!validated&&!planningResultSchema.safeParse(outcome.result).success||outcome.result.status!=='planned'&&outcome.result.requestId!==request.requestId)
       throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);
     // Correlation and bounded diagnostic codes only: never log coordinates, SOC, IP, provider packets or secrets.
     this.logger.log(JSON.stringify({event:'planning_completed',requestId:request.requestId,status:outcome.result.status,
@@ -29,7 +31,7 @@ export class PlanningHttpService {
       skippedData:outcome.search?.skippedData.slice(0,20)??[],elapsedMs:Math.round(performance.now()-began)}));
     if(outcome.result.status==='planned'){
       if(!outcome.validationInput)throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);
-      try{planningEvaluationSchema.parse({input:outcome.validationInput,result:outcome.result});}catch{throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);}
+      if(!validated)try{planningEvaluationSchema.parse({input:outcome.validationInput,result:outcome.result});}catch{throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);}
       const {vehicleVariantId:canonicalId,...actual}=outcome.validationInput.request;
       const {vehicleVariantId:requestedId,...submitted}=expected!;
       if(canonicalJson(actual)!==canonicalJson(submitted))throw new HttpException({code:'PLANNING_RESPONSE_INVALID'},500);

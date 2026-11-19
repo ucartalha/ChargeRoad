@@ -10,19 +10,21 @@ function vector(point:ForecastPoint):[number,number]|null{
   if(point.windKph===null)return null;if(point.windKph===0)return [0,0];if(point.windFrom===null)return null;
   const r=point.windFrom*Math.PI/180;return [-point.windKph*Math.sin(r),-point.windKph*Math.cos(r)];
 }
-export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provider:string,now=Date.now()):WeatherForecast{
-  const target=Date.parse(query.validAt),points=series.points;
-  let right=points.findIndex(p=>Date.parse(p.time)>=target);
-  if(right<0||target<Date.parse(points[0].time))return unavailableForecast(query,'outside_horizon',provider);
-  const exact=Date.parse(points[right].time)===target,left=exact?right:right-1;
-  const a=points[left],b=points[right],start=Date.parse(a.time),end=Date.parse(b.time),gap=(end-start)/1000;
+/** Date.parse of every point time; callers normalizing many queries against one series may pass it once. */
+export const seriesTimes=(series:ForecastSeries)=>series.points.map(p=>Date.parse(p.time));
+export function normalizeWeather(series:ForecastSeries,query:WeatherQuery,provider:string,now=Date.now(),parsedTimes?:readonly number[]):WeatherForecast{
+  const target=Date.parse(query.validAt),points=series.points,times=parsedTimes??seriesTimes(series);
+  let right=times.findIndex(t=>t>=target);
+  if(right<0||target<times[0])return unavailableForecast(query,'outside_horizon',provider);
+  const exact=times[right]===target,left=exact?right:right-1;
+  const a=points[left],b=points[right],start=times[left],end=times[right],gap=(end-start)/1000;
   if(gap>WEATHER_POLICY.maxGapSeconds)return unavailableForecast(query,'outside_horizon',provider);
   const f=end===start?0:(target-start)/(end-start),av=vector(a),bv=vector(b);
   let wind:number|null=null,from:number|null=null;
   if(av&&bv){const x=av[0]+(bv[0]-av[0])*f,y=av[1]+(bv[1]-av[1])*f;wind=Math.hypot(x,y);
     if(wind<1e-9)wind=0;else from=(Math.atan2(-x,-y)*180/Math.PI+360)%360;}
   const temperature=blend(a.temperature,b.temperature,f),pressure=blend(a.pressure,b.pressure,f),snowM=blend(a.snowDepthM??null,b.snowDepthM??null,f);
-  const period=[...a.periods].sort((x,y)=>x.hours-y.hours).find(p=>target<start+p.hours*3600000&&start+p.hours*3600000<=Date.parse(points.at(-1)!.time));
+  const period=[...a.periods].sort((x,y)=>x.hours-y.hours).find(p=>target<start+p.hours*3600000&&start+p.hours*3600000<=times[times.length-1]);
   const age=(now-Date.parse(series.sourceUpdatedAt))/1000;
   const core=temperature!==null&&wind!==null&&(wind===0||from!==null);
   const warnings=[...series.warnings,'wind_is_modelled_at_10m','battery_temperature_is_not_ambient_temperature',...(snowM===null?['snow_depth_unavailable']:[])];

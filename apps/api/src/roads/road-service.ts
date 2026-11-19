@@ -6,9 +6,12 @@ import { DatabaseService } from '../database/database.service';
 import type { RoadAttributeProvider,RoadJsonClient,RoadShapeAdapter } from './provider-ports';
 import { BoundedRoadClient,RoadProviderError } from './road-client';
 import type { RoadConfig } from './road-policy';
-import { normalizeRoadTrip } from './normalize-road';
+import { normalizeRoadTrip,measureRoadTrip } from './normalize-road';
 import { interpolate,meters,simplifyDisplayGeometry } from './geometry';
 
+/** In-process RoadRoutingService results whose routes already passed roadRouteSchema (normalizeRoadTrip). Consumers may
+ *  skip re-parsing exactly these objects; anything else (other providers, replays) is still parsed. */
+export const validatedRoadResults=new WeakSet<object>();
 export class RoadAdapterRegistry {
   private readonly adapters=new Map<string,RoadShapeAdapter>();
   constructor(adapters:RoadShapeAdapter[]){for(const adapter of adapters){if(this.adapters.has(adapter.id))throw new Error('Duplicate road adapter');this.adapters.set(adapter.id,adapter);}}
@@ -38,7 +41,10 @@ export class RoadRoutingService extends RoutingProvider {
   async routes(request:RoadRoutingRequest,signal:AbortSignal){
     const parsed=this.validate(request);const client=new BoundedRoadClient(this.client,this.config.maxActions);
     const routes=await this.calculate(parsed,[parsed.origin,parsed.destination],client,signal);
-    return {data:routes===null?null:{schemaVersion:'1.0.0' as const,routes},source:{sourceId:this.config.providerId,recordId:null,version:'road-pilot/1.0.0',
+    const data=routes===null?null:{schemaVersion:'1.0.0' as const,routes};
+    // Every route was built by normalizeRoadTrip through roadRouteSchema; mark the fresh result as already validated.
+    if(data&&routes!.length)validatedRoadResults.add(data);
+    return {data,source:{sourceId:this.config.providerId,recordId:null,version:'road-pilot/1.0.0',
       url:this.config.baseUrl,retrievedAt:routes?.[0].source.retrievedAt??new Date().toISOString(),publishedAt:null,license:routes?.[0].source.license??null}};
   }
   private validate(input:RoadRoutingRequest){
@@ -50,7 +56,15 @@ export class RoadRoutingService extends RoutingProvider {
     try{new Intl.DateTimeFormat('en',{timeZone:request.originTimeZone??'Europe/Istanbul'});}catch{throw new RoadProviderError('Invalid origin timezone',422);}
     return request;
   }
-  private async calculate(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal){
+  /** Station-access style totals: same provider calls and cache as routes(), no segment normalization (measureRoadTrip). */
+  async measure(request:RoadRoutingRequest,signal:AbortSignal){
+    const parsed=this.validate(request);const client=new BoundedRoadClient(this.client,this.config.maxActions);
+    const totals=await this.calculate(parsed,[parsed.origin,parsed.destination],client,signal,true);
+    return totals?.[0]??null;
+  }
+  private async calculate(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal):Promise<RoadRoute[]|null>;
+  private async calculate(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal,totalsOnly:true):Promise<{distanceMeters:number;drivingDurationSeconds:number}[]|null>;
+  private async calculate(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal,totalsOnly=false){
     const adapter=this.registry.get(this.config.providerId);signal.throwIfAborted();
     if(locations.length>2&&!adapter.capabilities.via)throw new RoadProviderError('Configured road adapter does not support via locations',422);
     const providerRequest=request.alternatives>1&&!adapter.capabilities.alternatives?{...request,alternatives:1}:request;
@@ -58,16 +72,16 @@ export class RoadRoutingService extends RoutingProvider {
     if(providerRequest!==request)for(const trip of trips)trip.warnings.push('provider_supports_single_road_alternative');
     const eligible=trips.filter(t=>(!request.avoidTolls||t.hasToll===false)&&(!request.avoidFerries||t.hasFerry===false));
     if(!eligible.length)throw new RoadProviderError('No returned road route confirms the requested toll/ferry constraints',422);
-    const results:RoadRoute[]=[];
+    const results:RoadRoute[]=[],totals:{distanceMeters:number;drivingDurationSeconds:number}[]=[];
     for(const trip of eligible){
       for(const leg of trip.legs){
         try{leg.edges=await adapter.attributes(leg,client,signal);}catch{signal.throwIfAborted();leg.edges=[];trip.warnings.push('road_attributes_unavailable_or_unmatched');}
       }
       const wayIds=trip.legs.flatMap(l=>l.edges.map(e=>e.osmWayId).filter((id):id is string=>id!==null));
       let tags=new Map();try{tags=await this.attributes.getWays(wayIds,client,signal);}catch{signal.throwIfAborted();trip.warnings.push('osm_speed_tags_unavailable');}
-      results.push(normalizeRoadTrip(trip,request,this.config,tags));
+      if(totalsOnly)totals.push(measureRoadTrip(trip,tags));else results.push(normalizeRoadTrip(trip,request,this.config,tags));
     }
-    return results;
+    return totalsOnly?totals:results;
   }
   async stationAccess(raw:StationRoadAccessRequest,signal:AbortSignal){
     const input=stationRoadAccessRequestSchema.parse(raw),request=this.validate(input.roadRequest);

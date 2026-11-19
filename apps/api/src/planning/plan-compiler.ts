@@ -5,7 +5,13 @@ import type {OptimizerSearch,RoadRoute,EnergySegment,PlannedChargingStop,RoutePl
 import {canonicalJson} from '../vehicles/knowledge/knowledge-package';
 import {OPTIMIZER_VERSION} from './optimizer-policy';
 import {startStage} from '../observability/planning-metrics';
-export const checksum=(value:unknown)=>createHash('sha256').update(canonicalJson(value)).digest('hex');
+const objectChecksums=new WeakMap<object,string>();
+/** sha256(canonicalJson(value)). Objects compiled into plans (routes, weather lists, candidates, vehicle) are never
+ *  mutated after creation, so their digest is memoized by identity; the value is identical to a fresh computation. */
+export const checksum=(value:unknown)=>{
+  if(value===null||typeof value!=='object')return createHash('sha256').update(canonicalJson(value)).digest('hex');
+  let digest=objectChecksums.get(value);if(digest===undefined){digest=createHash('sha256').update(canonicalJson(value)).digest('hex');objectChecksums.set(value,digest);}
+  return digest;};
 export function compilePlan(context:PlanningContext,state:OptimizerState,search:OptimizerSearch,port:TransitionPort):OptimizerOutcome{
   const end=startStage('plan_compile');try{
   const {request,vehicle,evaluatedAt}=context,segments:RoadRoute['segments']=[],energy:EnergySegment[]=[],weather:WeatherForecast[]=[],stops:PlannedChargingStop[]=[];

@@ -10,7 +10,7 @@ import {WeatherCacheStore} from './weather-cache';
 import type {WeatherCallBudget} from './weather-cache';
 import type {WeatherAdapter} from './weather-ports';
 import {WeatherUnavailable,unavailableForecast} from './weather-ports';
-import {normalizeWeather,usableWeather} from './weather-normalize';
+import {normalizeWeather,usableWeather,seriesTimes} from './weather-normalize';
 import {sampleRouteWeather,samplePreviewWeather,sampleNavigationWeather} from './weather-sampler';
 import type {NavigationWeatherOptions} from './weather-sampler';
 import {weatherSampleLocation,terrainSharingIsSafe} from './weather-spatial';
@@ -84,6 +84,8 @@ export class WeatherService extends WeatherProvider {
         return series;
       })();seriesByUrl.set(url,pending);}return pending;
     };
+    // Parsed point times per series, computed once for this batch (series are not modified while it runs).
+    const parsedTimes=new Map<object,number[]>(),timesFor=(s:ReturnType<WeatherAdapter['parse']>)=>{let t=parsedTimes.get(s);if(t===undefined){t=seriesTimes(s);parsedTimes.set(s,t);}return t as number[];};
     let next=0;const entries=[...groups.entries()];
     await Promise.all(Array.from({length:weatherProviderLimits(adapter.id).maxConcurrency},async()=>{
       while(next<entries.length){const index=next++,[url,group]=entries[index];
@@ -102,7 +104,7 @@ export class WeatherService extends WeatherProvider {
               adaptive&&meters(query.location,series.location)>30&&!terrainSharingIsSafe(query,series.elevation)?await seriesAt(query.location):
               exact||terrainSharingIsSafe(query,series.elevation)?series:await seriesAt(original);
             const forecast=meters(query.location,selected.location)>weatherSampleDistanceLimit(query.samplingResolution)+30?
-              unavailableForecast(query,'outside_horizon',adapter.id):normalizeWeather(selected,query,adapter.id,Date.now());
+              unavailableForecast(query,'outside_horizon',adapter.id):normalizeWeather(selected,query,adapter.id,Date.now(),timesFor(selected));
             if(grid&&forecast.metadata)forecast.metadata.warnings.push(gridShared?'weather_grid_cell_shared':'weather_cell_rejected_elevation_mismatch');
             else if(!exact&&forecast.metadata)forecast.metadata.warnings.push(selected===series?'weather_spatial_cell_shared':'weather_cell_rejected_elevation_mismatch');
             result.set(query.id,forecast);

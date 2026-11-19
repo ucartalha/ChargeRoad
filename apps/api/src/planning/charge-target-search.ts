@@ -43,7 +43,8 @@ export function seedChargeTargets(context:PlanningContext,soc:number){
   return [...new Set(targets)].filter(v=>v>soc+1e-7&&v<=100);
 }
 
-function stopArrival(context:PlanningContext,plan:OptimizerState,index:number):OptimizerState|null{
+/** The state on arrival at the stop with this index (before it charged), rebuilt from the validated legs. */
+export function stopArrival(context:PlanningContext,plan:OptimizerState,index:number):OptimizerState|null{
   const station=plan.stops[index].stop.stationId,legIndex=plan.legs.findIndex(l=>l.to===station),leg=plan.legs[legIndex],row=leg?.energy.segments.at(-1);
   if(!row||!leg.energy.capacitySnapshot)return null;
   const legs=plan.legs.slice(0,legIndex+1);

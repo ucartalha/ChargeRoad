@@ -22,6 +22,10 @@ import {catalogueStationScenario,selectAccessibleCandidates,STATION_ACCESS_POLIC
 import type {StationAccessMeasure} from './catalogue-station-scenario';
 import {pointAt,timeAt} from '../roads/road-service';
 import {RoadProviderError} from '../roads/road-client';
+import {validatedRoadResults} from '../roads/road-service';
+/** Planned results this service validated against planningEvaluationSchema, mapped to the exact validation input used.
+ *  The HTTP layer skips re-validating exactly these pairs; any other result is still validated there. */
+export const validatedPlanOutcomes=new WeakMap<object,object>();
 import type {PlanningContext,OptimizerOutcome} from './optimizer-types';
 import {withPlanningMetrics,startStage,measureAsync,countMetric,markAbort} from '../observability/planning-metrics';
 import {samplingRange,buildPlanningWeather} from '../weather/planning-weather-policy';
@@ -65,7 +69,7 @@ export class EvPlanningService {
         return failure('insufficient_data','ENGINEERING_ESTIMATE_NOT_ALLOWED');
       if(request.startingChargePercent<request.constraints.minimumReserveChargePercent)return failure('insufficient_data','INITIAL_RESERVE_NOT_MET');
       const response=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,schemaVersion:'1.0.0',origin:request.origin,destination:request.destination,departureAt:request.departureAt},s);});
-      const baseResult=roadRoutingResultSchema.nullable().safeParse(response.data);if(!baseResult.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
+      const baseResult=response.data&&validatedRoadResults.has(response.data)?{success:true as const,data:response.data}:roadRoutingResultSchema.nullable().safeParse(response.data);if(!baseResult.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
       let base=baseResult.data;if(!base)return failure('infeasible','ROAD_ROUTE_NOT_FOUND');
       if(base.routes.length>preparation.road.alternatives||base.routes.some(r=>!r.source.license))throw new PlanningProviderFailure('ROAD_PROVIDER_ENDPOINT_OR_SOURCE_INVALID');
       const matched=base.routes.filter(r=>meters(r.segments[0].geometry[0],request.origin)<=100&&meters(r.segments.at(-1)!.geometry.at(-1)!,request.destination)<=100);
@@ -76,20 +80,29 @@ export class EvPlanningService {
       const catalogueRange=this.vehicles.catalogueRange?await read('VEHICLE',s=>this.vehicles.catalogueRange!(id,s)):null;
       const mode=weatherExecutionMode();
       // W4 grid is an opt-in for the default (legacy) weather mode only; the experimental adaptive modes keep their own anchors.
-      context.weatherSampling=buildPlanningWeather(base.routes[0],samplingRange(vehicle,catalogueRange),{grid:mode==='legacy'&&weatherGridEnabled()});
+      const sampling=samplingRange(vehicle,catalogueRange),grid=mode==='legacy'&&weatherGridEnabled();
+      context.weatherSampling=buildPlanningWeather(base.routes[0],sampling,{grid});
+      // Optimizer 1.7.0: one corridor per search. Stations are matched, ranked and measured against a single base route; the
+      // next alternative is tried only when the previous one yields no plan. Mixing alternatives made legs jump between
+      // corridors (+70..120 km per leg on İstanbul→Kelkit).
+      let corridorRoutes=[base.routes[0]];
       const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes,mode);weatherSession=session;
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;
       const pinned=new Map<string,StationCandidateSet['candidates'][number]>();
       // Station access detour in travel direction (station-access/1.0.0), measured once per station per plan.
       const accessCache=new Map<string,Promise<StationAccessMeasure|null>>();
-      const accessLeg=async(origin:Coordinate,destination:Coordinate,departureAt:string)=>{
-        const r=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,alternatives:1,schemaVersion:'1.0.0',origin,destination,departureAt},s);});
+      const accessLeg=async(origin:Coordinate,destination:Coordinate,departureAt:string):Promise<{distanceMeters:number;drivingDurationSeconds:number}|null>=>{
+        const leg={...preparation.road,alternatives:1,schemaVersion:'1.0.0' as const,origin,destination,departureAt};
+        // Only totals are used: the provider's measure path skips segment normalization (same distance/time).
+        if(this.roads.measure){const measure=this.roads.measure.bind(this.roads);
+          return read('ROAD',s=>{countMetric('road_leg_acquisitions');return measure(leg,s);});}
+        const r=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes(leg,s);});
         const parsed=roadRoutingResultSchema.nullable().safeParse(r.data);return parsed.success?parsed.data?.routes[0]??null:null;};
       const measureAccess=(candidate:StationCandidateSet['candidates'][number])=>{
         let pending=accessCache.get(candidate.station.id);
         if(!pending){pending=(async()=>{
-          const match=[...candidate.routeMatches].sort((a,b)=>a.distanceMeters-b.distanceMeters)[0],route=base.routes.find(r=>r.id===match?.routeId),
+          const match=[...candidate.routeMatches].sort((a,b)=>a.distanceMeters-b.distanceMeters)[0],route=corridorRoutes.find(r=>r.id===match?.routeId),
             segment=route?.segments.find(s=>s.id===match.segmentId);if(!route||!segment)return null;
           const at=segment.startDistanceMeters+segment.distanceMeters*match.segmentProgress,approach=STATION_ACCESS_POLICY.approachMeters,
             entry=Math.max(0,at-approach),exit=Math.min(route.distanceMeters,at+approach),entrySeconds=timeAt(route,entry);
@@ -106,6 +119,12 @@ export class EvPlanningService {
       // ARRIVAL_TARGET_FALLBACK: only after the requested target found no plan while a destination leg met the reserve.
       const requested=request,steps=arrivalTargetSteps(request.constraints.targetArrivalChargePercent,request.constraints.minimumReserveChargePercent);
       let firstFailure:OptimizerOutcome|undefined;
+      for(const [routeIndex,primary] of base.routes.entries()){
+      if(routeIndex>0){
+        if(last?.result.status==='provider_error')break;
+        corridorRoutes=[primary];context.baseRoutes=corridorRoutes;context.weatherSampling=buildPlanningWeather(primary,sampling,{grid});
+        context.request=requested;context.stationAccess={};pinned.clear();accessCache.clear();previousStates=0;previousTransitions=0;session.arrivalTargetMissed=false;
+      }else context.baseRoutes=corridorRoutes;
       for(const [attempt,target] of steps.entries()){
       if(attempt>0){
         if(!session.arrivalTargetMissed||last?.result.status==='provider_error')break;
@@ -113,10 +132,10 @@ export class EvPlanningService {
         context.request={...requested,constraints:{...requested.constraints,targetArrivalChargePercent:target}};
       }
       for(const corridor of options.corridorMeters){
-        const found=await read('STATION',s=>this.stations.findAlongRoutes(base.routes,corridor,s,vehicle.supportedConnectors));
+        const found=await read('STATION',s=>this.stations.findAlongRoutes(corridorRoutes,corridor,s,vehicle.supportedConnectors));
         const setResult=stationCandidateSetSchema.safeParse(found.data);if(!setResult.success)throw new PlanningProviderFailure('STATION_PROVIDER_INVALID_DATA');
         const set=setResult.data;
-        if(set.candidates.some(c=>['origin','destination'].includes(c.station.id)||c.routeMatches.some(m=>!base.routes.some(r=>r.id===m.routeId&&r.segments.some(s=>s.id===m.segmentId)))))
+        if(set.candidates.some(c=>['origin','destination'].includes(c.station.id)||c.routeMatches.some(m=>!corridorRoutes.some(r=>r.id===m.routeId&&r.segments.some(s=>s.id===m.segmentId)))))
           throw new PlanningProviderFailure('STATION_ROUTE_OR_NODE_ID_INVALID');
         for(const candidate of set.candidates)if(!['planned','removed','temporarily_closed'].includes(candidate.lifecycle)&&!pinned.has(candidate.station.id))pinned.set(candidate.station.id,candidate);
         const all=[...pinned.values()].map(c=>request.policy.stationDataQuality==='catalogue_power_scenario'?catalogueStationScenario(c):c)
@@ -126,7 +145,7 @@ export class EvPlanningService {
         const limit=Math.min(options.maxStations,set.metadata.search.maxCandidates),limited=physical.length>limit;
         let selected=physical.slice(0,limit);
         if(request.policy.stationDataQuality==='catalogue_power_scenario'){
-          const accessible=await selectAccessibleCandidates(physical,base.routes,limit,measureAccess);
+          const accessible=await selectAccessibleCandidates(physical,corridorRoutes,limit,measureAccess);
           selected=accessible.chosen;context.stationAccess={...context.stationAccess,...accessible.access};
         }
         context.candidates={candidates:selected,metadata:structuredClone(set.metadata)};
@@ -149,12 +168,13 @@ export class EvPlanningService {
             // The evaluation checks the plan against what the user asked for, not the lowered working target.
             if(last.validationInput)last.validationInput={...last.validationInput,request:requested};
           }
-          if(last.validationInput)planningEvaluationSchema.parse({input:last.validationInput,result:last.result});
+          if(last.validationInput){planningEvaluationSchema.parse({input:last.validationInput,result:last.result});validatedPlanOutcomes.set(last.result,last.validationInput);}
           return {...last,replay:{versions:{optimizer:OPTIMIZER_VERSION,energy:ENERGY_ALGORITHM_VERSION,charging:CHARGING_ALGORITHM_VERSION},context,providers:session.replay}};
         }
         if(last.result.status==='provider_error'||last.result.status==='computation_limit')break;
       }
       firstFailure??=last;
+      }
       }
       if(firstFailure){last=firstFailure;context.request=requested;}
       return {...(last??failure('computation_limit','NO_SEARCH_BUDGET')),replay:{versions:{optimizer:OPTIMIZER_VERSION,energy:ENERGY_ALGORITHM_VERSION,charging:CHARGING_ALGORITHM_VERSION},context,providers:session.replay}};

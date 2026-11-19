@@ -6,6 +6,37 @@ import type { RoadConfig } from './road-policy';
 import { cumulative,interpolate,bearing,simplifyDisplayGeometry } from './geometry';
 import { parseOsmSpeed } from './osm-attributes';
 
+/** Distance and driving time of a trip exactly as normalizeRoadTrip would report them (same leg/edge/maneuver checks, same
+ *  maneuver-time allocation and speed-limit slow-down), without building segments, elevation profiles or the validated
+ *  route. For callers that only need totals (station access detours). Distance is identical; time equals the segment sum
+ *  up to floating-point summation order (≤1e-6 s, road-measure.spec). Segment/point output budgets do not apply. */
+export function measureRoadTrip(trip:RoadTripInput,tags:Map<string,WayTags>):{distanceMeters:number;drivingDurationSeconds:number}{
+  let distance=0,seconds=0;
+  for(const [legIndex,leg] of trip.legs.entries()){
+    if(legIndex>0){const prev=trip.legs[legIndex-1].geometry.at(-1)!,next=leg.geometry[0];
+      if(Math.abs(prev.latitude-next.latitude)>1e-6||Math.abs(prev.longitude-next.longitude)>1e-6)throw new Error('Road legs are disconnected');}
+    if(leg.distanceMeters<=0||leg.seconds<=0)throw new Error('Road leg has no traversable length/time');
+    const geom=cumulative(leg.geometry),geometricLength=geom.at(-1)!;if(geometricLength<=0)throw new Error('Zero road geometry');
+    const distances=geom.map(n=>n/geometricLength*leg.distanceMeters),edgeAt=new Map<number,(typeof leg.edges)[number]>();
+    for(const edge of leg.edges){if(edge.begin<0||edge.end>=leg.geometry.length||edge.begin>=edge.end)throw new Error('Invalid road edge indices');
+      for(let index=edge.begin;index<edge.end;index++){if(edgeAt.has(index))throw new Error('Overlapping road edge attributes');edgeAt.set(index,edge);}}
+    const times=Array(leg.geometry.length-1).fill(0) as number[];
+    for(const m of leg.maneuvers){if(m.begin>m.end||m.end>=leg.geometry.length)throw new Error('Invalid maneuver indices');
+      const length=distances[m.end]-distances[m.begin];if(length>0)for(let i=m.begin;i<m.end;i++)times[i]+=m.seconds*(distances[i+1]-distances[i])/length;}
+    const assigned=times.reduce((a,b)=>a+b,0);if(assigned<=0)throw new Error('Road maneuver durations missing');
+    for(let i=0;i<times.length;i++)times[i]*=leg.seconds/assigned;
+    for(let i=0;i<leg.geometry.length-1;i++){
+      const length=distances[i+1]-distances[i];if(length<1e-6)continue;
+      if(times[i]<=0)throw new Error('Road geometry has uncovered duration');
+      const edge=edgeAt.get(i);let speed:SpeedLimitValue=parseOsmSpeed(edge?.osmWayId?tags.get(edge.osmWayId):undefined,edge?.forward);
+      if(speed.kind==='unknown'&&edge?.speedLimit&&edge.speedLimit!==255&&edge.speedLimit>0&&edge.speedLimit<=300)speed={...speed,value:edge.speedLimit};
+      if(speed.value!==null){const minimum=length/(speed.value/3.6);if(times[i]<minimum)times[i]=minimum;}
+      seconds+=times[i];
+    }
+    distance+=leg.distanceMeters;
+  }
+  return {distanceMeters:distance,drivingDurationSeconds:seconds};
+}
 export function normalizeRoadTrip(trip:RoadTripInput,request:RoadRoutingRequest,config:RoadConfig,tags:Map<string,WayTags>):RoadRoute{
   const fingerprint=createHash('sha256').update(JSON.stringify({normalizer:'road-normalization/1.2.0',provider:config.providerId,request,trip})).digest('hex').slice(0,20);
   const source={sourceId:config.providerId,recordId:fingerprint,version:trip.sourceVersion??null,url:trip.sourceUrl,retrievedAt:trip.retrievedAt,publishedAt:null,license:trip.license};
@@ -16,7 +47,7 @@ export function normalizeRoadTrip(trip:RoadTripInput,request:RoadRoutingRequest,
     const grade=(s:RoadSegment)=>s.elevationProfile?(s.elevationProfile.at(-1)!.elevationMeters-s.elevationProfile[0].elevationMeters)/s.distanceMeters*100:null;
     const a=last?grade(last):null,b=grade(segment),angle=last?Math.abs(last.bearingDegrees-segment.bearingDegrees):180;
     if(last&&!last.endsAtChargingAccess&&!segment.startsAtChargingAccess&&last.roadClass===segment.roadClass&&last.elevationQuality===segment.elevationQuality&&
-      last.speedLimitKph===segment.speedLimitKph&&last.speedLimitKind===segment.speedLimitKind&&last.speedLimitRaw===segment.speedLimitRaw&&JSON.stringify(last.speedLimitSource)===JSON.stringify(segment.speedLimitSource)&&
+      last.speedLimitKph===segment.speedLimitKph&&last.speedLimitKind===segment.speedLimitKind&&last.speedLimitRaw===segment.speedLimitRaw&&(last.speedLimitSource===segment.speedLimitSource||JSON.stringify(last.speedLimitSource)===JSON.stringify(segment.speedLimitSource))&&
       last.distanceMeters+segment.distanceMeters<=policy.maxDistanceMeters&&last.drivingDurationSeconds+segment.drivingDurationSeconds<=Math.min(policy.maxDurationSeconds,policy.maxWeatherTimeStepSeconds)&&
       Math.abs(last.expectedSpeedKph-segment.expectedSpeedKph)<policy.splitAtSpeedChangeKph&&Math.min(angle,360-angle)<policy.splitAtBearingChangeDegrees&&
       (a===null&&b===null||a!==null&&b!==null&&Math.abs(a-b)<policy.splitAtGradeChangePercent)){

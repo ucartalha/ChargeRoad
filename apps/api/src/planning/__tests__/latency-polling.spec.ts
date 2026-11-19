@@ -26,7 +26,9 @@ describe('CR-LAT-001 offline polling hypothesis; production default unchanged',(
  });
  it('honors server hint and reduces only response delivery for an early ready job',async()=>{
   const {a,b}=pair(500);expect(a.outcomeHash).toBe(b.outcomeHash);
-  expect(a.readyToObservedMs-b.readyToObservedMs).toBe(3000);expect(a.statusGets).toBe(1);expect(b.statusGets).toBe(1);
+  // Long-poll client (2026-11-19): the first status read is sent at once with ?waitMs. This synthetic server ignores waitMs
+  // (like an old API), so the client reads once immediately and once after the server's hint: 2 reads, hint gap unchanged.
+  expect(a.readyToObservedMs-b.readyToObservedMs).toBe(3000);expect(a.statusGets).toBe(2);expect(b.statusGets).toBe(2);
   expect(b.visiblePaint).toBe('NOT_RUN');
  });
  it('exposes additional status reads and does not claim a long-job latency improvement',async()=>{

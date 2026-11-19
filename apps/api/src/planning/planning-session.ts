@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {setImmediate as yieldLoop} from 'node:timers/promises';
-import {roadRoutingResultSchema,weatherForecastSchema,weatherForecastIsUsable} from '@chargeroad/shared';
+import {roadRoutingResultSchema,weatherForecastSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
 import type {RoadRoute,WeatherForecast,WeatherQuery,NumericObservation,PlannedChargingStop,ChargingStation,RoutePlanRequest} from '@chargeroad/shared';
 import {RoutingProvider} from '../providers/routing-provider';
 import {WeatherProvider} from '../providers/weather-provider';
@@ -15,11 +15,13 @@ import type {PreparationOptions} from './planning-coordinator';
 import type {PlanningContext,PlanningNode,OptimizerState,DriveLeg,TransitionPort} from './optimizer-types';
 import {PlanningDataLimit,PlanningProviderFailure} from './optimizer-types';
 import {checksum} from './plan-compiler';
+import {canonicalJsonSha256} from '../vehicles/knowledge/knowledge-package';
 import type {ProviderResponse} from '../providers/provider-response';
 import {WEATHER_POLICY} from '../weather/weather-policy';
 import {Logger} from '@nestjs/common';
 import {energyInputUsage} from '../energy/energy-input-budget';
 import {RoadProviderError} from '../roads/road-client';
+import {validatedRoadResults} from '../roads/road-service';
 import {measureAsync,measureSync,countMetric} from '../observability/planning-metrics';
 import {observeCandidateCall} from './candidate-eligibility-shadow';
 import {WeatherAtlas,type WeatherExecutionMode} from '../weather/weather-atlas';
@@ -64,7 +66,8 @@ export class PlanningSession implements TransitionPort {
     try{response=await measureAsync('road_leg_acquisition',()=>this.call(s=>{countMetric('road_leg_acquisitions');return this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at},s);},signal));}
     catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;
       if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure('ROAD_PROVIDER_FAILED');}
-    const parsed=roadRoutingResultSchema.nullable().safeParse(response.data);if(!parsed.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
+    const parsed=response.data&&validatedRoadResults.has(response.data)?{success:true as const,data:response.data}:roadRoutingResultSchema.nullable().safeParse(response.data);
+    if(!parsed.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
     this.replay.roads.push({from,to:to.id,at,response});const routes=parsed.data?.routes??null;
     if(routes&&routes.length>this.roadOptions.alternatives)throw new PlanningProviderFailure('ROAD_ALTERNATIVE_BUDGET_EXCEEDED');
     if(routes?.some(r=>!r.source.license||meters(r.segments[0].geometry[0],node.location)>100||meters(r.segments.at(-1)!.geometry.at(-1)!,to.location)>100)){
@@ -75,11 +78,16 @@ export class PlanningSession implements TransitionPort {
   private async weather(queries:WeatherQuery[],signal:AbortSignal){
     // Reuse already acquired forecast SERIES across charging legs, while evaluating each new passage time.
     // Original target coordinates remain unchanged and the existing 10 km provenance bound still applies.
+    // optimizer 1.6.1: reuse only inside that bound. A 10-15 km sample (old WEATHER_POLICY.sampleDistanceMeters) was
+    // answered outside_horizon by the weather service, so the station could never charge; such queries now use the
+    // station's own location instead.
+    const reuse=Math.min(WEATHER_POLICY.sampleDistanceMeters,weatherSampleDistanceLimit());
     if(this.climateSamples.size&&!queries.some(q=>q.samplingResolution))queries=queries.map(q=>{
       const nearest=[...this.climateSamples.values()].reduce((best,p)=>meters(q.location,p)<meters(q.location,best)?p:best);
-      return meters(q.location,nearest)<=WEATHER_POLICY.sampleDistanceMeters?{...q,sampleLocation:nearest}:q;
+      return meters(q.location,nearest)<=reuse?{...q,sampleLocation:nearest}:q;
     });
-    const key=checksum(queries);if(this.weatherCache.has(key)){countMetric('weather_session_cache_hits');return this.weatherCache.get(key)!;}
+    // Same digest as checksum(queries) (sha256 of canonical JSON), streamed without materialising the string.
+    const key=canonicalJsonSha256(queries);if(this.weatherCache.has(key)){countMetric('weather_session_cache_hits');return this.weatherCache.get(key)!;}
     // Count sample-series evaluation groups separately from segment projections. Every
     // segment still receives its own actual-ETA forecast; no time bucketing or result reuse.
     const units=this.context.weatherSampling?new Set(queries.map(q=>JSON.stringify(q.sampleLocation??q.location))).size:queries.length;

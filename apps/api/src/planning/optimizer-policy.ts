@@ -21,4 +21,14 @@ export function arrivalTargetSteps(target:number,reserve:number,step:number=ARRI
 }
 // 1.5.0 (2026-11-17): two seed reach strategies (each chain improved separately) and SOC_STOP_RULES.
 // 1.6.0 (2026-11-17): ARRIVAL_TARGET_FALLBACK (planning service; search itself unchanged).
-export const OPTIMIZER_VERSION='chargeroad-optimizer/1.6.0';
+/** Optimizer 1.7.0 (user report 2026-11-19): under time/energy objectives the seed re-charges a stop that went above the
+ *  fast band (seedChargeTargets' 80 %) only to what the next validated leg needs, plus marginPercent, and re-validates
+ *  that leg. Long routes exhaust the budget before improveFixedStopTargets runs, which left 100 % stops in plans. */
+/** Optimizer 1.7.0: weather projections (segments x drives, the unit that tracks drive cost) the broad search may spend
+ *  after a validated plan exists. On the reference routes (İstanbul→Kelkit x3, Ankara, İzmir) an unbounded broad search
+ *  after the seed found no better plan but cost 2-3 s; small graphs still reach their exhaustive optimum (~100 cheap drives). */
+export const BROAD_SEARCH_POLICY={version:'broad-search/1.0.0',maxWeatherProjectionsWithIncumbent:3000 as number};
+export const SEED_TRIM_POLICY={version:'seed-charge-trim/1.0.0',marginPercent:.05,minGainPercent:1} as const;
+// 1.6.1 (2026-11-19): station/charging weather reuses a sampled series only inside the 10 km provenance bound (planning-session).
+// 1.7.0 (2026-11-19): seed charge-to-need (SEED_TRIM_POLICY), one corridor per search (planning service), BROAD_SEARCH_POLICY.
+export const OPTIMIZER_VERSION='chargeroad-optimizer/1.7.0';

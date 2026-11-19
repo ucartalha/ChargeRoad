@@ -8,8 +8,10 @@ export function candidateProgress(candidate:StationCandidateSet['candidates'][nu
 }
 /** station-access/1.0.0 (2026-11-17, user decision): a candidate's access detour is measured in travel direction
  *  (approachMeters before the station -> station -> approachMeters after). A station next to the motorway can still cost a
- *  long U-turn when it is in the other direction's service area; such stations stay out when an acceptable one exists. */
-export const STATION_ACCESS_POLICY={version:'station-access/1.0.0',maxDetourMeters:3000,maxDetourSeconds:180,perBin:3,extendedPerBin:6,
+ *  long U-turn when it is in the other direction's service area; such stations stay out when an acceptable one exists.
+ *  station-access/1.1.0 (2026-11-19, optimizer 1.7.0): a bin without an acceptable station keeps its smallest detour only up
+ *  to maxFallbackDetourSeconds; beyond it the station only fills free slots last (İzmir reference: a 90 km detour was seeded). */
+export const STATION_ACCESS_POLICY={version:'station-access/1.1.0',maxDetourMeters:3000,maxDetourSeconds:180,maxFallbackDetourSeconds:900,perBin:3,extendedPerBin:6,
   concurrency:4,approachMeters:1000} as const;
 async function pooled<T>(tasks:(()=>Promise<T>)[],limit:number):Promise<T[]>{
   const out=new Array<T>(tasks.length);let next=0;
@@ -23,8 +25,10 @@ const rankCandidates=(candidates:readonly Candidate[])=>[...candidates].sort((a,
   Number(Math.min(...b.routeMatches.map(m=>m.distanceMeters))>100)||dcPower(b)-dcPower(a)||a.station.id.localeCompare(b.station.id));
 export const accessAcceptable=(m:StationAccessMeasure|null|undefined)=>!!m&&m.additionalMeters<=STATION_ACCESS_POLICY.maxDetourMeters&&
   m.additionalSeconds<=STATION_ACCESS_POLICY.maxDetourSeconds;
+const fallbackAcceptable=(m:StationAccessMeasure|null|undefined)=>!!m&&m.additionalSeconds<=STATION_ACCESS_POLICY.maxFallbackDetourSeconds;
 /** One candidate per progress bin like selectCatalogueCandidates, but each bin keeps the best-ranked station whose measured
- *  access is acceptable; if none in the bin is, the smallest measured detour (a plan must stay possible). */
+ *  access is acceptable; if none in the bin is, the smallest measured detour within maxFallbackDetourSeconds (a plan must stay
+ *  possible). Stations over that ceiling are added last, only while the limit leaves room. */
 export async function selectAccessibleCandidates(candidates:readonly Candidate[],routes:RoadRoute[],limit:number,
   measure:(candidate:Candidate)=>Promise<StationAccessMeasure|null>):Promise<{chosen:Candidate[];access:Record<string,StationAccessMeasure|null>}>{
   const access:Record<string,StationAccessMeasure|null>={};if(!limit)return {chosen:[],access};
@@ -41,11 +45,13 @@ export async function selectAccessibleCandidates(candidates:readonly Candidate[]
       tried.get(bin)!.push(c);await run(c);if(accessAcceptable(access[c.station.id]))break;}
   }),STATION_ACCESS_POLICY.concurrency);
   for(const bin of order){const list=tried.get(bin)!;
-    chosen.push(list.find(c=>accessAcceptable(access[c.station.id]))??[...list].filter(c=>access[c.station.id]).sort((a,b)=>detour(a)-detour(b))[0]??list[0]);}
+    const pick=list.find(c=>accessAcceptable(access[c.station.id]))??[...list].filter(c=>access[c.station.id]).sort((a,b)=>detour(a)-detour(b))[0]??list[0];
+    if(!access[pick.station.id]||fallbackAcceptable(access[pick.station.id]))chosen.push(pick);}
   const taken=new Set(chosen.map(c=>c.station.id)),rest=ranked.filter(c=>!taken.has(c.station.id));
   const measured=rest.filter(c=>c.station.id in access);
-  const fill=[...measured.filter(c=>accessAcceptable(access[c.station.id])),...measured.filter(c=>!accessAcceptable(access[c.station.id])).sort((a,b)=>detour(a)-detour(b)),
-    ...rest.filter(c=>!(c.station.id in access))];
+  const near=(c:Candidate)=>!accessAcceptable(access[c.station.id])&&(!access[c.station.id]||fallbackAcceptable(access[c.station.id]));
+  const fill=[...measured.filter(c=>accessAcceptable(access[c.station.id])),...measured.filter(near).sort((a,b)=>detour(a)-detour(b)),
+    ...rest.filter(c=>!(c.station.id in access)),...measured.filter(c=>access[c.station.id]&&!fallbackAcceptable(access[c.station.id])).sort((a,b)=>detour(a)-detour(b))];
   return {chosen:[...chosen,...fill].slice(0,limit),access};
 }
 export function selectCatalogueCandidates(candidates:StationCandidateSet['candidates'],routes:RoadRoute[],limit:number){

@@ -60,3 +60,7 @@ Arama bütçesi sonunda geçerli en iyi aday varsa mevcut solver bunu sınırlı
 Yerel DB'ye migration 011 uygulandı. [Gerçek HTTP raporu](validation/task14-planning-http-validation.json), katalogdaki Ioniq 6 için HTTP 200 `insufficient_data` / `VEHICLE_ENERGY_PROFILE_MISSING` doğrular. Dış yol/hava çağrısı veya sentetik üretim profili eklenmedi. Böylece API tamamlanırken gerçek veri açığı gizlenmedi. Bu rapor bir HTTP gecikme veya saha doğruluğu benchmark'ı değildir.
 
 Komutlar (API paketinde): `test:db`, `planning:contracts`, `planning:http-validate`. Son komut pilotta profil yokken gerçek DB kapısını doğrular ve örnek isteği git dışında `artifacts/task14-http/example-request.json` dosyasına yazar. Profil yayımlanmışsa beklenmedik canlı sağlayıcı çağrısı yapmak yerine durur. V1 saha doğrulaması, gerçek profiller, canlı EVSE kapsamı ve mobil bağlantı ayrı açık görevlerdir.
+
+## Plan işi durumunda long-poll (2026-11-19)
+
+`GET /v1/planning-jobs/:id?waitMs=<0..20000>`: iş `queued`/`running` ise sunucu yanıtı iş bitene (tamamlandı, başarısız, iptal) ya da `waitMs` dolana kadar bekletir (`LONG_POLL_MAX_MS`=20.000; geçersiz değer 0 sayılır). `waitMs` verilmezse davranış eskisi gibidir (anında yanıt). İstemci bağlantıyı kapatırsa bekleme kesilir. Mobil istemci `waitMs=15000` kullanır; sunucu 1 s'den kısa sürede hâlâ çalışıyor yanıtı verirse (`waitMs`'i tanımayan eski API) `pollAfterMilliseconds` kadar bekler. Bekleme süreç-içi olay + 1 s'lik DB okumasıyla yapılır; yeni altyapı yoktur. Test: `planning-jobs-longpoll.spec.ts`.

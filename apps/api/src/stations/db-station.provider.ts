@@ -4,6 +4,21 @@ import { z } from 'zod';
 import { DatabaseService } from '../database/database.service';
 import { StationDataProvider } from '../providers/station-data-provider';
 import { STATION_POLICY } from './station-policy';
+import { simplifyDisplayGeometry } from '../roads/geometry';
+/** Corridor query geometry (2026-11-19): exact segment shapes while they fit maxGeometryPoints; above it (formerly a hard
+ *  failure on long routes) each segment shape is simplified with increasing tolerance until it fits. Segment ids, and so
+ *  routeMatches, are unchanged; only the matched distance/progress may move by up to the tolerance. */
+export const STATION_QUERY_SIMPLIFY_TOLERANCES_METERS=[5,10,20,50,100] as const;
+export function corridorQuerySegments(routes:RoadRoute[],maxPoints:number){
+  const count=(shapes:RoadRoute['segments'][number]['geometry'][])=>shapes.reduce((n,g)=>n+g.length,0);
+  let shapes=routes.flatMap(r=>r.segments.map(s=>s.geometry));
+  for(const tolerance of STATION_QUERY_SIMPLIFY_TOLERANCES_METERS){if(count(shapes)<=maxPoints)break;
+    shapes=routes.flatMap(r=>r.segments.map(s=>simplifyDisplayGeometry(s.geometry,tolerance)));}
+  if(count(shapes)>maxPoints)throw new Error('Station geometry budget exceeded');
+  let index=0;
+  return routes.flatMap(r=>r.segments.map(s=>({routeId:r.id,segmentId:s.id,
+    geometry:{type:'LineString',coordinates:shapes[index++].map(p=>[p.longitude,p.latitude])}})));
+}
 
 export type StationQueryPolicy={version:string;corridorStepsMeters:readonly number[];maxCandidates:number;maxRoutes:number;maxGeometryPoints:number;statementTimeoutMs:number;staticSoftAgeSeconds:number};
 export const CORRIDOR_SQL=`WITH segments AS (
@@ -42,10 +57,7 @@ export class DbStationDataProvider extends StationDataProvider {
       throw new Error('Station corridor exceeds server policy');
     if(!Number.isSafeInteger(this.policy.maxCandidates)||this.policy.maxCandidates<1||this.policy.maxCandidates>500)
       throw new Error('Invalid server candidate budget');
-    const points=routes.reduce((n,r)=>n+r.segments.reduce((m,s)=>m+s.geometry.length,0),0);
-    if(points>this.policy.maxGeometryPoints)throw new Error('Station geometry budget exceeded');
-    const segments=routes.flatMap(r=>r.segments.map(s=>({routeId:r.id,segmentId:s.id,
-      geometry:{type:'LineString',coordinates:s.geometry.map(p=>[p.longitude,p.latitude])}})));
+    const segments=corridorQuerySegments(routes,this.policy.maxGeometryPoints);
     const client=await this.database.pool.connect();
     try{
       signal.throwIfAborted();

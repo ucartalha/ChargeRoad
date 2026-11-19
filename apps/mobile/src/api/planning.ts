@@ -18,11 +18,13 @@ async function post<T>(path:string,body:unknown,schema:{safeParse:(raw:unknown)=
     throw new PlanningApiError(signal.aborted?'İşlem iptal edildi.':bounded.signal.aborted?'İşlem zaman aşımına uğradı. Tekrar deneyebilirsin.':'Bağlantı kurulamadı. İnternetini ve sunucu bağlantısını kontrol et.');
   }finally{clearTimeout(timer);signal.removeEventListener('abort',abort);}
 }
+const LONG_POLL_WAIT_MS=15000;
 export const planningApi={
   async plan(request:PlanningApiRequest,signal:AbortSignal){const result=await post('/plans',request,planningApiResponseSchema,signal,35000);
     if(result.requestId!==request.requestId)throw new PlanningApiError('Yanıt bu plan isteğine ait değil. Tekrar dene.');return result;},
   preview:(request:RoadPreviewRequest,signal:AbortSignal)=>post('/roads/preview',request,roadPreviewResponseSchema,signal,95000),
   search:(query:string,signal:AbortSignal)=>post('/locations/search',{query},locationSearchResponseSchema,signal,12000),
+  /** Seconds-level latency fix (2026-11-19): status reads wait server-side for the job to finish. */
   async planAsync(request:PlanningApiRequest,signal:AbortSignal,secret:string,onProgress:(status:string)=>void,
     onPreview?:(preview:import('@chargeroad/shared').RoadPreviewResponse)=>void){
     const base=process.env.EXPO_PUBLIC_API_URL?.replace(/\/+$/,'');if(!base)throw new PlanningApiError('Sunucu bağlantısı yapılandırılmamış.');
@@ -31,7 +33,7 @@ export const planningApi={
     let delivered=false;
     const call=async(address:string,method:string,body?:unknown,independent=false)=>{
       // Explicit controllers also work on Expo Go runtimes without AbortSignal.any/timeout.
-      const bounded=new AbortController(),abort=()=>bounded.abort(),timer=setTimeout(abort,method==='DELETE'?5000:address.endsWith('/result')?35000:15000);
+      const bounded=new AbortController(),abort=()=>bounded.abort(),timer=setTimeout(abort,method==='DELETE'?5000:address.endsWith('/result')?35000:address.includes('?waitMs=')?LONG_POLL_WAIT_MS+5000:15000);
       if(!independent){signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();}
       try{const response=await fetch(address,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:bounded.signal});
        const data=await response.json();
@@ -64,7 +66,10 @@ export const planningApi={
       const deadline=Date.now()+300000;
       while(job.status==='queued'||job.status==='running'){
         if(Date.now()>deadline){cancel();throw new PlanningApiError('Plan işi bekleme süresi doldu. Tekrar deneyebilirsin.');}
-        onProgress(job.status);await wait(job.pollAfterMilliseconds);job=planningJobStatusSchema.parse(await call(url,'GET'));
+        // Long-poll: the server answers as soon as the job finishes (or after LONG_POLL_WAIT_MS). A server that ignores
+        // waitMs answers at once; then fall back to its pollAfterMilliseconds so the loop never spins.
+        onProgress(job.status);const asked=Date.now();job=planningJobStatusSchema.parse(await call(url+'?waitMs='+LONG_POLL_WAIT_MS,'GET'));
+        if((job.status==='queued'||job.status==='running')&&Date.now()-asked<1000)await wait(job.pollAfterMilliseconds);
       }
       if(job.status==='cancelled')throw new PlanningApiError('Plan işi iptal edildi.');
       if(job.status==='failed')throw new PlanningApiError('Plan işi tamamlanamadı ('+(job.errorCode??'PLANNING_JOB_FAILED')+').');
