@@ -68,6 +68,8 @@ Migration `010_weather_provider_cache.sql` yerel DB'ye uygulandı. Cache anahtar
 
 Plan başına dış çağrı bütçesi (2026-11-19, optimizer 1.7.1): `weatherProviderLimits(provider).maxExternalCalls`. MET Norway `WEATHER_POLICY.maxExternalCalls`=128'de kalır (ToS kotası). Self-hosted `open-meteo-local` 1.024 alır; yerel sunucuyu `maxConcurrency` ve günlük sınır korur. Sebep: yeni ICON koşusundan sonra önbellek soğukken İstanbul→Kelkit 128'den fazla konum istedi, 768 tahmin `budget_exhausted` döndü ve plan `computation_limit` ile düştü; önbellek sıcakken aynı istek planlanıyordu. Referans Kelkit planları 739–879 farklı konum istiyor (sıcakken çoğu PG'den). Ayrıntı: [planning-1.7.1-2026-11-19.md](validation/planning-1.7.1-2026-11-19.md).
 
+Güvenilir diziler (2026-11-19): WeatherService'in döndürdüğü tahmin dizisi ve planlama oturumunun kurduğu sorgu dizisi `trusted-weather.ts` ile işaretlenir; ikinci kez şemadan geçirilmez (çıktı birebir aynı, [kanıt](validation/weather-trusted-path-2026-11-19.md)).
+
 ## Kullanım
 
 `.env.example` kapalıdır; yerel `.env` kullanıcı kabulü sonrasında etkinleştirildi:

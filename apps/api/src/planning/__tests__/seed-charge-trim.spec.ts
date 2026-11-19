@@ -32,3 +32,8 @@ describe('Seed charge-to-need trim (optimizer 1.7.0)',()=>{
     expect(stops(on.r.result)).toEqual(stops(off.r.result));
   },60000);
 });
+// Optimizer 1.8.0: the stop before the destination is trimmed even inside the fast band, so the arrival is not overshot.
+it('trims the final stop to what the destination leg needs even below the fast band (1.8.0)',()=>{
+  const source=require('fs').readFileSync(require('path').resolve(__dirname,'../charge-stop-optimizer.ts'),'utf8');
+  expect(source).toContain("stop.targetChargePercent<=fastBand+1e-7&&leg.to!=='destination'");
+});

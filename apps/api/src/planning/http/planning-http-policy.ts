@@ -25,4 +25,4 @@ export function toInternalRequest(r:PlanningApiRequest,budgetMs:number):RoutePla
     unknownAvailability:'allow_with_documented_risk',unknownWeather:'reject',missingChargingCurve:'report_insufficient_data',maxIterations:3,maxComputationMilliseconds:budgetMs}};}
 export function planningPreparation(r:PlanningApiRequest):PreparationOptions{return {road:{alternatives:2,avoidTolls:r.roadPreferences.avoidTolls,
   avoidFerries:r.roadPreferences.avoidFerries,segmentationPolicy:{...ROAD_SEGMENTATION}},stationCorridorMeters:2000,
-  maxWeatherQueries:r.stationDataQuality==='catalogue_power_scenario'?CATALOGUE_SCENARIO_POLICY.maxWeatherQueries:DEFAULT_OPTIMIZER_OPTIONS.maxWeatherQueries};}
+  maxWeatherQueries:r.stationDataQuality==='catalogue_power_scenario'?CATALOGUE_SCENARIO_POLICY.maxWeatherQueries:DEFAULT_OPTIMIZER_OPTIONS.maxWeatherQueries,...(r.originHeading?{originHeading:{degrees:r.originHeading.degrees,toleranceDegrees:r.originHeading.toleranceDegrees}}:{})};}

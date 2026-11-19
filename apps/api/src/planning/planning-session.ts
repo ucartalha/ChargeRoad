@@ -1,6 +1,7 @@
 import {createHash} from 'node:crypto';
 import {setImmediate as yieldLoop} from 'node:timers/promises';
 import {roadRoutingResultSchema,weatherForecastSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
+import {trustedWeatherForecasts,trustedWeatherQueries} from '../weather/trusted-weather';
 import type {RoadRoute,WeatherForecast,WeatherQuery,NumericObservation,PlannedChargingStop,ChargingStation,RoutePlanRequest} from '@chargeroad/shared';
 import {RoutingProvider} from '../providers/routing-provider';
 import {WeatherProvider} from '../providers/weather-provider';
@@ -68,7 +69,8 @@ export class PlanningSession implements TransitionPort {
     if(this.counters.roadQueries>=this.context.options.maxRoadQueries)throw new PlanningDataLimit('ROAD_QUERY_BUDGET');this.counters.roadQueries++;
     const node=this.context.nodes.find(n=>n.id===from)!;
     let response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>;
-    try{response=await measureAsync('road_leg_acquisition',()=>this.call(s=>{countMetric('road_leg_acquisitions');return this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at},s);},signal));}
+    try{response=await measureAsync('road_leg_acquisition',()=>this.call(s=>{countMetric('road_leg_acquisitions');return this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at,
+      ...(from==='origin'&&this.context.originHeading?{originHeadingDegrees:this.context.originHeading.degrees,originHeadingToleranceDegrees:this.context.originHeading.toleranceDegrees}:{})},s);},signal));}
     catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;
       if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure('ROAD_PROVIDER_FAILED');}
     const parsed=response.data&&validatedRoadResults.has(response.data)?{success:true as const,data:response.data}:roadRoutingResultSchema.nullable().safeParse(response.data);
@@ -83,6 +85,14 @@ export class PlanningSession implements TransitionPort {
     this.roads.set(key,routes);if(routes?.every(r=>r.metadata?.traffic==='none'))this.roads.set(staticKey,routes);
     return routes;
   }
+  /** Weather projections used / allowed (segment limit applies only with planning weather sampling). */
+  weatherBudget(){
+    const limit=this.context.weatherSampling?Math.min(PLANNING_WEATHER_POLICY.maxSegmentEvaluations,Math.max(this.context.options.maxWeatherQueries,
+      (this.context.baseRoutes?.[0]?.segments.length??0)*PLANNING_WEATHER_POLICY.maxSegmentPasses)):Infinity;
+    return {used:this.counters.weatherQueries,limit};
+  }
+  /** Optimizer 1.8.0: a fallback corridor route is searched with its own road/weather budgets (caches are kept). */
+  resetSearchBudgets(){this.counters.roadQueries=0;this.counters.weatherQueries=0;this.weatherSampleEvaluations=0;}
   private async weather(queries:WeatherQuery[],signal:AbortSignal){
     // Reuse already acquired forecast SERIES across charging legs, while evaluating each new passage time.
     // Original target coordinates remain unchanged and the existing 10 km provenance bound still applies.
@@ -99,14 +109,12 @@ export class PlanningSession implements TransitionPort {
     // Count sample-series evaluation groups separately from segment projections. Every
     // segment still receives its own actual-ETA forecast; no time bucketing or result reuse.
     const units=this.context.weatherSampling?new Set(queries.map(q=>JSON.stringify(q.sampleLocation??q.location))).size:queries.length;
-    const segmentLimit=Math.min(PLANNING_WEATHER_POLICY.maxSegmentEvaluations,Math.max(this.context.options.maxWeatherQueries,
-      (this.context.baseRoutes?.[0]?.segments.length??0)*PLANNING_WEATHER_POLICY.maxSegmentPasses));
     if(this.weatherSampleEvaluations+units>this.context.options.maxWeatherQueries||
-      this.context.weatherSampling&&this.counters.weatherQueries+queries.length>segmentLimit)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
+      this.counters.weatherQueries+queries.length>this.weatherBudget().limit)throw new PlanningDataLimit('WEATHER_QUERY_BUDGET');
     this.weatherSampleEvaluations+=units;countMetric('weather_sample_evaluations',units);
-    this.counters.weatherQueries+=queries.length;let response:ProviderResponse<WeatherForecast[]>;
+    this.counters.weatherQueries+=queries.length;let response:ProviderResponse<WeatherForecast[]>;trustedWeatherQueries.add(queries);
     try{response=await measureAsync('weather_acquisition',()=>this.call(s=>{countMetric('weather_forecast_query_items',queries.length);return this.climate.forecast(queries,s,{budgetScope:this.context,...(this.atlas?{seriesScope:this.atlas}:{})});},signal));}catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;throw new PlanningProviderFailure('WEATHER_PROVIDER_FAILED');}
-    let result:WeatherForecast[];try{result=response.data.map(v=>weatherForecastSchema.parse(v));}catch{throw new PlanningProviderFailure('WEATHER_PROVIDER_INVALID_DATA');}
+    let result:WeatherForecast[];try{result=trustedWeatherForecasts.has(response.data)?response.data:response.data.map(v=>weatherForecastSchema.parse(v));}catch{throw new PlanningProviderFailure('WEATHER_PROVIDER_INVALID_DATA');}
     const requested=new Map(queries.map(q=>[q.id,q]));
     if(result.length!==queries.length||new Set(result.map(r=>r.queryId)).size!==queries.length||result.some(f=>{const q=requested.get(f.queryId);
       return !q||f.segmentId!==q.segmentId||Date.parse(f.validAt)!==Date.parse(q.validAt)||f.location.latitude!==q.location.latitude||f.location.longitude!==q.location.longitude;}))
@@ -116,7 +124,15 @@ export class PlanningSession implements TransitionPort {
     }
     this.replay.weather.push({queries,response});this.weatherCache.set(key,result);return result;
   }
+  /** Development-only trace; set by EvPlanningService when PLANNING_DEBUG_TRACE is on. */
+  debug:import('../observability/planning-debug').PlanningDebugTrace|null=null;
   async drive(state:OptimizerState,to:PlanningNode,preview:boolean,signal:AbortSignal):Promise<DriveLeg[]>{
+    if(!this.debug)return this.driveLegs(state,to,preview,signal);
+    const before=this.counters.weatherQueries;let legs:DriveLeg[]|undefined;
+    try{legs=await this.driveLegs(state,to,preview,signal);return legs;}
+    finally{this.debug.drive(this.context,state.nodeId,to.id,state.soc,legs,this.counters.weatherQueries-before);}
+  }
+  private async driveLegs(state:OptimizerState,to:PlanningNode,preview:boolean,signal:AbortSignal):Promise<DriveLeg[]>{
     observeCandidateCall(this.context,to.id,'drive');
     const routes=await this.route(state.nodeId,to,state.at,signal),legs:DriveLeg[]=[];
     for(const route of routes??[]){
@@ -152,6 +168,10 @@ export class PlanningSession implements TransitionPort {
     }return legs;
   }
   async charge(state:OptimizerState,target:number,signal:AbortSignal):Promise<OptimizerState[]>{
+    if(!this.debug)return this.chargeAt(state,target,signal);
+    let out:OptimizerState[]=[];try{out=await this.chargeAt(state,target,signal);return out;}finally{this.debug.charge(out.length>0);}
+  }
+  private async chargeAt(state:OptimizerState,target:number,signal:AbortSignal):Promise<OptimizerState[]>{
     observeCandidateCall(this.context,state.nodeId,'charge');
     const c=this.context,station=c.candidates.candidates.find(s=>s.station.id===state.nodeId)?.station,model=c.vehicle.chargingModel;
     if(!station||!state.capacity)return [];

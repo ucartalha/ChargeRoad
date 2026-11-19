@@ -54,10 +54,17 @@ export function stopArrival(context:PlanningContext,plan:OptimizerState,index:nu
 }
 
 /** A validated incumbent is kept outside this helper. No physical result is edited/reused as a new result. */
+/** Optimizer 1.8.0: the improvement allowance is a fraction of the remaining weather projection budget the session enforces
+ *  (TransitionPort.weatherBudget). The old rule subtracted used projections from maxWeatherQueries (sample-location units),
+ *  which was 0 on every long route. Without a finite projection budget the old rule applies unchanged. */
+export function improveWeatherAllowance(context:PlanningContext,port:TransitionPort){
+  const used=port.counters.weatherQueries,budget=port.weatherBudget?.(),limit=budget&&Number.isFinite(budget.limit)?budget.limit:context.options.maxWeatherQueries;
+  return Math.max(0,Math.floor((limit-used)*CHARGE_TARGET_SEARCH_POLICY.remainingBudgetFraction));
+}
 export async function improveFixedStopTargets(context:PlanningContext,baseline:OptimizerState,port:TransitionPort,signal:AbortSignal,
   compare:(a:OptimizerState,b:OptimizerState)=>number,budget:()=>Promise<void>,accept:(state:OptimizerState)=>boolean,clock:()=>number){
   const policy=CHARGE_TARGET_SEARCH_POLICY,weatherStart=port.counters.weatherQueries,
-    weatherAllowance=Math.max(0,Math.floor((context.options.maxWeatherQueries-weatherStart)*policy.remainingBudgetFraction)),
+    weatherAllowance=improveWeatherAllowance(context,port),
     remaining=Math.min(context.request.policy.maxComputationMilliseconds,port.remainingMilliseconds?.()??Infinity),end=clock()+remaining*policy.remainingBudgetFraction;
   let calls=0,best=baseline;
   class PhaseLimit extends Error{}

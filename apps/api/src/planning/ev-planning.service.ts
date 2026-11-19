@@ -14,7 +14,8 @@ import {PlanningSession} from './planning-session';
 import {observeCandidateEligibility} from './candidate-eligibility-shadow';
 import {PlanningProviderFailure,PlanningDataLimit} from './optimizer-types';
 import {meters} from '../roads/geometry';
-import {OPTIMIZER_VERSION,arrivalTargetSteps} from './optimizer-policy';
+import {OPTIMIZER_VERSION,arrivalTargetSteps,routeStopLimit} from './optimizer-policy';
+import {planningDebugEnabled,PlanningDebugTrace} from '../observability/planning-debug';
 import {ENERGY_ALGORITHM_VERSION} from '../energy/energy-policy';
 import {ENERGY_POLICY} from '../energy/energy-policy';
 import {CHARGING_ALGORITHM_VERSION} from '../charging/charging-engine';
@@ -32,14 +33,21 @@ import {samplingRange,buildPlanningWeather} from '../weather/planning-weather-po
 import {weatherExecutionMode} from '../weather/weather-atlas';
 import {weatherGridEnabled} from '../weather/weather-grid';
 
+/** Origin heading (2026-11-19): only road requests that start at the trip origin carry the travel direction. */
+export function originHeadingFields(p:{originHeading?:{degrees:number;toleranceDegrees:number}}){
+  return p.originHeading?{originHeadingDegrees:p.originHeading.degrees,originHeadingToleranceDegrees:p.originHeading.toleranceDegrees}:{};
+}
 @Injectable()
 export class EvPlanningService {
   constructor(private readonly vehicles:VehicleEnergyProvider,private readonly roads:RoutingProvider,private readonly stations:StationDataProvider,
     private readonly weather:WeatherProvider,private readonly energy:EnergyConsumptionEngine,private readonly charging:ChargingCurveEngine,private readonly optimizer:ChargeStopOptimizer){}
   async plan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal=new AbortController().signal):Promise<OptimizerOutcome>{
-    return withPlanningMetrics(raw?.requestId,async()=>{try{return await this.executePlan(raw,rawPreparation,rawOptions,caller);}finally{markAbort(caller);}});
+    // Development-only trace (PLANNING_DEBUG_TRACE, never in production): one planning_debug line per plan.
+    const debug=planningDebugEnabled()?new PlanningDebugTrace(raw):null;let outcome='error';
+    return withPlanningMetrics(raw?.requestId,async()=>{try{const out=await this.executePlan(raw,rawPreparation,rawOptions,caller,debug);outcome=out.result.status;return out;}
+      finally{markAbort(caller);debug?.log(outcome);}});
   }
-  private async executePlan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal):Promise<OptimizerOutcome>{
+  private async executePlan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal,debug:PlanningDebugTrace|null=null):Promise<OptimizerOutcome>{
     caller.throwIfAborted();let request=routePlanRequestSchema.parse(raw);const preparation=preparationOptionsSchema.parse(rawPreparation),options=optimizerOptionsSchema.parse(rawOptions);
     options.maxWeatherQueries=Math.min(options.maxWeatherQueries,preparation.maxWeatherQueries);
     const began=performance.now(),deadline=began+request.policy.maxComputationMilliseconds,evaluatedAt=new Date().toISOString();
@@ -68,7 +76,7 @@ export class EvPlanningService {
       if(request.policy.vehicleDataQuality!=='allow_engineering_estimates'&&(vehicle.dataQuality?.quality==='engineering_estimate'||vehicle.energyModel.quality==='engineering_estimate'))
         return failure('insufficient_data','ENGINEERING_ESTIMATE_NOT_ALLOWED');
       if(request.startingChargePercent<request.constraints.minimumReserveChargePercent)return failure('insufficient_data','INITIAL_RESERVE_NOT_MET');
-      const response=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,schemaVersion:'1.0.0',origin:request.origin,destination:request.destination,departureAt:request.departureAt},s);});
+      const response=await read('ROAD',s=>{countMetric('road_leg_acquisitions');return this.roads.routes({...preparation.road,schemaVersion:'1.0.0',origin:request.origin,destination:request.destination,departureAt:request.departureAt,...originHeadingFields(preparation)},s);});
       const baseResult=response.data&&validatedRoadResults.has(response.data)?{success:true as const,data:response.data}:roadRoutingResultSchema.nullable().safeParse(response.data);if(!baseResult.success)throw new PlanningProviderFailure('ROAD_PROVIDER_INVALID_DATA');
       let base=baseResult.data;if(!base)return failure('infeasible','ROAD_ROUTE_NOT_FOUND');
       if(base.routes.length>preparation.road.alternatives||base.routes.some(r=>!r.source.license))throw new PlanningProviderFailure('ROAD_PROVIDER_ENDPOINT_OR_SOURCE_INVALID');
@@ -76,7 +84,8 @@ export class EvPlanningService {
       if(!matched.length){const nearby=base.routes.some(r=>meters(r.segments[0].geometry[0],request.origin)<=1000&&meters(r.segments.at(-1)!.geometry.at(-1)!,request.destination)<=1000);
         return failure('insufficient_data',nearby?'ROAD_ENDPOINT_CONFIRMATION_REQUIRED':'ROAD_ENDPOINT_NOT_REACHABLE');}
       base={...base,routes:matched};
-      const context:PlanningContext={request,vehicle,evaluatedAt,options:{...options},candidates:null as unknown as StationCandidateSet,nodes:[],baseRoutes:base.routes};
+      const context:PlanningContext={request,vehicle,evaluatedAt,options:{...options},candidates:null as unknown as StationCandidateSet,nodes:[],baseRoutes:base.routes,
+        ...(preparation.originHeading?{originHeading:preparation.originHeading}:{})};
       const catalogueRange=this.vehicles.catalogueRange?await read('VEHICLE',s=>this.vehicles.catalogueRange!(id,s)):null;
       const mode=weatherExecutionMode();
       // W4 grid is an opt-in for the default (legacy) weather mode only; the experimental adaptive modes keep their own anchors.
@@ -86,7 +95,7 @@ export class EvPlanningService {
       // next alternative is tried only when the previous one yields no plan. Mixing alternatives made legs jump between
       // corridors (+70..120 km per leg on İstanbul→Kelkit).
       let corridorRoutes=[base.routes[0]];
-      const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes,mode);weatherSession=session;
+      const session=new PlanningSession(context,this.roads,this.weather,this.energy,this.charging,preparation.road,deadline,base.routes,mode);weatherSession=session;session.debug=debug;
       session.counters.roadQueries=1;session.replay.roads.push({from:'origin',to:'destination',at:request.departureAt,response});
       let previousStates=0,previousTransitions=0,last:OptimizerOutcome|undefined;
       const pinned=new Map<string,StationCandidateSet['candidates'][number]>();
@@ -122,7 +131,7 @@ export class EvPlanningService {
       for(const [routeIndex,primary] of base.routes.entries()){
       if(routeIndex>0){
         if(last?.result.status==='provider_error')break;
-        corridorRoutes=[primary];context.baseRoutes=corridorRoutes;context.weatherSampling=buildPlanningWeather(primary,sampling,{grid});
+        corridorRoutes=[primary];context.baseRoutes=corridorRoutes;context.weatherSampling=buildPlanningWeather(primary,sampling,{grid});session.resetSearchBudgets();
         context.request=requested;context.stationAccess={};pinned.clear();accessCache.clear();previousStates=0;previousTransitions=0;session.arrivalTargetMissed=false;
       }else context.baseRoutes=corridorRoutes;
       for(const [attempt,target] of steps.entries()){
@@ -156,8 +165,12 @@ export class EvPlanningService {
           ...context.candidates.candidates.map(c=>({id:c.station.id,location:c.station.location,stationId:c.station.id}))];
         const statesRemaining=options.maxStates-previousStates,transitionsRemaining=options.maxTransitions-previousTransitions;
         if(statesRemaining<=0||transitionsRemaining<=0)break;
-        context.options={...options,maxStates:statesRemaining,maxTransitions:transitionsRemaining};
+        // Optimizer 1.8.0: stop cap follows the corridor route length and range estimate; the caller's value is a floor.
+        context.options={...options,maxStates:statesRemaining,maxTransitions:transitionsRemaining,
+          maxStops:Math.max(options.maxStops,routeStopLimit(corridorRoutes[0].distanceMeters,context.weatherSampling?.rangeKm))};
+        debug?.beginCorridor(context,routeIndex,session.counters.weatherQueries);
         last=await measureAsync('optimizer_search',()=>this.optimizer.solve(context,session,caller));
+        debug?.endCorridor(last.result,last.search,session.weatherBudget(),session.counters.roadQueries);
         const stageStates=last.search?.expandedStates??0,stageTransitions=last.search?.evaluatedTransitions??0;
         if(last.search){last.search.expandedStates+=previousStates;last.search.evaluatedTransitions+=previousTransitions;last.search.elapsedMilliseconds=performance.now()-began;}
         previousStates+=stageStates;previousTransitions+=stageTransitions;

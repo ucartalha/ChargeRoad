@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.8.0",
+  "scope": "Optimizer 1.8.0 source after adding the development-only planning trace hooks (debug?. calls, no behaviour change). Supersedes stop-limit-reserve-shadow-source-2026-11-19.json, written before the hooks.",
+  "optimizerWithoutShadowSha256": "94c1f19112431a14c239aa099d5da4daea978bd7048cc8f32974e8a29d35f4bb"
+}

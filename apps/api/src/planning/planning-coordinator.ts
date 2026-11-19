@@ -16,11 +16,13 @@ import { WeatherProvider } from '../providers/weather-provider';
 import type { ProviderResponse } from '../providers/provider-response';
 import { engineStepSchema, PlanningEngine } from './planning-engine';
 
-const routingOptionsSchema = roadRoutingRequestSchema.omit({ schemaVersion: true, origin: true, destination: true, departureAt: true });
+const routingOptionsSchema = roadRoutingRequestSchema.omit({ schemaVersion: true, origin: true, destination: true, departureAt: true,
+  originHeadingDegrees: true, originHeadingToleranceDegrees: true });
 export const preparationOptionsSchema = z.object({
   road: routingOptionsSchema,
   stationCorridorMeters: z.number().positive().max(100000),
   maxWeatherQueries: z.number().int().positive().max(30000),
+  originHeading: z.object({ degrees: z.number().min(0).lt(360), toleranceDegrees: z.number().int().min(10).max(90) }).strict().optional(),
 }).strict();
 export type PreparationOptions = z.infer<typeof preparationOptionsSchema>;
 

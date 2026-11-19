@@ -74,3 +74,7 @@ Komutlar (API paketinde): `test:db`, `planning:contracts`, `planning:http-valida
 - Yanıt `view: 'mobile'` taşır; tam plan olarak saklanamaz, replay edilemez, tam şemadan geçmez.
 - İstanbul→Kelkit referansında 5,80 MB → 1,94 MB, gzip 845 KB → 373 KB; masaüstü JSON+şema çözümü 40 → 13 ms. Kanıt: [planning-mobile-view-2026-11-19.md](validation/planning-mobile-view-2026-11-19.md).
 
+## Başlangıç yönü (`originHeading`, 2026-11-19, kullanıcı onaylı ekleme)
+
+İsteğe bağlı `originHeading: {degrees: 0..<360, toleranceDegrees: 10..90 = 45}`. Navigasyon sırasında yeniden hesaplamada mobil, aracın GPS gidiş yönünü (yalnız hız ≥ 2 m/s iken) gönderir; Valhalla rotayı aracın bulunduğu şeritten başlatır, karşı şeritten U dönüşü önermez. Yalnız trip başlangıcından çıkan yol istekleri (ana rota ve başlangıç→istasyon bacakları) yönü taşır; istasyon bacakları ve erişim ölçümleri taşımaz. Alan yoksa Valhalla isteği önceki gövdeyle birebir aynıdır. Yön loglanmaz.
+

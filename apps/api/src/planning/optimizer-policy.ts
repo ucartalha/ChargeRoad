@@ -28,9 +28,49 @@ export function arrivalTargetSteps(target:number,reserve:number,step:number=ARRI
  *  after a validated plan exists. On the reference routes (İstanbul→Kelkit x3, Ankara, İzmir) an unbounded broad search
  *  after the seed found no better plan but cost 2-3 s; small graphs still reach their exhaustive optimum (~100 cheap drives). */
 export const BROAD_SEARCH_POLICY={version:'broad-search/1.0.0',maxWeatherProjectionsWithIncumbent:3000 as number};
-export const SEED_TRIM_POLICY={version:'seed-charge-trim/1.0.0',marginPercent:.05,minGainPercent:1} as const;
+/** seed-charge-trim/1.1.0 (optimizer 1.8.0): when the re-driven leg misses its target at the tight margin (a shorter charge moves
+ *  the ETA, weather and battery temperature), the trim is retried with retryMarginsPercent before giving up. */
+export const SEED_TRIM_POLICY={version:'seed-charge-trim/1.1.0',marginPercent:.05,retryMarginsPercent:[2,5],minGainPercent:1} as const;
 // 1.6.1 (2026-11-19): station/charging weather reuses a sampled series only inside the 10 km provenance bound (planning-session).
 // 1.7.0 (2026-11-19): seed charge-to-need (SEED_TRIM_POLICY), one corridor per search (planning service), BROAD_SEARCH_POLICY.
 // 1.7.1 (2026-11-19): station road endpoints within ROAD_ENDPOINT_POLICY.stationMeters (planning-session) and the self-hosted
 //   weather provider's own per-plan call budget (weather-policy); search source unchanged.
-export const OPTIMIZER_VERSION='chargeroad-optimizer/1.7.1';
+/** Optimizer 1.8.0 (2026-11-19, phone İstanbul→Erzurum from ~40 % SOC failed with computation_limit). The fixed maxStops 6 made a
+ *  7–8 stop trip impossible: the planning service raises the cap to ceil(route km / range km) + slack within [min, max]. The
+ *  range is the planning weather range estimate (catalogue or capacity/consumption); unknown range uses unknownRange. */
+export const STOP_LIMIT_POLICY={version:'stop-limit/1.0.0',min:6,max:12,slack:1,unknownRange:8} as const;
+export function routeStopLimit(routeMeters:number,rangeKm:number|null|undefined):number{
+  if(!(typeof rangeKm==='number'&&Number.isFinite(rangeKm)&&rangeKm>0))return STOP_LIMIT_POLICY.unknownRange;
+  return Math.max(STOP_LIMIT_POLICY.min,Math.min(STOP_LIMIT_POLICY.max,Math.ceil(routeMeters/1000/rangeKm)+STOP_LIMIT_POLICY.slack));
+}
+/** Optimizer 1.8.0: seed chains used the whole weather projection budget (İstanbul→Kelkit: ~43 k of ~44 k) so stop targets were
+ *  never improved (100 % stops, 35–62 % arrival). After the first plan, further seed attempts stop while less than fraction of
+ *  the projection budget is left; the remainder goes to improveFixedStopTargets and the bounded broad search. */
+export const IMPROVE_RESERVE_POLICY={version:'improve-reserve/1.0.0',fraction:.3} as const;
+export function seedingAllowed(hasPlan:boolean,budget:{used:number;limit:number}|null|undefined):boolean{
+  if(!hasPlan||!budget||!Number.isFinite(budget.limit))return true;
+  return budget.limit-budget.used>=IMPROVE_RESERVE_POLICY.fraction*budget.limit;
+}
+// 1.7.1 (2026-11-19): station endpoint tolerance and self-hosted weather call budget.
+/** Optimizer 1.9.0 P1 (user decision 2026-11-19): a stop costs more than its 2 min connection (leave the road, park, plug,
+ *  pay). Shortest-time plans are RANKED with secondsPerStop extra per stop; displayed durations stay physical. */
+/** tieSeconds (user decision 2026-11-19): within this penalized-time window the plan with fewer stops wins. */
+export const STOP_PENALTY_POLICY={version:'stop-penalty/1.0.0',secondsPerStop:360,tieSeconds:60} as const;
+/** Optimizer 1.9.0 P4: a leg is not driven when its corridor distance exceeds factor × the range share above the reserve +
+ *  slackKm (range floor minRangeKm). The range estimate is conservative (İstanbul→Erzurum legs ≤ 231 km vs ~427 km bound at
+ *  100 %), so only legs that cannot arrive are skipped; 79 % of the weather budget went to such legs before. */
+export const REACH_PREFILTER_POLICY={version:'reach-prefilter/1.0.0',factor:2.5,minRangeKm:150,slackKm:25} as const;
+export function reachPrefilterKm(rangeKm:number|null|undefined,soc:number,reserve:number){
+  const range=Math.max(typeof rangeKm==='number'&&Number.isFinite(rangeKm)?rangeKm:0,REACH_PREFILTER_POLICY.minRangeKm);
+  return Math.max(0,soc-reserve)/100*range*REACH_PREFILTER_POLICY.factor+REACH_PREFILTER_POLICY.slackKm;
+}
+/** Optimizer 1.9.0 P3: after improvement, each stop (cheapest charge first) is removed by charging the previous stop for both
+ *  legs plus the required arrival and a margin; the rest of the trip is re-driven by the engine and kept only if better. */
+export const STOP_ELIMINATION_POLICY={version:'stop-elimination/1.0.0',marginsPercent:[2,5,8],maxAttempts:8,maxRounds:3} as const;
+export function eliminationTargets(previousTarget:number,arrivalAtRemoved:number,removedTarget:number,arrivalAtNext:number,required:number):number[]{
+  const need=previousTarget-arrivalAtRemoved+removedTarget-arrivalAtNext+required;
+  return [...new Set(STOP_ELIMINATION_POLICY.marginsPercent.map(m=>Math.min(100,Math.ceil((need+m)*100-1e-8)/100)))];
+}
+// 1.8.0 (2026-11-19): STOP_LIMIT_POLICY, IMPROVE_RESERVE_POLICY, fallback corridor route gets fresh search budgets.
+// 1.9.0 (2026-11-19): STOP_PENALTY_POLICY, REACH_PREFILTER_POLICY, STOP_ELIMINATION_POLICY, relaxed stop-rule search gets its own budgets.
+export const OPTIMIZER_VERSION='chargeroad-optimizer/1.9.0';

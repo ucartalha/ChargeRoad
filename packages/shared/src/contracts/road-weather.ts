@@ -140,6 +140,8 @@ export const roadRoutingRequestSchema = z.object({
   avoidTolls: z.boolean(),
   avoidFerries: z.boolean(),
   originTimeZone:z.string().min(1).optional(),
+  // Origin heading (2026-11-19): travel direction at the origin so the route starts on the car's carriageway (Valhalla heading).
+  originHeadingDegrees:z.number().min(0).lt(360).optional(),originHeadingToleranceDegrees:z.number().int().min(10).max(90).optional(),
   segmentationPolicy: segmentationPolicySchema,
 }).strict();
 

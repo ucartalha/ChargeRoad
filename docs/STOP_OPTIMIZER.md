@@ -60,6 +60,27 @@ Kanıt ve sınırlar: [planning-b-2026-11-19.md](validation/planning-b-2026-11-1
 
 Referans planlar (5 rota) 1.7.0 ile özet + segment SOC hash'inde birebir aynı. [Kanıt](validation/planning-1.7.1-2026-11-19.md).
 
+Durak sınırı, iyileştirme payı ve son durak (`chargeroad-optimizer/1.8.0`, 2026-11-19, telefon İstanbul→Erzurum ~%40 SOC: `computation_limit`):
+- `STOP_LIMIT_POLICY` (`stop-limit/1.0.0`): sabit 6 durak sınırı 7–8 duraklı yolculuğu imkânsız kılıyordu. Planlama servisi sınırı ⌈rota km ÷ menzil km⌉ + 1, [6, 12] olarak yükseltir (menzil: planlama hava menzil tahmini; bilinmiyorsa 8). Çağıranın değeri taban kalır.
+- Tohum stratejileri: uzak menzil zinciri rota sınırıyla; ardından (rota sınırı 6'yı aşıyorsa) 6 duraklı uzak zincir; sonra diğer menziller (ilk zincir plan bulmasa da çalışır). En iyi zincir kazanır ve iyileştirilir.
+- `IMPROVE_RESERVE_POLICY` (`improve-reserve/1.0.0`): ilk plandan sonra hava projeksiyon bütçesinin %30'u kalana kadar tohum devam eder; kalan iyileştirmeye ayrılır.
+- `improveWeatherAllowance`: iyileştirme payı `maxWeatherQueries` (örnek noktası birimi) yerine oturumun uyguladığı projeksiyon bütçesinden hesaplanır. Eski kural uzun rotalarda 0 veriyordu (%100 duraklar, %35–62 varış).
+- Son durağa gereksinim kadar şarj: iyileştirmeden sonra en iyi planın son durağı varış hedefi + pay kadar şarj edilir (`seed-charge-trim/1.1.0`: 0,05 → 2 → 5 puan pay denemesi), motorla yeniden doğrulanır, yalnız daha iyiyse kabul edilir.
+- Yedek koridor rotası kendi yol/hava bütçeleriyle aranır (önceden ilk rotanın tükenmiş bütçesiyle hiç aranamıyordu).
+
+20 karşılaştırmada (14 rota, farklı başlangıç SOC): 4 plansız durum planlandı (Erzurum %40, Kelkit %40, Ankara→Van…), 10 durum 2,6–92,8 dk iyileşti, Ankara→Trabzon +0,5 dk, diğerleri aynı. [Kanıt](validation/optimizer-1.8.0-2026-11-19.md).
+
+Durak cezası, durak eleme, menzil ön kontrolü (`chargeroad-optimizer/1.9.0`, 2026-11-19, telefon İstanbul→Erzurum: 9 durak, 1.–2. durak 61 km arayla, 8. durakta biraz daha şarjla gereksiz kalacak 9. durak):
+- `STOP_PENALTY_POLICY` (`stop-penalty/1.0.0`, kullanıcı kararı): "en kısa süre" planları **sıralanırken** her durağa 6 dk eklenir; gösterilen süreler fiziksel kalır. Cezalı süreler 60 s'den az farklıysa daha az duraklı plan kazanır (yakın eşitlik kuralı; zincirleme yakın eşitliklerde geçişli değildir). Geniş arama budaması aynı cezalı süreyi kullanır.
+- `STOP_ELIMINATION_POLICY` (`stop-elimination/1.0.0`): iyileştirme ve son durak düzeltmesinden sonra en az şarj eden duraktan başlayarak her durak, önceki durak iki bacak + gerekli varış + 2/5/8 puan pay kadar şarj edilerek kaldırılmaya çalışılır; kalan yolculuk motorla yeniden sürülür, yalnız daha iyiyse kabul edilir (en fazla 8 deneme, 3 tur).
+- `REACH_PREFILTER_POLICY` (`reach-prefilter/1.0.0`): koridor mesafesi 2,5 × (SOC − rezerv) × menzil tahmini (taban 150 km) + 25 km'yi aşan bacaklar sürülmez. Önce hava bütçesinin %79'u varılamayan bacaklara gidiyordu.
+- %50 kuralı gevşetilmiş ikinci arama kendi yol/hava bütçeleriyle çalışır (`resetSearchBudgets`): %20–25 rezervde ilk istasyon %50 üstünde kaldığında plan artık bulunur (uyarıyla).
+- Yan etki: bir durağı kaldırmak için bazı planlarda tek bir durakta %100'e şarj önerilebilir (daha az durak + daha kısa cezalı süre).
+
+20 durumda: kullanıcı isteği 9→7 durak (+4,5 dk), 10 durumda 1–2 durak az (en fazla +3,7 dk), 3 durumda süre de kısaldı, %20 rezerv Erzurum planlandı, diğerleri aynı. [Kanıt](validation/optimizer-1.9.0-2026-11-19.md).
+
+
+
 
 Erişim sapması kontrollü aday seçimi (`catalogue-scenario/1.2.0`, `station-access/1.0.0`, 2026-11-17, kullanıcı kararı: 3 km / 3 dk): rotaya kuş uçuşu çok yakın (≤130 m) istasyonlar bile karşı yöndeki tesiste olduğunda kavşaktan dönüş nedeniyle büyük sapma doğuruyordu (İstanbul→Ankara'da tek durak +36 km). Katalog senaryosunda 16 ilerleme diliminin her biri için adayların erişim sapması gidiş yönünde ölçülür: ana rotada istasyonun 1 km öncesi → istasyon → 1 km sonrası, iki bacak olarak yerel yol sağlayıcısından (`selectAccessibleCandidates`). Dilimde, mevcut sıralamaya (rotaya ≤100 m, sonra DC gücü) göre ilk ≤3 km ve ≤3 dk ek sapmalı aday seçilir; ilk 3 adayda yoksa 6'ya kadar bakılır; hiçbiri kabul edilebilir değilse plan mümkün kalsın diye en az sapmalı aday tutulur. Ölçümler en fazla 4 eşzamanlı, plan başına istasyon başına bir kez yapılır; ölçülemezse `STATION_ACCESS_UNMEASURED`. Planlanan durağın `detourDistanceMeters`/`detourDrivingSeconds` alanları artık bu ölçümle doldurulur (sürüş süresi zaten bacaklarda); ölçüm yoksa eski `included_in_road_not_separately_quantified` kalır. Doğrulanmış donanım (`verified_hardware`) yolunda seçim değişmedi. [Kanıt](validation/station-access-2026-11-17.md).
 

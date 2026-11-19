@@ -30,7 +30,9 @@ export class ValhallaRoadAdapter implements RoadShapeAdapter {
   constructor(private readonly config:RoadConfig){this.id=config.providerId;}
   async route(request:RoadRoutingRequest,locations:Coordinate[],client:RoadJsonClient,signal:AbortSignal):Promise<RoadTripInput[]|null>{
     const response=await client.post(this.id,this.config.baseUrl+'/route',{
-      locations:locations.map(p=>({lat:p.latitude,lon:p.longitude,type:'break'})),costing:'auto',units:'kilometers',language:'tr-TR',
+      // Origin heading only on the first location; absent fields keep the body byte-identical.
+      locations:locations.map((p,i)=>({lat:p.latitude,lon:p.longitude,type:'break',...(i===0&&request.originHeadingDegrees!==undefined?
+        {heading:Math.round(request.originHeadingDegrees)%360,heading_tolerance:request.originHeadingToleranceDegrees??45}:{})})),costing:'auto',units:'kilometers',language:'tr-TR',
       alternates:locations.length===2?request.alternatives-1:0,elevation_interval:30,
       date_time:{type:1,value:bucketedLocalDeparture(request.departureAt,request.originTimeZone??'Europe/Istanbul')},
       costing_options:{auto:{speed_types:['freeflow','constrained'],use_tolls:request.avoidTolls?0:0.5,use_ferry:request.avoidFerries?0:0.5}},

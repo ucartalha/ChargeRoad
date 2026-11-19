@@ -5,6 +5,8 @@ import {WeatherProvider} from '../providers/weather-provider';
 import type {WeatherForecastContext} from '../providers/weather-provider';
 import {meters} from '../roads/geometry';
 import {WEATHER_POLICY,weatherProviderLimits} from './weather-policy';
+import {trustedWeatherForecasts,trustedWeatherQueries} from './trusted-weather';
+export {trustedWeatherForecasts,trustedWeatherQueries} from './trusted-weather';
 import type {WeatherConfig} from './weather-policy';
 import {WeatherCacheStore} from './weather-cache';
 import type {WeatherCallBudget} from './weather-cache';
@@ -39,7 +41,8 @@ export class WeatherService extends WeatherProvider {
     while(this.series.size>this.seriesLimit)this.series.delete(this.series.keys().next().value!);}
   cleanup(){return this.cache.cleanup();}
   async forecast(raw:WeatherQuery[],callerSignal:AbortSignal,context?:WeatherForecastContext){
-    const queries=z.array(weatherQuerySchema).max(WEATHER_POLICY.maxQueries).parse(raw);
+    if(trustedWeatherQueries.has(raw)&&raw.length>WEATHER_POLICY.maxQueries)throw new Error('Too many weather queries');
+    const queries=trustedWeatherQueries.has(raw)?raw:z.array(weatherQuerySchema).max(WEATHER_POLICY.maxQueries).parse(raw);
     if(new Set(queries.map(q=>q.id)).size!==queries.length)throw new Error('Duplicate weather query');
     const adapter=this.registry.get(this.config.providerId),signal=AbortSignal.any([callerSignal,AbortSignal.timeout(WEATHER_POLICY.deadlineMs)]);
     const scope=context?.budgetScope??callerSignal;
@@ -116,7 +119,7 @@ export class WeatherService extends WeatherProvider {
         }
       }
     }));
-    const data=queries.map(q=>result.get(q.id)!);
+    const data=queries.map(q=>result.get(q.id)!);trustedWeatherForecasts.add(data);
     return {data,source:{sourceId:adapter.id,recordId:null,version:adapter.version,url:data[0]?.source.url??null,
       retrievedAt:new Date().toISOString(),publishedAt:null,license:data[0]?.source.license??null}};
   }

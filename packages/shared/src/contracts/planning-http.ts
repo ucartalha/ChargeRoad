@@ -27,6 +27,8 @@ export const planningApiRequestSchema=z.object({
     batteryPreconditioning:z.enum(['requested','off','unknown']).default('unknown'),tireSetupId:idSchema.nullable().default(null),
   }).strict().default(()=>({payloadKg:unknown(),cabinTargetTemperatureC:unknown(),hvacMode:'unknown' as const,batteryPreconditioning:'unknown' as const,tireSetupId:null})),
   roadPreferences:z.object({avoidTolls:z.boolean().default(false),avoidFerries:z.boolean().default(true)}).strict().default({avoidTolls:false,avoidFerries:true}),
+  /** Optional travel direction at the origin (navigation replans, 2026-11-19). Only road requests starting at the origin use it. */
+  originHeading:z.object({degrees:z.number().min(0).lt(360),toleranceDegrees:z.number().int().min(10).max(90).default(45)}).strict().optional(),
 }).strict().superRefine((r,ctx)=>{
   if((r.startingChargeSource==='estimated')!==!!r.startingChargeEstimate)ctx.addIssue({code:'custom',path:['startingChargeEstimate'],message:'Estimated SOC requires model provenance'});
   if(r.constraints.targetArrivalChargePercent<r.constraints.minimumReserveChargePercent)ctx.addIssue({code:'custom',path:['constraints'],message:'Arrival target must cover reserve'});

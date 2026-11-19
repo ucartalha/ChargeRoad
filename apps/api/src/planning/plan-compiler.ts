@@ -13,6 +13,12 @@ export const checksum=(value:unknown)=>{
   let digest=objectChecksums.get(value);if(digest===undefined){digest=createHash('sha256').update(canonicalJson(value)).digest('hex');objectChecksums.set(value,digest);}
   return digest;};
 export function compilePlan(context:PlanningContext,state:OptimizerState,search:OptimizerSearch,port:TransitionPort):OptimizerOutcome{
+  if(!port.debug)return compilePlanChecked(context,state,search,port);
+  try{const out=compilePlanChecked(context,state,search,port);
+    if(out.result.status==='planned')port.debug.incumbent(state.seconds/60,state.stops.length,state.soc,port.counters.weatherQueries);return out;}
+  catch(error){if(error&&typeof error==='object'&&'issues'in error&&Array.isArray((error as {issues:unknown}).issues))port.debug.contractFailure((error as {issues:{path:PropertyKey[];message:string}[]}).issues);throw error;}
+}
+function compilePlanChecked(context:PlanningContext,state:OptimizerState,search:OptimizerSearch,port:TransitionPort):OptimizerOutcome{
   const end=startStage('plan_compile');try{
   const {request,vehicle,evaluatedAt}=context,segments:RoadRoute['segments']=[],energy:EnergySegment[]=[],weather:WeatherForecast[]=[],stops:PlannedChargingStop[]=[];
   const segmentTimes:{segmentId:string;departureAt:string;arrivalAt:string}[]=[],stopTimes:{stopId:string;arrivalAt:string;departureAt:string}[]=[];

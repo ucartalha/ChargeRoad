@@ -1,6 +1,12 @@
 import {planningEvaluationSchema} from '@chargeroad/shared';
 import {optimizerWorld} from './optimizer.fixtures';
 import {DEFAULT_OPTIMIZER_OPTIONS} from '../optimizer-policy';
+import {STOP_PENALTY_POLICY} from '../optimizer-policy';
+// Optimizer 1.9.0: this case checks partial-charge selection by pure time, not the stop penalty or near-tie rule (covered by optimizer-1-9.spec.ts); these cases run without them.
+const withoutStopPenalty=["chooses two efficient partial charges"];const savedPenalty={...STOP_PENALTY_POLICY};
+beforeEach(()=>{if(withoutStopPenalty.some(n=>expect.getState().currentTestName?.includes(n)))Object.assign(STOP_PENALTY_POLICY,{secondsPerStop:0,tieSeconds:0});});
+afterEach(()=>{Object.assign(STOP_PENALTY_POLICY,savedPenalty);});
+
 describe('Application-owned EV stop optimization',()=>{
   it('handles 5003 segment weather queries with default budgets and keeps the full validated route',async()=>{
     const w=optimizerWorld(),route=w.route('origin','destination'),template=route.segments[0],count=5003;

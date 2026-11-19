@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.8.0",
+  "scope": "Route stop limit, improvement reserve, projection-based improvement allowance, final-stop charge-to-need with retry margins, strategy order (1.8.0) vs same algorithm without shadow.",
+  "optimizerWithoutShadowSha256": "45853b394fb1680f319fb179a45d4e5996e911f1a3e0c78de2aaa07e5b90e6e4"
+}

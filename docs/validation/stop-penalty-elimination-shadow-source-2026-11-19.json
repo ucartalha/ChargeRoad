@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.9.0",
+  "scope": "Stop penalty (6 min, ranking only) with 60 s near-tie rule, reach prefilter, stop elimination, relaxed stop-rule search budgets (1.9.0) vs same algorithm without shadow.",
+  "optimizerWithoutShadowSha256": "8951e166ee29a5beec77908c9257cbd5de3c57cf263e6799bc57a3aabf9fb9bc"
+}

@@ -1,6 +1,12 @@
 import {analyticalStopReference} from '../validation/optimizer-reference';
 import {optimizerWorld} from './optimizer.fixtures';
 import {replayOptimizer} from '../planning-replay';
+import {STOP_PENALTY_POLICY} from '../optimizer-policy';
+// Optimizer 1.9.0: the exhaustive reference integrates pure time, not the stop penalty or near-tie rule (covered by optimizer-1-9.spec.ts); these cases run without them.
+const withoutStopPenalty=["minimum_total_duration"];const savedPenalty={...STOP_PENALTY_POLICY};
+beforeEach(()=>{if(withoutStopPenalty.some(n=>expect.getState().currentTestName?.includes(n)))Object.assign(STOP_PENALTY_POLICY,{secondsPerStop:0,tieSeconds:0});});
+afterEach(()=>{Object.assign(STOP_PENALTY_POLICY,savedPenalty);});
+
 describe('Independent small-graph and snapshot acceptance',()=>{
   it.each(['minimum_total_duration','minimum_charging_stops','minimum_energy'] as const)('matches exhaustive hand-integrated reference for %s',async objective=>{
     const reference=analyticalStopReference(objective),world=optimizerWorld();world.request.policy.objective=objective;
