@@ -371,3 +371,35 @@ test('a voltage-converter path cannot claim a curve above its own input power li
   profile.dcChargingCurves[0].chargingPathId = 'boost';
   assert.equal(schemas.vehicleEnergyProfileSchema.safeParse(profile).success, false);
 });
+
+// Mobile view (2026-11-19): GET /v1/planning-jobs/:id/result?view=mobile. A projection of the validated full plan that drops
+// only fields the app never reads (elevation profiles, edge ids, speed-limit sources, energy breakdowns, weather/reference
+// ids, battery temperature). Quality labels, ascent/descent totals and every plan consistency rule stay.
+test('mobile plan view keeps what the app reads and stays a checked plan',()=>{
+  const {result}=makeExample();const full={schemaVersion:'1.0.0',requestId:result.plan.requestId,status:'planned',plan:result.plan,
+    metadata:{apiVersion:'planning-http/1.0.0',policyId:'p',policyVersion:'1',access:'stateless_guest',historyStored:false,
+    algorithms:{optimizer:'o',energy:'e',charging:'c'},models:{energy:null,charging:null}}};
+  assert.equal(schemas.planningApiResponseSchema.safeParse(full).success,true);
+  const mobile=schemas.toMobilePlanningResponse(full);
+  assert.equal(mobile.view,'mobile');assert.equal(schemas.planningMobileResponseSchema.safeParse(mobile).success,true);
+  assert.equal(schemas.planningApiResponseSchema.safeParse(mobile).success,false);
+  assert.ok(JSON.stringify(mobile).length<JSON.stringify(full).length);
+  const s=mobile.plan.roadRoute.segments[0],f=full.plan.roadRoute.segments[0];
+  for(const k of ['elevationProfile','sourceEdgeIds','speedLimitSource','speedLimitRaw','speedProfile'])assert.equal(k in s,false,k);
+  for(const k of ['id','startDistanceMeters','endDistanceMeters','distanceMeters','drivingDurationSeconds','geometry','roadClass','elevationQuality','elevationGainMeters','elevationLossMeters'])
+    assert.deepEqual(s[k],f[k],k);
+  const e=mobile.plan.energySegments[0];for(const k of ['breakdown','batteryTemperatureAtEndC','weatherQueryIds','consumptionReferenceIds'])assert.equal(k in e,false,k);
+  for(const k of ['startChargePercent','endChargePercent','minimumChargePercent','netBatteryEnergyKwh','departureAt','arrivalAt','modelVersion'])assert.deepEqual(e[k],full.plan.energySegments[0][k],k);
+  assert.deepEqual(mobile.plan.chargingStops,full.plan.chargingStops);assert.deepEqual(mobile.plan.duration,full.plan.duration);
+  assert.deepEqual(mobile.metadata,full.metadata);assert.deepEqual(full.plan.roadRoute.segments[0],f,'projection must not mutate the input');
+  // Consistency rules still apply to the mobile view.
+  const broken=structuredClone(mobile);broken.plan.energySegments[0].minimumChargePercent=broken.plan.minimumReserveChargePercent-5;
+  assert.equal(schemas.planningMobileResponseSchema.safeParse(broken).success,false);
+  const reordered=structuredClone(mobile);reordered.plan.energySegments.reverse();
+  if(reordered.plan.energySegments.length>1)assert.equal(schemas.planningMobileResponseSchema.safeParse(reordered).success,false);
+  const extra=structuredClone(mobile);extra.plan.roadRoute.segments[0].elevationProfile=f.elevationProfile;
+  assert.equal(schemas.planningMobileResponseSchema.safeParse(extra).success,false);
+  const failed={schemaVersion:'1.0.0',requestId:full.requestId,status:'infeasible',reasons:[{code:'x',explanation:'y'}],metadata:full.metadata};
+  assert.deepEqual(schemas.toMobilePlanningResponse(failed),{...failed,view:'mobile'});
+  assert.equal(schemas.planningMobileResponseSchema.safeParse({...failed,view:'mobile'}).success,true);
+});

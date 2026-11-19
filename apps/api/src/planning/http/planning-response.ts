@@ -1,14 +1,14 @@
 import {gzip} from 'node:zlib';
 import {promisify} from 'node:util';
 import {HttpException} from '@nestjs/common';
-import type {PlanningApiResponse} from '@chargeroad/shared';
+import type {PlanningApiResponse,PlanningMobileResponse} from '@chargeroad/shared';
 import {PLANNING_HTTP_POLICY as policy} from './planning-http-policy';
 import {withPlanningMetrics,measureSync,measureAsync,setMetric} from '../../observability/planning-metrics';
 const compress=promisify(gzip);
-export async function encodePlanningResponse(response:PlanningApiResponse,acceptEncoding:string|undefined,signal:AbortSignal){
+export async function encodePlanningResponse(response:PlanningApiResponse|PlanningMobileResponse,acceptEncoding:string|undefined,signal:AbortSignal){
   return withPlanningMetrics(response?.requestId,()=>encodeResponse(response,acceptEncoding,signal),{scope:'job_result'});
 }
-async function encodeResponse(response:PlanningApiResponse,acceptEncoding:string|undefined,signal:AbortSignal){
+async function encodeResponse(response:PlanningApiResponse|PlanningMobileResponse,acceptEncoding:string|undefined,signal:AbortSignal){
   signal.throwIfAborted();const json=measureSync('json_serialize',()=>Buffer.from(JSON.stringify(response)));setMetric('response_decoded_bytes',json.length);
   if(json.length>policy.maxResponseBytes)throw new HttpException({code:'PLANNING_RESPONSE_LIMIT'},503);
   const weights=new Map((acceptEncoding??'').split(',').map(part=>{

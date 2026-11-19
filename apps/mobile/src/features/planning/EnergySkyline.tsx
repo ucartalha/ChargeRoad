@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef} from 'react';
 import {AccessibilityInfo,Animated,Easing,StyleSheet,Text,View} from 'react-native';
-import type {RoutePlan} from '@chargeroad/shared';
+import type {ClientRoutePlan as RoutePlan} from '../../api/plan-view';
 import {socSkyline} from './trip-summary';
 import {colors as c} from '../../theme';
 

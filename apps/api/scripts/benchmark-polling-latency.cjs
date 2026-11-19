@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'../../..'),folder=path.join(root,'artifacts/l
 const mobileFile=path.join(root,'apps/mobile/src/api/planning.ts'),mobileSource=fs.readFileSync(mobileFile,'utf8');
 const {PlanningJobsStore}=require('../src/planning/http/planning-jobs.store.ts');
 const {latencyPilotPollHint}=require('../src/planning/validation/latency-poll-pilot.ts');
-const {planningApiRequestSchema}=require('@chargeroad/shared');
+const {planningApiRequestSchema,toMobilePlanningResponse}=require('@chargeroad/shared');
 const hash=v=>crypto.createHash('sha256').update(typeof v==='string'?v:JSON.stringify(v)).digest('hex');
 const sources=Object.fromEntries(['apps/mobile/src/api/planning.ts','apps/api/src/planning/http/planning-jobs.store.ts','apps/api/src/planning/http/planning-jobs.worker.ts','apps/api/src/planning/validation/latency-poll-pilot.ts','apps/api/scripts/benchmark-polling-latency.cjs'].map(p=>[p,hash(fs.readFileSync(path.join(root,p),'utf8'))]));
 const write=(name,data)=>fs.writeFileSync(path.join(folder,name),JSON.stringify(data,null,2)+'\n',{flag:'wx'});
@@ -36,7 +36,8 @@ async function scenario(pilot,readyMs,kind='normal',previewEnabled=true){
   return {rows:allowed?[row()]:[]};}}});
  const view=()=>{const v=store.view(row());return {...v,pollAfterMilliseconds:latencyPilotPollHint(v.status,clock.now,pilot,'development')};};
  const call=async(address,options)=>{
-  const role=address.endsWith('/result')?'result':address.endsWith('/roads/preview')?'preview':options.method==='POST'?'create':options.method==='DELETE'?'cancel':'status';
+  // Query strings (?waitMs, ?view=mobile) do not change the endpoint role; the result honours view=mobile like the API.
+  const bare=address.split('?')[0],role=bare.endsWith('/result')?'result':bare.endsWith('/roads/preview')?'preview':options.method==='POST'?'create':options.method==='DELETE'?'cancel':'status';
   calls.push(role);events.push({stage:role+'_start',at:clock.now});
   if(options.headers.Authorization!=='Bearer '+secret&&role!=='preview')throw Error('CAPABILITY_CHANGED');
   await new Promise((resolve,reject)=>{const timer=clock.set(resolve,10),abort=()=>{clock.clear(timer);reject(new Error('aborted'));};if(options.signal?.aborted)abort();else options.signal?.addEventListener('abort',abort,{once:true});});
@@ -47,7 +48,7 @@ async function scenario(pilot,readyMs,kind='normal',previewEnabled=true){
   else if(kind==='malformed'&&role==='status')data={status:'completed'};
   else if(role==='create'){code=201;data=view();}
   else if(role==='status'){try{data=await store.status(id,capOwner);data={...data,pollAfterMilliseconds:latencyPilotPollHint(data.status,clock.now,pilot,'development')};if(data.status==='completed')seenAt=clock.now;}catch{code=404;data={};}}
-  else if(role==='result'){try{data=await store.result(id,capOwner);}catch{code=404;data={};}}
+  else if(role==='result'){try{data=await store.result(id,capOwner);if(/[?&]view=mobile(&|$)/.test(address))data=toMobilePlanningResponse(data);}catch{code=404;data={};}}
   else if(role==='preview'){data={schemaVersion:'1.0.0',status:'not_found',reasons:['synthetic'],metadata:{}};}
   else data=view();
   events.push({stage:role+'_headers',at:clock.now});

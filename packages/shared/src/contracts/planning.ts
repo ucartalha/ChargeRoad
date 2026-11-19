@@ -11,7 +11,7 @@ import { routePlanRequestSchema } from './request.js';
 import { chargingStopSchema } from './charging-stop.js';
 import {planScenarioSchema,optimizerSearchSchema} from './optimizer.js';
 
-export const energySegmentSchema = z.object({
+export const energySegmentObject = z.object({
   segmentId: idSchema,
   departureAt: timestampSchema.nullable(),
   arrivalAt: timestampSchema.nullable(),
@@ -30,7 +30,11 @@ export const energySegmentSchema = z.object({
   consumptionReferenceIds: z.array(idSchema),
   weatherQueryIds: z.array(idSchema),
   modelVersion: idSchema,
-}).strict().superRefine((segment, ctx) => {
+}).strict();
+type EnergyBreakdown = z.infer<typeof energySegmentObject>['breakdown'];
+/** Segment rules; shared by the full segment and the mobile view, where breakdown is absent (mobile-plan.ts). */
+export function checkEnergySegment(segment: {startChargePercent:number;endChargePercent:number;minimumChargePercent:number;netBatteryEnergyKwh:number;
+  departureAt:string|null;arrivalAt:string|null;breakdown?:EnergyBreakdown}, ctx: z.RefinementCtx) {
   if (segment.minimumChargePercent > Math.min(segment.startChargePercent, segment.endChargePercent))
     ctx.addIssue({ code: 'custom', path: ['minimumChargePercent'], message: 'Minimum charge exceeds an endpoint' });
   if ((segment.netBatteryEnergyKwh > 0 && segment.endChargePercent > segment.startChargePercent) ||
@@ -44,7 +48,8 @@ export const energySegmentSchema = z.object({
   if ((segment.departureAt === null) !== (segment.arrivalAt === null) ||
       (segment.departureAt && segment.arrivalAt && Date.parse(segment.arrivalAt) < Date.parse(segment.departureAt)))
     ctx.addIssue({ code: 'custom', path: ['arrivalAt'], message: 'Invalid segment timeline' });
-});
+}
+export const energySegmentSchema = energySegmentObject.superRefine(checkEnergySegment);
 
 export const planningInputSchema = z.object({
   request: routePlanRequestSchema,
@@ -74,7 +79,7 @@ export const planningInputSchema = z.object({
   }
 });
 
-export const routePlanSchema = z.object({
+export const routePlanObject = z.object({
   scenario:planScenarioSchema.optional(),search:optimizerSearchSchema.optional(),
   stationSearch:stationSearchMetadataSchema.optional(),
   schemaVersion: contractVersionSchema,
@@ -107,7 +112,13 @@ export const routePlanSchema = z.object({
   }).strict(),
   assumptions: z.array(z.object({ id: idSchema, code: idSchema, explanation: z.string().min(1) }).strict()),
   warnings: z.array(z.object({ code: idSchema, explanation: z.string().min(1) }).strict()),
-}).strict().superRefine((plan, ctx) => {
+}).strict();
+/** Fields the plan-level rules read; both the full plan and the mobile view (mobile-plan.ts) satisfy it. */
+export type RoutePlanCheckInput = Omit<z.infer<typeof routePlanObject>,'roadRoute'|'energySegments'> & {
+  roadRoute:{distanceMeters:number;drivingDurationSeconds:number;segments:{id:string;endDistanceMeters:number;drivingDurationSeconds:number}[]};
+  energySegments:{segmentId:string;minimumChargePercent:number;endChargePercent:number;netBatteryEnergyKwh:number;departureAt:string|null;arrivalAt:string|null}[];
+};
+export function checkRoutePlan(plan: RoutePlanCheckInput, ctx: z.RefinementCtx) {
   if (plan.supersedes && plan.supersedes.planId === plan.planId && plan.revision <= plan.supersedes.revision)
     ctx.addIssue({ code: 'custom', path: ['revision'], message: 'A replacement revision must be newer' });
   if (plan.targetArrivalChargePercent < plan.minimumReserveChargePercent ||
@@ -170,7 +181,8 @@ export const routePlanSchema = z.object({
   if(plan.search&&(Math.abs(plan.search.drivingNetBatteryKwh-plan.energySegments.reduce((sum,s)=>sum+s.netBatteryEnergyKwh,0))>1e-6||
     !plan.scenario||Math.abs(plan.search.scenarioDurationSeconds-plan.scenario.totalSeconds)>.01))
     ctx.addIssue({code:'custom',path:['search'],message:'Search objective values must match the validated plan'});
-});
+}
+export const routePlanSchema = routePlanObject.superRefine(checkRoutePlan);
 
 export const planningResultSchema = z.discriminatedUnion('status', [
   z.object({ status: z.literal('planned'), plan: routePlanSchema }).strict(),

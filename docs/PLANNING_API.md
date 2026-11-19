@@ -64,3 +64,13 @@ Komutlar (API paketinde): `test:db`, `planning:contracts`, `planning:http-valida
 ## Plan işi durumunda long-poll (2026-11-19)
 
 `GET /v1/planning-jobs/:id?waitMs=<0..20000>`: iş `queued`/`running` ise sunucu yanıtı iş bitene (tamamlandı, başarısız, iptal) ya da `waitMs` dolana kadar bekletir (`LONG_POLL_MAX_MS`=20.000; geçersiz değer 0 sayılır). `waitMs` verilmezse davranış eskisi gibidir (anında yanıt). İstemci bağlantıyı kapatırsa bekleme kesilir. Mobil istemci `waitMs=15000` kullanır; sunucu 1 s'den kısa sürede hâlâ çalışıyor yanıtı verirse (`waitMs`'i tanımayan eski API) `pollAfterMilliseconds` kadar bekler. Bekleme süreç-içi olay + 1 s'lik DB okumasıyla yapılır; yeni altyapı yoktur. Test: `planning-jobs-longpoll.spec.ts`.
+
+## Mobil plan görünümü (`planning-mobile-view/1.0.0`, 2026-11-19)
+
+`GET /v1/planning-jobs/:id/result?view=mobile` doğrulanmış tam planın mobil izdüşümünü döndürür (`@chargeroad/shared` `toMobilePlanningResponse`, şema `planningMobileResponseSchema`). `view` yoksa veya başka bir değerse yanıt eskisiyle birebir aynıdır; `POST /v1/plans` değişmedi.
+
+- Atılan alanlar (uygulamanın hiç okumadıkları): yol segmentinde `elevationProfile`, `sourceEdgeIds`, `speedLimitSource`, `speedLimitRaw`, `speedProfile`; enerji segmentinde `breakdown`, `batteryTemperatureAtEndC`, `consumptionReferenceIds`, `weatherQueryIds`.
+- Korunanlar: geometri, mesafe/süre, SOC, şarj durakları, senaryo, kalite etiketleri (`elevationQuality`, `speedLimitKind`), yükseklik kazanç/kayıp toplamları ve plan tutarlılık kuralları (aynı fonksiyonlar: `checkRoutePlan`, `checkRoadRoute`, `checkEnergySegment`, `checkRoadSegmentTiming`). Profil olmadığı için mobil görünümde kazanç/kaybın profile uyumu yeniden denetlenmez; bu kontrol tam plan üretilirken yapılmıştır.
+- Yanıt `view: 'mobile'` taşır; tam plan olarak saklanamaz, replay edilemez, tam şemadan geçmez.
+- İstanbul→Kelkit referansında 5,80 MB → 1,94 MB, gzip 845 KB → 373 KB; masaüstü JSON+şema çözümü 40 → 13 ms. Kanıt: [planning-mobile-view-2026-11-19.md](validation/planning-mobile-view-2026-11-19.md).
+

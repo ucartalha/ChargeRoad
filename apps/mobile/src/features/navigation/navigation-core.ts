@@ -1,4 +1,5 @@
-import type {Coordinate,RoutePlan,PlanningApiRequest} from '@chargeroad/shared';
+import type {Coordinate,PlanningApiRequest} from '@chargeroad/shared';
+import type {ClientRoutePlan as RoutePlan} from '../../api/plan-view';
 
 export type GpsFix=Coordinate&{timestamp:number;accuracy:number|null;speed:number|null};
 export type NavigationRoute={planId:string;revision:number;algorithmVersion:string;distanceMeters:number;

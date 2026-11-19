@@ -1,6 +1,6 @@
 import {Body,Controller,Delete,Get,HttpException,Param,Post,Req,Res} from '@nestjs/common';
 import type {Request,Response} from 'express';
-import {planningApiRequestSchema} from '@chargeroad/shared';
+import {planningApiRequestSchema,toMobilePlanningResponse} from '@chargeroad/shared';
 import {z} from 'zod';
 import {PlanningJobsStore,LONG_POLL_MAX_MS} from './planning-jobs.store';
 import {RateLimitPolicy} from '../../security/rate-limit.guard';
@@ -26,7 +26,9 @@ export class PlanningJobsController {
   return this.store.cancel(this.id(id),this.store.owner(req.headers.authorization));}
  @Get(':id/result') @RateLimitPolicy('general')
  async result(@Param('id') id:string,@Req() req:Request,@Res() res:Response){
-  const result=await this.store.result(this.id(id),this.store.owner(req.headers.authorization)),controller=new AbortController();
+  const full=await this.store.result(this.id(id),this.store.owner(req.headers.authorization)),controller=new AbortController();
+  // planning-mobile-view/1.0.0: ?view=mobile returns the app's projection; anything else keeps the full response.
+  const result=req.query?.view==='mobile'?toMobilePlanningResponse(full):full;
   const closed=()=>{if(!res.writableEnded)controller.abort();};res.once('close',closed);
   try{const encoded=await encodePlanningResponse(result,req.headers['accept-encoding'],controller.signal);
    res.setHeader('Cache-Control','no-store');res.vary('Accept-Encoding');res.type('application/json');if(encoded.encoding)res.setHeader('Content-Encoding',encoded.encoding);res.send(encoded.body);

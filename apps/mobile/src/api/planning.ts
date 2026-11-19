@@ -1,4 +1,4 @@
-import {locationSearchResponseSchema,planningApiResponseSchema,roadPreviewResponseSchema,planningJobStatusSchema,planningApiErrorSchema} from '@chargeroad/shared';
+import {locationSearchResponseSchema,planningApiResponseSchema,planningMobileResponseSchema,roadPreviewResponseSchema,planningJobStatusSchema,planningApiErrorSchema} from '@chargeroad/shared';
 import type {PlanningApiRequest,RoadPreviewRequest} from '@chargeroad/shared';
 export class PlanningApiError extends Error {
   constructor(message:string,readonly retryAfterSeconds=0,readonly status=0){super(message);}
@@ -33,7 +33,7 @@ export const planningApi={
     let delivered=false;
     const call=async(address:string,method:string,body?:unknown,independent=false)=>{
       // Explicit controllers also work on Expo Go runtimes without AbortSignal.any/timeout.
-      const bounded=new AbortController(),abort=()=>bounded.abort(),timer=setTimeout(abort,method==='DELETE'?5000:address.endsWith('/result')?35000:address.includes('?waitMs=')?LONG_POLL_WAIT_MS+5000:15000);
+      const bounded=new AbortController(),abort=()=>bounded.abort(),timer=setTimeout(abort,method==='DELETE'?5000:address.includes('/result')?35000:address.includes('?waitMs=')?LONG_POLL_WAIT_MS+5000:15000);
       if(!independent){signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();}
       try{const response=await fetch(address,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:bounded.signal});
        const data=await response.json();
@@ -73,7 +73,8 @@ export const planningApi={
       }
       if(job.status==='cancelled')throw new PlanningApiError('Plan işi iptal edildi.');
       if(job.status==='failed')throw new PlanningApiError('Plan işi tamamlanamadı ('+(job.errorCode??'PLANNING_JOB_FAILED')+').');
-      const result=planningApiResponseSchema.parse(await call(url+'/result','GET'));if(result.requestId!==request.requestId)throw new PlanningApiError('Yanıt bu isteğe ait değil.');
+      // planning-mobile-view/1.0.0: ~1/3 of the full plan (no elevation profiles, edge ids, energy breakdowns), same checks.
+      const result=planningMobileResponseSchema.parse(await call(url+'/result?view=mobile','GET'));if(result.requestId!==request.requestId)throw new PlanningApiError('Yanıt bu isteğe ait değil.');
       delivered=true;return result;
     }catch(error){if(error instanceof PlanningApiError)throw error;
       throw new PlanningApiError(signal.aborted?'İşlem iptal edildi.':'Plan bağlantısı kesildi. İnternetini kontrol edip tekrar dene.');

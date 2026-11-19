@@ -35,7 +35,7 @@ export const planningApiRequestSchema=z.object({
     ctx.addIssue({code:'custom',path:['initialBatteryTemperatureC'],message:'Battery temperature must be in [-60,90] Celsius'});
 });
 
-const metadata=z.object({apiVersion:z.literal('planning-http/1.0.0'),policyId:idSchema,policyVersion:idSchema,
+export const planningResponseMetadataSchema=z.object({apiVersion:z.literal('planning-http/1.0.0'),policyId:idSchema,policyVersion:idSchema,
   access:z.literal('stateless_guest'),historyStored:z.literal(false),
   retryAfterSeconds:nonnegativeSchema.max(86400).optional(),
   requestedDepartureAt:timestampSchema.optional(),
@@ -43,9 +43,9 @@ const metadata=z.object({apiVersion:z.literal('planning-http/1.0.0'),policyId:id
   models:z.object({energy:z.object({id:idSchema,version:idSchema}).strict().nullable(),charging:z.object({id:idSchema,version:idSchema}).strict().nullable()}).strict(),
 }).strict();
 export const planningApiResponseSchema=z.discriminatedUnion('status',[
-  z.object({schemaVersion:z.literal('1.0.0'),requestId:z.string().uuid(),status:z.literal('planned'),plan:routePlanSchema,metadata}).strict(),
+  z.object({schemaVersion:z.literal('1.0.0'),requestId:z.string().uuid(),status:z.literal('planned'),plan:routePlanSchema,metadata:planningResponseMetadataSchema}).strict(),
   z.object({schemaVersion:z.literal('1.0.0'),requestId:z.string().uuid(),status:z.enum(['infeasible','insufficient_data','provider_error','computation_limit']),
-    reasons:z.array(z.object({code:idSchema,explanation:z.string().min(1).max(1000)}).strict()).min(1).max(100),metadata}).strict(),
+    reasons:z.array(z.object({code:idSchema,explanation:z.string().min(1).max(1000)}).strict()).min(1).max(100),metadata:planningResponseMetadataSchema}).strict(),
 ]).superRefine((r,ctx)=>{if(r.status==='planned'&&r.requestId!==r.plan.requestId)ctx.addIssue({code:'custom',message:'Plan and API request IDs must agree'});});
 export const planningApiErrorSchema=z.object({schemaVersion:z.literal('1.0.0'),requestId:z.string().uuid(),status:z.literal('error'),
   error:z.object({code:idSchema,message:z.string().min(1).max(300),retryAfterSeconds:nonnegativeSchema.optional(),

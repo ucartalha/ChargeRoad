@@ -1,4 +1,4 @@
-import type {RoutePlan} from '@chargeroad/shared';
+import type {ClientRoutePlan as RoutePlan} from '../../api/plan-view';
 
 /** What the collapsed sheet shows while the planner works or after it answered (pure, testable). */
 export type TripState=

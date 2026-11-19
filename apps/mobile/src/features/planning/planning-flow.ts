@@ -1,5 +1,6 @@
 import {planningApiRequestSchema} from '@chargeroad/shared';
-import type {LocationResult,PlanningApiRequest,PlanningApiResponse,RoadPreviewResponse} from '@chargeroad/shared';
+import type {LocationResult,PlanningApiRequest,RoadPreviewResponse} from '@chargeroad/shared';
+import type {ClientPlanningResponse as PlanningApiResponse} from '../../api/plan-view';
 export type PlanningForm={origin:LocationResult|null;destination:LocationResult|null;vehicleId:string|null;startingCharge:string;reserve:string;arrival:string;
   departure:'now'|'scheduled';scheduled:string;objective:PlanningApiRequest['objective'];
   allowEstimates:boolean;allowCatalogueStations?:boolean;avoidTolls:boolean;avoidFerries:boolean};

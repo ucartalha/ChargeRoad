@@ -17,7 +17,7 @@ export const segmentationPolicySchema = z.object({
   splitAtChargingAccess: z.literal(true),
 }).strict();
 
-export const roadSegmentSchema = z.object({
+export const roadSegmentObject = z.object({
   id: idSchema,
   sourceEdgeIds: z.array(idSchema).min(1),
   startDistanceMeters: nonnegativeSchema,
@@ -43,12 +43,17 @@ export const roadSegmentSchema = z.object({
   elevationLossMeters: nonnegativeSchema.nullable(),
   startsAtChargingAccess: z.boolean(),
   endsAtChargingAccess: z.boolean(),
-}).strict().superRefine((segment, ctx) => {
+}).strict();
+/** Distance/speed consistency; shared by the full segment and the mobile view (mobile-plan.ts). */
+export function checkRoadSegmentTiming(segment: {startDistanceMeters:number;endDistanceMeters:number;distanceMeters:number;drivingDurationSeconds:number;expectedSpeedKph:number}, ctx: z.RefinementCtx) {
   if (Math.abs(segment.endDistanceMeters - segment.startDistanceMeters - segment.distanceMeters) > 0.001)
     ctx.addIssue({ code: 'custom', path: ['distanceMeters'], message: 'Segment distance does not match its route offsets' });
   const expectedSpeed = segment.distanceMeters / segment.drivingDurationSeconds * 3.6;
   if (Math.abs(expectedSpeed - segment.expectedSpeedKph) > 0.1)
     ctx.addIssue({ code: 'custom', path: ['expectedSpeedKph'], message: 'Speed must agree with road distance and driving duration' });
+}
+function checkRoadSegment(segment: z.infer<typeof roadSegmentObject>, ctx: z.RefinementCtx) {
+  checkRoadSegmentTiming(segment, ctx);
   const elevations = segment.elevationProfile;
   if(elevations===null&&(segment.elevationGainMeters!==null||segment.elevationLossMeters!==null||segment.elevationQuality==='modelled'||segment.elevationQuality==='verified'))
     ctx.addIssue({code:'custom',path:['elevationQuality'],message:'Missing elevation must have unknown quality and null ascent/descent'});
@@ -75,9 +80,10 @@ export const roadSegmentSchema = z.object({
         Math.abs(gain - segment.elevationGainMeters) > 0.01 || Math.abs(loss - segment.elevationLossMeters) > 0.01)
       ctx.addIssue({ code: 'custom', path: ['elevationGainMeters'], message: 'Ascent/descent must match the supplied elevation profile' });
   }
-});
+}
+export const roadSegmentSchema = roadSegmentObject.superRefine(checkRoadSegment);
 
-export const roadRouteSchema = z.object({
+export const roadRouteObject = z.object({
   composition:z.array(z.object({routeId:idSchema,checksumSha256:z.string().regex(/^[a-f0-9]{64}$/),source:sourceReferenceSchema,departureAt:timestampSchema}).strict()).min(1).optional(),
   id: idSchema,
   distanceMeters: positiveSchema,
@@ -96,7 +102,10 @@ export const roadRouteSchema = z.object({
     durationAllocation:z.literal('maneuver_weighted'),
     usage:z.enum(['development_pilot','configured_service']),
   }).strict().optional(),
-}).strict().superRefine((route, ctx) => {
+}).strict();
+/** Route-level rules; shared by the full route and the mobile view (mobile-plan.ts). */
+export function checkRoadRoute(route: {distanceMeters:number;drivingDurationSeconds:number;segmentationPolicy:{maxDistanceMeters:number;maxDurationSeconds:number};
+  segments:{id:string;startDistanceMeters:number;endDistanceMeters:number;drivingDurationSeconds:number;distanceMeters:number;geometry:{latitude:number;longitude:number}[]}[]}, ctx: z.RefinementCtx) {
   if (new Set(route.segments.map((segment) => segment.id)).size !== route.segments.length)
     ctx.addIssue({ code: 'custom', path: ['segments'], message: 'Duplicate route segment ID' });
   let end = 0;
@@ -119,7 +128,8 @@ export const roadRouteSchema = z.object({
   }
   if (Math.abs(end - route.distanceMeters) > 0.001 || Math.abs(seconds - route.drivingDurationSeconds) > 0.001)
     ctx.addIssue({ code: 'custom', message: 'Route totals do not match the segments' });
-});
+}
+export const roadRouteSchema = roadRouteObject.superRefine(checkRoadRoute);
 
 export const roadRoutingRequestSchema = z.object({
   schemaVersion: contractVersionSchema,

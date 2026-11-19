@@ -21,3 +21,4 @@ export * from './contracts/evaluation.js';
 export * from './contracts/vehicle-knowledge.js';
 export * from './contracts/station-catalogue.js';
 export * from './contracts/location-search.js';
+export * from './contracts/mobile-plan.js';
