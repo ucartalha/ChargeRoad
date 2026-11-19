@@ -44,7 +44,8 @@ export class EvPlanningService {
   async plan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal=new AbortController().signal):Promise<OptimizerOutcome>{
     // Development-only trace (PLANNING_DEBUG_TRACE, never in production): one planning_debug line per plan.
     const debug=planningDebugEnabled()?new PlanningDebugTrace(raw):null;let outcome='error';
-    return withPlanningMetrics(raw?.requestId,async()=>{try{const out=await this.executePlan(raw,rawPreparation,rawOptions,caller,debug);outcome=out.result.status;return out;}
+    return withPlanningMetrics(raw?.requestId,async()=>{try{const out=await this.executePlan(raw,rawPreparation,rawOptions,caller,debug);outcome=out.result.status;
+      if(debug&&out.result.status==='planned')debug.finalPlan(out.result.plan);return out;}
       finally{markAbort(caller);debug?.log(outcome);}});
   }
   private async executePlan(raw:RoutePlanRequest,rawPreparation:PreparationOptions,rawOptions:OptimizerOptions,caller:AbortSignal,debug:PlanningDebugTrace|null=null):Promise<OptimizerOutcome>{

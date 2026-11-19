@@ -42,3 +42,29 @@ describe('Planning debug trace',()=>{
     expect(strip(on)).toEqual(strip(off));
   });
 });
+// Final plan summary (2026-11-19, user item D): the chosen plan itself, so a phone route can be read from one log line.
+import {PlanningDebugTrace} from '../planning-debug';
+describe('Planning debug final plan summary',()=>{
+  const stop=(km:number,arrival:number,target:number,minutes:number,kwh:number,over:Record<string,unknown>={})=>({stationId:'s'+km,routeDistanceMeters:km*1000,
+    detourDistanceMeters:1200,arrivalChargePercent:arrival,targetChargePercent:target,chargingDurationSeconds:minutes*60,connectionDurationSeconds:120,
+    blockingPreconditioningSeconds:0,energyDeliveredAtInletKwh:kwh,waiting:{seconds:0},...over});
+  const sample={vehicleVariantId:'v',algorithmVersion:'chargeroad-optimizer/1.9.0',roadRoute:{distanceMeters:500000},estimatedArrivalChargePercent:21.04,
+    energySegments:[{modelVersion:'energy/x'}],chargingStops:[stop(180,12.34,80,30,50),stop(242,61,70,5,6,{detourDistanceMeters:null,waiting:{seconds:null}})],
+    duration:{drivingSeconds:18000,chargingSeconds:2100,connectionSeconds:240,blockingPreconditioningSeconds:0,waitingSeconds:null,totalSeconds:null}};
+  it('summarizes totals and every stop without coordinates, and names the phase that found the plan',()=>{
+    const t=new PlanningDebugTrace({requestId:'r'} as never);
+    (t as any).corridors.push({incumbents:[{atMs:1,minutes:400,stops:2,arrivalSoc:30,phase:'seed'},{atMs:2,minutes:390,stops:2,arrivalSoc:21,phase:'final_trim'}]});
+    t.finalPlan(sample as never);
+    expect(t.final).toEqual({optimizer:'chargeroad-optimizer/1.9.0',energyModel:'energy/x',routeKm:500,stops:2,arrivalSoc:21,
+      minutes:{driving:300,charging:35,connection:4,preconditioning:0,waiting:null,total:339,rankedWithStopPenalty:351},sourcePhase:'final_trim',
+      chargingStops:[{km:180,gapKm:180,arrivalSoc:12.3,targetSoc:80,chargeMinutes:30,avgKw:100,detourKm:1.2,waitMinutes:0},
+        {km:242,gapKm:62,arrivalSoc:61,targetSoc:70,chargeMinutes:5,avgKw:72,detourKm:null,waitMinutes:null}],lastLegKm:258});
+  });
+  it('is part of the planning_debug line of a planned request',async()=>{
+    await withEnv({PLANNING_DEBUG_TRACE:'true',NODE_ENV:'development'},async()=>{
+      const {r,lines}=await plan();if(r.result.status!=='planned')throw new Error('fixture must plan');
+      const f=JSON.parse(lines[0]).finalPlan;expect(f.stops).toBe(r.result.plan.chargingStops.length);expect(f.chargingStops).toHaveLength(f.stops);
+      expect(f.routeKm).toBeCloseTo(r.result.plan.roadRoute.distanceMeters/1000,0);expect(typeof f.sourcePhase==='string'||f.sourcePhase===null).toBe(true);
+    });
+  });
+});

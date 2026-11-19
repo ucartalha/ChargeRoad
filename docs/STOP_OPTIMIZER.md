@@ -79,6 +79,8 @@ Durak cezası, durak eleme, menzil ön kontrolü (`chargeroad-optimizer/1.9.0`, 
 
 20 durumda: kullanıcı isteği 9→7 durak (+4,5 dk), 10 durumda 1–2 durak az (en fazla +3,7 dk), 3 durumda süre de kısaldı, %20 rezerv Erzurum planlandı, diğerleri aynı. [Kanıt](validation/optimizer-1.9.0-2026-11-19.md).
 
+Denenip reddedilenler (2026-11-20, sürüm 1.9.0'da kaldı): ölçülen tüketimle sıkılaştırılmış üst menzil sınırı (fayda yok; 1.9.0 sınırı zaten gerçekçi menzilin ~1,3 katı) ve en kötü menzil altındaki istasyonları eleyen menzil penceresi (20 durumda 5 planlanamadı, 11 kötüleşti). [Kanıt](validation/reach-bounds-rejected-2026-11-20.md).
+
 
 
 
