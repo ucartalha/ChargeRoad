@@ -26,6 +26,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   const [lastRequest,setLastRequest]=useState<PlanningApiRequest|null>(null),[navigationRoute,setNavigationRoute]=useState<NavigationRoute|null>(null),[navigationLocation,setNavigationLocation]=useState<import('@chargeroad/shared').Coordinate|null>(null);
   const [navigationProgress,setNavigationProgress]=useState<NavigationProgress|null>(null);
   const [navigationTrip,setNavigationTrip]=useState<{active:boolean;confirmedStopId:string|null;end:()=>void}|null>(null);
+  const navigating=!!navigationTrip?.active;
   function cancel(){version.current++;runner.current.cancel();inFlight.current=false;setBusy(false);}
   function update(patch:Partial<Form>){cancel();setForm(f=>({...f,...patch}));setError('');setRequestError('');setResult(null);setPendingPreview(null);}
   useEffect(()=>{update({vehicleId:vehicle?.id??null,allowEstimates:false,allowCatalogueStations:false});},[vehicle?.id]);
@@ -72,9 +73,50 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   function confirmRoadPoints(){if(!adjustment||!result?.preview?.route)return;const generation=version.current,road=result.preview.route;
     Alert.alert('Aracının yol noktasını onayla',`Seçilen konumdan başlangıç yoluna ${Math.ceil(road.originSnapMeters)} m, varış yoluna ${Math.ceil(road.destinationSnapMeters)} m eşleme var. Araç yolculuğunu haritadaki bu noktalardan hesaplayalım mı? Aradaki erişim sürüş hesabına dahil değildir.`,
       [{text:'Adresi değiştireceğim',style:'cancel'},{text:'Onayla ve hesapla',onPress:()=>{if(version.current!==generation)return;update(adjustment);void submit(form.allowEstimates,adjustment,form.allowCatalogueStations);}}]);}
+  // Read through result (not output) so TS does not narrow output inside the shared result card JSX.
+  const planned=result?.result.status==='planned';
   return <View style={s.container}>
     <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
+      onBack={planned?reset:undefined}
       onPlan={(result,request)=>{setResult({result,preview:null,previewError:null});setLastRequest(request);}}/>
+    {!navigating&&<>
+    {planned&&<>
+    {output&&<View style={s.card} accessibilityLiveRegion="polite">
+      {output.status==='planned'?<>
+        <RouteHighlight title="Planın hazır" subtitle={`${output.plan.chargingStops.length} şarj durağı · Varış %${output.plan.estimatedArrivalChargePercent.toFixed(1)}`}/>
+        {planNotices(output.plan,lastRequest?.constraints.targetArrivalChargePercent??null).map((notice,i)=><Text key={'plan-notice-'+i} testID={'planning-notice-'+i} style={s.notice}>{notice}</Text>)}
+        {output.plan.warnings.some(w=>w.code==='coarse_future_weather_scenario')&&<Text testID="planning-future-weather" style={s.notice}>Rotanın ilerisi daha seyrek hava örnekleriyle tahmin edildi. Şarj sonrası koşullar ve rota yeniden değerlendirilmelidir.</Text>}
+        {output.plan.search&&!output.plan.search.searchComplete&&<Text testID="planning-search-limited" style={s.notice}>Arama sınırları içinde doğrulanan plan. Seçtiğin hedef için daha iyi bir seçenek bulunabilir; en iyi sonuç garanti edilmez.</Text>}
+        {output.metadata.requestedDepartureAt&&output.plan.scenario&&<Text style={s.small}>Hesaplanan hareket: {new Date(output.plan.scenario.departureAt).toLocaleTimeString('tr-TR')}</Text>}
+        <Text style={s.text}>{(output.plan.roadRoute.distanceMeters/1000).toFixed(1)} km · Varış şarjı %{output.plan.estimatedArrivalChargePercent.toFixed(1)}</Text>
+        <Text style={s.text}>{output.plan.chargingStops.length} şarj durağı · Sürüş {minutes(output.plan.duration.drivingSeconds)} · Şarj {minutes(output.plan.duration.chargingSeconds)}</Text>
+        {output.plan.chargingStops.map((stop,i)=><View key={stop.id} style={s.stopRow}><View style={s.stopDot}><Text style={s.stopIndex}>{i+1}</Text></View>
+          <View style={{flex:1}}><Text style={s.title}>{(stop.routeDistanceMeters/1000).toFixed(0)}. km · %{Math.round(stop.arrivalChargePercent)} → %{Math.round(stop.targetChargePercent)}</Text>
+            <Text style={s.small}>Şarj {minutes(stop.chargingDurationSeconds)}{stop.detourDistanceMeters?' · '+(stop.detourDistanceMeters/1000).toFixed(1)+' km sapma':''}</Text></View></View>)}
+        <Text style={s.small}>Bağlantı/hazırlık {minutes(output.plan.duration.connectionSeconds+output.plan.duration.blockingPreconditioningSeconds)}. {output.plan.estimatedArrivalAt?`Tahmini varış: ${new Date(output.plan.estimatedArrivalAt).toLocaleString('tr-TR')}`:'Gerçek bekleme ve kesin varış saati belirsiz; süreler koşullu senaryodur.'}</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setDetails(v=>!v)}><Text style={s.link}>{details?'Ayrıntıları gizle':'Tahmin ayrıntıları ve varsayımlar'}</Text></Pressable>
+        {details&&output.plan.assumptions.map(a=><Text key={a.id} style={s.small}>{a.explanation}</Text>)}
+        {details&&output.plan.warnings.map((w,i)=><Text key={i} style={s.notice}>{w.explanation}</Text>)}
+        {form.allowEstimates&&<Text style={s.notice}>Mühendislik tahmini kullanımına izin verdin. Bu plan saha doğruluğu garantisi değildir.</Text>}
+        {output.plan.chargingStops.some(s=>s.hardwareBasis==='catalogue_power_scenario')&&<Text style={s.notice}>Şarj süreleri katalog gücüne dayalı koşullu senaryodur. İstasyon voltaj uyumunu ve gücünü operatörden teyit et.</Text>}
+        {output.plan.roadRoute.metadata?.attributions.map(a=><Pressable accessibilityRole="link" key={a.url} onPress={()=>void Linking.openURL(a.url)}><Text style={s.small}>{a.text}</Text></Pressable>)}
+      </>:<>
+        <Text style={s.title}>{output.status==='insufficient_data'?'Yol önizlemen':output.status==='infeasible'?'Tercihlerini birlikte güncelleyelim':output.status==='provider_error'?'Rotan şu anda hazırlanamadı':'Rota hesabı henüz tamamlanamadı'}</Text>
+        {output.reasons.map((r,i)=><Text key={i} style={s.text}>{r.explanation}</Text>)}
+        {output.status==='insufficient_data'&&<Text style={s.notice}>Varış şarjı ve otomatik şarj durağı önerisi sunulamıyor. Bu sonuç yolculuğun yapılamayacağı anlamına gelmez.</Text>}
+      </>}
+      {result.preview?.route&&<View style={s.preview}><RouteHighlight title="Yol önizlemesi" subtitle={`${(result.preview.route.distanceMeters/1000).toFixed(1)} km · Sürüş ${minutes(result.preview.route.drivingDurationSeconds)}`}/>
+        <Text style={s.small}>Seçilen konumdan yol noktasına eşleme: başlangıç {Math.ceil(result.preview.route.originSnapMeters)} m, varış {Math.ceil(result.preview.route.destinationSnapMeters)} m. Bu erişim mesafelerinin süreleri dahil değildir.</Text>
+        <Text style={s.small}>{result.preview.route.traffic==='live'?'Canlı trafik içerir.':'Süre canlı trafik içermez.'} Şarj ve bekleme süreleri dahil değildir.</Text>
+        {result.preview.route.warnings.length>0&&<Text style={s.notice}>Yol verilerinde eksikler veya belirsizlikler var; süre ve yol bilgileri yaklaşık olabilir.</Text>}
+        {result.preview.route.attributions.map(a=><Pressable accessibilityRole="link" key={a.url} onPress={()=>void Linking.openURL(a.url)}><Text style={s.small}>{a.text}</Text></Pressable>)}
+      </View>}
+      {result.preview?.status==='not_found'&&<Text style={s.notice}>Bu konumlar arasında yol önizlemesi bulunamadı.</Text>}
+      {adjustment&&<Pressable testID="confirm-road-endpoints" accessibilityRole="button" onPress={confirmRoadPoints} style={s.primary}><Text style={s.primaryText}>Yol noktalarını onayla ve hesapla</Text></Pressable>}
+      {!!result.previewError&&<Text style={s.notice}>{result.previewError}</Text>}
+    </View>}
+    </>}
+    {!planned&&<>
     <LocationPicker label="BAŞLANGIÇ" value={form.origin} onChange={origin=>update({origin})} deviceLocation/>
     <LocationPicker label="VARIŞ" value={form.destination} onChange={destination=>update({destination})}/>
     <Pressable testID="route-vehicle-selector" accessibilityRole="button" accessibilityLabel="Seçili aracı değiştir" onPress={onRequireVehicle} style={s.vehicle}>
@@ -115,6 +157,8 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
       {pendingPreview.route.attributions.map(a=><Pressable key={a.url} accessibilityRole="link" onPress={()=>void Linking.openURL(a.url)}><Text style={s.small}>{a.text}</Text></Pressable>)}
       <Text style={s.small}>Şarj durakları ve enerji hesabı sürüyor. İşlemi iptal edebilirsin.</Text></View>}
     {busy&&<View style={s.row}><ActivityIndicator color={c.green}/><Pressable accessibilityRole="button" onPress={cancel}><Text style={s.link}>İptal et</Text></Pressable></View>}
+    </>}
+    {!planned&&<>
     {output&&<View style={s.card} accessibilityLiveRegion="polite">
       {output.status==='planned'?<>
         <RouteHighlight title="Planın hazır" subtitle={`${output.plan.chargingStops.length} şarj durağı · Varış %${output.plan.estimatedArrivalChargePercent.toFixed(1)}`}/>
@@ -146,10 +190,13 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
       {adjustment&&<Pressable testID="confirm-road-endpoints" accessibilityRole="button" onPress={confirmRoadPoints} style={s.primary}><Text style={s.primaryText}>Yol noktalarını onayla ve hesapla</Text></Pressable>}
       {!!result.previewError&&<Text style={s.notice}>{result.previewError}</Text>}
     </View>}
-    <Text style={s.small}>Araç seçimin bu cihazda saklanır. Bu akış seyahat geçmişi veya hesap garajı oluşturmaz.</Text>
+    </>}
+    </>}
+    {!navigating&&<Text style={s.small}>Araç seçimin bu cihazda saklanır. Bu akış seyahat geçmişi veya hesap garajı oluşturmaz.</Text>}
   </View>;
 }
-const s=StyleSheet.create({container:{gap:12,marginTop:0},heading:{color:c.ink,fontSize:20,fontWeight:'800'},card:{padding:16,borderRadius:20,backgroundColor:c.surface,borderWidth:1,borderColor:c.line,gap:17},
+const s=StyleSheet.create({container:{gap:12,marginTop:0},
+  stopRow:{flexDirection:'row',alignItems:'center',gap:12},stopDot:{width:28,height:28,borderRadius:14,backgroundColor:c.lime,alignItems:'center',justifyContent:'center'},stopIndex:{color:c.ink,fontWeight:'800',fontSize:12},heading:{color:c.ink,fontSize:20,fontWeight:'800'},card:{padding:16,borderRadius:20,backgroundColor:c.surface,borderWidth:1,borderColor:c.line,gap:17},
   vehicle:{flexDirection:'row',alignItems:'center',gap:12,padding:14,borderRadius:18,backgroundColor:'#E7EEE5'},vehicleIcon:{color:c.green,fontSize:25},settings:{padding:15,flexDirection:'row',justifyContent:'space-between'},
   title:{color:c.ink,fontSize:16,fontWeight:'700'},row:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10},text:{color:c.ink,fontSize:13,lineHeight:20},
   small:{color:c.muted,fontSize:11,lineHeight:18},notice:{color:c.green,fontSize:12,lineHeight:19},error:{color:c.error,fontSize:12,lineHeight:19},

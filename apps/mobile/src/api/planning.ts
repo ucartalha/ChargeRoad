@@ -1,5 +1,6 @@
 import {locationSearchResponseSchema,planningApiResponseSchema,planningMobileResponseSchema,roadPreviewResponseSchema,planningJobStatusSchema,planningApiErrorSchema} from '@chargeroad/shared';
 import type {PlanningApiRequest,RoadPreviewRequest} from '@chargeroad/shared';
+import {devLog} from '../dev/dev-log';
 export class PlanningApiError extends Error {
   constructor(message:string,readonly retryAfterSeconds=0,readonly status=0){super(message);}
 }
@@ -59,7 +60,10 @@ export const planningApi={
       const abort=()=>{clearTimeout(timer);signal.removeEventListener('abort',abort);reject(new Error('Cancelled'));};signal.addEventListener('abort',abort,{once:true});if(signal.aborted)abort();});
     signal.addEventListener('abort',cancel,{once:true});if(signal.aborted){cancel();throw new Error('Cancelled');}
     try{
+      // DEV: job timeline (docs/DEV_DIAGNOSTICS.md).
+      const began=Date.now();let reads=0,lastStatus='';
       onProgress('queued');let job=planningJobStatusSchema.parse(await call(base+'/planning-jobs','POST',request));
+      devLog('plan_job_created',{requestId:request.requestId,ms:Date.now()-began,status:job.status});lastStatus=job.status;
       // Preview is independent of the expensive energy job and cannot overwrite its final plan.
       void planningApi.preview({origin:request.origin,destination:request.destination,departureAt:request.departureAt,...request.roadPreferences},signal)
         .then(preview=>{if(!signal.aborted)onPreview?.(preview);},()=>{});
@@ -68,13 +72,17 @@ export const planningApi={
         if(Date.now()>deadline){cancel();throw new PlanningApiError('Plan işi bekleme süresi doldu. Tekrar deneyebilirsin.');}
         // Long-poll: the server answers as soon as the job finishes (or after LONG_POLL_WAIT_MS). A server that ignores
         // waitMs answers at once; then fall back to its pollAfterMilliseconds so the loop never spins.
-        onProgress(job.status);const asked=Date.now();job=planningJobStatusSchema.parse(await call(url+'?waitMs='+LONG_POLL_WAIT_MS,'GET'));
+        onProgress(job.status);const asked=Date.now();job=planningJobStatusSchema.parse(await call(url+'?waitMs='+LONG_POLL_WAIT_MS,'GET'));reads++;
+        if(job.status!==lastStatus){devLog('plan_job_status',{requestId:request.requestId,status:job.status,atMs:Date.now()-began,reads});lastStatus=job.status;}
         if((job.status==='queued'||job.status==='running')&&Date.now()-asked<1000)await wait(job.pollAfterMilliseconds);
       }
       if(job.status==='cancelled')throw new PlanningApiError('Plan işi iptal edildi.');
-      if(job.status==='failed')throw new PlanningApiError('Plan işi tamamlanamadı ('+(job.errorCode??'PLANNING_JOB_FAILED')+').');
+      if(job.status==='failed'){devLog('plan_job_failed',{requestId:request.requestId,errorCode:job.errorCode??null,atMs:Date.now()-began});throw new PlanningApiError('Plan işi tamamlanamadı ('+(job.errorCode??'PLANNING_JOB_FAILED')+').');}
       // planning-mobile-view/1.0.0: ~1/3 of the full plan (no elevation profiles, edge ids, energy breakdowns), same checks.
-      const result=planningMobileResponseSchema.parse(await call(url+'/result?view=mobile','GET'));if(result.requestId!==request.requestId)throw new PlanningApiError('Yanıt bu isteğe ait değil.');
+      const fetchStart=Date.now(),raw=await call(url+'/result?view=mobile','GET'),parseStart=Date.now();
+      const result=planningMobileResponseSchema.parse(raw);
+      devLog('plan_result_timing',{requestId:request.requestId,status:result.status,totalMs:Date.now()-began,serverWaitMs:fetchStart-began,resultFetchMs:parseStart-fetchStart,
+        parseMs:Date.now()-parseStart,statusReads:reads,stops:result.status==='planned'?result.plan.chargingStops.length:null,reason:result.status==='planned'?null:result.reasons[0]?.code??null});if(result.requestId!==request.requestId)throw new PlanningApiError('Yanıt bu isteğe ait değil.');
       delivered=true;return result;
     }catch(error){if(error instanceof PlanningApiError)throw error;
       throw new PlanningApiError(signal.aborted?'İşlem iptal edildi.':'Plan bağlantısı kesildi. İnternetini kontrol edip tekrar dene.');

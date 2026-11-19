@@ -3,23 +3,49 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {Pressable,StyleSheet,Text,View} from 'react-native';
 import {colors as c} from '../../theme';
 import type {NavigationProgress,NavigationRoute} from './navigation-core';
-import {formatClock,formatDistance,formatDuration,maneuverIcon,remainingTripSeconds,socOutlook,upcomingManeuvers} from './navigation-view';
+import {CLIMB_NOTICE_METERS,climbAhead,formatClock,formatDistance,formatDuration,maneuverIcon,remainingTripSeconds,roadLabel,socOutlook,socStrip,speedLimitAt,speedState,stopCard,upcomingManeuvers} from './navigation-view';
 
 /** Navigation mode step 1 (2026-11-19): top maneuver card. Without fresh GPS it says so instead of guessing a distance. */
-export function ManeuverCard({route,progress,top}:{route:NavigationRoute;progress:NavigationProgress|null;top:number}){
+export function ManeuverCard({route,progress}:{route:NavigationRoute;progress:NavigationProgress|null}){
   const upcoming=progress?upcomingManeuvers(route,progress.distance):{next:null,then:null};
-  const next=upcoming.next,arrived=!!progress?.arrived;
-  return <View style={[s.card,{top}]} accessibilityLiveRegion="polite"
-    accessibilityLabel={!progress?'GPS konumu bekleniyor':arrived?'Varış noktasına ulaştın':next?`${formatDistance(next.distance)} sonra ${next.instruction}`:'Varış noktasına devam et'}>
+  const next=upcoming.next,arrived=!!progress?.arrived,wrong=!!progress?.wrongWay&&!arrived;
+  return <View style={[s.card,wrong&&{backgroundColor:c.error}]} accessibilityLiveRegion="polite"
+    accessibilityLabel={!progress?'GPS konumu bekleniyor':wrong?'Rotanın ters yönündesin':arrived?'Varış noktasına ulaştın':next?`${formatDistance(next.distance)} sonra ${next.instruction}`:'Varış noktasına devam et'}>
     <View style={s.main}>
-      <View style={s.arrow}><MaterialCommunityIcons name={!progress?'crosshairs-gps':arrived?'flag-checkered':maneuverIcon(next?.type)} size={40} color={c.lime}/></View>
+      <View style={s.arrow}><MaterialCommunityIcons name={!progress?'crosshairs-gps':wrong?'arrow-u-left-top':arrived?'flag-checkered':maneuverIcon(next?.type)} size={40} color={c.lime}/></View>
       <View style={{flex:1}}>
-        <Text style={s.distance}>{!progress?'GPS bekleniyor':arrived?'Vardın':formatDistance(next?.distance??progress.remainingMeters)}</Text>
-        <Text style={s.instruction} numberOfLines={2}>{!progress?'Konumun bulununca yönlendirme başlar':arrived?'Varış noktasına ulaştın':next?.instruction??'Varış noktasına devam et'}</Text>
+        <Text style={s.distance}>{!progress?'GPS bekleniyor':wrong?'Ters yön':arrived?'Vardın':formatDistance(next?.distance??progress.remainingMeters)}</Text>
+        <Text style={s.instruction} numberOfLines={2}>{!progress?'Konumun bulununca yönlendirme başlar':wrong?'Güvenli bir yerde dön; rota yenileniyor':arrived?'Varış noktasına ulaştın':next?.instruction??'Varış noktasına devam et'}</Text>
       </View>
     </View>
-    {upcoming.then&&!arrived&&<View style={s.then}><Text style={s.thenText}>Ardından</Text><MaterialCommunityIcons name={maneuverIcon(upcoming.then.type)} size={20} color={c.lime}/></View>}
+    {upcoming.then&&!arrived&&!wrong&&<View style={s.then}><Text style={s.thenText}>Ardından</Text><MaterialCommunityIcons name={maneuverIcon(upcoming.then.type)} size={20} color={c.lime}/></View>}
   </View>;
+}
+
+/** Navigation step 1b: top column (maneuver, road/climb chips, next charging stop within 20 km) and bottom-left speed. */
+export function NavigationHud({route,progress,confirmedStopId,speed,top,bottom}:{route:NavigationRoute;progress:NavigationProgress|null;
+  confirmedStopId:string|null;speed:number|null|undefined;top:number;bottom:number}){
+  const road=progress?roadLabel(route,progress.distance):null,climb=progress?climbAhead(route,progress.distance):0;
+  const card=progress?stopCard(route,progress,confirmedStopId):null,limit=progress?speedLimitAt(route,progress.distance):null,state=speedState(speed,limit);
+  return <>
+    <View pointerEvents="box-none" style={[s.column,{top}]}>
+      <ManeuverCard route={route} progress={progress}/>
+      {(road||climb>=CLIMB_NOTICE_METERS)&&<View style={s.chips}>
+        {road&&<View style={s.chip}><MaterialCommunityIcons name={road==='Otoyol'?'highway':'road-variant'} size={14} color={c.green}/><Text style={s.chipText}>{road}</Text></View>}
+        {climb>=CLIMB_NOTICE_METERS&&<View style={s.chip}><MaterialCommunityIcons name="trending-up" size={14} color={c.orange}/><Text style={s.chipText}>10 km'de +{climb} m tırmanış · tüketim artar</Text></View>}
+      </View>}
+      {card&&<View style={s.stop} accessibilityLabel={`${card.index}. şarj durağına ${formatDistance(card.distance)}`}>
+        <View style={s.stopIcon}><MaterialCommunityIcons name="ev-station" size={22} color={c.ink}/></View>
+        <View style={{flex:1}}><Text style={s.stopTitle}>{card.index}. şarj durağı · {formatDistance(card.distance)}</Text>
+          <Text style={s.stopText}>Varış ~%{Math.round(card.arrivalSoc)} → hedef %{Math.round(card.targetSoc)}{card.seconds?` · ~${formatDuration(card.seconds)}`:''}</Text></View>
+      </View>}
+    </View>
+    {progress&&<View pointerEvents="none" style={[s.speedRow,{bottom}]}>
+      <View style={[s.speed,state.over&&s.speedOver]} accessibilityLabel={state.kph===null?'Hız bilinmiyor':`Hız ${state.kph} kilometre`}>
+        <Text style={[s.speedValue,state.over&&{color:'white'}]}>{state.kph??'—'}</Text><Text style={[s.speedUnit,state.over&&{color:'white'}]}>km/s</Text></View>
+      {limit!==null&&<View style={s.limit} accessibilityLabel={`Hız limiti ${limit}`}><Text style={s.limitValue}>{limit}</Text></View>}
+    </View>}
+  </>;
 }
 
 /** Bottom bar (sheet peek in navigation mode): arrival clock, remaining time/distance, next charge or arrival SOC estimate. */
@@ -35,6 +61,7 @@ export function NavigationBar({route,progress,confirmedStopId,now,onExit,onDetai
       </Pressable>
       <Pressable accessibilityRole="button" accessibilityLabel="Şarj ve rota ayrıntıları" onPress={onDetails} style={s.details}><Ionicons name="chevron-up" size={22} color={c.green}/></Pressable>
     </View>
+    {progress&&<SocStrip route={route} progress={progress} confirmedStopId={confirmedStopId}/>}
     {outlook&&<Pressable accessibilityRole="button" onPress={onDetails} style={[s.soc,progress!.soc<route.reserve&&s.socWarn]}>
       <MaterialCommunityIcons name={outlook.kind==='stop'?'ev-station':'flag-checkered'} size={18} color={c.green}/>
       <Text style={s.socText} numberOfLines={1}>{progress!.needsChargeConfirmation?'Şarj durağındasın · gerçek yüzdeyi gir':
@@ -44,9 +71,30 @@ export function NavigationBar({route,progress,confirmedStopId,now,onExit,onDetai
     </Pressable>}
   </View>;
 }
-export const NAVIGATION_BAR_HEIGHT=150;
+function SocStrip({route,progress,confirmedStopId}:{route:NavigationRoute;progress:NavigationProgress;confirmedStopId:string|null}){
+  const strip=socStrip(route,progress,confirmedStopId),pct=(v:number)=>`${Math.max(0,Math.min(100,v))}%` as const;
+  const low=strip.soc<strip.reserve,delta=strip.planDelta;
+  return <View style={s.strip} accessibilityLabel={`Tahmini şarj yüzde ${Math.round(strip.soc)}, rezerv yüzde ${strip.reserve}`}>
+    <View style={s.track}><View style={[s.fill,{width:pct(strip.soc)},low&&{backgroundColor:c.error}]}/>
+      <View style={[s.reserveTick,{left:pct(strip.reserve)}]}/>
+      {strip.nextStopSoc!==null&&<View style={[s.stopTick,{left:pct(strip.nextStopSoc)}]}/>}</View>
+    <Text style={s.stripText}>%{Math.round(strip.soc)}{delta!==null&&Math.abs(delta)>=1?` · plana göre ${delta>0?'+':'−'}${Math.round(Math.abs(delta))}`:''}</Text>
+  </View>;
+}
+export const NAVIGATION_BAR_HEIGHT=178;
 const s=StyleSheet.create({
-  card:{position:'absolute',left:12,right:12,borderRadius:22,backgroundColor:c.green,overflow:'hidden',elevation:8,shadowColor:'#000',shadowOpacity:.2,shadowRadius:12,shadowOffset:{width:0,height:4}},
+  column:{position:'absolute',left:12,right:12,gap:8},chips:{flexDirection:'row',flexWrap:'wrap',gap:6},
+  chip:{flexDirection:'row',alignItems:'center',gap:5,paddingHorizontal:10,paddingVertical:6,borderRadius:14,backgroundColor:'white',elevation:3},chipText:{color:c.ink,fontSize:12,fontWeight:'700'},
+  stop:{flexDirection:'row',alignItems:'center',gap:12,padding:12,borderRadius:18,backgroundColor:c.lime,elevation:5},stopIcon:{width:40,height:40,borderRadius:12,backgroundColor:'rgba(255,255,255,.6)',alignItems:'center',justifyContent:'center'},
+  stopTitle:{color:c.ink,fontSize:15,fontWeight:'800'},stopText:{color:c.ink,fontSize:12,fontWeight:'600',marginTop:2},
+  speedRow:{position:'absolute',left:14,flexDirection:'row',alignItems:'flex-end',gap:8},
+  speed:{width:66,height:66,borderRadius:33,backgroundColor:'white',alignItems:'center',justifyContent:'center',elevation:6},speedOver:{backgroundColor:c.error},
+  speedValue:{color:c.ink,fontSize:24,fontWeight:'800',lineHeight:26},speedUnit:{color:c.muted,fontSize:10,fontWeight:'700'},
+  limit:{width:46,height:46,borderRadius:23,backgroundColor:'white',borderWidth:4,borderColor:'#D23B2F',alignItems:'center',justifyContent:'center',elevation:6},limitValue:{color:'#111',fontSize:17,fontWeight:'800'},
+  strip:{flexDirection:'row',alignItems:'center',gap:10},track:{flex:1,height:8,borderRadius:4,backgroundColor:'#E2E8E0',overflow:'visible'},
+  fill:{position:'absolute',left:0,top:0,bottom:0,borderRadius:4,backgroundColor:c.green},reserveTick:{position:'absolute',top:-3,width:2,height:14,backgroundColor:c.error},
+  stopTick:{position:'absolute',top:-3,width:8,height:14,marginLeft:-4,borderRadius:3,backgroundColor:c.lime,borderWidth:1,borderColor:c.ink},stripText:{color:c.ink,fontSize:12,fontWeight:'800',minWidth:96,textAlign:'right'},
+  card:{borderRadius:22,backgroundColor:c.green,overflow:'hidden',elevation:8,shadowColor:'#000',shadowOpacity:.2,shadowRadius:12,shadowOffset:{width:0,height:4}},
   main:{flexDirection:'row',alignItems:'center',gap:14,padding:16},arrow:{width:56,height:56,borderRadius:16,backgroundColor:'rgba(255,255,255,.08)',alignItems:'center',justifyContent:'center'},
   distance:{color:'white',fontSize:30,fontWeight:'800',letterSpacing:-.8},instruction:{color:'#DCE9E2',fontSize:16,fontWeight:'600',marginTop:2},
   then:{flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:16,paddingVertical:8,backgroundColor:'#1B3B2F'},thenText:{color:'#DCE9E2',fontSize:13,fontWeight:'700'},

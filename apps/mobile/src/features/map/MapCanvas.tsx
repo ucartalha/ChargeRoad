@@ -4,7 +4,7 @@ import {ActivityIndicator,Linking,Modal,Platform,Pressable,ScrollView,StyleSheet
 import * as Location from 'expo-location';
 import MapView,{Marker,Polyline} from 'react-native-maps';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import {ManeuverCard} from '../navigation/NavigationOverlay';
+import {NavigationHud} from '../navigation/NavigationOverlay';
 import {followCamera,splitRoute} from '../navigation/navigation-view';
 import type {Region} from 'react-native-maps';
 import type {Coordinate,LocationResult,PlannedChargingStop} from '@chargeroad/shared';
@@ -97,8 +97,8 @@ export function MapCanvas({state,onOpenNavigation,bottomInset=260}:{state:MapSta
         <View collapsable={false} style={s.stopMarker}><View style={s.stopBadge}><View style={s.stopBolt}><Ionicons name="flash" size={19} color={c.ink}/></View><Text style={s.stopNumber}>{index+1}</Text></View><View style={s.stopTip}/></View>
       </Marker>)}
     </MapView>
-    {nav&&<ManeuverCard route={nav.route} progress={progress} top={insets.top+10}/>}
-    {nav&&!following&&<Pressable accessibilityRole="button" accessibilityLabel="Haritayı araca ortala" onPress={()=>setFollowing(true)} style={[s.recenter,{bottom:bottomInset+18}]}>
+    {nav&&<NavigationHud route={nav.route} progress={progress} confirmedStopId={nav.confirmedStopId} speed={state.navigationLocation?.speed} top={insets.top+10} bottom={bottomInset+14}/>}
+    {nav&&!following&&<Pressable accessibilityRole="button" accessibilityLabel="Haritayı araca ortala" onPress={()=>setFollowing(true)} style={[s.recenter,{bottom:bottomInset+24}]}>
       <MaterialCommunityIcons name="navigation" size={20} color={c.green}/><Text style={s.recenterText}>Ortala</Text></Pressable>}
     {nav&&!!state.navigationAttributions?.length&&<Text style={[s.attribution,{bottom:bottomInset+4}]} onPress={()=>void Linking.openURL(state.navigationAttributions![0].url)}>{state.navigationAttributions[0].text}</Text>}
     {!nav&&state.navigationProgress&&<View style={{position:'absolute',top:insets.top+116,left:18,right:18,padding:14,borderRadius:18,backgroundColor:'white',gap:5}}>
@@ -140,7 +140,7 @@ export function MapCanvas({state,onOpenNavigation,bottomInset=260}:{state:MapSta
   </View>;
 }
 const s=StyleSheet.create({vehicle:{width:44,height:44,borderRadius:22,backgroundColor:'#1F8F5F',borderWidth:3,borderColor:'white',alignItems:'center',justifyContent:'center',elevation:6},
-  recenter:{position:'absolute',alignSelf:'center',flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:18,paddingVertical:11,borderRadius:24,backgroundColor:'white',elevation:6},
+  recenter:{position:'absolute',right:14,flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:18,paddingVertical:11,borderRadius:24,backgroundColor:'white',elevation:6},
   recenterText:{color:c.green,fontWeight:'800',fontSize:15},attribution:{position:'absolute',left:12,fontSize:10,color:c.muted,backgroundColor:'rgba(255,255,255,.75)',paddingHorizontal:6,borderRadius:6},
   web:{position:'absolute',top:0,left:0,right:0,bottom:0,alignItems:'center',justifyContent:'center',backgroundColor:'#DFE8DF'},pin:{width:31,height:31,borderRadius:12,backgroundColor:c.green,borderWidth:2,borderColor:'white',alignItems:'center',justifyContent:'center'},
   stopMarker:{width:72,height:59,alignItems:'center'},stopBadge:{height:44,paddingHorizontal:8,flexDirection:'row',gap:7,alignItems:'center',backgroundColor:c.ink,borderRadius:17,borderWidth:2,borderColor:'white'},stopBolt:{width:28,height:28,borderRadius:10,backgroundColor:c.lime,alignItems:'center',justifyContent:'center'},stopNumber:{color:'white',fontSize:16,fontWeight:'800'},stopTip:{width:12,height:12,backgroundColor:c.ink,transform:[{rotate:'45deg'}],marginTop:-7,zIndex:-1},

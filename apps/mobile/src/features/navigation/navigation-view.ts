@@ -1,6 +1,6 @@
 import type {Coordinate} from '@chargeroad/shared';
 import type {NavigationRoute} from './navigation-core';
-import {distanceMeters} from './navigation-core';
+import {distanceMeters,navigationModelSoc} from './navigation-core';
 
 /** Navigation mode step 1 (2026-11-19): pure helpers for the full-screen navigation UI (camera, split line, maneuver
  *  card, bottom bar). Battery values stay estimates: a planned charge is never credited before the driver confirms it. */
@@ -87,4 +87,42 @@ export function socOutlook(route:NavigationRoute,progress:{distance:number;soc:n
 /** Remaining driving time plus the planned time at unconfirmed stops still ahead (for the arrival clock). */
 export function remainingTripSeconds(route:NavigationRoute,progress:{distance:number;remainingDrivingSeconds:number},confirmedStopId:string|null){
   return progress.remainingDrivingSeconds+route.stops.filter(s=>s.id!==confirmedStopId&&s.distance>progress.distance+25).reduce((sum,s)=>sum+(s.seconds??0),0);
+}
+
+/** HUD (navigation step 1b): everything below reads the plan already on the phone; nothing is fetched or invented. */
+const segmentAt=(route:NavigationRoute,distance:number)=>route.segments.find(s=>distance<s.end)??route.segments[route.segments.length-1];
+/** Posted limits only; provider-derived or unknown limits are never shown as a sign. */
+export function speedLimitAt(route:NavigationRoute,distance:number){return segmentAt(route,distance).limit??null;}
+export const SPEED_TOLERANCE_KPH=5;
+export function speedState(speed:number|null|undefined,limit:number|null){
+  if(typeof speed!=='number'||!Number.isFinite(speed)||speed<0)return {kph:null,over:false};
+  const kph=Math.round(speed*3.6);return {kph,over:limit!==null&&kph>limit+SPEED_TOLERANCE_KPH};
+}
+const ROADS:Record<string,string>={motorway:'Otoyol',primary:'Ana yol',secondary:'Tali yol',local:'Yerel yol',ferry:'Feribot'};
+export function roadLabel(route:NavigationRoute,distance:number){const road=segmentAt(route,distance).road;return road&&ROADS[road]?ROADS[road]:null;}
+/** Ascent (m) in the next windowMeters, prorated by segment overlap. */
+export const CLIMB_WINDOW_METERS=10000,CLIMB_NOTICE_METERS=150;
+export function climbAhead(route:NavigationRoute,distance:number,windowMeters=CLIMB_WINDOW_METERS){
+  let sum=0;const end=distance+windowMeters;
+  for(const s of route.segments){const a=Math.max(distance,s.start),b=Math.min(end,s.end);if(b>a&&s.climb)sum+=s.climb*(b-a)/(s.end-s.start);}
+  return Math.round(sum);
+}
+/** Estimate vs plan at the same distance (positive = better than planned), reserve line and next-stop arrival estimate. */
+export function socStrip(route:NavigationRoute,progress:{distance:number;soc:number},confirmedStopId:string|null){
+  const outlook=socOutlook(route,progress,confirmedStopId);
+  const confirmed=route.stops.findIndex(s=>s.id===confirmedStopId),skipped=route.stops.some((s,i)=>i>confirmed&&s.distance<=progress.distance+25);
+  return {soc:progress.soc,reserve:route.reserve,planDelta:skipped?null:progress.soc-navigationModelSoc(route,progress.distance),nextStopSoc:outlook.kind==='stop'?outlook.soc:null};
+}
+export const STOP_CARD_METERS=20000;
+export function stopCard(route:NavigationRoute,progress:{distance:number;soc:number},confirmedStopId:string|null){
+  const index=route.stops.findIndex(s=>s.id!==confirmedStopId&&s.distance>progress.distance+25);
+  if(index<0||route.stops[index].distance-progress.distance>STOP_CARD_METERS)return null;
+  const stop=route.stops[index],outlook=socOutlook(route,progress,confirmedStopId);
+  return {index:index+1,id:stop.id,distance:stop.distance-progress.distance,arrivalSoc:outlook.soc,targetSoc:stop.targetSoc,seconds:stop.seconds??null};
+}
+export type TimelineStop={id:string;index:number;status:'passed'|'next'|'later';distance:number;plannedArrivalSoc:number;targetSoc:number;seconds:number|null};
+export function stopTimeline(route:NavigationRoute,progress:{distance:number},confirmedStopId:string|null):TimelineStop[]{
+  let next=false;
+  return route.stops.map((s,i)=>{const passed=s.id===confirmedStopId||s.distance<=progress.distance+25,status:TimelineStop['status']=passed?'passed':next?'later':(next=true,'next');
+    return {id:s.id,index:i+1,status,distance:s.distance-progress.distance,plannedArrivalSoc:s.arrivalSoc,targetSoc:s.targetSoc,seconds:s.seconds??null};});
 }

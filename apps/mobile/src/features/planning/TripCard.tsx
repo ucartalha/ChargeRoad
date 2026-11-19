@@ -32,12 +32,15 @@ export function TripCard({trip,actions,onOpen}:{trip:Exclude<TripState,{phase:'i
     </View>
     <EnergySkyline plan={plan} start={plan?`%${Math.round(plan.energySegments[0]?.startChargePercent??0)} ŞİMDİ`:undefined} arrival={facts?`${facts.arrival} VARIŞ`:undefined}/>
     {notice&&<Text style={s.notice}>{notice}</Text>}
-    {plan?<PressableScale testID="trip-open-details" accessibilityRole="button" onPress={onOpen} style={s.primary}>
-        <Text style={s.primaryText}>Molaları ve ayrıntıları gör</Text><Ionicons name="arrow-up" size={16} color={c.ink}/></PressableScale>:
+    {plan?<View style={s.actions}>
+        <PressableScale testID="trip-start-navigation" accessibilityRole="button" accessibilityLabel="Navigasyonu başlat" onPress={onOpen} style={[s.primary,s.flex]}>
+          <Ionicons name="navigate" size={17} color={c.ink}/><Text style={s.primaryText}>Navigasyonu başlat</Text></PressableScale>
+        <PressableScale testID="trip-open-details" accessibilityRole="button" accessibilityLabel="Molaları ve ayrıntıları gör" onPress={onOpen} style={s.more}>
+          <Ionicons name="list" size={20} color="#D6E5DC"/></PressableScale></View>:
       <PressableScale testID="trip-cancel" accessibilityRole="button" onPress={actions.cancel} style={s.ghost}><Text style={s.ghostText}>İptal et</Text></PressableScale>}
   </Animated.View>;
 }
-const s=StyleSheet.create({flex:{flex:1},card:{backgroundColor:c.ink,borderRadius:24,padding:18,gap:14,marginHorizontal:16},row:{flexDirection:'row',alignItems:'flex-start',gap:12},
+const s=StyleSheet.create({flex:{flex:1},actions:{flexDirection:"row",gap:10},more:{width:52,borderRadius:16,borderWidth:1,borderColor:"#3D6B58",alignItems:"center",justifyContent:"center"},card:{backgroundColor:c.ink,borderRadius:24,padding:18,gap:14,marginHorizontal:16},row:{flexDirection:'row',alignItems:'flex-start',gap:12},
   eyebrow:{color:c.lime,fontSize:10,fontWeight:'800',letterSpacing:1.4},big:{color:'white',fontSize:30,fontWeight:'800',letterSpacing:-1.2,marginTop:2},sub:{color:'#BFD5C9',fontSize:12,marginTop:2},
   iconButton:{width:34,height:34,borderRadius:17,backgroundColor:'#2B5546',alignItems:'center',justifyContent:'center'},
   notice:{color:c.lime,fontSize:11,lineHeight:17},primary:{backgroundColor:c.lime,borderRadius:16,paddingVertical:14,flexDirection:'row',justifyContent:'center',alignItems:'center',gap:8},
