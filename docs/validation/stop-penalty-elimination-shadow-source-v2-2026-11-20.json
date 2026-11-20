@@ -1,0 +1,5 @@
+{
+  "optimizerVersion": "chargeroad-optimizer/1.9.0",
+  "scope": "Same output refactor (2026-11-20): accepted incumbents are compiled once at the end of the search (deferred plan compile). Plan fingerprints identical on 5 long routes; same algorithm vs same algorithm without shadow.",
+  "optimizerWithoutShadowSha256": "9baf9ca3f744dece042ad09e8c04e60b63928fba16f45c335d9407269e86293e"
+}

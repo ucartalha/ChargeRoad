@@ -62,7 +62,7 @@ async function run(kind:RepeatCase,objective:Objective,observed:boolean,metricsE
  if(kind==='timeout')road=async()=>{throw new RoadProviderError('synthetic',503,60,'ROAD_PROVIDER_TIMEOUT');};
  let forecast:(...args:Parameters<typeof w.weather.forecast>)=>ReturnType<typeof w.weather.forecast>=w.weather.forecast;
  if(kind==='expired_weather'){const fn=forecast;forecast=async(...args)=>{const r=await fn(...args);r.data.forEach(f=>f.forecastIssuedAt=new Date(Date.now()-7*86400000).toISOString());return r;};}
- const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=call('energy','energy_evaluate',energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<unknown>) as typeof energy.evaluate;charging.evaluate=call('charging','charging_evaluate',charging.evaluate.bind(charging));
+ const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=call('energy','energy_evaluate',energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<unknown>) as typeof energy.evaluate;charging.evaluate=call('charging','charging_evaluate',charging.evaluate.bind(charging)) as typeof charging.evaluate;
  const Service=observed?observedService():EvPlanningService;
  const service=new Service({resolveId:traceOnly('vehicle_id',w.vehicles.resolveId),profile:traceOnly('vehicle_profile',w.vehicles.profile)} as never,
   {routes:call('road','road_provider',road)} as never,{findAlongRoutes:traceOnly('stations',w.stations.findAlongRoutes)} as never,

@@ -41,7 +41,7 @@ async function run(kind:EligibilityCase,objective:Objective,shadow:boolean,enabl
  if(kind==='quota')roads=(async()=>{throw new RoadProviderError('synthetic_quota',429,60,'ROAD_PROVIDER_RATE_LIMITED');}) as typeof roads;
  if(kind==='timeout')roads=(async()=>{throw new RoadProviderError('synthetic_timeout',503,60,'ROAD_PROVIDER_TIMEOUT');}) as typeof roads;
  const routing={routes:wrap('road',roads)},stations={findAlongRoutes:wrap('stations',w.stations.findAlongRoutes)},weather={forecast:wrap('weather',w.weather.forecast)};
- const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=wrap('energy',energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<unknown>) as typeof energy.evaluate;charging.evaluate=wrap('charging',charging.evaluate.bind(charging));
+ const energy=new EnergyConsumptionEngine(),charging=new ChargingCurveEngine();energy.evaluate=wrap('energy',energy.evaluate.bind(energy) as (...args:unknown[])=>Promise<unknown>) as typeof energy.evaluate;charging.evaluate=wrap('charging',charging.evaluate.bind(charging)) as typeof charging.evaluate;
  let ticks=0;const optimizer=kind==='deadline'?new ChargeStopOptimizer(()=>++ticks>3?1e9:0):new ChargeStopOptimizer();
  const Service=shadow?EvPlanningService:beforeService(),service=new Service(vehicles as never,routing as never,stations as never,weather as never,energy,charging,optimizer);
  const inputHash=digest(normalized({kind,request:w.request,options:w.options,preparation:w.preparation,candidates:w.candidates,vehicle:w.vehicle}));

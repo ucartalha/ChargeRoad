@@ -74,7 +74,7 @@ export async function runEnergyProof(options:ProofRunOptions){
  }
  // Module compilation is outside plan timing; no global module/prototype/cache is patched.
  const Service=options.strategy==='native'?EvPlanningService:isolatedService(Session),charging=new ChargingCurveEngine();
- charging.evaluate=wrap('charging',charging.evaluate.bind(charging));
+ charging.evaluate=wrap('charging',charging.evaluate.bind(charging)) as typeof charging.evaluate;
  const service=new Service({resolveId:wrap('vehicle_id',w.vehicles.resolveId),profile:wrap('vehicle_profile',w.vehicles.profile)} as never,
   {routes:wrap('road',road)} as never,{findAlongRoutes:wrap('stations',w.stations.findAlongRoutes)} as never,{forecast:wrap('weather',forecast)} as never,
   logicalNative,charging,new ChargeStopOptimizer());

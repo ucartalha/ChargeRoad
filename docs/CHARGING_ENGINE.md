@@ -49,6 +49,8 @@ Kaynak SOC/voltaj düğümleri, istasyon voltaj zarfı geçişleri ve bütün g�
 
 Seçili kaynak başına en fazla 2.048 nokta; en fazla 10.000 aralık, 100.000 değerlendirme, 18 quadrature derinliği, 24 saatlik şarj ve 1.500 ms hesap bütçesi vardır. Hesap düzenli event-loop yield ve iptal kontrolü yapar; assessment toplam 2 saniyeyle sınırlıdır. Sınır aşılırsa tamamlanmış süre verilmez. CLI snapshot'ı en fazla 8 MiB kabul eder. Bu bütçeler üretim SLA'sı değildir.
 
+Arama çağrıları (2026-11-20, çıktı aynı): planlama araması `ChargingEvaluationOptions` ile `inputChecksum:false` (sonuçta kullanılmayan girdi hash'i hesaplanmaz) ve `trustedRequest:true` (kaynağında doğrulanmış parçalardan kurulan istek yeniden doğrulanmaz) gönderir; HTTP/genel çağrılar değişmedi. [Kanıt](validation/same-output-speedups-2026-11-20.md).
+
 ## Eksik veri ve koşullar
 
 - Eğri yoksa, SOC kapsamı dışındaysa veya başka şarj yoluna aitse tahmin uydurulmaz; ekstrapolasyon yoktur.

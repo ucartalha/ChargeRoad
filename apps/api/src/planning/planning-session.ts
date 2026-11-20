@@ -101,8 +101,10 @@ export class PlanningSession implements TransitionPort {
     // station's own location instead.
     const reuse=Math.min(WEATHER_POLICY.sampleDistanceMeters,weatherSampleDistanceLimit());
     if(this.climateSamples.size&&!queries.some(q=>q.samplingResolution))queries=queries.map(q=>{
-      const nearest=[...this.climateSamples.values()].reduce((best,p)=>meters(q.location,p)<meters(q.location,best)?p:best);
-      return meters(q.location,nearest)<=reuse?{...q,sampleLocation:nearest}:q;
+      // Each distance once (same strict '<', first of equal distances wins: same choice as the former reduce).
+      let nearest:typeof q.location|null=null,nearestMeters=Infinity;
+      for(const p of this.climateSamples.values()){const d=meters(q.location,p);if(nearest===null||d<nearestMeters){nearest=p;nearestMeters=d;}}
+      return nearestMeters<=reuse?{...q,sampleLocation:nearest!}:q;
     });
     // Same digest as checksum(queries) (sha256 of canonical JSON), streamed without materialising the string.
     const key=canonicalJsonSha256(queries);if(this.weatherCache.has(key)){countMetric('weather_session_cache_hits');return this.weatherCache.get(key)!;}
@@ -212,7 +214,7 @@ export class PlanningSession implements TransitionPort {
             hardwarePolicy:c.request.policy.stationDataQuality,
             arrivalSocPercent:startSoc,targetSocPercent:target,qualityPolicy:c.request.policy.vehicleDataQuality??'verified_only',evaluatedAt:c.evaluatedAt,
             batteryTemperatureAtStartC:temperature,ambientTemperatureC:weather.temperatureCelsius,preconditioning:'unknown',sharedPowerAllocation:null,
-            timing:{arrivalAt:state.at,connectionSeconds:connection,waitingSeconds:0,blockingPreconditioningSeconds:0}},signal));
+            timing:{arrivalAt:state.at,connectionSeconds:connection,waitingSeconds:0,blockingPreconditioningSeconds:0}},signal,{inputChecksum:false,trustedRequest:true}));
           if(result.status==='computation_limit')throw new PlanningDataLimit('CHARGING_COMPUTATION_BUDGET');
           if(result.status!=='estimated'){result.reasons.forEach(r=>this.issues.add(r));continue;}
           try{if(!openThroughout(station,state.at,result.departureAt!)){this.issues.add('STATION_CLOSED_IN_SCENARIO');continue;}}

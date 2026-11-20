@@ -81,6 +81,8 @@ Durak cezası, durak eleme, menzil ön kontrolü (`chargeroad-optimizer/1.9.0`, 
 
 Denenip reddedilenler (2026-11-20, sürüm 1.9.0'da kaldı): ölçülen tüketimle sıkılaştırılmış üst menzil sınırı (fayda yok; 1.9.0 sınırı zaten gerçekçi menzilin ~1,3 katı) ve en kötü menzil altındaki istasyonları eleyen menzil penceresi (20 durumda 5 planlanamadı, 11 kötüleşti). [Kanıt](validation/reach-bounds-rejected-2026-11-20.md). Sürüş başarısızlık hafızası da (aynı düğümden, daha az şarjla, daha uzun yola sürmeme) planı değiştirmedi ama yalnız %4 bütçe kazandırdı; reddedildi. [Kanıt](validation/failure-memory-rejected-2026-11-20.md).
 
+Ertelenmiş derleme (2026-11-20, sürüm 1.9.0, çıktı aynı): kabul edilen ara planlar aramada derlenmez; kabul anındaki arama meta verisi ve uyarılarla sonda bir kez derlenir, sözleşmeyi geçemeyen plan önceki kabul edilene düşer. 5 uzun rotada aynı plan, şarj ve örnekleme iyileştirmeleriyle birlikte toplam süre −%29. [Kanıt](validation/same-output-speedups-2026-11-20.md).
+
 
 
 

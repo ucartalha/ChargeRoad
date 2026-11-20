@@ -16,14 +16,32 @@ const missing=(code:string):never=>{throw new ChargingFailure('insufficient_data
 const incompatible=(code:string):never=>{throw new ChargingFailure('incompatible',code);};
 const within=(v:number,range:{min:number;max:number})=>v>=range.min-1e-8&&v<=range.max+1e-8;
 
+/** Search-time result: identical to ChargingEvaluationResult except that the unpublished input checksum is not computed. */
+export type SearchChargingEvaluationResult=Omit<ChargingEvaluationResult,'inputChecksumSha256'>;
+/** inputChecksum:false — planning search callers never read the checksum; hashing the whole request (vehicle profile and
+ *  curves) on each of 600–900 calls per plan cost ~0.34 s (2026-11-20). Public/HTTP callers keep it. */
+/** trustedRequest: the search assembles the request only from parts validated at their source (vehicle profile, station
+ *  catalogue, capacity snapshot, planning request); the composite re-parse is skipped. The schema has no defaults or
+ *  transforms, so parse(raw) is a copy of raw (search-checksum.spec). Public/HTTP callers never set it. */
+export interface ChargingEvaluationOptions {inputChecksum:false;trustedRequest?:true;}
+// Only shape-checks the result; the placeholder never leaves evaluate().
+const CHECKSUM_NOT_COMPUTED='0'.repeat(64);
+
 /** Pure DC calculator. It consumes snapshots, never contacts a provider or starts charging. */
 export class ChargingCurveEngine {
-  async evaluate(raw:ChargingEvaluationRequest,signal:AbortSignal=new AbortController().signal):Promise<ChargingEvaluationResult>{
-    signal.throwIfAborted();const started=performance.now(),r=chargingEvaluationRequestSchema.parse(raw),v=r.vehicle,model=v.chargingModel;
+  evaluate(raw:ChargingEvaluationRequest,signal?:AbortSignal):Promise<ChargingEvaluationResult>;
+  evaluate(raw:ChargingEvaluationRequest,signal:AbortSignal|undefined,options:ChargingEvaluationOptions):Promise<SearchChargingEvaluationResult>;
+  async evaluate(raw:ChargingEvaluationRequest,signal:AbortSignal=new AbortController().signal,options?:ChargingEvaluationOptions):Promise<ChargingEvaluationResult|SearchChargingEvaluationResult>{
+    const result=await this.run(raw,signal,options?.inputChecksum!==false,options?.inputChecksum===false&&options.trustedRequest===true);
+    if(options?.inputChecksum!==false)return result;
+    const {inputChecksumSha256:_omitted,...search}=result;return search;
+  }
+  private async run(raw:ChargingEvaluationRequest,signal:AbortSignal,withChecksum:boolean,trusted=false):Promise<ChargingEvaluationResult>{
+    signal.throwIfAborted();const started=performance.now(),r=trusted?raw:chargingEvaluationRequestSchema.parse(raw),v=r.vehicle,model=v.chargingModel;
     const out:ChargingEvaluationResult={status:'insufficient_data',dataQuality:
       model?.quality==='engineering_estimate'||v.dataQuality?.quality==='engineering_estimate'?'engineering_estimate':
       model?.quality==='verified'&&v.dataQuality?.quality==='verified'?'verified':'unknown',algorithmVersion:CHARGING_ALGORITHM_VERSION,
-      inputChecksumSha256:createHash('sha256').update(canonicalJson(r)).digest('hex'),vehicleProfileId:v.id,vehicleProfileVersion:v.version,
+      inputChecksumSha256:withChecksum?createHash('sha256').update(canonicalJson(r)).digest('hex'):CHECKSUM_NOT_COMPUTED,vehicleProfileId:v.id,vehicleProfileVersion:v.version,
       modelId:model?.id??null,modelVersion:model?.version??null,stationId:r.station.id,evseId:r.evseId,connectorId:r.connectorId,
       curveId:r.curveId,curveVersion:null,chargingPathId:null,arrivalSocPercent:r.arrivalSocPercent,targetSocPercent:r.targetSocPercent,
       effectiveBatteryCapacityKwh:r.capacity.effectiveKwh,chargingSeconds:null,energyStoredKwh:null,energyDeliveredAtInletKwh:null,

@@ -39,10 +39,13 @@ export function sampleRouteWeather(input:RouteWeatherRequest,planning?:PlanningW
   if(unique.length>WEATHER_POLICY.maxSamples)throw new WeatherUnavailable('budget_exhausted','Weather sample budget');
   const grid=planning?.gridDegrees,byId=grid===undefined?null:new Map(segments.map(s=>[s.id,s]));
   for(const query of queries){
-    query.sampleLocation=unique.reduce((best,p)=>meters(query.location,p)<meters(query.location,best)?p:best,unique[0]);
+    // Nearest anchor; each distance is computed once (same strict '<', first of equal distances wins: same choice as before).
+    let nearest=unique[0],nearestMeters=meters(query.location,nearest);
+    for(let i=1;i<unique.length;i++){const d=meters(query.location,unique[i]);if(d<nearestMeters){nearest=unique[i];nearestMeters=d;}}
+    query.sampleLocation=nearest;
     // An off-corridor alternative cannot inherit a distant base-road forecast. Fall back
     // to this exact midpoint; provider acquisition limits still bound these exceptions.
-    if(meters(query.location,query.sampleLocation)>weatherSampleDistanceLimit(query.samplingResolution))query.sampleLocation=query.location;
+    if(nearestMeters>weatherSampleDistanceLimit(query.samplingResolution))query.sampleLocation=query.location;
     // W4: the segment's own global cell; terrain context lets the service reject a cell >100 m off the road,
     // in which case the route-relative sample above is used (no extra per-segment request).
     const heights=byId?.get(query.segmentId)?.elevationProfile?.map(p=>p.elevationMeters);
