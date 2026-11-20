@@ -1,4 +1,5 @@
 import {setImmediate as yieldEventLoop} from 'node:timers/promises';
+import {energyResultFastCheck} from './energy-result-check';
 import {energyEvaluationRequestSchema,energyEvaluationResultSchema,weatherForecastIsUsable,weatherSampleDistanceLimit} from '@chargeroad/shared';
 import type {EnergyEvaluationRequest,EnergyEvaluationResult,EnergyAudit,EnergyModel,EnergySegment,RoadSegment,WeatherForecast} from '@chargeroad/shared';
 import {canonicalJsonSha256} from '../vehicles/knowledge/knowledge-package';
@@ -51,7 +52,11 @@ export class EnergyConsumptionEngine {
     const assumptions=new Set<string>(),warnings=new Set<string>(),referenceIds=new Set<string>();
     let currentSegment:string|null=null;
     const reason=(code:string)=>{if(!result.reasons.some(r=>r.code===code))result.reasons.push({code,segmentId:currentSegment});};
-    const finish=()=>{result.assumptions=[...assumptions].sort();result.warnings=[...warnings].sort();result.referenceIds=[...referenceIds].sort();return energyEvaluationResultSchema.parse(result);};
+    const finish=()=>{result.assumptions=[...assumptions].sort();result.warnings=[...warnings].sort();result.referenceIds=[...referenceIds].sort();
+      // Copy-free check first (energy-result-check.ts); the full parse still runs, and throws, whenever it cannot confirm.
+      // The result must not share the caller's capacity snapshot object (the parse copied it; so does the fast path).
+      if(energyResultFastCheck(result)){if(result.capacitySnapshot)result.capacitySnapshot={...result.capacitySnapshot,assumptions:[...result.capacitySnapshot.assumptions]};return result;}
+      return energyEvaluationResultSchema.parse(result);};
     const deadline=this.clock()+Math.min(request.policy.maxComputationMilliseconds,ENERGY_POLICY.maxComputeMs);
     let steps=0;
     try{

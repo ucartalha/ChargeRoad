@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import {roadRouteFastCheck} from './road-route-check';
 import { roadRouteSchema } from '@chargeroad/shared';
 import type { RoadRoute,RoadRoutingRequest,RoadSegment,Coordinate } from '@chargeroad/shared';
 import type { RoadTripInput,WayTags,SpeedLimitValue } from './provider-ports';
@@ -143,11 +144,12 @@ export function normalizeRoadTrip(trip:RoadTripInput,request:RoadRoutingRequest,
         const gain=elevationProfile?.slice(1).reduce((n,p,k)=>n+Math.max(0,p.elevationMeters-elevationProfile[k].elevationMeters),0)??null;
         const loss=elevationProfile?.slice(1).reduce((n,p,k)=>n+Math.max(0,elevationProfile[k].elevationMeters-p.elevationMeters),0)??null;
         const seconds=times[i]*span/length;
+        // Schema key order (2026-11-20): the copy-free check returns this object, so its JSON matches the Zod parse output.
         const segment:RoadSegment={id:fingerprint+':'+segments.length,sourceEdgeIds:[edge?.sourceEdgeId??config.providerId+':shape:'+legIndex+':'+i],
           startDistanceMeters:offset+start,endDistanceMeters:offset+end,distanceMeters:span,drivingDurationSeconds:seconds,geometry,
           roadClass:edge?.roadClass??'unknown',bearingDegrees:bearing(geometry[0],geometry[1]),expectedSpeedKph:span/seconds*3.6,
-          expectedSpeedBasis:'travel_time_average',speedLimitKph:speed.value,speedLimitKind:speed.kind,speedLimitRaw:speed.raw,speedLimitSource:speed.source,
-          elevationProfile,elevationQuality:elevationProfile?'modelled':'unknown',elevationGainMeters:gain,elevationLossMeters:loss,
+          speedLimitKph:speed.value,speedLimitKind:speed.kind,speedLimitSource:speed.source,speedLimitRaw:speed.raw,expectedSpeedBasis:'travel_time_average',
+          elevationQuality:elevationProfile?'modelled':'unknown',elevationProfile,elevationGainMeters:gain,elevationLossMeters:loss,
           startsAtChargingAccess:legIndex>0&&i===0&&j===0,
           endsAtChargingAccess:legIndex<trip.legs.length-1&&i===leg.geometry.length-2&&j===boundaries.length-2};
         append(segment);
@@ -163,10 +165,12 @@ export function normalizeRoadTrip(trip:RoadTripInput,request:RoadRoutingRequest,
   if(speedLimitAdjustmentSeconds>0)warnings.add('road_duration_adjusted_to_speed_limits');
   if(segments.reduce((n,s)=>n+s.geometry.length,0)>config.maxPoints)throw new Error('Normalized geometry budget exceeded');
   const known=segments.filter(s=>s.speedLimitKph!==null||s.speedLimitKind==='unlimited').reduce((n,s)=>n+s.distanceMeters,0);
-  return roadRouteSchema.parse({id:config.providerId+':'+fingerprint,distanceMeters:offset,
+  const route={id:config.providerId+':'+fingerprint,distanceMeters:offset,
     drivingDurationSeconds:segments.reduce((n,s)=>n+s.drivingDurationSeconds,0),segments,segmentationPolicy:request.segmentationPolicy,source,
     metadata:{providerId:config.providerId,traffic:trip.traffic,departureUsedAt:new Date(Math.floor(Date.parse(request.departureAt)/60000)*60000).toISOString(),originTimeZone:request.originTimeZone??'Europe/Istanbul',
       warnings:[...warnings],attributions:trip.attributions,maneuvers,
       speedLimitKnownMeters:known,speedLimitUnknownMeters:Math.max(0,offset-known),durationAllocation:'maneuver_weighted',
-      usage:config.usePublicDemo?'development_pilot':'configured_service'}});
+      usage:config.usePublicDemo?'development_pilot':'configured_service' as const}};
+  // Copy-free check first (road-route-check.ts); the full parse still runs, and throws, whenever it cannot confirm.
+  return roadRouteFastCheck(route)?route as RoadRoute:roadRouteSchema.parse(route);
 }

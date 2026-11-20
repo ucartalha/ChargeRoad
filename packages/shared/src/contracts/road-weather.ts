@@ -52,7 +52,8 @@ export function checkRoadSegmentTiming(segment: {startDistanceMeters:number;endD
   if (Math.abs(expectedSpeed - segment.expectedSpeedKph) > 0.1)
     ctx.addIssue({ code: 'custom', path: ['expectedSpeedKph'], message: 'Speed must agree with road distance and driving duration' });
 }
-function checkRoadSegment(segment: z.infer<typeof roadSegmentObject>, ctx: z.RefinementCtx) {
+/** Segment rules (exported 2026-11-20 for the copy-free road route check; unchanged). */
+export function checkRoadSegment(segment: z.infer<typeof roadSegmentObject>, ctx: z.RefinementCtx) {
   checkRoadSegmentTiming(segment, ctx);
   const elevations = segment.elevationProfile;
   if(elevations===null&&(segment.elevationGainMeters!==null||segment.elevationLossMeters!==null||segment.elevationQuality==='modelled'||segment.elevationQuality==='verified'))
