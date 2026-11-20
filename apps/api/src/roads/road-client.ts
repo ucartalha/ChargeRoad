@@ -5,6 +5,7 @@ import type { RoadConfig } from './road-policy';
 import type { RoadJsonClient,RoadJsonResponse } from './provider-ports';
 import {roadBudgetPolicy,roadCacheRevision} from './road-source-policy';
 import {startStage,countMetric} from '../observability/planning-metrics';
+import type {BoundedMemoryCache} from './bounded-memory-cache';
 
 export class RoadProviderError extends Error {constructor(message:string,readonly status=503,readonly retryAfterSeconds=60,
   readonly code='ROAD_PROVIDER_UNAVAILABLE'){super(message);}}
@@ -41,8 +42,11 @@ export function roadTransport(config:RoadConfig):RoadTransport{return async(url,
 };}
 
 export class PgRoadClient implements RoadJsonClient {
+  /** memory (2026-11-20): optional process-wide layer in front of road_response_cache; same key, never outlives the PG row. */
   constructor(private readonly database:DatabaseService,private readonly config:RoadConfig,private readonly secret:string,
-    private readonly transport:RoadTransport=roadTransport(config)){}
+    private readonly transport:RoadTransport=roadTransport(config),private readonly memory?:BoundedMemoryCache<RoadJsonResponse>){}
+  private remember(key:string,payload:RoadJsonResponse,expiresAtMs:number,json?:string){
+    if(this.memory&&Number.isFinite(expiresAtMs))this.memory.set(key,payload,(json??JSON.stringify(payload)).length,expiresAtMs);}
   async post(providerId:string,url:string,body:unknown,signal:AbortSignal,cacheSeconds=this.config.cacheSeconds):Promise<RoadJsonResponse>{
     return this.request('POST',providerId,url,body,signal,cacheSeconds);
   }
@@ -55,8 +59,9 @@ export class PgRoadClient implements RoadJsonClient {
     const policy=roadBudgetPolicy(this.config,providerId,url);
     const revision=roadCacheRevision(this.config,providerId,url);
     const key=createHmac('sha256',this.secret).update((revision?'road-cache/v2\0'+revision+'\0':'road-cache/v1\0')+providerId+'\0'+(method==='GET'?'GET\0':'')+url+'\0'+JSON.stringify(body)).digest('hex');
-    const read=async()=>{const r=await this.database.pool.query('SELECT payload FROM road_response_cache WHERE request_key=$1 AND expires_at>now()',[key]);return r.rows[0];};
-    const cached=await read();if(cached){countMetric('road_pg_cache_hits');return cached.payload;}countMetric('road_pg_cache_misses');
+    const known=this.memory?.get(key);if(known!==undefined){countMetric('road_memory_cache_hits');return known;}
+    const read=async()=>{const r=await this.database.pool.query('SELECT payload,extract(epoch FROM expires_at)*1000 AS expires_ms FROM road_response_cache WHERE request_key=$1 AND expires_at>now()',[key]);return r.rows[0];};
+    const cached=await read();if(cached){countMetric('road_pg_cache_hits');this.remember(key,cached.payload,Number(cached.expires_ms));return cached.payload;}countMetric('road_pg_cache_misses');
     const token=randomUUID();let generation:string|undefined;
     for(let wait=0;wait<100;wait++){
       signal.throwIfAborted();
@@ -65,7 +70,7 @@ export class PgRoadClient implements RoadJsonClient {
         SET token=EXCLUDED.token,generation=road_response_cache.generation+1,lease_until=EXCLUDED.lease_until
         WHERE road_response_cache.expires_at<=now() AND (road_response_cache.token IS NULL OR road_response_cache.lease_until<=now()) RETURNING generation`,[key,providerId,token]);
       if(lease.rowCount){generation=lease.rows[0].generation;break;}
-      const ready=await read();if(ready){countMetric('road_cache_coalesced_hits');return ready.payload;}await delay(250,undefined,{signal});
+      const ready=await read();if(ready){countMetric('road_cache_coalesced_hits');this.remember(key,ready.payload,Number(ready.expires_ms));return ready.payload;}await delay(250,undefined,{signal});
     }
     if(!generation)throw new RoadProviderError('Identical road request is still in progress');
     try{
@@ -88,10 +93,12 @@ export class PgRoadClient implements RoadJsonClient {
         await delay(policy.minIntervalMs+30,undefined,{signal});
       }
       signal.throwIfAborted();const data=await this.transport(url,body,signal,method);signal.throwIfAborted();
-      const payload:RoadJsonResponse={data,retrievedAt:new Date().toISOString()};
+      const payload:RoadJsonResponse={data,retrievedAt:new Date().toISOString()},json=JSON.stringify(payload),writtenAt=Date.now();
       const saved=await this.database.pool.query(`UPDATE road_response_cache SET payload=$4::jsonb,expires_at=now()+$5*interval '1 second',token=NULL,lease_until=NULL
-        WHERE request_key=$1 AND token=$2 AND generation=$3 AND lease_until>clock_timestamp() RETURNING 1`,[key,token,generation,JSON.stringify(payload),cacheSeconds]);
-      if(!saved.rowCount)throw new RoadProviderError('Expired road worker cannot overwrite new data');return payload;
+        WHERE request_key=$1 AND token=$2 AND generation=$3 AND lease_until>clock_timestamp() RETURNING 1`,[key,token,generation,json,cacheSeconds]);
+      if(!saved.rowCount)throw new RoadProviderError('Expired road worker cannot overwrite new data');
+      // The PG row expires cacheSeconds after the UPDATE; the memory entry is stamped before it, so it never outlives the row.
+      this.remember(key,payload,writtenAt+cacheSeconds*1000,json);return payload;
     }catch(error){
       if(error instanceof RoadProviderError&&(error.status===429||error.status>=500)&&!signal.aborted&&
         !['ROAD_PROVIDER_QUOTA_EXHAUSTED','ROAD_SELF_HOSTED_SAFETY_BUDGET','ROAD_PROVIDER_BACKOFF','ROAD_PROVIDER_PACING_LIMIT'].includes(error.code))await this.database.pool.query(`UPDATE road_provider_budget
