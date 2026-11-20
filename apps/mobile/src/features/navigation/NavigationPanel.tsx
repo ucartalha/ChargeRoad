@@ -18,7 +18,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import {formatDistance,formatDuration,stopTimeline} from './navigation-view';
 import type {TripSnapshot} from './trip-storage';
 
-export function NavigationPanel({plan,request,vehicleLabel,onPlan,onLocation,onRoute,onProgress,onTrip,onBack}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
+export function NavigationPanel({plan,request,vehicleLabel,startRef,onPlan,onLocation,onRoute,onProgress,onTrip,onBack}:{plan:RoutePlan|null;request:PlanningApiRequest|null;
+ /** Trip card shortcut: set to start() while a new plan can start without a resumed trip (form SOC is the user's own entry). */
+ startRef?:{current:(()=>void)|null};
  onBack?:()=>void;vehicleLabel?:string;
  /** correctSoc: the navigation SOC chip; returns an error message or null when the correction was applied. */
  onTrip?:(trip:{active:boolean;confirmedStopId:string|null;end:()=>void;correctSoc:(percent:number)=>string|null}|null)=>void;
@@ -120,6 +122,7 @@ export function NavigationPanel({plan,request,vehicleLabel,onPlan,onLocation,onR
   }).catch(()=>{});
  }
  const stopRef=useRef<()=>void>(()=>{});stopRef.current=()=>stop();
+ if(startRef)startRef.current=loaded&&!trip&&plan&&request?start:null;
  function stop(){generation.current++;pending.current?.abort();pending.current=null;setBusy(false);publish(null,true);onRoute(null);onLocation(null);fixRef.current=null;setMessage('Yolculuk takibi kapatıldı.');}
  if(!loaded||!plan&&!trip)return null;const p=trip?.progress;
  const active=trip?.status==='active',timeline=trip?stopTimeline(trip.route,{distance:p?.distance??trip.anchor.distance},trip.anchor.stopId):[];

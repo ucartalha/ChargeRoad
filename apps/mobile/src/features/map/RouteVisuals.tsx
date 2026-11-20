@@ -14,14 +14,19 @@ function useReducedMotion(){
   return reduced;
 }
 
-// A short reveal on a new geometry, rather than an ongoing per-frame map animation.
-export function RouteLine({coordinates}:{coordinates:Coordinate[]}){
+/** Route reveal: drawn in 18 steps (~0.8 s). loop (plan preview, 2026-11-20 user request): after a ~1.6 s hold the reveal repeats;
+ *  no state change while holding. Reduced motion shows the full line without animation. */
+export const ROUTE_REVEAL={steps:18,stepMs:45,holdMs:1600} as const;
+export function RouteLine({coordinates,loop=false}:{coordinates:Coordinate[];loop?:boolean}){
   const reduced=useReducedMotion(),[count,setCount]=useState(coordinates.length);
   useEffect(()=>{if(reduced){setCount(coordinates.length);return;}
-    let step=0;setCount(2);
-    const timer=setInterval(()=>{step++;setCount(Math.max(2,Math.ceil(coordinates.length*step/18)));if(step>=18)clearInterval(timer);},45);
+    const {steps,stepMs,holdMs}=ROUTE_REVEAL,hold=Math.round(holdMs/stepMs);let step=0;setCount(2);
+    const timer=setInterval(()=>{step++;
+      if(step<=steps)setCount(Math.max(2,Math.ceil(coordinates.length*step/steps)));
+      else if(!loop)clearInterval(timer);
+      else if(step>=steps+hold){step=0;setCount(2);}},stepMs);
     return()=>clearInterval(timer);
-  },[coordinates,reduced]);
+  },[coordinates,reduced,loop]);
   return <>
     <Polyline coordinates={coordinates} strokeColor="#FFFFFF" strokeWidth={12} lineCap="round" lineJoin="round"/>
     <Polyline coordinates={coordinates} strokeColor="#133E34" strokeWidth={8} lineCap="round" lineJoin="round"/>

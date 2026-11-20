@@ -7,7 +7,9 @@ export type TripState=
   |{phase:'planned';plan:RoutePlan;requestedArrival:number|null}
   |{phase:'failed';title:string;message:string};
 /** endNavigation (navigation step 1): set while a trip is tracked; ends tracking exactly like the panel's "Yolculuğu bitir". */
-export type TripActions={cancel:()=>void;reset:()=>void;endNavigation?:()=>void};
+/** startNavigation (2026-11-20): starts tracking the planned route from the trip card with the SOC the user entered in the form;
+ *  returns false when that is not possible (no plan, or a resumed trip that needs a fresh SOC confirmation). */
+export type TripActions={cancel:()=>void;reset:()=>void;endNavigation?:()=>void;startNavigation?:()=>boolean};
 
 export function formatDuration(seconds:number){
   const total=Math.max(0,Math.round(seconds/60)),hours=Math.floor(total/60),minutes=total%60;

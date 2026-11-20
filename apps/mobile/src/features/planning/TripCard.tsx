@@ -33,7 +33,7 @@ export function TripCard({trip,actions,onOpen}:{trip:Exclude<TripState,{phase:'i
     <EnergySkyline plan={plan} start={plan?`%${Math.round(plan.energySegments[0]?.startChargePercent??0)} ŞİMDİ`:undefined} arrival={facts?`${facts.arrival} VARIŞ`:undefined}/>
     {notice&&<Text style={s.notice}>{notice}</Text>}
     {plan?<View style={s.actions}>
-        <PressableScale testID="trip-start-navigation" accessibilityRole="button" accessibilityLabel="Navigasyonu başlat" onPress={onOpen} style={[s.primary,s.flex]}>
+        <PressableScale testID="trip-start-navigation" accessibilityRole="button" accessibilityLabel="Navigasyonu başlat" onPress={()=>{if(!actions.startNavigation?.())onOpen();}} style={[s.primary,s.flex]}>
           <Ionicons name="navigate" size={17} color={c.ink}/><Text style={s.primaryText}>Navigasyonu başlat</Text></PressableScale>
         <PressableScale testID="trip-open-details" accessibilityRole="button" accessibilityLabel="Molaları ve ayrıntıları gör" onPress={onOpen} style={s.more}>
           <Ionicons name="list" size={20} color="#D6E5DC"/></PressableScale></View>:

@@ -34,6 +34,8 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   useEffect(()=>()=>{version.current++;runner.current.cancel();},[]);
   function reset(){cancel();setResult(null);setPendingPreview(null);setError('');setRequestError('');setDetails(false);}
   const actions=useRef<TripActions>({cancel,reset});actions.current.cancel=cancel;actions.current.reset=reset;actions.current.endNavigation=navigationTrip?.end;
+  const startNavigation=useRef<(()=>void)|null>(null);
+  actions.current.startNavigation=()=>{const start=startNavigation.current;if(!start)return false;start();return true;};
   const mapRoute=useMemo(()=>{const planned=result?.result.status==='planned'?result.result.plan:null;
     return {geometry:navigationRoute?navigationRoute.segments.flatMap(s=>s.geometry):planned?planned.roadRoute.segments.flatMap(s=>s.geometry):result?.preview?.route?.geometry??pendingPreview?.route?.geometry??[],
       stops:planned?planned.chargingStops.map((stop,i)=>({id:stop.id,location:stop.location,label:`${i+1}. şarj · %${Math.round(stop.arrivalChargePercent)} → %${Math.round(stop.targetChargePercent)}`,plan:stop})):[]};
@@ -76,7 +78,7 @@ export function PlanningForm({vehicle,onRequireVehicle,onMapChange,onTripChange,
   // Read through result (not output) so TS does not narrow output inside the shared result card JSX.
   const planned=result?.result.status==='planned';
   return <View style={s.container}>
-    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} vehicleLabel={vehicle?`${vehicle.make} ${vehicle.model}`:undefined} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
+    <NavigationPanel plan={output?.status==='planned'?output.plan:null} request={lastRequest} startRef={startNavigation} vehicleLabel={vehicle?`${vehicle.make} ${vehicle.model}`:undefined} onLocation={setNavigationLocation} onRoute={setNavigationRoute} onProgress={setNavigationProgress} onTrip={setNavigationTrip}
       onBack={planned?reset:undefined}
       onPlan={(result,request)=>{setResult({result,preview:null,previewError:null});setLastRequest(request);}}/>
     {!navigating&&<>

@@ -85,7 +85,7 @@ export function MapCanvas({state,onOpenNavigation,bottomInset=260}:{state:MapSta
         <View style={s.pin}><Ionicons name="flash" size={17} color="white"/></View></Marker>)}
       {state.origin&&!nav&&<Marker coordinate={state.origin.coordinate} title="Başlangıç" pinColor={c.green}/>}
       {state.destination&&<Marker coordinate={state.destination.coordinate} title="Varış" pinColor={c.orange}/>}
-      {state.geometry.length>1&&!split&&<RouteLine coordinates={state.geometry}/>}
+      {state.geometry.length>1&&!split&&<RouteLine coordinates={state.geometry} loop={!nav}/>}
       {split&&<>
         {split.traveled.length>1&&<Polyline coordinates={split.traveled} strokeColor="#9AA79F" strokeWidth={7} lineCap="round" lineJoin="round"/>}
         <Polyline coordinates={split.remaining} strokeColor="#FFFFFF" strokeWidth={12} lineCap="round" lineJoin="round"/>
