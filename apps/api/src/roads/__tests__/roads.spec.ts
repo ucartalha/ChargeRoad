@@ -61,17 +61,16 @@ describe('Free map-reusable road normalization',()=>{
   it('converts UTC departure to origin local time without using host timezone',()=>{
     expect(localDeparture('2026-11-11T13:00:00Z','Europe/Istanbul')).toBe('2026-11-11T16:00');
   });
-  // road-departure-bucket/1.0.0 (2026-11-19): without traffic data the departure only reaches Valhalla's time-of-day
-  // rules, so it is sent floored to the local hour. Same body within the hour = same road cache key for "now" plans
-  // (before: a new key every minute, 166 of 333 lookups missed on a repeated İstanbul→Kelkit plan).
-  it('sends the departure floored to the local hour, so requests within one hour share a body',async()=>{
+  // road-departure-bucket/2.0.0 (2026-11-20): without traffic data the departure only reaches Valhalla's time-of-day rules,
+  // which the deployed graph does not use; the body carries one fixed local time (1.0.0 floored it to the hour), so one road
+  // has one cache key at every hour. road-station-leg-cache.spec checks the body for other departures.
+  it('sends one fixed departure, so requests at any hour share a body',async()=>{
     const bodies:unknown[]=[];const client:RoadJsonClient={post:async(_id,_url,body)=>{bodies.push(body);return {data:{error_code:442},retrievedAt:'2026-11-11T13:00:00Z'};}};
     const adapter=new ValhallaRoadAdapter(config),route=(departureAt:string)=>{const request={...roadRequest(),departureAt,originTimeZone:'Europe/Istanbul'};
       return adapter.route(request,[request.origin,request.destination],client,new AbortController().signal);};
     await route('2026-11-11T13:05:00Z');await route('2026-11-11T13:59:59Z');await route('2026-11-11T14:00:00Z');
-    expect((bodies[0] as {date_time:unknown}).date_time).toEqual({type:1,value:'2026-11-11T16:00'});
-    expect(JSON.stringify(bodies[1])).toBe(JSON.stringify(bodies[0]));
-    expect((bodies[2] as {date_time:{value:string}}).date_time.value).toBe('2026-11-11T17:00');
+    expect((bodies[0] as {date_time:unknown}).date_time).toEqual({type:1,value:'2026-01-07T12:00'});
+    expect(JSON.stringify(bodies[1])).toBe(JSON.stringify(bodies[0]));expect(JSON.stringify(bodies[2])).toBe(JSON.stringify(bodies[0]));
   });
   it('accepts a second independent adapter without changing the routing core',()=>{
     const adapter={id:'another-road-engine',capabilities:{alternatives:true,via:true,traffic:'none' as const,freeMapReuse:true},route:jest.fn(),attributes:jest.fn()};

@@ -70,7 +70,8 @@ export class PlanningSession implements TransitionPort {
     const node=this.context.nodes.find(n=>n.id===from)!;
     let response:ProviderResponse<{schemaVersion:'1.0.0';routes:RoadRoute[]}|null>;
     try{response=await measureAsync('road_leg_acquisition',()=>this.call(s=>{countMetric('road_leg_acquisitions');return this.routing.routes({...this.roadOptions,schemaVersion:'1.0.0',origin:node.location,destination:to.location,departureAt:at,
-      ...(from==='origin'&&this.context.originHeading?{originHeadingDegrees:this.context.originHeading.degrees,originHeadingToleranceDegrees:this.context.originHeading.toleranceDegrees}:{})},s);},signal));}
+      ...(from==='origin'&&this.context.originHeading?{originHeadingDegrees:this.context.originHeading.degrees,originHeadingToleranceDegrees:this.context.originHeading.toleranceDegrees}:{})},s,
+      node.stationId&&to.stationId?{stationPair:true}:undefined);},signal));}
     catch(error){if(signal.aborted||error instanceof PlanningDataLimit)throw error;
       if(error instanceof RoadProviderError)throw new PlanningProviderFailure(error.code,error.retryAfterSeconds);throw new PlanningProviderFailure('ROAD_PROVIDER_FAILED');}
     const parsed=response.data&&validatedRoadResults.has(response.data)?{success:true as const,data:response.data}:roadRoutingResultSchema.nullable().safeParse(response.data);

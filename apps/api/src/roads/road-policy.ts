@@ -22,6 +22,8 @@ export const roadConfigSchema=z.object({
   maxActions:z.number().int().min(1).max(20),maxAlternatives:z.number().int().min(1).max(3),
   maxPoints:z.number().int().min(100).max(20000),maxSegments:z.number().int().min(100).max(10000),
   timeoutMs:z.number().int().min(1000).max(30000),cacheSeconds:z.number().int().min(1).max(3600),
+  /** Station-to-station leg TTL; used only with cacheRevision (road-source-policy stationLegCacheSeconds). */
+  stationLegCacheSeconds:z.number().int().min(3600).max(90*86400).optional(),
 }).strict();
 export type RoadConfig=z.infer<typeof roadConfigSchema>;
 export function roadConfig():RoadConfig{
@@ -40,7 +42,8 @@ export function roadConfig():RoadConfig{
     demVersion:process.env.ROAD_ROUTING_DEM_VERSION||undefined,cacheRevision:process.env.ROAD_ROUTING_CACHE_REVISION||undefined,
     overpassUrl:process.env.ROAD_OSM_TAGS_URL||'https://overpass-api.de/api/interpreter',usePublicDemo,
     overpassEnabled:process.env.ROAD_OSM_TAGS_ENABLED==='true',clientId:'chargeroad-local-development',
-    dailyRequestLimit:100,minIntervalMs:1100,maxActions:12,maxAlternatives:3,maxPoints:20000,maxSegments:10000,timeoutMs:25000,cacheSeconds:3600});
+    dailyRequestLimit:100,minIntervalMs:1100,maxActions:12,maxAlternatives:3,maxPoints:20000,maxSegments:10000,timeoutMs:25000,cacheSeconds:3600,
+    stationLegCacheSeconds:process.env.ROAD_STATION_LEG_CACHE_SECONDS?Number(process.env.ROAD_STATION_LEG_CACHE_SECONDS):30*86400});
   // Public demo/Overpass instances are development probes, not production service dependencies.
   if(process.env.NODE_ENV==='production'&&config.enabled&&
     (config.usePublicDemo||(config.overpassEnabled&&new URL(config.overpassUrl).hostname==='overpass-api.de')))

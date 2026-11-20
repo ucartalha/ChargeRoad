@@ -7,6 +7,8 @@ import type { RoadAttributeProvider,RoadJsonClient,RoadShapeAdapter } from './pr
 import { BoundedRoadClient,RoadProviderError } from './road-client';
 import type { RoadConfig } from './road-policy';
 import { normalizeRoadTrip,measureRoadTrip } from './normalize-road';
+import { stationLegCacheSeconds } from './road-source-policy';
+import type { RoadRoutesOptions } from '../providers/routing-provider';
 import { interpolate,meters,simplifyDisplayGeometry } from './geometry';
 
 /** In-process RoadRoutingService results whose routes already passed roadRouteSchema (normalizeRoadTrip). Consumers may
@@ -16,6 +18,16 @@ export class RoadAdapterRegistry {
   private readonly adapters=new Map<string,RoadShapeAdapter>();
   constructor(adapters:RoadShapeAdapter[]){for(const adapter of adapters){if(this.adapters.has(adapter.id))throw new Error('Duplicate road adapter');this.adapters.set(adapter.id,adapter);}}
   get(id:string){const adapter=this.adapters.get(id);if(!adapter||!adapter.capabilities.freeMapReuse)throw new RoadProviderError('No configured adapter with approved map reuse');return adapter;}
+}
+/** Station leg cache (road-source-policy ROAD_STATION_LEG_CACHE): the adapter's route and attribute calls of one leg get
+ *  the given TTL unless a call names its own. */
+class CacheSecondsRoadClient implements RoadJsonClient {
+  constructor(private readonly underlying:RoadJsonClient,private readonly seconds:number){}
+  get(providerId:string,url:string,signal:AbortSignal,cacheSeconds?:number){
+    if(!this.underlying.get)throw new RoadProviderError('Road GET transport not configured');
+    return this.underlying.get(providerId,url,signal,cacheSeconds??this.seconds);
+  }
+  post(providerId:string,url:string,body:unknown,signal:AbortSignal,cacheSeconds?:number){return this.underlying.post(providerId,url,body,signal,cacheSeconds??this.seconds);}
 }
 export class RoadRoutingService extends RoutingProvider {
   constructor(private readonly config:RoadConfig,readonly registry:RoadAdapterRegistry,private readonly client:RoadJsonClient,
@@ -38,8 +50,9 @@ export class RoadRoutingService extends RoutingProvider {
       traffic:trip.traffic,source:{sourceId:this.config.providerId,recordId:null,version:trip.sourceVersion??null,url:trip.sourceUrl,retrievedAt:trip.retrievedAt,publishedAt:null,license:trip.license},
       attributions:trip.attributions,warnings:[...trip.warnings,...(trip.traffic!=='live'?['live_traffic_unavailable']:[]),...(originSnapMeters>100||destinationSnapMeters>100?['road_preview_endpoint_snapped']:[])]}});
   }
-  async routes(request:RoadRoutingRequest,signal:AbortSignal){
-    const parsed=this.validate(request);const client=new BoundedRoadClient(this.client,this.config.maxActions);
+  async routes(request:RoadRoutingRequest,signal:AbortSignal,options?:RoadRoutesOptions){
+    const parsed=this.validate(request),seconds=options?.stationPair?stationLegCacheSeconds(this.config):undefined;
+    const client=new BoundedRoadClient(seconds===undefined?this.client:new CacheSecondsRoadClient(this.client,seconds),this.config.maxActions);
     const routes=await this.calculate(parsed,[parsed.origin,parsed.destination],client,signal);
     const data=routes===null?null:{schemaVersion:'1.0.0' as const,routes};
     // Every route was built by normalizeRoadTrip through roadRouteSchema; mark the fresh result as already validated.

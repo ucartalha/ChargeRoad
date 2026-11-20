@@ -15,3 +15,12 @@ export function roadCacheRevision(config:RoadConfig,providerId:string,url:string
 }
 export function roadSourceVersion(config:RoadConfig){const build=config.cacheRevision?createHash('sha256').update(config.cacheRevision).digest('hex').slice(0,12):'unknown';
  return `engine=${config.engineVersion??'unknown'};graph=${config.graphVersion??'unknown'};dem=${config.demVersion??'unknown'};build=${build}`;}
+/** Station leg cache (2026-11-20). A leg between two charging stations is the same road for every user and every hour
+ *  (Valhalla adapter: fixed departure, no traffic), so it may outlive the one-hour road cache. Only with a declared
+ *  ROAD_ROUTING_CACHE_REVISION: the cache key then names the dataset, and a new graph/DEM build gets new keys. Station
+ *  coordinates are public catalogue data; legs from or to a user position keep config.cacheSeconds. */
+export const ROAD_STATION_LEG_CACHE={version:'road-station-leg-cache/1.0.0',defaultSeconds:30*86400,maxSeconds:90*86400} as const;
+export function stationLegCacheSeconds(config:RoadConfig):number|undefined{
+ if(!config.cacheRevision||!config.stationLegCacheSeconds)return undefined;
+ return Math.min(config.stationLegCacheSeconds,ROAD_STATION_LEG_CACHE.maxSeconds);
+}
